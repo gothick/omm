@@ -3,6 +3,8 @@ namespace Deployer;
 
 require 'recipe/symfony.php';
 
+require 'contrib/cachetool.php';
+
 // Project name
 set('application', 'omm2.gothick.org.uk');
 
@@ -22,6 +24,7 @@ add('writable_dirs', []);
 // Saves me typing it out every time
 set('default_stage', 'production');
 
+
 // Hosts
 
 // TODO: Try to set the shell to bash, or see if updated versions of deployer
@@ -29,6 +32,8 @@ set('default_stage', 'production');
 host('ssh.gothick.org.uk')
     ->set('stage', 'production')
     ->setRemoteUser('omm')
+    //->set('cachetool', '/run/php/chef-managed-fpm-omm.sock')
+    ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');    
     
 // Tasks
@@ -50,6 +55,9 @@ task('test', function () {
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
+
+// Clear opcache on successful deployment
+after('deploy:symlink', 'cachetool:clear:opcache');
 
 // Migrate database before symlink new release.
 
