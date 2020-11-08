@@ -24,9 +24,11 @@ set('default_stage', 'production');
 
 // Hosts
 
+// TODO: Try to set the shell to bash, or see if updated versions of deployer
+// start working with zsh again. I'm on a beta at the moment because Symfony 5
 host('ssh.gothick.org.uk')
-    ->stage('production')
-    ->user('omm')
+    ->set('stage', 'production')
+    ->setRemoteUser('omm')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');    
     
 // Tasks
@@ -37,7 +39,7 @@ task('build', function () {
 
 // Testing
 
-task('pwd', function() {
+task('pwd', function () {
     $result = run('pwd');
     writeln("Current dir: $result");
 });
