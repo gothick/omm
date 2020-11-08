@@ -1,0 +1,55 @@
+<?php
+namespace Deployer;
+
+require 'recipe/symfony.php';
+
+// Project name
+set('application', 'omm2.gothick.org.uk');
+
+// Project repository
+set('repository', 'git@github.com:gothick/omm.git');
+
+// [Optional] Allocate tty for git clone. Default value is false.
+set('git_tty', true); 
+
+// Shared files/dirs between deploys 
+add('shared_files', []);
+add('shared_dirs', []);
+
+// Writable dirs by web server 
+add('writable_dirs', []);
+
+// Saves me typing it out every time
+set('default_stage', 'production');
+
+// Hosts
+
+host('ssh.gothick.org.uk')
+    ->stage('production')
+    ->user('omm')
+    ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');    
+    
+// Tasks
+
+task('build', function () {
+    run('cd {{release_path}} && build');
+});
+
+// Testing
+
+task('pwd', function() {
+    $result = run('pwd');
+    writeln("Current dir: $result");
+});
+
+task('test', function () {
+    writeln('Hello world');
+});
+
+// [Optional] if deploy fails automatically unlock.
+after('deploy:failed', 'deploy:unlock');
+
+// Migrate database before symlink new release.
+
+// before('deploy:symlink', 'database:migrate');
+
