@@ -1,0 +1,26 @@
+ip: 192.168.10.63
+memory: 2048
+cpus: 2
+provider: virtualbox
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: /Users/matt/Sites/mysites/omm.gothick.org.uk
+        to: /home/vagrant/code
+sites:
+    -
+        map: omm.gothick.org.uk.local
+        to: /home/vagrant/code/public
+databases:
+    - homestead
+features:
+    -
+        mariadb: false
+    -
+        ohmyzsh: true
+    -
+        webdriver: false
+name: omm-gothick-org-uk
+hostname: omm-gothick-org-uk
