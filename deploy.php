@@ -32,7 +32,6 @@ set('default_stage', 'production');
 host('ssh.gothick.org.uk')
     ->set('stage', 'production')
     ->setRemoteUser('omm')
-    //->set('cachetool', '/run/php/chef-managed-fpm-omm.sock')
     ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');    
     
@@ -61,5 +60,5 @@ after('deploy:symlink', 'cachetool:clear:opcache');
 
 // Migrate database before symlink new release.
 
-// before('deploy:symlink', 'database:migrate');
+before('deploy:symlink', 'database:migrate');
 
