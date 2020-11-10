@@ -15,6 +15,7 @@
     <h2>{{ wander.title }}</h2>
     <p>{{ wander.description }}</p>
     <p>{{ wander.gpxFilename }}</p>
+    <p><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></p>
     <p>From {{ wander.startTime|date('r') }} to {{ wander.endTime|date('r') }}
 </div>
 {% endblock %}
