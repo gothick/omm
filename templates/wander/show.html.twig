@@ -11,10 +11,9 @@
 <div class="example-wrapper">
     <h1>Hello! ✅</h1>
 
-    I'd be showing wander {{ id }} if I'd been written properly yet.
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/vagrant/code/src/Controller/WanderController.php'|file_link(0) }}">src/Controller/WanderController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/vagrant/code/templates/wander/index.html.twig'|file_link(0) }}">templates/wander/index.html.twig</a></code></li>
-    </ul>
+    I'd be showing wander {{ wander.id }} if I'd been written properly yet.
+    <h2>{{ wander.title }}</h2>
+    <p>{{ wander.description }}</p>
+    <p>From {{ wander.startTime|date('r') }} to {{ wander.endTime|date('r') }}
 </div>
 {% endblock %}

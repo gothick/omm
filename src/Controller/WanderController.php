@@ -45,8 +45,12 @@ class WanderController extends AbstractController
      */
     public function showWander(int $id): Response
     {
+        $wander = $this->getDoctrine()->getRepository(Wander::class)->find($id);
+        if (!$wander) {
+            throw $this->createNotFoundException('No wander found for id' . $id);
+        }
         return $this->render('wander/show.html.twig', [
-            'id' => $id
+            'wander' => $wander
         ]);
     }
 
