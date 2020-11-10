@@ -55,7 +55,7 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/wanders/create", name="new_wander")
+     * @Route("/wanders/new", name="new_wander")
      */
     public function new(Request $request) : Response {
         $wander = new Wander();
@@ -71,6 +71,7 @@ class WanderController extends AbstractController
             ->add('description', TextareaType::class)
             ->add('startTime', DateTimeType::class)
             ->add('endTime', DateTimeType::class)
+            ->add('gpxFilename', TextType::class)
             ->add('save', SubmitType::class, ['label' => 'Create Wander'])
             ->getForm();
 

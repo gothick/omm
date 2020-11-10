@@ -37,6 +37,11 @@ class Wander
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $gpxFilename;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Wander
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getGpxFilename(): ?string
+    {
+        return $this->gpxFilename;
+    }
+
+    public function setGpxFilename(string $gpxFilename): self
+    {
+        $this->gpxFilename = $gpxFilename;
 
         return $this;
     }
