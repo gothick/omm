@@ -41,22 +41,43 @@ class WanderController extends AbstractController
     }
 
     /**
+     * @Route("/wanders/show/{id}", name="wander_show")
+     */
+    public function showWander(int $id): Response
+    {
+        return $this->render('wander/show.html.twig', [
+            'id' => $id
+        ]);
+    }
+
+    /**
      * @Route("/wanders/create", name="new_wander")
      */
-    public function new(Request $request) {
+    public function new(Request $request) : Response {
         $wander = new Wander();
+        /*
         $wander->setTitle("I'm a wander.");
         $wander->setStartTime(new \DateTime());
         $wander->setEndTime(new \DateTime());
         $wander->setDescription("I'm a soulful description of a wander in Hotwells");
-        
+        */
+
         $form = $this->createFormBuilder($wander)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('startTime', DateTimeType::class, ['' => ''])
+            ->add('startTime', DateTimeType::class)
             ->add('endTime', DateTimeType::class)
             ->add('save', SubmitType::class, ['label' => 'Create Wander'])
             ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $wander = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($wander);
+            $entityManager->flush();
+            return $this->redirectToRoute('wander_show', ['id' => $wander->getId()]);
+        }
 
         return $this->render('wander/new.html.twig', [
             'form' => $form->createView(),
