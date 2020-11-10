@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wander;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -71,7 +72,7 @@ class WanderController extends AbstractController
             ->add('description', TextareaType::class)
             ->add('startTime', DateTimeType::class)
             ->add('endTime', DateTimeType::class)
-            ->add('gpxFilename', TextType::class)
+            ->add('gpxFilename', FileType::class)
             ->add('save', SubmitType::class, ['label' => 'Create Wander'])
             ->getForm();
 
