@@ -18,66 +18,33 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints\File;
+use App\Repository\WanderRepository;
 
+/**
+ * @Route("/wander")
+ */
 class WanderController extends AbstractController
 {
     /**
-     * @Route("/wanders", name="wander")
+     * @Route("/", name="wander_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(WanderRepository $wanderRepository): Response
     {
         return $this->render('wander/index.html.twig', [
-            'controller_name' => 'WanderController',
+            'wanders' => $wanderRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/wanders/testadd", name="testadd_wander")
-     */
-    public function createWander(): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $user = new User();
-        $user->setPassword('This would be a password created by bin/console security:encode-password, say');
-        $user->setRoles(['ROLE_ADMIN']);
-        $user->setUsername('gothick');
-        $entityManager->persist($user);
-        $entityManager->flush();
-        return new Response("Saved a new user with id " . $user->getId());
-    }
-
-    /**
-     * @Route("/wanders/show/{id}", name="wander_show")
-     */
-    public function showWander(int $id): Response
-    {
-        $wander = $this->getDoctrine()->getRepository(Wander::class)->find($id);
-        if (!$wander) {
-            throw $this->createNotFoundException('No wander found for id' . $id);
-        }
-        return $this->render('wander/show.html.twig', [
-            'wander' => $wander
-        ]);
-    }
-
-    /**
-     * @Route("/wanders/new", name="new_wander")
+     * @Route("/new", name="wander_new", methods={"GET","POST"})
      */
     public function new(Request $request, SluggerInterface $slugger) : Response {
         $wander = new Wander();
-        /*
-        $wander->setTitle("I'm a wander.");
-        $wander->setStartTime(new \DateTime());
-        $wander->setEndTime(new \DateTime());
-        $wander->setDescription("I'm a soulful description of a wander in Hotwells");
-        */
-
         // TODO When creating an edit form, bear in mind:
         /*
         https://symfony.com/doc/current/controller/upload_file.html
         When creating a form to edit an already persisted item, the file form type still expects a Symfony\Component\HttpFoundation\File\File instance. As the persisted entity now contains only the relative file path, you first have to concatenate the configured upload path with the stored filename and create a new File class:
         */
-
 
         // TODO You can move this into a separate form class. See https://symfony.com/doc/current/forms.html
         $form = $this->createFormBuilder($wander)
@@ -133,4 +100,49 @@ class WanderController extends AbstractController
             'form' => $form->createView(),
         ]);    
     }
+
+    /**
+     * @Route("/{id}", name="wander_show", methods={"GET"})
+     */
+    public function show(Wander $wander): Response // Uses “param converter” to find the Wander in db through the {id}
+    {
+        return $this->render('wander/show.html.twig', [
+            'wander' => $wander,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="wander_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Wander $wander): Response
+    {
+        $form = $this->createForm(WanderType::class, $wander);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('wander_index');
+        }
+
+        return $this->render('wander/edit.html.twig', [
+            'wander' => $wander,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="wander_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Wander $wander): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($wander);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('wander_index');
+    }
+
 }
