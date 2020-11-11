@@ -22,8 +22,8 @@
             <tr>
                 <td>{{ wander.id }}</td>
                 <td>{{ wander.title }}</td>
-                <td>{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y H:i:s') : '' }}</td>
+                <td class="text-nowrap">{{ wander.endTime ? wander.endTime|date('d M Y H:i:s') : '' }}</td>
                 <td>{{ wander.description }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>

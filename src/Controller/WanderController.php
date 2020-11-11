@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints\File;
 use App\Repository\WanderRepository;
+use phpGPX\phpGPX;
 
 /**
  * @Route("/wander")
@@ -52,8 +53,9 @@ class WanderController extends AbstractController
         $form = $this->createFormBuilder($wander)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('startTime', DateTimeType::class)
-            ->add('endTime', DateTimeType::class)
+            // Read directly from the tracks in the GPX file for new uploads
+            //->add('startTime', DateTimeType::class)
+            //->add('endTime', DateTimeType::class)
             ->add('gpxFilename', FileType::class, [
                 'label' => 'GPX track file',
                 'mapped' => false,
@@ -91,7 +93,19 @@ class WanderController extends AbstractController
                 }
                 $wander->setGpxFilename($newFilename);
             }
+
+            
             $wander = $form->getData();
+
+            // Set up some Wander values by reading the GPX file directly
+            $phpGPX = new phpGPX();
+            $file = $phpGPX->load($this->getParameter('gpx_directory') . '/' . $newFilename);
+            // TODO: Cope with multiple traks
+            foreach ($file->tracks as $track) {
+                $wander->setStartTime($track->stats->startedAt);
+                $wander->setEndTime($track->stats->finishedAt);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($wander);
             $entityManager->flush();
