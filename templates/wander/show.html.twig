@@ -1,21 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello WanderController!{% endblock %}
+{% block title %}Wander{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Wander</h1>
 
-<div class="example-wrapper">
-    <h1>Hello! ✅</h1>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ wander.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ wander.title }}</td>
+            </tr>
+            <tr>
+                <th>StartTime</th>
+                <td>{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndTime</th>
+                <td>{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ wander.description }}</td>
+            </tr>
+            <tr>
+                <th>GpxFilename</th>
+                <td>{{ wander.gpxFilename }}</td>
+            </tr>
+            <tr>
+                <th>Gpx File Link</th>
+                <td><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></td>
+            </tr>
+        </tbody>
+    </table>
 
-    I'd be showing wander {{ wander.id }} if I'd been written properly yet.
-    <h2>{{ wander.title }}</h2>
-    <p>{{ wander.description }}</p>
-    <p>{{ wander.gpxFilename }}</p>
-    <p><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></p>
-    <p>From {{ wander.startTime|date('r') }} to {{ wander.endTime|date('r') }}
-</div>
+    <a href="{{ path('wander_index') }}">back to list</a>
+
+    <a href="{{ path('wander_edit', {'id': wander.id}) }}">edit</a>
+
+    {{ include('wander/_delete_form.html.twig') }}
 {% endblock %}
