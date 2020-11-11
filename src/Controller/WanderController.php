@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Wander;
 use App\Form\WanderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,7 +46,9 @@ class WanderController extends AbstractController
         When creating a form to edit an already persisted item, the file form type still expects a Symfony\Component\HttpFoundation\File\File instance. As the persisted entity now contains only the relative file path, you first have to concatenate the configured upload path with the stored filename and create a new File class:
         */
 
-        // TODO You can move this into a separate form class. See https://symfony.com/doc/current/forms.html
+ 
+        // TODO: You can move this into a separate form class. See https://symfony.com/doc/current/forms.html
+        // TODO: How much can we consolidate this with App/Form/WanderType?
         $form = $this->createFormBuilder($wander)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
@@ -66,7 +67,7 @@ class WanderController extends AbstractController
                     ])
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Create Wander'])
+            ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
 
         $form->handleRequest($request);
