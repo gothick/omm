@@ -9,6 +9,9 @@
     </head>
     <body>
         <div class="container">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="{{ path('app_logout') }}">Log out</a>
+            {% endif %}
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
