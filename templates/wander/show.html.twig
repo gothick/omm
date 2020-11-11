@@ -17,11 +17,11 @@
             </tr>
             <tr>
                 <th>StartTime</th>
-                <td>{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>EndTime</th>
-                <td>{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Description</th>

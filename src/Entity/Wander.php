@@ -106,4 +106,10 @@ class Wander
 
         return $this;
     }
+
+    public function isTimeLengthSuspicious()
+    {
+        $interval = $this->startTime->diff($this->endTime, true);
+        return $interval->h > 12;
+    }
 }

@@ -50,6 +50,7 @@ class WanderController extends AbstractController
  
         // TODO: You can move this into a separate form class. See https://symfony.com/doc/current/forms.html
         // TODO: How much can we consolidate this with App/Form/WanderType?
+        /*
         $form = $this->createFormBuilder($wander)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
@@ -71,6 +72,9 @@ class WanderController extends AbstractController
             ])
             ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
+        */
+
+        $form = $this->createForm(WanderType::class, $wander, ['type' => 'new']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
