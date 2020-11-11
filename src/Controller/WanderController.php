@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Wander;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -36,14 +37,13 @@ class WanderController extends AbstractController
     public function createWander(): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $wander = new Wander();
-        $wander->setTitle("I'm a wander.");
-        $wander->setStartTime(new \DateTime());
-        $wander->setEndTime(new \DateTime());
-        $wander->setDescription("I'm a soulful description of a wander in Hotwells");
-        $entityManager->persist($wander);
+        $user = new User();
+        $user->setPassword('This would be a password created by bin/console security:encode-password, say');
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setUsername('gothick');
+        $entityManager->persist($user);
         $entityManager->flush();
-        return new Response("Saved a new wander with id " . $wander->getId());
+        return new Response("Saved a new user with id " . $user->getId());
     }
 
     /**
