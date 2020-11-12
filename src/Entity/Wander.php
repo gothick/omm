@@ -3,10 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\WanderRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
+ * 
+ * @ApiResource(
+ *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
+ *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
+ *  order={"startTime"="ASC"},
+ *  paginationEnabled=false
+ * )
  */
 class Wander
 {
@@ -14,31 +23,43 @@ class Wander
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $endTime;
 
     /**
      * @ORM\Column(type="string", length=1024, nullable=true)
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"wander:list", "wander:item"})
      */
     private $gpxFilename;
 
