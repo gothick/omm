@@ -34,8 +34,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
     {
         $data = $this->decorated->normalize($object, $format, $context);
         if (is_array($data)) {
-            $data['date'] = date(\DateTime::RFC3339);
-            $data['gpxPath'] = $this->assetExtension->getAssetUrl('uploads/gpx/') . $data['gpxFilename'];
+            $data['gpxFilename'] = $this->assetExtension->getAssetUrl('uploads/gpx/') . $data['gpxFilename'];
         }
 
         return $data;
