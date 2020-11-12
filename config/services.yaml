@@ -21,6 +21,11 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    # TODO: I really don't know what this does. https://api-platform.com/docs/core/serialization/#decorating-a-serializer-and-adding-extra-data
+    App\Serializer\ApiNormalizer:
+        decorates: 'api_platform.jsonld.normalizer.item'
+        arguments: [ '@App\Serializer\ApiNormalizer.inner', '@twig.extension.assets' ]
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
