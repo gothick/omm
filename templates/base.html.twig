@@ -14,7 +14,9 @@
                 <h1><a href="{{ path('home') }}">One Mile Matt Playground Site</a></h1>
                 <p>Hello! This is the One Mile Matt project playground.</p>
             </header>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {# IS_AUTHENTICATED_REMEMBERED includes the higher level of 
+               IS_AUTHENTICATED_FULLY so we only need to check for that. #}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
                 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f2f2fd;">
                     {# <a class="navbar-brand" href="#">Navbar</a> #}
