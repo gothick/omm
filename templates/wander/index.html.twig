@@ -3,8 +3,10 @@
 {% block title %}Wander index{% endblock %}
 
 {% block body %}
-    <h1>Wander index</h1>
+    <h1>Wanders</h1>
 
+    <p><a href="{{ path('wander_new') }}">Create new Wander</a></p>
+    
     <table class="table">
         <thead>
             <tr>
@@ -39,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('wander_new') }}">Create new</a>
+    
 {% endblock %}
