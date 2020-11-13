@@ -29,7 +29,7 @@ class Wander
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=1024)
      * 
      * @Groups({"wander:list", "wander:item"})
      */
