@@ -50,7 +50,7 @@ class Wander
     private $endTime;
 
     /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * 
      * @Groups({"wander:list", "wander:item"})
      */
