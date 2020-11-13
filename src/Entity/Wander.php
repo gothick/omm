@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
- *  order={"startTime"="ASC"},
+ *  order={"endTime"="ASC"},
  *  paginationEnabled=false
  * )
  */
