@@ -5,12 +5,32 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/main.css">
         {% endblock %}
     </head>
     <body>
         <div class="container">
+            <header>
+                <h1><a href="{{ path('home') }}">One Mile Matt Playground Site</a></h1>
+                <p>Hello! This is the One Mile Matt project playground.</p>
+            </header>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('app_logout') }}">Log out</a>
+
+                <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f2f2fd;">
+                    {# <a class="navbar-brand" href="#">Navbar</a> #}
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav mr-auto">
+                            <a class="nav-item nav-link {% if app.request.attributes.get('_route') == 'home' %} active {% endif %}" href="{{ path('home') }}">Home</a>
+                            <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'wander_' %} active {% endif %}" href="{{ path('wander_index') }}">Wander</a>
+                        </div>
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" href="{{ path('app_logout') }}">Log out</a>
+                        </div>
+                    </div>
+                </nav>
             {% endif %}
             {% block body %}{% endblock %}
         </div>

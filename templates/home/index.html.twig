@@ -11,14 +11,6 @@
 <link rel="stylesheet" href="/css/map.css">
 {% endblock %}
 {% block body %}
-{# <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-#}
-<div class="example-wrapper">
-    <h1>One Mile Matt Playground Site</h1>
-    <p>Hello! This is the One Mile Matt project playground.</p>
     <h2>Map</h2>
     <div id="mapid"></div>
     <div id="dashboard">
@@ -26,7 +18,7 @@
         <p>WGS84: <span id="lat"></span>,<span id="lng"></span></p>
         <p>OSGB36: <span id="osgb36"></span></p>
     </div>
-</div>
+
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
