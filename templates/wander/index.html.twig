@@ -26,7 +26,7 @@
                 <td>{{ wander.title }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i:s') : '' }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i:s') : '' }}</td>
-                <td>{{ wander.description }}</td>
+                <td>{{ wander.description|striptags|markdown }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>
                     <a href="{{ path('wander_show', {'id': wander.id}) }}">show</a>
