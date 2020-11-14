@@ -19,7 +19,9 @@ class WanderType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('description', TextareaType::class);
+            ->add('description', TextareaType::class, [
+                'attr' => ['rows' => 10]
+            ]);
         if ('standard' === $options['type']) {
             $builder
                 ->add('startTime', DateTimeType::class)
