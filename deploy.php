@@ -6,7 +6,7 @@ require 'recipe/symfony.php';
 require 'contrib/cachetool.php';
 
 // Project name
-set('application', 'omm2.gothick.org.uk');
+set('application', 'omm.gothick.org.uk');
 
 // Project repository
 set('repository', 'git@github.com:gothick/omm.git');
@@ -63,4 +63,3 @@ after('deploy:symlink', 'cachetool:clear:opcache');
 // Migrate database before symlink new release.
 
 before('deploy:symlink', 'database:migrate');
-
