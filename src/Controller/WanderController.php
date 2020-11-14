@@ -137,7 +137,9 @@ class WanderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('wander_index');
+            // It seems to be safe to redirect to show with an ID even after
+            // deletion.
+            return $this->redirectToRoute('wander_show', ['id' => $wander->getId()]);
         }
 
         return $this->render('wander/edit.html.twig', [
