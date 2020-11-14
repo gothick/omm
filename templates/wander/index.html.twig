@@ -3,7 +3,7 @@
 {% block title %}Wander index{% endblock %}
 
 {% block body %}
-    <h1>Wanders ({{ count }})</h1>
+    <h1>Wanders ({{ wanders|length }})</h1>
 
     <p><a href="{{ path('wander_new') }}">Create new Wander</a></p>
     
