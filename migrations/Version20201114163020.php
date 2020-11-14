@@ -20,7 +20,7 @@ final class Version20201114163020 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('INSERT INTO settings (site_title) VALUES (NULL)');
+        $this->addSql("INSERT INTO settings (site_title, site_subtitle, site_about) VALUES ('One-Mile Matt', 'Wanders of a Bristol Geek', 'TODO: Edit this About text')");
     }
 
     public function down(Schema $schema) : void
