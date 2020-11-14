@@ -35,5 +35,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Service\SettingsService:
-        lazy: true
+        # Mild bodge. The settings service constructor reads from the database, but 
+        # on deployment the cache:clear (which loads services, apparently) crashes
+        # if that happens before the migration to add the database table. Making
+        # this service lazy is a cheap workaround. 
+        lazy: true 
     
