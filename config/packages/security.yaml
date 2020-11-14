@@ -39,4 +39,5 @@ security:
     access_control:
         - { path: ^/wander, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/settings, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
