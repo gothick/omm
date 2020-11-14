@@ -26,6 +26,9 @@ class WanderController extends AbstractController
     public function index(WanderRepository $wanderRepository): Response
     {
         return $this->render('wander/index.html.twig', [
+            // TODO: Is there a smarter way of doing this count? Seems
+            // like an obvious question but I couldn't figure it out.
+            'count' => $wanderRepository->count([]),
             'wanders' => $wanderRepository->findAll(),
         ]);
     }
