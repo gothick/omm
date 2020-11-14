@@ -3,22 +3,30 @@
 {% block title %}Hello SettingsController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    
+    
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Setting</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-nowrap">Site Title</td>
+                <td>{{ settings.siteTitle }}</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">Site Sub-Title</td>
+                <td>{{ settings.siteSubtitle }}</td>
+            </tr>
+            <tr>
+                <td class="text-nowrap">Site About Page Text</td>
+                <td>{{ settings.siteAbout|striptags|markdown }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="{{ path('settings_edit') }}">Edit settings</a>
 
-<div class="example-wrapper">
-    <h1>Hello!</h1>
-
-    <p>Your site title is {{ settings.siteTitle }}
-
-    <a href="{{ path('settings_edit') }}">Edit settings</a>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/vagrant/code/src/Controller/SettingsController.php'|file_link(0) }}">src/Controller/SettingsController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/vagrant/code/templates/settings/index.html.twig'|file_link(0) }}">templates/settings/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}

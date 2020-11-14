@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\SettingsType;
 use App\Repository\SettingsRepository;
+use App\Service\SettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,9 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings", name="settings_index")
      */
-    public function index(SettingsRepository $settingsRepository): Response
+    public function index(SettingsService $settingsService): Response
     {
-        $settings = $settingsRepository->getTheSingleRow();
+        $settings = $settingsService->getSettings();
         return $this->render('settings/index.html.twig', [
             'settings' => $settings,
         ]);
@@ -25,9 +26,9 @@ class SettingsController extends AbstractController
     /**
      * @Route("/settings/edit", name="settings_edit")
      */
-    public function edit(Request $request, SettingsRepository $settingsRepository): Response
+    public function edit(Request $request, SettingsService $settingsService): Response
     {
-        $settings = $settingsRepository->getTheSingleRow();
+        $settings = $settingsService->getSettings();
 
         $form = $this->createForm(SettingsType::class, $settings);
         $form->handleRequest($request);
