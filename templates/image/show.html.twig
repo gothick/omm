@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image{% endblock %}
+
+{% block body %}
+    <h1>Image</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ image.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ image.name }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ image.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ image.description }}</td>
+            </tr>
+            <tr>
+                <th>SizeInBytes</th>
+                <td>{{ image.sizeInBytes }}</td>
+            </tr>
+            <tr>
+                <th>MimeType</th>
+                <td>{{ image.mimeType }}</td>
+            </tr>
+            <tr>
+                <th>OriginalName</th>
+                <td>{{ image.originalName }}</td>
+            </tr>
+            <tr>
+                <th>Dimensions</th>
+                <td>{{ image.dimensions|join(',') }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.name }}" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('image_index') }}">back to list</a>
+
+    <a href="{{ path('image_edit', {'id': image.id}) }}">edit</a>
+
+    {{ include('image/_delete_form.html.twig') }}
+{% endblock %}

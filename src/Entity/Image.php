@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @Vich\Uploadable
  */
 class Image
 {
@@ -59,9 +60,9 @@ class Image
     private $originalName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $dimensions;
+    private $dimensions = [];
 
     /**
      * @ORM\Column(type="datetime")
@@ -88,7 +89,12 @@ class Image
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
-    }    
+    }
+    
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
 
     public function getId(): ?int
     {
@@ -167,15 +173,26 @@ class Image
         return $this;
     }
 
-    public function getDimensions(): ?string
+    public function getDimensions(): ?array
     {
         return $this->dimensions;
     }
 
-    public function setDimensions(string $dimensions): self
+    public function setDimensions(?array $dimensions): self
     {
         $this->dimensions = $dimensions;
 
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 }
