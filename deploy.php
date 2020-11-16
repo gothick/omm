@@ -17,7 +17,8 @@ set('git_tty', true);
 // Shared files/dirs between deploys 
 add('shared_files', []);
 add('shared_dirs', [
-    'public/uploads/gpx'
+    'public/uploads/gpx',
+    'public/uploads/images'
 ]);
 
 // Writable dirs by web server 
