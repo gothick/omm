@@ -72,6 +72,16 @@ class Image
     private $updatedAt;
 
     /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $latlng = [];
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $keywords = [];
+
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -193,6 +203,30 @@ class Image
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getLatlng(): ?array
+    {
+        return $this->latlng;
+    }
+
+    public function setLatlng(?array $latlng): self
+    {
+        $this->latlng = $latlng;
+
+        return $this;
+    }
+
+    public function getKeywords(): ?array
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?array $keywords): self
+    {
+        $this->keywords = $keywords;
+
         return $this;
     }
 }

@@ -36,8 +36,16 @@
                 <td>{{ image.originalName }}</td>
             </tr>
             <tr>
+                <th>Keywords</th>
+                <td>{{ image.Keywords|join(', ') }}</td>
+            </tr>
+            <tr>
                 <th>Dimensions</th>
-                <td>{{ image.dimensions|join(',') }}</td>
+                <td>{{ image.dimensions|join('x') }}</td>
+            </tr>
+            <tr>
+                <th>Coordinates</th>
+                <td>{{ image.latlng|join(', ') }}</td>
             </tr>
             <tr>
                 <th>UpdatedAt</th>
