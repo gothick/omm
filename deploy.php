@@ -18,7 +18,8 @@ set('git_tty', true);
 add('shared_files', []);
 add('shared_dirs', [
     'public/uploads/gpx',
-    'public/uploads/images'
+    'public/uploads/images',
+    'public/uploads/incoming'
 ]);
 
 // Writable dirs by web server 
