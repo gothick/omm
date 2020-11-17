@@ -41,3 +41,7 @@ services:
         # this service lazy is a cheap workaround. 
         lazy: true 
     
+    # Event listeners
+    App\EventListener\ImageUploadListener:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload }
