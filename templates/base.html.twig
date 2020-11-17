@@ -25,6 +25,7 @@
                         <a class="nav-item nav-link {% if app.request.attributes.get('_route') == 'home' %} active {% endif %}" href="{{ path('home') }}">Home</a>
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'wander_' %} active {% endif %}" href="{{ path('wander_index') }}">Wanders</a>
+                        <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'image_' %} active {% endif %}" href="{{ path('image_index') }}">Images</a>
                         <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'settings_' %} active {% endif %}" href="{{ path('settings_index') }}">Settings</a>
                         {% endif %}
                         <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'about_' %} active {% endif %}" href="{{ path('about_index') }}">About</a>
