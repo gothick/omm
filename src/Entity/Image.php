@@ -30,9 +30,9 @@ class Image
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private $name; // For Vich, not for us. We use Title.
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -45,12 +45,12 @@ class Image
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $sizeInBytes;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $mimeType;
 
@@ -106,7 +106,7 @@ class Image
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -142,7 +142,7 @@ class Image
         return $this->sizeInBytes;
     }
 
-    public function setSizeInBytes(int $sizeInBytes): self
+    public function setSizeInBytes(?int $sizeInBytes): self
     {
         $this->sizeInBytes = $sizeInBytes;
 
@@ -154,7 +154,7 @@ class Image
         return $this->mimeType;
     }
 
-    public function setMimeType(string $mimeType): self
+    public function setMimeType(?string $mimeType): self
     {
         $this->mimeType = $mimeType;
 
