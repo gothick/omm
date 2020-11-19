@@ -15,3 +15,8 @@ main {
     /* TODO: We should probably be using rems, or whatever's fashionable this week */
     padding-top: 12px;
 }
+
+html.homepage, .homepage body, .homepage main, .homepage .container
+{
+    height: 100%;
+}

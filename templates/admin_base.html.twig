@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="public {%block htmlClass %}{% endblock %}">
+<html class="admin">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{{ settings.siteTitle }}!{% endblock %}</title>
@@ -9,13 +9,9 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container-fluid d-flex h-100 flex-column container-lg px-0">
-            <div class="row">
-                <div class="col-sm">
-                    {{ include('_header.html.twig') }}
-                    {{ include('_nav.html.twig') }}
-                </div>
-            </div>
+        <div class="container px-0">
+            {{ include('_header.html.twig') }}
+            {{ include('_nav.html.twig') }}
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}About One Mile Matt{% endblock %}
 
 {% block body %}
-
-<h2>About {{ settings.siteTitle }}</h2>
-
-{{ settings.siteAbout |striptags|markdown }}
-
+<div class="row">
+    <div class="col">
+        <div class="px-4">
+            <h2>About {{ settings.siteTitle }}</h2>
+            {{ settings.siteAbout |striptags|markdown }}
+        </div>
+    </div>
+</div>
 {% endblock %}
