@@ -46,6 +46,7 @@ class ImageUploadListener
                         $object->setLatlng($array);
                     }
                     if ($keywords !== false) {
+                        $keywords = is_array($keywords) ? $keywords : array($keywords);
                         $object->setKeywords($keywords);
                     }
                 }
