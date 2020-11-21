@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Form\ImageType;
+use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -22,8 +25,32 @@ class ImageController extends AbstractController
     public function index(ImageRepository $imageRepository): Response
     {
         return $this->render('image/index.html.twig', [
-            'images' => $imageRepository->findAll(),
+            'images' => $imageRepository->findBy(array(), array('updatedAt' => 'DESC'))
         ]);
+    }
+
+    /**
+     * @Route("/dropzone", name="image_dropzone_test", methods={"GET", "POST"})
+     */
+    public function dropzone(Request $request): Response
+    {
+        if ($request->isMethod('POST')) {
+            $files = $request->files->all();
+            foreach ($files as $file) {
+                if ($file instanceof UploadedFile) {
+                    $image = new Image();
+                    $image->setImageFile($file);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($image);
+                    $entityManager->flush();
+                    return $this->json('$image');
+                }
+            }
+        }
+        else
+        {
+            return $this->render('image/dropzone.html.twig', []);
+        }
     }
 
     /**
