@@ -46,7 +46,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: vich_uploader.post_upload }
 
-    # Store session in database
+    # Store session in database https://symfony.com/doc/current/session/database.html
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
             arguments:
                 - '%env(DATABASE_URL)%'
