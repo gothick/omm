@@ -45,7 +45,7 @@
 
     {% for image in images %}
     {# TODO: Should we use image.title for the alt text? #}
-    <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.name }}" />
+    <img class="img-fluid" src="{{ vich_uploader_asset(image) }}" alt="{{ image.name }}" />
     {% endfor %}
 
 {% endblock %}
