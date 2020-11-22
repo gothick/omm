@@ -31,8 +31,19 @@ Temporary Items
 .apdisk
 
 # Me
-*~
 .vagrant
+
+
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
 
 # VS Code
 .vscode/*
