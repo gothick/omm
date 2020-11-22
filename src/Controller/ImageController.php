@@ -35,6 +35,10 @@ class ImageController extends AbstractController
     public function dropzone(Request $request): Response
     {
         if ($request->isMethod('POST')) {
+            $token = $request->request->get('token');
+            if (!$this->isCsrfTokenValid('image_dropzone_test', $token)) {
+                return $this->json([ 'error' => 'Invalid CSRF token'], 401);
+            }
             $files = $request->files->all();
             foreach ($files as $file) {
                 if ($file instanceof UploadedFile) {
@@ -43,7 +47,7 @@ class ImageController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($image);
                     $entityManager->flush();
-                    return $this->json('$image');
+                    return $this->json($image);
                 }
             }
         }

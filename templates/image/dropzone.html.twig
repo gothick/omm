@@ -11,6 +11,8 @@
     <form action="{{ path('image_dropzone_test') }}"
         method="POST"
         enctype="multipart/form-data" class="dropzone">
+        <input type="hidden" name="token" value="{{ csrf_token('image_dropzone_test') }}"/>
+
     </form>
     
     <a href="{{ path('image_index') }}">back to list</a>
