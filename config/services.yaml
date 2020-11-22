@@ -45,3 +45,8 @@ services:
     App\EventListener\ImageUploadListener:
         tags:
             - { name: kernel.event_listener, event: vich_uploader.post_upload }
+
+    # Store session in database
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+            arguments:
+                - '%env(DATABASE_URL)%'
