@@ -1,0 +1,18 @@
+{% extends 'admin_base.html.twig' %}
+
+{% block title %}Image{% endblock %}
+
+{% block body %}
+    <h1>Responsive Image Test</h1>
+
+    <img width="100px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img width="200px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img width="300px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img width="400px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img width="600px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img width="800px" src="{{ src }}" srcset="{{ srcset }}" />
+    <img src="{{ vich_uploader_asset(image) }}" />
+
+    <img class="img-fluid" src="{{ vich_uploader_asset(image) }}" alt="{{ image.name }}" />
+    
+{% endblock %}

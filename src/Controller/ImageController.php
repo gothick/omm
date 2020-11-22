@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/image")
@@ -89,6 +90,24 @@ class ImageController extends AbstractController
             'image' => $image,
         ]);
     }
+
+
+    /**
+     * @Route("/responsive_test/{id}", name="image_responsive_test", methods={"GET"})
+     */
+    public function responsiveTest(Image $image, UploaderHelper $uploaderHelper): Response
+    {
+        $src = $uploaderHelper->asset($image);
+        $srcset = '';
+        // dd($src);
+        return $this->render('image/responsive_test.html.twig', [
+            'src' => $src,
+            'srcset' => $srcset,
+            'image' => $image,
+        ]);
+    }
+
+
 
     /**
      * @Route("/{id}/edit", name="image_edit", methods={"GET","POST"})
