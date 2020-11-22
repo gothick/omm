@@ -6,6 +6,8 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
+use Brendt\Image\Config\DefaultConfigurator;
+use Brendt\Image\ResponsiveFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,8 +100,17 @@ class ImageController extends AbstractController
     public function responsiveTest(Image $image, UploaderHelper $uploaderHelper): Response
     {
         $src = $uploaderHelper->asset($image);
+
+        $factory = new ResponsiveFactory(new DefaultConfigurator([
+            'publicPath' => $this->getParameter('app.image_responsive_directory'),
+            'sourcePath' => $this->getParameter('app.image_upload_directory'),
+            'rebase' => true
+        ]));
+        
+        $responsiveImage = $factory->create($uploaderHelper->asset($image));
+        dd ($responsiveImage);
         $srcset = '';
-        // dd($src);
+        
         return $this->render('image/responsive_test.html.twig', [
             'src' => $src,
             'srcset' => $srcset,

@@ -4,7 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # TODO: prefix gpx_directory with app. at some point, if it's even used 
     gpx_directory: '%kernel.project_dir%/public/uploads/gpx'
+    app.image_upload_directory: '%kernel.project_dir%/public/uploads/images'
+    app.image_responsive_directory: '%kernel.project_dir%/public/uploads/images/responsive'
 services:
     # default configuration for services in *this* file
     _defaults:

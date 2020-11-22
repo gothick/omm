@@ -1,7 +1,14 @@
 {
     "type": "project",
     "license": "proprietary",
+    "repositories": [
+	{
+	    "type": "vcs",
+	    "url": "https://github.com/gothick/responsive-images"
+	}
+    ],
     "require": {
+	"brendt/responsive-images": "dev-symfony5",
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
