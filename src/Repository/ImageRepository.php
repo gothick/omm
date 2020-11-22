@@ -29,8 +29,9 @@ class ImageRepository extends ServiceEntityRepository
             ->orderBy('i.capturedAt')
             ->getQuery()
             ->getResult();
-
     }
+
+    
 
     // /**
     //  * @return Image[] Returns an array of Image objects
