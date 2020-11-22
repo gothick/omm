@@ -8,6 +8,7 @@ parameters:
     gpx_directory: '%kernel.project_dir%/public/uploads/gpx'
     app.image_upload_directory: '%kernel.project_dir%/public/uploads/images'
     app.image_responsive_directory: '%kernel.project_dir%/public/uploads/images/responsive'
+    app.image_responsive_uri_prefix: '/uploads/images/responsive'
 services:
     # default configuration for services in *this* file
     _defaults:

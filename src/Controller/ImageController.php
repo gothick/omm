@@ -8,7 +8,11 @@ use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
 use Brendt\Image\Config\DefaultConfigurator;
 use Brendt\Image\ResponsiveFactory;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,21 +103,44 @@ class ImageController extends AbstractController
      */
     public function responsiveTest(Image $image, UploaderHelper $uploaderHelper): Response
     {
-        $src = $uploaderHelper->asset($image);
+
+        // dd ($uploaderHelper->asset($image));
+
+        // dd($packages->getUrl($uploaderHelper->asset($image)));
+        // $src = $uploaderHelper->asset($image);
+
+        $pathPackage = new PathPackage($this->getParameter('app.image_responsive_uri_prefix'), new EmptyVersionStrategy());
 
         $factory = new ResponsiveFactory(new DefaultConfigurator([
             'publicPath' => $this->getParameter('app.image_responsive_directory'),
-            'sourcePath' => $this->getParameter('app.image_upload_directory'),
-            'rebase' => true
+            'sourcePath' => $this->getParameter('app.image_upload_directory')
         ]));
+
+        // dd($this->getParameter('app.image_responsive_directory'));
+        $responsiveImage = $factory->create($image->getName());
+
+        //dd($responsiveImage); //->getSrcset());
+        // dd($responsiveImage->getSrcset()[3072]);
+        // $path = $responsiveImage->getSrc();
+
+        // $full_path = $this->getParameter('app.image_responsive_directory') . $path;
+        // dd($pathPackage->getUrl($path));
+
+        $srcset = [];
+        foreach ($responsiveImage->getSrcset() as $w => $url) {
+            $url = $pathPackage->getUrl(trim($url, '/'));
+            $srcset[] = "{$url} {$w}w";
+        }
+
+
+
+        $src = $pathPackage->getUrl(trim($responsiveImage->getSrc(), '/'));
+
         
-        $responsiveImage = $factory->create($uploaderHelper->asset($image));
-        dd ($responsiveImage);
-        $srcset = '';
         
         return $this->render('image/responsive_test.html.twig', [
             'src' => $src,
-            'srcset' => $srcset,
+            'srcset' => implode(',', $srcset),
             'image' => $image,
         ]);
     }
