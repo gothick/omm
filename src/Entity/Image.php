@@ -82,6 +82,11 @@ class Image
     private $keywords = [];
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $capturedAt;
+
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -226,6 +231,18 @@ class Image
     public function setKeywords(?array $keywords): self
     {
         $this->keywords = $keywords;
+
+        return $this;
+    }
+
+    public function getCapturedAt(): ?\DateTimeInterface
+    {
+        return $this->capturedAt;
+    }
+
+    public function setCapturedAt(\DateTimeInterface $capturedAt): self
+    {
+        $this->capturedAt = $capturedAt;
 
         return $this;
     }

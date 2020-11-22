@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,18 @@ class ImageRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Image::class);
+    }
+
+    public function findBetweenDates(DateTime $from, DateTime $to)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.capturedAt BETWEEN :from AND :to')
+            ->setParameter('from', $from)
+            ->setParameter('to', $to)
+            ->orderBy('i.capturedAt')
+            ->getQuery()
+            ->getResult();
+
     }
 
     // /**

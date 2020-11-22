@@ -32,6 +32,7 @@ class ImageUploadListener
                     $description = $exif->getCaption();
                     $gps = $exif->getGPS();
                     $keywords = $exif->getKeywords();
+                    $capturedAt = $exif->getCreationDate();
                     
                     if ($title !== false) {
                         $object->setTitle($title);
@@ -48,6 +49,9 @@ class ImageUploadListener
                     if ($keywords !== false) {
                         $keywords = is_array($keywords) ? $keywords : array($keywords);
                         $object->setKeywords($keywords);
+                    }
+                    if ($capturedAt !== false) {
+                        $object->setCapturedAt($capturedAt);
                     }
                 }
                 catch(Exception $e) {

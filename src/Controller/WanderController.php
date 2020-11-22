@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Wander;
 use App\Form\WanderType;
+use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -119,10 +120,13 @@ class WanderController extends AbstractController
     /**
      * @Route("/{id}", name="wander_show", methods={"GET"})
      */
-    public function show(Wander $wander): Response // Uses “param converter” to find the Wander in db through the {id}
+    public function show(Wander $wander, ImageRepository $imageRepository): Response // Uses “param converter” to find the Wander in db through the {id}
     {
+        $images = $imageRepository->findBetweenDates($wander->getStartTime(), $wander->getEndTime());
+
         return $this->render('wander/show.html.twig', [
             'wander' => $wander,
+            'images' => $images
         ]);
     }
 

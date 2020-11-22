@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Title</th>
                 <th>Description</th>
+                <th>Captured At</th>
                 <th>SizeInBytes</th>
                 <th>MimeType</th>
                 <th>OriginalName</th>
@@ -29,6 +30,7 @@
                 <td>{{ image.name }}</td>
                 <td>{{ image.title }}</td>
                 <td>{{ image.description }}</td>
+                <td>{{ image.capturedAt ? image.capturedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ image.sizeInBytes }}</td>
                 <td>{{ image.mimeType }}</td>
                 <td>{{ image.originalName }}</td>
