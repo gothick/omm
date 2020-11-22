@@ -3,7 +3,7 @@
 {% block title %}Image index{% endblock %}
 
 {% block body %}
-    <h1>Image index</h1>
+    <h1>Image index ({{ images|length }})</h1>
     <p><a href="{{ path('image_new') }}">Upload new Image</a></p>
     <table class="table">
         <thead>
