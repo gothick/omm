@@ -6,6 +6,8 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/image")
@@ -89,6 +92,43 @@ class ImageController extends AbstractController
             'image' => $image,
         ]);
     }
+
+    /**
+     * @Route("/responsive_test/{id}", name="image_responsive_test", methods={"GET"})
+     */
+    public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
+    {
+        $image_asset_path = $uploaderHelper->asset($image);
+        $filters = $filterManager->getFilterConfiguration()->all();
+        $srcset = [];
+        array_walk(
+            $filters,
+            function($val, $key) use(&$srcset, $image_asset_path, $imagineCacheManager) {
+                
+                if (preg_match('/^srcset/', $key)) {
+                    $width = $val['filters']['relative_resize']['widen'];
+                    $path = $imagineCacheManager->getBrowserPath($image_asset_path, $key);
+                    $srcset[] = ['width' => $width, 'path' => $path];
+                }
+            });
+
+        // Add original image as srcset option, otherwise it may never be used.
+        $srcset[] = ['width' => $image->getDimensions()[0], 'path' => $image_asset_path];
+
+        $srcsetString = implode(', ', array_map(function ($src) {
+            return sprintf(
+                '%s %uw',
+                $src['path'],
+                $src['width']
+            );
+        }, $srcset));
+
+        return $this->render('image/responsive_test.html.twig', [
+            'image' => $image, 
+            'srcset' => $srcsetString
+        ]);
+    }
+
 
     /**
      * @Route("/{id}/edit", name="image_edit", methods={"GET","POST"})
