@@ -1,0 +1,47 @@
+# See docs how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+
+    filter_sets:
+        square_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [100, 100], mode: outbound }
+        # TODO: Do these srcset_filters need the quality setting on them? How large are our images? What does 75% look like?
+        srcset_144:
+            filters:
+                relative_resize:
+                    widen: 144
+        srcset_288:
+            filters:
+                relative_resize:
+                    widen: 288
+        srcset_420:
+            filters:
+                relative_resize:
+                    widen: 420
+        srcset_576:
+            filters:
+                relative_resize:
+                    widen: 576
+        srcset_720:
+            filters:
+                relative_resize:
+                    widen: 720
+        srcset_840:
+            filters:
+                relative_resize:
+                    widen: 840
+        srcset_960:
+            filters:
+                relative_resize:
+                    widen: 960
+        srcset_1152:
+            filters:
+                relative_resize:
+                    widen: 1152
+        srcset_1440:
+            filters:
+                relative_resize:
+                    widen: 1440

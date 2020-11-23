@@ -70,4 +70,6 @@ tramp
 ###< symfony/phpunit-bridge ###
 
 public/uploads
-public/media
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

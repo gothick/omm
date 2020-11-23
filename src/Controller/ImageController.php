@@ -6,6 +6,8 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/image")
@@ -89,6 +92,18 @@ class ImageController extends AbstractController
             'image' => $image,
         ]);
     }
+
+    // TODO Remove responsiveTest once you're done playing
+    /**
+     * @Route("/responsive_test/{id}", name="image_responsive_test", methods={"GET"})
+     */
+    public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
+    {
+        return $this->render('image/responsive_test.html.twig', [
+            'image' => $image
+        ]);
+    }
+
 
     /**
      * @Route("/{id}/edit", name="image_edit", methods={"GET","POST"})

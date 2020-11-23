@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Thumb</th>
                 <th>Name</th>
                 <th>Title</th>
                 <th>Description</th>
@@ -27,6 +28,8 @@
         {% for image in images %}
             <tr>
                 <td>{{ image.id }}</td>
+                {# <td><img src="{{ asset('/relative/path/to/image.jpg') | imagine_filter('my_thumb') }}" /></td> #}
+                <td><img src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb') }}" />
                 <td>{{ image.name }}</td>
                 <td>{{ image.title }}</td>
                 <td>{{ image.description }}</td>
