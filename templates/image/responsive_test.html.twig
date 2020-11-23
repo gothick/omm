@@ -10,7 +10,7 @@
         class="img-fluid" 
         src="{{ vich_uploader_asset(image) }}" 
         alt="{{ image.name }}" 
-        srcset="{{ srcset }}"
+        srcset="{{ image | srcset }}"
         sizes="20px"
         />
     <br />
@@ -20,7 +20,7 @@
         class="img-fluid" 
         src="{{ vich_uploader_asset(image) }}" 
         alt="{{ image.name }}" 
-        srcset="{{ srcset }}"
+        srcset="{{ image | srcset }}"
         sizes="200px"
         />
     <br />
@@ -30,9 +30,10 @@
         class="img-fluid" 
         src="{{ vich_uploader_asset(image) }}" 
         alt="{{ image.name }}" 
-        srcset="{{ srcset }}"
+        srcset="{{ image | srcset }}"
         sizes="2000px"
         />
     <br />
     
+
 {% endblock %}

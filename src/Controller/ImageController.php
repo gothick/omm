@@ -93,39 +93,14 @@ class ImageController extends AbstractController
         ]);
     }
 
+    // TODO Remove responsiveTest once you're done playing
     /**
      * @Route("/responsive_test/{id}", name="image_responsive_test", methods={"GET"})
      */
     public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
     {
-        $image_asset_path = $uploaderHelper->asset($image);
-        $filters = $filterManager->getFilterConfiguration()->all();
-        $srcset = [];
-        array_walk(
-            $filters,
-            function($val, $key) use(&$srcset, $image_asset_path, $imagineCacheManager) {
-                
-                if (preg_match('/^srcset/', $key)) {
-                    $width = $val['filters']['relative_resize']['widen'];
-                    $path = $imagineCacheManager->getBrowserPath($image_asset_path, $key);
-                    $srcset[] = ['width' => $width, 'path' => $path];
-                }
-            });
-
-        // Add original image as srcset option, otherwise it may never be used.
-        $srcset[] = ['width' => $image->getDimensions()[0], 'path' => $image_asset_path];
-
-        $srcsetString = implode(', ', array_map(function ($src) {
-            return sprintf(
-                '%s %uw',
-                $src['path'],
-                $src['width']
-            );
-        }, $srcset));
-
         return $this->render('image/responsive_test.html.twig', [
-            'image' => $image, 
-            'srcset' => $srcsetString
+            'image' => $image
         ]);
     }
 
