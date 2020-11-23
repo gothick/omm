@@ -45,3 +45,16 @@ liip_imagine:
             filters:
                 relative_resize:
                     widen: 1440
+
+    # Bit of a bodge (with allow_unresolvable_data_roots and two potential paths) to
+    # let this work in dev and on prod (where deployer uses a shared folder with a
+    # symlink, which annoys the standard liip config, )
+    # https://symfony.com/doc/2.x/bundles/LiipImagineBundle/data-loader/filesystem.html
+    # https://github.com/liip/LiipImagineBundle/issues/784
+    loaders:
+        default:
+            filesystem:
+                data_root:
+                    - '%kernel.project_dir%/../../shared/public'
+                    - '%kernel.project_dir%/public'
+                allow_unresolvable_data_roots: true
