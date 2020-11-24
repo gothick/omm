@@ -39,7 +39,7 @@ $(function() {
     
     var map = L.map('mapid', {
         maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don't let the user drift too far away
-        layers: [satelliteMap, streetMap, circle]
+        layers: [streetMap, circle]
     }).setView(base, 14);
     
     var baseMaps = {
