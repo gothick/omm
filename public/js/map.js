@@ -50,6 +50,8 @@ $(function() {
     L.control.layers(baseMaps).addTo(map);
     L.control.scale().addTo(map);
 
+    L.control.locate().addTo(map);
+
     // Custom layer visually to set the most recent track
     var customLayer = L.geoJson(null, {
         // http://leafletjs.com/reference.html#geojson-style

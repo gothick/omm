@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
   crossorigin=""/>
+<link rel="stylesheet" href="/css/vendor/L.Control.Locate.min.css">
+
 {% endblock %}
 {% block body %}
     <div class="row flex-fill d-flex">
@@ -36,5 +38,7 @@
     </script>
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
     <script src="/js/map.js"></script>
-
+    {# Font Awesome is used by https://github.com/domoritz/leaflet-locatecontrol #}
+    <script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
+    <script src="/js/vendor/L.Control.Locate.min.js"></script>
 {% endblock %}
