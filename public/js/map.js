@@ -38,25 +38,16 @@ $(function() {
     $.getJSON("/api/wanders", function(data) {
         var last = data['hydra:totalItems'];
         $.each(data['hydra:member'], function(key, wander) {
-            omnivore.gpx(wander.gpxFilename, null, last - 1 == key ? customLayer : null)
+            var track = omnivore.gpx(wander.gpxFilename, null, last - 1 == key ? customLayer : null)
                 .bindPopup(function(layer) {
                     return wander.title;
                 })
                 .addTo(map);
+            if (last - 1 == key) {
+                track.bringToFront();
+            }
         });
     });
-
-    customLayer.bringToFront();
-
-        // var last = data.tracks.length - 1;
-        // $.each(data.tracks, function(key, track) {
-        // omnivore.gpx(api + track, null, last == key ? customLayer : null)
-        // .bindPopup(function (layer) {
-        //     return track;
-        // })
-        //.addTo(map);
-        //});
-    // });
 
     // https://gis.stackexchange.com/a/124288/967
     var marker = L.marker(base, {
