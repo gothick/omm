@@ -16,13 +16,6 @@
             <div class="h-100" id="mapid" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
         </div>
     </div>
-    <div class="row d-sm-flex d-none">
-        <div class="col-sm" id="dashboard">
-            Draggable Marker Location<br>
-            WGS84: <span id="lat"></span>,<span id="lng"></span><br>
-            OSGB36: <span id="osgb36"></span>
-        </div>
-    </div>
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}

@@ -76,28 +76,25 @@ $(function() {
 
     // https://gis.stackexchange.com/a/124288/967
     var marker = L.marker(base, {
-        draggable:true
+        draggable:true,
     });
+    marker.bindPopup();
 
     var wgs84 = new GT_WGS84();
-
-    function updateDashboard(lt,ln){
-        $('#lat').html(lt.toFixed(5));
-        $('#lng').html(ln.toFixed(5));        
-        wgs84.setDegrees(lt, ln);
-        $('#osgb36').html(wgs84.getOSGB().getGridRef(5));
-    }
-
-    // Initialise dashboard
-    updateDashboard(base.lat, base.lng);
 
     marker.on('dragend', function(event){
         //alert('drag ended');
         var marker = event.target;
         var location = marker.getLatLng();
-        var lat = location.lat;
-        var lon = location.lng;
-        updateDashboard(lat,lon);
+        wgs84.setDegrees(location.lat, location.lng);
+        var popup = marker.getPopup();
+        var gridref = wgs84.getOSGB().getGridRef(5);
+        popup.setContent(
+            location.lat.toFixed(5) + ", " + 
+            location.lng.toFixed(5) + 
+            "<br>" +
+            gridref)
+        marker.openPopup();
         });
 
     marker.addTo(map);
