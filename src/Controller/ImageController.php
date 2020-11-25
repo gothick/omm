@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,20 @@ class ImageController extends AbstractController
     /**
      * @Route("/", name="image_index", methods={"GET"})
      */
-    public function index(ImageRepository $imageRepository): Response
+    public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $query = $imageRepository
+            ->createQueryBuilder('i') 
+            ->orderBy('i.capturedAt', 'DESC')
+            ->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, 
+            $request->query->getInt('page', 1),
+            5);
+
         return $this->render('image/index.html.twig', [
-            'images' => $imageRepository->findBy(array(), array('updatedAt' => 'DESC'))
+            'pagination' => $pagination
         ]);
     }
 
