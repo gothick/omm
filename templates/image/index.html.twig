@@ -7,7 +7,11 @@
     <p><a href="{{ path('image_new') }}">Upload new Image</a></p>
     {% for image in pagination %}
     <div class="row my-2">
-        <div class="col-2"><img width="150px" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_300') }}" /></div>
+        <div class="col-2">
+            <a href="{{ path('image_show', {'id': image.id}) }}">
+                <img width="150px" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_300') }}" />
+            </a>
+        </div>
         <div class="col-3 image-description small">
             <strong>{{ image.name }}</strong><br/>
             {{ image.description }}
