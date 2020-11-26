@@ -27,7 +27,7 @@ function addDraggableCoordsMarker(map)
     marker.addTo(map);   
 }
 
-function setUpMap()
+function setUpMap(options = {})
 {
     var mapbox_access_token = $('#mapid').data('mapboxAccessToken');
     var locus_radius = 1609.34; // 1 mile
@@ -65,10 +65,16 @@ function setUpMap()
         interactive: false
     });
     
-    var map = L.map('mapid', {
-        maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don't let the user drift too far away
-        layers: [streetMap, circle]
-    }).setView(base, 14);
+    options = Object.assign(
+        options, 
+        {
+            maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don't let the user drift too far away
+            layers: [streetMap, circle]
+        }
+    );
+
+    var map = L.map('mapid', options)
+        .setView(base, 14);
     
     var baseMaps = {
         "Satellite": satelliteMap,
