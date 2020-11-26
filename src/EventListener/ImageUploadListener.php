@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\Image;
+use App\Repository\WanderRepository;
 use Exception;
 use PHPExif\Reader\Reader;
 use Psr\Log\LoggerInterface;
@@ -13,10 +14,15 @@ class ImageUploadListener
     /** @var LoggerInterface $logger */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /** @var WanderRepository $wanderRepository */
+    private $wanderRepository;
+
+    public function __construct(LoggerInterface $logger, WanderRepository $wanderRepository)
     {
         $this->logger = $logger;
+        $this->wanderRepository = $wanderRepository;
     }
+
     public function onVichUploaderPostUpload(Event $event)
     {
         /** @var \App\Entity\Image $object */
@@ -52,6 +58,13 @@ class ImageUploadListener
                     }
                     if ($capturedAt !== false) {
                         $object->setCapturedAt($capturedAt);
+
+                        // We can also try and find an associated wander by looking for 
+                        // wanders whose timespan includes this image.
+                        $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
+                        foreach ($wanders as $wander) {
+                            $object->addWander($wander);
+                        }
                     }
                 }
                 catch(Exception $e) {

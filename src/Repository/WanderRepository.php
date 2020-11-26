@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Wander;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,6 +25,17 @@ class WanderRepository extends ServiceEntityRepository
     {
         return $this->findBy(array(), array('startTime' => 'DESC'));
     }
+
+    public function findWhereIncludesDate(DateTimeInterface $target)
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere(':target BETWEEN w.startTime AND w.endTime')
+            ->setParameter('target', $target)
+            ->orderBy('w.startTime')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Wander[] Returns an array of Wander objects

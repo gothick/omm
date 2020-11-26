@@ -4,14 +4,24 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ImageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  collectionOperations={"get"={"normalization_context"={"groups"="image:list"}}},
+ *  itemOperations={"get"={"normalization_context"={"groups"="image:item"}}},
+ *  order={"capturedAt"="ASC"},
+ *  paginationEnabled=false
+ * )
+ *
+ *
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * @Vich\Uploadable
  */
@@ -21,52 +31,72 @@ class Image
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $id;
 
     /**
      * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes", 
      *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
+     *
+     * @Groups({"image:list", "image:item"})
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $name; // For Vich, not for us. We use Title.
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $sizeInBytes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $originalName;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $dimensions = [];
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Groups({"image:list", "image:item"})
      * 
      * @var \DateTimeInterface|null
      */
@@ -81,18 +111,36 @@ class Image
      *      maxMessage = "There must be exactly two numbers in a latitude/longitude pair",
      *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair."
      * )
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $latlng = [];
 
     /**
      * @ORM\Column(type="array", nullable=true, )
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $keywords = [];
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * 
+     * @Groups({"image:list", "image:item"})
      */
     private $capturedAt;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Wander::class, mappedBy="images")
+     * 
+     * @Groups({"image:list", "image:item"})
+     */
+    private $wanders;
+
+    public function __construct()
+    {
+        $this->wanders = new ArrayCollection();
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -251,6 +299,33 @@ class Image
     public function setCapturedAt(\DateTimeInterface $capturedAt): self
     {
         $this->capturedAt = $capturedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wander[]
+     */
+    public function getWanders(): Collection
+    {
+        return $this->wanders;
+    }
+
+    public function addWander(Wander $wander): self
+    {
+        if (!$this->wanders->contains($wander)) {
+            $this->wanders[] = $wander;
+            $wander->addImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWander(Wander $wander): self
+    {
+        if ($this->wanders->removeElement($wander)) {
+            $wander->removeImage($this);
+        }
 
         return $this;
     }

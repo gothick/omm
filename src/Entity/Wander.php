@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\WanderRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -62,6 +64,18 @@ class Wander
      * @Groups({"wander:list", "wander:item"})
      */
     private $gpxFilename;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Image::class, inversedBy="wanders")
+     * 
+     * @Groups({"wander:list", "wander:item"})
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -132,5 +146,29 @@ class Wander
     {
         $interval = $this->startTime->diff($this->endTime, true);
         return $interval->h > 12;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        $this->images->removeElement($image);
+
+        return $this;
     }
 }
