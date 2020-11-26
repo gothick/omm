@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ image.description }}</td>
+                <td class="text-break">{{ image.description |striptags|markdown }}</td>
             </tr>
             <tr>
                 <th>SizeInBytes</th>
@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ image.name }}" />
+                <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" alt="{{ image.name }}" />
                 </td>
             </tr>
         </tbody>

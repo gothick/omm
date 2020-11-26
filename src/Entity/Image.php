@@ -7,6 +7,7 @@ use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -73,11 +74,18 @@ class Image
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
+     * @Assert\Count(
+     *      min = 2,
+     *      max = 2,
+     *      minMessage = "There must be exactly two numbers in a latitude/longitude pair",
+     *      maxMessage = "There must be exactly two numbers in a latitude/longitude pair",
+     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair."
+     * )
      */
     private $latlng = [];
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array", nullable=true, )
      */
     private $keywords = [];
 
