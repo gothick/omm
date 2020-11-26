@@ -19,7 +19,7 @@ use phpGPX\phpGPX;
 /**
  * @Route("/admin/wander")
  */
-class WanderController extends AbstractController
+class WanderAdminController extends AbstractController
 {
     /**
      * @Route("/", name="admin_wander_index", methods={"GET"})
