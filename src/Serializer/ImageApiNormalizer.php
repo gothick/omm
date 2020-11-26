@@ -33,6 +33,7 @@ final class ImageApiNormalizer implements NormalizerInterface, DenormalizerInter
     public function normalize($object, $format = null, array $context = [])
     {
         $data = $this->decorated->normalize($object, $format, $context);
+        // TODO: Decorate this to provide some handy image stuff, e.g. image HTML
         /*
         if (is_array($data)) {
             $data['gpxFilename'] = $this->assetExtension->getAssetUrl('uploads/gpx/') . $data['gpxFilename'];
