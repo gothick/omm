@@ -35,7 +35,6 @@ class SrcsetRuntime implements RuntimeExtensionInterface
                 ];
             }
         }
-        dump($this->filters);
     }
 
     public function srcset(Image $image)
