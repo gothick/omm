@@ -44,13 +44,13 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/dropzone", name="image_dropzone_test", methods={"GET", "POST"})
+     * @Route("/upload", name="image_upload", methods={"GET", "POST"})
      */
-    public function dropzone(Request $request): Response
+    public function upload(Request $request): Response
     {
         if ($request->isMethod('POST')) {
             $token = $request->request->get('token');
-            if (!$this->isCsrfTokenValid('image_dropzone_test', $token)) {
+            if (!$this->isCsrfTokenValid('image_upload', $token)) {
                 return $this->json([ 'error' => 'Invalid CSRF token'], 401);
             }
             $files = $request->files->all();
@@ -67,31 +67,8 @@ class ImageController extends AbstractController
         }
         else
         {
-            return $this->render('image/dropzone.html.twig', []);
+            return $this->render('image/upload.html.twig', []);
         }
-    }
-
-    /**
-     * @Route("/new", name="image_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $image = new Image();
-        $form = $this->createForm(ImageType::class, $image);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($image);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('image_index');
-        }
-
-        return $this->render('image/new.html.twig', [
-            'image' => $image,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**

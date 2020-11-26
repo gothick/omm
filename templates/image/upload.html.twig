@@ -1,21 +1,20 @@
 {% extends 'admin_base.html.twig' %}
 
-{% block title %}Dropzone Test{% endblock %}
+{% block title %}Upload Images{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.css" integrity="sha512-CmjeEOiBCtxpzzfuT2remy8NP++fmHRxR3LnsdQhVXzA3QqRMaJ3heF9zOB+c1lCWSwZkzSOWfTn1CdqgkW3EQ==" crossorigin="anonymous" />
 {% endblock %}
 {% block body %}
-    <h1>Dropzone Test</h1>
-    <form action="{{ path('image_dropzone_test') }}"
+    <h1>Upload Images</h1>
+    <form action="{{ path('image_upload') }}"
         method="POST"
         enctype="multipart/form-data" class="dropzone">
-        <input type="hidden" name="token" value="{{ csrf_token('image_dropzone_test') }}"/>
-
+        <input type="hidden" name="token" value="{{ csrf_token('image_upload') }}"/>
     </form>
     
-    <a href="{{ path('image_index') }}">back to list</a>
+    <div class="mt-2"><a href="{{ path('image_index') }}">back to list</a></div>
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
