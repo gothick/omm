@@ -17,12 +17,12 @@ use App\Repository\WanderRepository;
 use phpGPX\phpGPX;
 
 /**
- * @Route("/wander")
+ * @Route("/admin/wander")
  */
 class WanderController extends AbstractController
 {
     /**
-     * @Route("/", name="wander_index", methods={"GET"})
+     * @Route("/", name="admin_wander_index", methods={"GET"})
      */
     public function index(WanderRepository $wanderRepository): Response
     {
@@ -33,7 +33,7 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="wander_new", methods={"GET","POST"})
+     * @Route("/new", name="admin_wander_new", methods={"GET","POST"})
      */
     public function new(Request $request, SluggerInterface $slugger) : Response {
         $wander = new Wander();
@@ -109,7 +109,7 @@ class WanderController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($wander);
             $entityManager->flush();
-            return $this->redirectToRoute('wander_show', ['id' => $wander->getId()]);
+            return $this->redirectToRoute('admin_wander_show', ['id' => $wander->getId()]);
         }
 
         return $this->render('wander/new.html.twig', [
@@ -118,7 +118,7 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="wander_show", methods={"GET"})
+     * @Route("/{id}", name="admin_wander_show", methods={"GET"})
      */
     public function show(Wander $wander, ImageRepository $imageRepository): Response // Uses “param converter” to find the Wander in db through the {id}
     {
@@ -131,7 +131,7 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="wander_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_wander_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Wander $wander): Response
     {
@@ -143,7 +143,7 @@ class WanderController extends AbstractController
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.
-            return $this->redirectToRoute('wander_show', ['id' => $wander->getId()]);
+            return $this->redirectToRoute('admin_wander_show', ['id' => $wander->getId()]);
         }
 
         return $this->render('wander/edit.html.twig', [
@@ -153,7 +153,7 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="wander_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_wander_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Wander $wander): Response
     {
@@ -163,7 +163,7 @@ class WanderController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('wander_index');
+        return $this->redirectToRoute('admin_wander_index');
     }
 
 }
