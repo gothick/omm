@@ -1,7 +1,10 @@
 {% extends 'admin_base.html.twig' %}
 
 {% block title %}Wander{% endblock %}
-
+{% block stylesheets %}
+{{ parent() }}
+{{ include('_leaflet_stylesheets.html.twig') }}
+{% endblock %}
 {% block body %}
     <h1>Wander</h1>
     <p>
@@ -43,9 +46,40 @@
     </table>
     {{ include('wander/_delete_form.html.twig') }}
 
-    {% for image in images %}
-    {# TODO: Should we use image.title for the alt text? #}
-    <img class="img-fluid" src="{{ vich_uploader_asset(image) }}" alt="{{ image.name }}" />
+    <hr/>
+    <h2 class="mt-2">Map</h2>
+    <div id="mapid" style="height: 500px" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
+    <hr/>
+    <h2 class="mt-2">Wander Images</h2>
+    {% for row in images | batch(3, 'no image') %}
+    <div class="row mt-3 align-items-center">
+        {% for image in row %}
+        <div class="col-sm">
+            {% if image.id is defined %}
+            <a href="{{ path('image_show', {'id': image.id}) }}">
+                <img 
+                    class="img-fluid" 
+                    src="{{ vich_uploader_asset(image) }}" 
+                    alt="{{ image.title }}"  {# TODO: What happens if this title has double quotes? #}
+                    srcset="{{ image | srcset }}"
+                />
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
     {% endfor %}
 
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    {{ include('_leaflet_javascripts.html.twig') }}
+    <script src="/js/map.js"></script>
+    <script>
+        $(function() {
+            var map = setUpMap();
+            //addAllWanders(map);
+            addWander(map, {{ wander.id }});
+        });
+    </script>
 {% endblock %}

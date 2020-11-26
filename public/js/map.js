@@ -1,9 +1,37 @@
-var streetMap, satelliteMap;
+var streetMap, satelliteMap, highlightWanderLayer;
+var wgs84 = new GT_WGS84();
+var base = L.latLng(51.4511364, -2.6219148);
 
-$(function() {
+function addDraggableCoordsMarker(map)
+{
+    // https://gis.stackexchange.com/a/124288/967
+    var marker = L.marker(base, {
+        draggable:true,
+    });
+    marker.bindPopup();
+
+    marker.on('dragend', function(event){
+        //alert('drag ended');
+        var marker = event.target;
+        var location = marker.getLatLng();
+        wgs84.setDegrees(location.lat, location.lng);
+        var popup = marker.getPopup();
+        var gridref = wgs84.getOSGB().getGridRef(5);
+        popup.setContent(
+            location.lat.toFixed(5) + ", " + 
+            location.lng.toFixed(5) + 
+            "<br>" +
+            gridref)
+        marker.openPopup();
+        });
+    marker.addTo(map);   
+}
+
+function setUpMap()
+{
     var mapbox_access_token = $('#mapid').data('mapboxAccessToken');
     var locus_radius = 1609.34; // 1 mile
-    var base = L.latLng(51.4511364, -2.6219148);
+
     
     streetMap = L.tileLayer(
         'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=' + mapbox_access_token,
@@ -53,17 +81,24 @@ $(function() {
     L.control.locate().addTo(map);
 
     // Custom layer visually to set the most recent track
-    var customLayer = L.geoJson(null, {
+    highlightWanderLayer = L.geoJson(null, {
         // http://leafletjs.com/reference.html#geojson-style
         style: function(feature) {
         return { color: '#FFA500' };
         }
     });
 
+    addDraggableCoordsMarker(map);
+
+    return map;
+}
+
+function addAllWanders(map)
+{
     $.getJSON("/api/wanders", function(data) {
         var last = data['hydra:totalItems'];
         $.each(data['hydra:member'], function(key, wander) {
-            var track = omnivore.gpx(wander.gpxFilename, null, last - 1 == key ? customLayer : null)
+            var track = omnivore.gpx(wander.gpxFilename, null, last - 1 == key ? highlightWanderLayer : null)
                 .bindPopup(function(layer) {
                     return wander.title;
                 })
@@ -72,30 +107,16 @@ $(function() {
                 track.bringToFront();
             }
         });
+    });    
+}
+
+function addWander(map, wander_id)
+{
+    $.getJSON("/api/wanders/" + wander_id, function(wander) {
+        var track = omnivore.gpx(wander.gpxFilename)
+            .bindPopup(function(layer) {
+                return wander.title;
+            })
+            .addTo(map);
     });
-
-    // https://gis.stackexchange.com/a/124288/967
-    var marker = L.marker(base, {
-        draggable:true,
-    });
-    marker.bindPopup();
-
-    var wgs84 = new GT_WGS84();
-
-    marker.on('dragend', function(event){
-        //alert('drag ended');
-        var marker = event.target;
-        var location = marker.getLatLng();
-        wgs84.setDegrees(location.lat, location.lng);
-        var popup = marker.getPopup();
-        var gridref = wgs84.getOSGB().getGridRef(5);
-        popup.setContent(
-            location.lat.toFixed(5) + ", " + 
-            location.lng.toFixed(5) + 
-            "<br>" +
-            gridref)
-        marker.openPopup();
-        });
-
-    marker.addTo(map);
-});
+}
