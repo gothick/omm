@@ -1,4 +1,5 @@
 api_platform:
+    show_webby: false
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:
@@ -7,4 +8,4 @@ api_platform:
         versions: [3]
     formats:
         jsonld: ['application/ld+json']
-        
+        html: ['text/html']
