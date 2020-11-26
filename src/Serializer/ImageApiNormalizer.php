@@ -1,16 +1,16 @@
 <?php
-// api/src/Serializer/ApiNormalizer
 
 namespace App\Serializer;
 
 use ApiPlatform\Core\Api\UrlGeneratorInterface;
+use App\Entity\Image;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
+final class ImageApiNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
 {
     private $assetExtension;
     private $router;
@@ -27,16 +27,17 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
 
     public function supportsNormalization($data, $format = null)
     {
-        return $this->decorated->supportsNormalization($data, $format);
+        return $data instanceof Image;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
         $data = $this->decorated->normalize($object, $format, $context);
+        /*
         if (is_array($data)) {
             $data['gpxFilename'] = $this->assetExtension->getAssetUrl('uploads/gpx/') . $data['gpxFilename'];
         }
-
+        */
         return $data;
     }
 
