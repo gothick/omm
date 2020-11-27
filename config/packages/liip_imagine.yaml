@@ -4,6 +4,10 @@ liip_imagine:
     driver: "gd"
 
     filter_sets:
+        marker_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [40, 40], mode: outbound }
         square_thumb_100:
             quality: 75
             filters:

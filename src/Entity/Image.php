@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 
 /**
@@ -133,7 +134,9 @@ class Image
     /**
      * @ORM\ManyToMany(targetEntity=Wander::class, mappedBy="images")
      * 
-     * @Groups({"image:list", "image:item"})
+     * Avoid circular reference:
+     * 
+     * @Ignore
      */
     private $wanders;
 

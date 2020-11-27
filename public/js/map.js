@@ -4,8 +4,10 @@ var base = L.latLng(51.4511364, -2.6219148);
 
 function addDraggableCoordsMarker(map)
 {
+    return;
     // https://gis.stackexchange.com/a/124288/967
     var marker = L.marker(base, {
+        // TODO: Add autoPan etc.
         draggable:true,
     });
     marker.bindPopup();
@@ -101,6 +103,7 @@ function setUpMap(options = {})
 
 function addAllWanders(map)
 {
+    // TODO: We should probably use some kind of Hydra client. This'll do for now.
     $.getJSON("/api/wanders", function(data) {
         var last = data['hydra:totalItems'];
         $.each(data['hydra:member'], function(key, wander) {
@@ -119,14 +122,24 @@ function addAllWanders(map)
 function addWander(map, wander_id, add_images = false)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
-        
+    
         var track = omnivore.gpx(wander.gpxFilename)
             .bindPopup(function(layer) {
                 return wander.title;
             })
             .addTo(map);
+    
         if (add_images) {
-            // TODO: Add images
+            $.each(wander.images['hydra:member'], function(key, image) {
+                marker = L.marker(image.latlng,
+                    {
+                        'icon': L.icon({
+                            iconUrl: image.markerImageUri
+                        })
+                    })
+                    .bindPopup(image.title || "Untitled" )
+                    .addTo(map)
+            });
         }
     });
 }
