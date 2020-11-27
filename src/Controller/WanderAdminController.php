@@ -125,8 +125,8 @@ class WanderAdminController extends AbstractController
         $images = $imageRepository->findBetweenDates($wander->getStartTime(), $wander->getEndTime());
 
         return $this->render('wander/show.html.twig', [
-            'wander' => $wander,
-            'images' => $images
+            'wander' => $wander
+            //'images' => $images
         ]);
     }
 

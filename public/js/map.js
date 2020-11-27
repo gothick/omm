@@ -116,13 +116,17 @@ function addAllWanders(map)
     });    
 }
 
-function addWander(map, wander_id)
+function addWander(map, wander_id, add_images = false)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
+        
         var track = omnivore.gpx(wander.gpxFilename)
             .bindPopup(function(layer) {
                 return wander.title;
             })
             .addTo(map);
+        if (add_images) {
+            // TODO: Add images
+        }
     });
 }
