@@ -128,18 +128,37 @@ function addWander(map, wander_id, add_images = false)
                 return wander.title;
             })
             .addTo(map);
+
+        var photoLayer = L.photo.cluster().on('click', function(evt) {
+            var photo = evt.layer.photo;
+            var template = '<img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
+            // TODO: Video
+            evt.layer.bindPopup(L.Util.template(template, photo), {
+                className: 'leaflet-popup-photo',
+                minWidth: 300
+            }).openPopup();
+        });
     
+        // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
         if (add_images) {
+            var photos = [];
             $.each(wander.images['hydra:member'], function(key, image) {
-                marker = L.marker(image.latlng,
-                    {
-                        'icon': L.icon({
-                            iconUrl: image.markerImageUri
-                        })
-                    })
-                    .bindPopup(image.title || "Untitled" )
-                    .addTo(map)
+                photos.push({
+                    // TODO: What if we have a photo that doesn't have a latlng?
+                    // Add a nice way of testing that and ignore them.
+                    // TODO: And then add the photos that don't have a latlng 
+                    // as some kind of supplemental image that can also be
+                    // displayed.
+                    lat: image.latlng[0],
+                    lng: image.latlng[1],
+                    url: image.imageUri,
+                    caption: image.title || '',
+                    thumbnail: image.markerImageUri,
+                    // TODO?
+                    video: null
+                });
             });
+            photoLayer.add(photos).addTo(map);
         }
     });
 }
