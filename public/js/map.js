@@ -131,7 +131,7 @@ function addWander(map, wander_id, add_images = false)
 
         var photoLayer = L.photo.cluster().on('click', function(evt) {
             var photo = evt.layer.photo;
-            var template = '<img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
+            var template = '<a href="{imageEntityAdminUrl}"><img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
             // TODO: Video
             evt.layer.bindPopup(L.Util.template(template, photo), {
                 className: 'leaflet-popup-photo',
@@ -151,9 +151,10 @@ function addWander(map, wander_id, add_images = false)
                     // displayed.
                     lat: image.latlng[0],
                     lng: image.latlng[1],
-                    url: image.imageUri,
+                    url: image.mediumImageUri,
                     caption: image.title || '',
                     thumbnail: image.markerImageUri,
+                    imageEntityAdminUrl: image.imageEntityAdminUrl,
                     // TODO?
                     video: null
                 });
