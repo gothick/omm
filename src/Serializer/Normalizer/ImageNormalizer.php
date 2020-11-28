@@ -40,7 +40,7 @@ class ImageNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
         $image_asset_path = $this->uploaderHelper->asset($object); 
         $data['imageUri'] = $image_asset_path;
         $data['markerImageUri'] = $this->imagineCacheManager->getBrowserPath($image_asset_path, 'marker_thumb');
-        $data['mediumImageUri'] = $this->imagineCacheManager->getBrowserPath($image_asset_path, 'square_thumb_300');
+        $data['mediumImageUri'] = $this->imagineCacheManager->getBrowserPath($image_asset_path, 'square_thumb_600');
         $data['imageEntityAdminUrl'] = $this->router->generate('image_show', ['id' => $object->getId()]);
         return $data;
     }
