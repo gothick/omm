@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
-
 /**
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="image:list"}}},
@@ -21,8 +22,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  *  order={"capturedAt"="ASC"},
  *  paginationEnabled=false
  * )
- *
- *
+ * 
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * @Vich\Uploadable
  */
@@ -114,6 +114,12 @@ class Image
      * )
      * 
      * @Groups({"image:list", "image:item", "wander:item"})
+     * 
+     * So we can filter out images without co-ordinates before trying to put them
+     * on the map:
+     * 
+     * @ApiFilter(ExistsFilter::class, properties={"latlng"}) 
+     * 
      */
     private $latlng = [];
 

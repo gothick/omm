@@ -119,6 +119,21 @@ function addAllWanders(map)
     });    
 }
 
+function addPhotos(map, photos)
+{
+    var photoLayer = L.photo.cluster().on('click', function(evt) {
+        var photo = evt.layer.photo;
+        var template = '<a href="{imageEntityAdminUrl}"><img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
+        // TODO: Video
+        evt.layer.bindPopup(L.Util.template(template, photo), {
+            className: 'leaflet-popup-photo',
+            minWidth: 300
+        }).openPopup();
+    });
+
+    photoLayer.add(photos).addTo(map);    
+}
+
 function addWander(map, wander_id, add_images = false)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
@@ -129,18 +144,9 @@ function addWander(map, wander_id, add_images = false)
             })
             .addTo(map);
 
-        var photoLayer = L.photo.cluster().on('click', function(evt) {
-            var photo = evt.layer.photo;
-            var template = '<a href="{imageEntityAdminUrl}"><img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
-            // TODO: Video
-            evt.layer.bindPopup(L.Util.template(template, photo), {
-                className: 'leaflet-popup-photo',
-                minWidth: 300
-            }).openPopup();
-        });
-    
         // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
         if (add_images) {
+
             var photos = [];
             $.each(wander.images['hydra:member'], function(key, image) {
                 photos.push({
@@ -159,7 +165,7 @@ function addWander(map, wander_id, add_images = false)
                     video: null
                 });
             });
-            photoLayer.add(photos).addTo(map);
+            addPhotos(map, photos);
         }
     });
 }
