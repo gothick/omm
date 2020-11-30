@@ -1,4 +1,4 @@
-{% extends 'admin_base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Wander{% endblock %}
 {% block stylesheets %}
@@ -44,7 +44,7 @@
             </tr>
         </tbody>
     </table>
-    {{ include('wander/_delete_form.html.twig') }}
+    {{ include('admin/wander/_delete_form.html.twig') }}
 
     <hr/>
     <h2 class="mt-2">Map</h2>
@@ -56,7 +56,7 @@
         {% for image in row %}
         <div class="col-sm">
             {% if image.id is defined %}
-            <a href="{{ path('image_show', {'id': image.id}) }}">
+            <a href="{{ path('admin_image_show', {'id': image.id}) }}">
                 <img 
                     class="img-fluid" 
                     src="{{ vich_uploader_asset(image) }}" 

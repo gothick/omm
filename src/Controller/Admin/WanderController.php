@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Wander;
 use App\Form\WanderType;
@@ -19,7 +19,7 @@ use phpGPX\phpGPX;
 /**
  * @Route("/admin/wander")
  */
-class WanderAdminController extends AbstractController
+class WanderController extends AbstractController
 {
     /**
      * @Route("/", name="admin_wander_index", methods={"GET"})
@@ -27,7 +27,7 @@ class WanderAdminController extends AbstractController
     public function index(WanderRepository $wanderRepository): Response
     {
         // TODO: Try pagination
-        return $this->render('wander/index.html.twig', [
+        return $this->render('admin/wander/index.html.twig', [
             'wanders' => $wanderRepository->findAll(),
         ]);
     }
@@ -112,7 +112,7 @@ class WanderAdminController extends AbstractController
             return $this->redirectToRoute('admin_wander_show', ['id' => $wander->getId()]);
         }
 
-        return $this->render('wander/new.html.twig', [
+        return $this->render('admin/wander/new.html.twig', [
             'form' => $form->createView(),
         ]);    
     }
@@ -124,7 +124,7 @@ class WanderAdminController extends AbstractController
     {
         $images = $imageRepository->findBetweenDates($wander->getStartTime(), $wander->getEndTime());
 
-        return $this->render('wander/show.html.twig', [
+        return $this->render('admin/wander/show.html.twig', [
             'wander' => $wander
             //'images' => $images
         ]);
@@ -146,7 +146,7 @@ class WanderAdminController extends AbstractController
             return $this->redirectToRoute('admin_wander_show', ['id' => $wander->getId()]);
         }
 
-        return $this->render('wander/edit.html.twig', [
+        return $this->render('admin/wander/edit.html.twig', [
             'wander' => $wander,
             'form' => $form->createView(),
         ]);

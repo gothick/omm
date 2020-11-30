@@ -1,0 +1,76 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}One Mile Matt Admin Backend{% endblock %}
+
+{% block body %}
+<div class="dashboard">
+    <div class="row">
+        <div class="col-2">
+            <div class="headline">
+                <div class="name">Wanders</div>
+                <div class="value">{{ wanderStats.totalCount }}</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="details">
+                {% if wanderStats.totalCount > 0 %} {# Avoid division by zero #}
+                <table>
+                    <tr>
+                        <th>Total Wander Count:</th><td>{{ wanderStats.totalCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>With Title:</th>
+                        <td>
+                            {{ wanderStats.countWithTitle }} ({{ (wanderStats.countWithTitle / wanderStats.totalCount * 100.0) |number_format(2) }}%)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>With Description:</th>
+                        <td>
+                            {{ wanderStats.countWithDescription }} ({{ (wanderStats.countWithDescription / wanderStats.totalCount * 100.0) |number_format(2) }}%)
+                        </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="headline">
+                <div class="name">Images</div>
+                <div class="value">{{ imageStats.totalCount }}</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="details">
+                {% if imageStats.totalCount > 0 %} {# Avoid division by zero #}
+                <table>
+                    <tr>
+                        <th>Total Image Count:</th><td>{{ imageStats.totalCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>With Co-Ordinates:</th>
+                        <td>
+                            {{ imageStats.countWithCoords }} ({{ (imageStats.countWithCoords / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>With Title:</th>
+                        <td>
+                            {{ imageStats.countWithTitle }} ({{ (imageStats.countWithTitle / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>With Description:</th>
+                        <td>
+                            {{ imageStats.countWithDescription }} ({{ (imageStats.countWithDescription / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                        </td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

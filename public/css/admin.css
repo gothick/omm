@@ -1,0 +1,39 @@
+.dashboard .headline,
+.dashboard .details {
+    background-color: grey;
+    color: white;
+    border-radius: 1em;
+    padding: 16px 0px;
+}
+
+.dashboard .row {
+    margin-top: 20px;
+}
+
+.dashboard .headline {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dashboard .details {
+    padding: 16px 16px;
+}
+
+.dashboard .details dl dt {
+    display: inline-block;
+}
+
+.dashboard .details dl dd {
+    display: inline-block;
+}
+
+
+.dashboard .headline .name {
+    text-transform: uppercase;
+}
+
+.dashboard .headline .value {
+    font-size: 54px;
+    line-height: 64px;
+}

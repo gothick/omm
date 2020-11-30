@@ -1,11 +1,11 @@
-{% extends 'admin_base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}New Wander{% endblock %}
 
 {% block body %}
     <h1>Create new Wander</h1>
 
-    {{ include('wander/_form.html.twig') }}
+    {{ include('admin/wander/_form.html.twig') }}
 
     <a href="{{ path('admin_wander_index') }}">back to list</a>
 {% endblock %}

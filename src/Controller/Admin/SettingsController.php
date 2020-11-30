@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Form\SettingsType;
 use App\Repository\SettingsRepository;
@@ -10,21 +10,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin/settings", name="admin_settings_")
+ */
 class SettingsController extends AbstractController
 {
     /**
-     * @Route("/settings", name="settings_index")
+     * @Route("/", name="index")
      */
     public function index(SettingsService $settingsService): Response
     {
         $settings = $settingsService->getSettings();
-        return $this->render('settings/index.html.twig', [
+        return $this->render('admin/settings/index.html.twig', [
             'settings' => $settings,
         ]);
     }
 
     /**
-     * @Route("/settings/edit", name="settings_edit")
+     * @Route("/edit", name="edit")
      */
     public function edit(Request $request, SettingsService $settingsService): Response
     {
@@ -38,10 +41,10 @@ class SettingsController extends AbstractController
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.
-            return $this->redirectToRoute('settings_index');
+            return $this->redirectToRoute('admin_settings_index');
         }
 
-        return $this->render('settings/edit.html.twig', [
+        return $this->render('admin/settings/edit.html.twig', [
             'settings' => $settings,
             'form' => $form->createView(),
         ]);

@@ -1,4 +1,4 @@
-{% extends 'admin_base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Edit Image{% endblock %}
 
@@ -7,7 +7,7 @@
 
 <img class="img-fluid mt-2 mb-5" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" alt="{{ image.name }}" />
 
-    {{ include('image/_form.html.twig', {'button_label': 'Update'}) }}
-    <a href="{{ path('image_index') }}">back to list</a>
-    {{ include('image/_delete_form.html.twig') }}
+    {{ include('admin/image/_form.html.twig', {'button_label': 'Update'}) }}
+    <a href="{{ path('admin_image_index') }}">back to list</a>
+    {{ include('admin/image/_delete_form.html.twig') }}
 {% endblock %}

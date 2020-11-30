@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Image;
 use App\Form\ImageType;
@@ -19,12 +19,12 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
- * @Route("/image")
+ * @Route("/admin/image")
  */
 class ImageController extends AbstractController
 {
     /**
-     * @Route("/", name="image_index", methods={"GET"})
+     * @Route("/", name="admin_image_index", methods={"GET"})
      */
     public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -38,22 +38,22 @@ class ImageController extends AbstractController
             $request->query->getInt('page', 1),
             5);
 
-        return $this->render('image/index.html.twig', [
+        return $this->render('admin/image/index.html.twig', [
             'pagination' => $pagination
         ]);
     }
 
     /**
-     * @Route("/cluster", name="image_cluster", methods={"GET"})
+     * @Route("/cluster", name="admin_image_cluster", methods={"GET"})
      */
     public function cluster(ImageRepository $imageRepository)
     {
-        return $this->render('image/cluster.html.twig', [
+        return $this->render('admin/image/cluster.html.twig', [
         ]);        
     }
 
     /**
-     * @Route("/upload", name="image_upload", methods={"GET", "POST"})
+     * @Route("/upload", name="admin_image_upload", methods={"GET", "POST"})
      */
     public function upload(Request $request): Response
     {
@@ -76,34 +76,34 @@ class ImageController extends AbstractController
         }
         else
         {
-            return $this->render('image/upload.html.twig', []);
+            return $this->render('admin/image/upload.html.twig', []);
         }
     }
 
     /**
-     * @Route("/{id}", name="image_show", methods={"GET"})
+     * @Route("/{id}", name="admin_image_show", methods={"GET"})
      */
     public function show(Image $image): Response
     {
-        return $this->render('image/show.html.twig', [
+        return $this->render('/admin/image/show.html.twig', [
             'image' => $image,
         ]);
     }
 
     // TODO Remove responsiveTest once you're done playing
     /**
-     * @Route("/responsive_test/{id}", name="image_responsive_test", methods={"GET"})
+     * @Route("/responsive_test/{id}", name="admin_image_responsive_test", methods={"GET"})
      */
     public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
     {
-        return $this->render('image/responsive_test.html.twig', [
+        return $this->render('admin/image/responsive_test.html.twig', [
             'image' => $image
         ]);
     }
 
 
     /**
-     * @Route("/{id}/edit", name="image_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="admin_image_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Image $image): Response
     {
@@ -113,17 +113,17 @@ class ImageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('image_show', ['id' => $image->getId()]);
+            return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
         }
 
-        return $this->render('image/edit.html.twig', [
+        return $this->render('admin/image/edit.html.twig', [
             'image' => $image,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="image_delete", methods={"DELETE"})
+     * @Route("/{id}", name="admin_image_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Image $image): Response
     {
@@ -133,6 +133,6 @@ class ImageController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('image_index');
+        return $this->redirectToRoute('admin_image_index');
     }
 }

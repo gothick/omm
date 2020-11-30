@@ -1,6 +1,6 @@
-{% extends 'admin_base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Hello SettingsController!{% endblock %}
+{% block title %}One-Mile Matt Settings{% endblock %}
 
 {% block body %}
     
@@ -27,6 +27,6 @@
             </tr>
         </tbody>
     </table>
-    <a class="btn btn-primary" href="{{ path('settings_edit') }}">Edit settings</a>
+    <a class="btn btn-primary" href="{{ path('admin_settings_edit') }}">Edit settings</a>
 
 {% endblock %}
