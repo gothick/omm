@@ -36,7 +36,7 @@ class ImageController extends AbstractController
         $pagination = $paginator->paginate(
             $query, 
             $request->query->getInt('page', 1),
-            5);
+            10);
 
         return $this->render('admin/image/index.html.twig', [
             'pagination' => $pagination
