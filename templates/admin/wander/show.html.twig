@@ -60,7 +60,7 @@
             </tr>
             <tr>
                 <th>Duration</th>
-                <td>{{ wander.durationAsDateInterval.format('%H:%I:%S') }}</td>
+                <td>{% if wander.durationAsDateInterval is not null %}{{ wander.durationAsDateInterval.format('%H:%I:%S') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>GpxFilename</th>
