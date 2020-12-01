@@ -20,6 +20,14 @@
     padding: 16px 16px;
 }
 
+.dashboard .details a:link,
+.dashboard .details a:visited,
+.dashboard .details a:hover,
+.dashboard .details a:active {
+    color: white;
+    text-decoration: underline;
+}
+
 .dashboard .details dl dt {
     display: inline-block;
 }

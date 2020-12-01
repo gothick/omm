@@ -38,10 +38,27 @@ class AdminController extends AbstractController
             ->getQuery()
             ->getOneOrNullResult();
 
+        $longestWanderDistance = $wanderRepository
+            ->createQueryBuilder('w')
+            ->select('w.id, w.distance')
+            ->orderBy('w.distance', 'desc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        $shortestWanderDistance = $wanderRepository
+            ->createQueryBuilder('w')
+            ->select('w.id, w.distance')
+            ->orderBy('w.distance', 'asc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $this->render('admin/index.html.twig', [
             'imageStats' => $imageStats,
-            'wanderStats' => $wanderStats
+            'wanderStats' => $wanderStats,
+            'longestWanderDistance' => $longestWanderDistance,
+            'shortestWanderDistance' => $shortestWanderDistance
         ]);
     }
 }
