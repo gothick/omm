@@ -30,6 +30,24 @@
                             {{ wanderStats.countWithDescription }} ({{ (wanderStats.countWithDescription / wanderStats.totalCount * 100.0) |number_format(2) }}%)
                         </td>
                     </tr>
+                    <tr>
+                        <th>Total Distance:</th>
+                        <td>
+                            {{ (wanderStats.totalDistance / 1000.0) | number_format(2) ~ 'km' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Duration:</th>
+                        <td>
+                            {{ wanderStats.totalDuration | seconds_to_hms }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Cumulative Elevation Gain:</th>
+                        <td>
+                            {{ wanderStats.totalCumulativeElevationGain | number_format(2) ~ 'm' }}
+                        </td>
+                    </tr>
                 </table>
                 {% endif %}
             </div>

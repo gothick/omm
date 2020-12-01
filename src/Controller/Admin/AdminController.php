@@ -32,6 +32,9 @@ class AdminController extends AbstractController
             ->select('COUNT(w.id) as totalCount')
             ->addSelect('COUNT(w.title) as countWithTitle')
             ->addSelect('COUNT(w.description) as countWithDescription')
+            ->addSelect('SUM(w.duration) as totalDuration')
+            ->addSelect('SUM(w.distance) as totalDistance')
+            ->addSelect('SUM(w.cumulativeElevationGain) as totalCumulativeElevationGain')
             ->getQuery()
             ->getOneOrNullResult();
 
