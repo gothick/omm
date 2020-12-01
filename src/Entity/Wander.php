@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\WanderRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateInterval;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -71,6 +73,41 @@ class Wander
      * @Groups({"wander:list", "wander:item"})
      */
     private $images;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $distance;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $avgSpeed;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $avgPace;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $minAltitude;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $maxAltitude;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $cumulativeElevationGain;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $duration;
 
     public function __construct()
     {
@@ -170,5 +207,100 @@ class Wander
         $this->images->removeElement($image);
 
         return $this;
+    }
+
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?float $distance): self
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
+    public function getAvgSpeed(): ?float
+    {
+        return $this->avgSpeed;
+    }
+
+    public function setAvgSpeed(?float $avgSpeed): self
+    {
+        $this->avgSpeed = $avgSpeed;
+
+        return $this;
+    }
+
+    public function getAvgPace(): ?float
+    {
+        return $this->avgPace;
+    }
+
+    public function setAvgPace(?float $avgPace): self
+    {
+        $this->avgPace = $avgPace;
+
+        return $this;
+    }
+
+    public function getMinAltitude(): ?float
+    {
+        return $this->minAltitude;
+    }
+
+    public function setMinAltitude(?float $minAltitude): self
+    {
+        $this->minAltitude = $minAltitude;
+
+        return $this;
+    }
+
+    public function getMaxAltitude(): ?float
+    {
+        return $this->maxAltitude;
+    }
+
+    public function setMaxAltitude(?float $maxAltitude): self
+    {
+        $this->maxAltitude = $maxAltitude;
+
+        return $this;
+    }
+
+    public function getCumulativeElevationGain(): ?float
+    {
+        return $this->cumulativeElevationGain;
+    }
+
+    public function setCumulativeElevationGain(?float $cumulativeElevationGain): self
+    {
+        $this->cumulativeElevationGain = $cumulativeElevationGain;
+
+        return $this;
+    }
+
+    public function getDuration(): ?float
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?float $duration): self
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getDurationAsDateInterval(): ?DateInterval
+    {
+        if (!isset($this->duration)) 
+            return null;
+        
+        // https://stackoverflow.com/a/28874421/300836
+        $dtF = new DateTime("@0");
+        $dtT = new DateTime("@" . $this->getDuration());
+        return $dtF->diff($dtT);
     }
 }

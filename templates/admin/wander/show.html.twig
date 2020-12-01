@@ -23,6 +23,10 @@
                 <td>{{ wander.title }}</td>
             </tr>
             <tr>
+                <th>Description</th>
+                <td>{{ wander.description|striptags|markdown }}</td>
+            </tr>
+            <tr>
                 <th>StartTime</th>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
@@ -31,8 +35,32 @@
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Description</th>
-                <td>{{ wander.description|striptags|markdown }}</td>
+                <th>Distance</th>
+                <td>{{ wander.distance | number_format(2) ~ 'm'  }}</td>
+            </tr>
+            <tr>
+                <th>Average Pace</th>
+                <td>{{ wander.avgPace | number_format(2) ~ 's/km'  }}</td>
+            </tr>
+            <tr>
+                <th>Average Speed</th>
+                <td>{{ wander.avgSpeed | number_format(2) ~ 'm/s'  }}</td>
+            </tr>
+            <tr>
+                <th>Min Altitude</th>
+                <td>{{ wander.minAltitude | number_format(2) ~ 'm'  }}</td>
+            </tr>
+            <tr>
+                <th>Max Altitude</th>
+                <td>{{ wander.maxAltitude | number_format(2) ~ 'm'  }}</td>
+            </tr>
+            <tr>
+                <th>Cumulative Elevation Gain</th>
+                <td>{{ wander.cumulativeElevationGain | number_format(2) ~ 'm'  }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ wander.durationAsDateInterval.format('%H:%I:%S') }}</td>
             </tr>
             <tr>
                 <th>GpxFilename</th>
@@ -42,6 +70,10 @@
                 <th>Gpx File Link</th>
                 <td><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></td>
             </tr>
+            <tr>
+                <th>Gpx File Link</th>
+                <td><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></td>
+            </tr>            
         </tbody>
     </table>
     {{ include('admin/wander/_delete_form.html.twig') }}

@@ -36,6 +36,10 @@ services:
         # this service lazy is a cheap workaround. 
         lazy: true 
     
+    App\Service\GpxService:
+        arguments:
+            $gpxDirectory: '%gpx_directory%'
+
     # Event listeners
     App\EventListener\ImageUploadListener:
         tags:
@@ -49,3 +53,5 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
             arguments:
                 - '%env(DATABASE_URL)%'
+
+    

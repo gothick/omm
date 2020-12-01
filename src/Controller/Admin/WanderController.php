@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
-use phpGPX\phpGPX;
+use App\Service\GpxService;
 
 /**
  * @Route("/admin/wander")
@@ -35,41 +35,10 @@ class WanderController extends AbstractController
     /**
      * @Route("/new", name="admin_wander_new", methods={"GET","POST"})
      */
-    public function new(Request $request, SluggerInterface $slugger) : Response {
+    public function new(Request $request, SluggerInterface $slugger, GpxService $gpxService) : Response {
         $wander = new Wander();
-        // TODO When creating an edit form, bear in mind:
-        /*
-        https://symfony.com/doc/current/controller/upload_file.html
-        When creating a form to edit an already persisted item, the file form type still expects a Symfony\Component\HttpFoundation\File\File instance. As the persisted entity now contains only the relative file path, you first have to concatenate the configured upload path with the stored filename and create a new File class:
-        */
-
- 
-        // TODO: You can move this into a separate form class. See https://symfony.com/doc/current/forms.html
-        // TODO: How much can we consolidate this with App/Form/WanderType?
-        /*
-        $form = $this->createFormBuilder($wander)
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
-            // Read directly from the tracks in the GPX file for new uploads
-            //->add('startTime', DateTimeType::class)
-            //->add('endTime', DateTimeType::class)
-            ->add('gpxFilename', FileType::class, [
-                'label' => 'GPX track file',
-                'mapped' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            "application/gpx+xml","text/xml","application/xml","application/octet-stream"
-                        ],
-                        'mimeTypesMessage' =>'Please upload a valid GPX document'
-                    ])
-                ],
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-            ->getForm();
-        */
-
+        // https://symfony.com/doc/current/controller/upload_file.html
+        
         $form = $this->createForm(WanderType::class, $wander, ['type' => 'new']);
 
         $form->handleRequest($request);
@@ -93,18 +62,9 @@ class WanderController extends AbstractController
                 }
                 $wander->setGpxFilename($newFilename);
             }
-
             
             $wander = $form->getData();
-
-            // Set up some Wander values by reading the GPX file directly
-            $phpGPX = new phpGPX();
-            $file = $phpGPX->load($this->getParameter('gpx_directory') . '/' . $newFilename);
-            // TODO: Cope with multiple traks
-            foreach ($file->tracks as $track) {
-                $wander->setStartTime($track->stats->startedAt);
-                $wander->setEndTime($track->stats->finishedAt);
-            }
+            $gpxService->updateWanderStatsFromGpx($wander);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($wander);
