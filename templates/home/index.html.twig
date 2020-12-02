@@ -6,6 +6,29 @@
 {{ include('_leaflet_stylesheets.html.twig') }}
 {% endblock %}
 {% block body %}
+    <div class="row">
+        <div class="col mx-3 stats">
+            <div class="row">
+                <div class="col px-2 py-2">
+                    Total Distance {{ (wanderStats.totalDistance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                </div>
+                <div class="col px-2 py-2">
+                    Total Wanders: {{ wanderStats.totalCount }}
+                </div>
+                <div class="col px-2 py-2">
+                    Total Duration: {{ wanderStats.totalDuration | seconds_to_hms }}
+                </div>
+                <div class="col px-2 py-2">
+                    {# TODO Make this wander link work when we have a public wander page #}
+                    Longest Wander: <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                </div>
+                <div class="col px-2 py-2">
+                    {# TODO Make this wander link work when we have a public wander page #}
+                    Shortest Wander: <a href="{# path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id) #}">{{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row flex-fill d-flex">
         <div class="col-sm">
             <div class="h-100" id="mapid" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>

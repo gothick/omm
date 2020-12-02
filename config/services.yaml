@@ -49,9 +49,14 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener', event: 'prePersist', entity: 'App\Entity\Wander' }
 
+    App\EventListener\StatsCacheClearer:
+        tags:
+            -
+                name: 'doctrine.event_listener'
+                event: 'postPersist'
+
     # Store session in database https://symfony.com/doc/current/session/database.html
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
             arguments:
                 - '%env(DATABASE_URL)%'
 
-    

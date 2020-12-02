@@ -20,3 +20,16 @@ html.homepage, .homepage body, .homepage main, .homepage .container
 {
     height: 100%;
 }
+
+.stats {
+    background-color: #456;
+    color: white;
+    font-size: 10px;
+}
+
+/* TODO: Move to Sass and use Bootstrap mixins */
+@media (min-width: 576px) {
+    .stats {
+        font-size: inherit;
+    }
+}

@@ -51,13 +51,13 @@
                     <tr>
                         <th>Longest Wander:</th>
                         <td>
-                            <a href="{{ path('admin_wander_show', {'id': longestWanderDistance.id }) }}">Wander {{ longestWanderDistance.id }}</a>: {{ (longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
+                            <a href="{{ path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) }}">Wander {{ wanderStats.longestWanderDistance.id }}</a>: {{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
                         </td>
                     </tr>
                     <tr>
                         <th>Shortest Wander:</th>
                         <td>
-                            <a href="{{ path('admin_wander_show', {'id': shortestWanderDistance.id }) }}">Wander {{ shortestWanderDistance.id }}</a>: {{ (shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
+                            <a href="{{ path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id }) }}">Wander {{ wanderStats.shortestWanderDistance.id }}</a>: {{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
                         </td>
                     </tr>
 
