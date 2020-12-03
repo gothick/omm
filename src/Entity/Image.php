@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use App\EventListener\ImageCalculatedFieldSetterListener;
+use App\EventListener\WanderUploadListener;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,8 +26,14 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  * )
  * 
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * 
+ * @ORM\EntityListeners({
+ *     ImageCalculatedFieldSetterListener::class
+ * })
+ * 
  * @Vich\Uploadable
  */
+
 class Image
 {
     /**
@@ -338,4 +346,56 @@ class Image
 
         return $this;
     }
+
+    /* Computed (set up by Doctrine postLoad listener) */
+    
+    /**
+     * @Groups({"image:list", "image:item", "wander:item"})
+     */
+    private $imageUri;
+    
+    /**
+     * @Groups({"image:list", "image:item", "wander:item"})
+     */
+    private $markerImageUri;
+  
+    /**
+     * @Groups({"image:list", "image:item", "wander:item"})
+     */
+    private $mediumImageUri;
+
+    /**
+     * @Groups({"image:list", "image:item", "wander:item"})
+     */
+    private $imageEntityAdminUri;    
+    
+    public function setImageUri($imageUri) {
+        $this->imageUri = $imageUri;
+    }
+    
+    public function getImageUri(): ?string { 
+        return $this->imageUri;
+    }
+
+    public function setMarkerImageUri($markerImageUri) {
+        $this->markerImageUri = $markerImageUri;
+    }
+    public function getMarkerImageUri(): ?string { 
+        return $this->markerImageUri;
+    }
+
+    public function setMediumImageUri($mediumImageUri) {
+        $this->mediumImageUri = $mediumImageUri;
+    }
+    public function getMediumImageUri(): ?string { 
+        return $this->mediumImageUri;
+    }
+
+    public function setImageEntityAdminUri($imageEntityAdminUri) {
+        $this->imageEntityAdminUri = $imageEntityAdminUri;
+    }
+    public function getImageEntityAdminUri(): ?string { 
+        return $this->imageEntityAdminUri;
+    }    
 }
+

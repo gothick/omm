@@ -59,6 +59,10 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener' }
 
+    App\EventListener\ImageCalculatedFieldSetterListener:
+        tags:
+            - { name: 'doctrine.orm.entity_listener' }
+
     # Listens for events that might affect our stats cache on multiple
     # entity types
     App\EventListener\StatsCacheClearer:
