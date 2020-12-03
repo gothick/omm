@@ -1,13 +1,13 @@
-{% extends 'admin_base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Edit Wander{% endblock %}
 
 {% block body %}
     <h1>Edit Wander</h1>
 
-    {{ include('wander/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('admin/wander/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('admin_wander_index') }}">back to list</a>
 
-    {{ include('wander/_delete_form.html.twig') }}
+    {{ include('admin/wander/_delete_form.html.twig') }}
 {% endblock %}

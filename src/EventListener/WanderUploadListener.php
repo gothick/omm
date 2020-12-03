@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use App\Entity\Wander;
 use App\Repository\ImageRepository;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
@@ -24,7 +23,6 @@ class WanderUploadListener
 
     public function prePersist(Wander $wander, LifecycleEventArgs $event): void
     {
-        // Do something
         $startTime = $wander->getStartTime();
         $endTime = $wander->getEndTime();
 

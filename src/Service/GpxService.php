@@ -23,13 +23,23 @@ class GpxService
         $this->logger = $logger;
     }
 
+    public function getFullGpxFilePathFromWander(Wander $wander)
+    {
+        $filename = $wander->getGpxFilename();
+        if (!$filename) {
+            $this->logger->debug('Wander ' . $wander->getId() . ' had no GPX file name');
+            return null;
+        }
+        return $this->gpxDirectory . '/' . $filename;
+    }
+
     public function updateWanderStatsFromGpx(Wander $wander)
     {
         $filename = $wander->getGpxFilename();
         if (isset($filename))
         {
             
-            $gpx = $this->phpGpx->load($this->gpxDirectory . '/' . $filename);
+            $gpx = $this->phpGpx->load($this->getFullGpxFilePathFromWander($wander));
             
             // TODO: Cope with mutliple tracks in a file? I don't think
             // we've done that often, if ever.
