@@ -10,9 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\EventListener\WanderUploadListener;
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
+ * 
+ * @ORM\EntityListeners({
+ *  WanderUploadListener::class, App\EventListener\WanderDeleteListener::class
+ * })
  * 
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
@@ -20,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *  order={"endTime"="ASC"},
  *  paginationEnabled=false
  * )
+ * 
  */
 class Wander
 {

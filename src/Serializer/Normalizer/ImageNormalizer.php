@@ -47,6 +47,8 @@ class ImageNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
 
     public function supportsNormalization($data, $format = null): bool
     {
+        // return false;
+
         return $data instanceof \App\Entity\Image;
     }
 
