@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use DateInterval;
 use DateTime;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -11,14 +12,10 @@ class GeneralRuntime implements RuntimeExtensionInterface
     {
     }
 
-    public function secondsToHms(?float $seconds): string
+    public function durationToHMS(?DateInterval $interval): string
     {
-        if (!isset($seconds))
+        if (!isset($interval))
             return "";
-
-        $dtF = new DateTime("@0");
-        $dtT = new DateTime("@" . $seconds);
-        $interval = $dtF->diff($dtT);
 
         return $interval->format('%H:%I:%S');
     }

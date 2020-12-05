@@ -13,11 +13,11 @@
         </div>
         <div class="col">
             <div class="details">
-                {% if wanderStats.totalCount > 0 %} {# Avoid division by zero #}
                 <table>
                     <tr>
                         <th>Total Wander Count:</th><td>{{ wanderStats.totalCount }}</td>
                     </tr>
+                    {% if wanderStats.hasWanders %}
                     <tr>
                         <th>With Title:</th>
                         <td>
@@ -39,7 +39,9 @@
                     <tr>
                         <th>Total Duration:</th>
                         <td>
-                            {{ wanderStats.totalDuration | seconds_to_hms }}
+                            {{ wanderStats.totalDuration }}
+                            {#{ wanderStats.totalDuration | duration_to_hms }#}
+
                         </td>
                     </tr>
                     <tr>
@@ -60,9 +62,8 @@
                             <a href="{{ path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id }) }}">Wander {{ wanderStats.shortestWanderDistance.id }}</a>: {{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
                         </td>
                     </tr>
-
+                    {% endif %}
                 </table>
-                {% endif %}
             </div>
         </div>
     </div>

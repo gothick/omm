@@ -10,7 +10,7 @@ class GeneralExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('seconds_to_hms', [GeneralRuntime::class, 'secondsToHms'])
+            new TwigFilter('duration_to_hms', [GeneralRuntime::class, 'durationToHMS'])
         ];
     }
 }

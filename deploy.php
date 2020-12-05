@@ -38,6 +38,7 @@ host('ssh.gothick.org.uk')
     ->set('stage', 'production')
     ->setRemoteUser('omm')
     ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
+    ->set('console_options', '-vvv')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');    
     
 // Tasks

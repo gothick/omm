@@ -60,7 +60,8 @@
             </tr>
             <tr>
                 <th>Duration</th>
-                <td>{{ wander.duration | seconds_to_hms }}</td>
+                <td>{{ wander.duration | duration_to_hms }}<br/>
+                    {{ wander.durationSeconds }}</td>
             </tr>
             <tr>
                 <th>GpxFilename</th>

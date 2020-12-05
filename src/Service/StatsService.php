@@ -5,6 +5,10 @@ namespace App\Service;
 use App\Entity\Wander;
 use App\Repository\ImageRepository;
 use App\Repository\WanderRepository;
+use Carbon\CarbonInterval;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -20,11 +24,19 @@ class StatsService
     /** @var TagAwareCacheInterface */
     private $cache;
 
-    public function __construct(ImageRepository $imageRepository, WanderRepository $wanderRepository, TagAwareCacheInterface $cache)
+    /** @var EntityManager */
+    private $entityManager;
+
+    public function __construct(
+        ImageRepository $imageRepository, 
+        WanderRepository $wanderRepository, 
+        TagAwareCacheInterface $cache,
+        EntityManagerInterface $entityManager)
     {
         $this->imageRepository = $imageRepository;
         $this->wanderRepository = $wanderRepository;
         $this->cache = $cache;
+        $this->entityManager = $entityManager;
     }
     
     public function getImageStats(): array
@@ -53,11 +65,21 @@ class StatsService
                 ->select('COUNT(w.id) as totalCount')
                 ->addSelect('COUNT(w.title) as countWithTitle')
                 ->addSelect('COUNT(w.description) as countWithDescription')
-                ->addSelect('SUM(w.duration) as totalDuration')
-                ->addSelect('SUM(w.distance) as totalDistance')
-                ->addSelect('SUM(w.cumulativeElevationGain) as totalCumulativeElevationGain')
+                //->addSelect('SUM(w.durationSeconds) as totalDuration')
+                ->addSelect('COALESCE(SUM(w.distance), 0) as totalDistance')
+                ->addSelect('COALESCE(SUM(w.cumulativeElevationGain), 0) as totalCumulativeElevationGain')
                 ->getQuery()
                 ->getOneOrNullResult();
+
+            // Doctrine doesn't support calculating a difference
+            // in seconds from two datetime values via ORM. Let's
+            // go raw.
+            $conn = $this->entityManager->getConnection();
+            $sql = 'SELECT COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(end_time, start_time))), 0) FROM wander';
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $seconds = $stmt->fetchOne();
+            $wanderStats['totalDuration'] = CarbonInterval::seconds($seconds)->cascade();
             
             $wanderStats['longestWanderDistance'] = $this->wanderRepository
                 ->createQueryBuilder('w')
@@ -74,6 +96,8 @@ class StatsService
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
+
+            $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
             return $wanderStats;
         });
         

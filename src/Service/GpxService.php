@@ -56,7 +56,6 @@ class GpxService
                     $wander->setMaxAltitude($stats->maxAltitude);
                     $wander->setMinAltitude($stats->minAltitude);
                     $wander->setCumulativeElevationGain($stats->cumulativeElevationGain);
-                    $wander->setDuration($stats->duration);
                 }
                 catch(Exception $e) {
                     $this->logger->debug("Couldn't set extended GPX property on wander: " . $e->getMessage());

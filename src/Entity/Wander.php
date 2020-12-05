@@ -11,6 +11,9 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use App\EventListener\WanderUploadListener;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
  * 
@@ -81,6 +84,9 @@ class Wander
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     *
+     * Distance walked, in metres.
+     * 
      */
     private $distance;
 
@@ -108,11 +114,6 @@ class Wander
      * @ORM\Column(type="float", nullable=true)
      */
     private $cumulativeElevationGain;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $duration;
 
     public function __construct()
     {
@@ -286,28 +287,21 @@ class Wander
         return $this;
     }
 
-    public function getDuration(): ?float
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?float $duration): self
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
     // TODO: We probably don't need this any more; I've replaced
     // existing uses with our seconds_to_hms Twig filter.
-    public function getDurationAsDateInterval(): ?DateInterval
+    public function getDuration(): ?CarbonInterval
     {
-        if (!isset($this->duration)) 
+        if (!isset($this->startTime, $this->endTime)) {
             return null;
+        }
         
-        // https://stackoverflow.com/a/28874421/300836
-        $dtF = new DateTime("@0");
-        $dtT = new DateTime("@" . $this->getDuration());
-        return $dtF->diff($dtT);
+        $difference = CarbonInterval::instance($this->startTime->diff($this->endTime));
+        return $difference;
+    }
+
+    public function getDurationSeconds(): ?int
+    {
+        // TODO: I have no idea if this ?? actually does what I'm expecting. Test.
+        return $this->getDuration()->totalSeconds ?? null;
     }
 }

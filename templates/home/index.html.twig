@@ -16,15 +16,20 @@
                     Total Wanders: {{ wanderStats.totalCount }}
                 </div>
                 <div class="col px-2 py-2">
-                    Total Duration: {{ wanderStats.totalDuration | seconds_to_hms }}
+                    Total Duration: {{ wanderStats.totalDuration | duration_to_hms }}
                 </div>
                 <div class="col px-2 py-2">
                     {# TODO Make this wander link work when we have a public wander page #}
-                    Longest Wander: <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                    Longest Wander:
+                        {% if wanderStats.hasWanders %}
+                            <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                        {% endif %}
                 </div>
                 <div class="col px-2 py-2">
                     {# TODO Make this wander link work when we have a public wander page #}
-                    Shortest Wander: <a href="{# path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id) #}">{{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                    {% if wanderStats.hasWanders %}
+                        Shortest Wander: <a href="{# path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id) #}">{{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
