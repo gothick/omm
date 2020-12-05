@@ -16,6 +16,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
@@ -25,6 +26,9 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  *  paginationEnabled=false
  * )
  * 
+ * @ApiFilter(SearchFilter::class, properties={"wanders": "exact"})
+ * @ApiFilter(ExistsFilter::class, properties={"latlng"})     
+ *
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * 
  * @ORM\EntityListeners({
@@ -122,11 +126,6 @@ class Image
      * )
      * 
      * @Groups({"image:list", "image:item", "wander:item"})
-     * 
-     * So we can filter out images without co-ordinates before trying to put them
-     * on the map:
-     * 
-     * @ApiFilter(ExistsFilter::class, properties={"latlng"}) 
      * 
      */
     private $latlng = [];
