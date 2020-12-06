@@ -149,21 +149,25 @@ function addWander(map, wander_id, add_images = false)
 
             var photos = [];
             $.each(wander.images['hydra:member'], function(key, image) {
-                photos.push({
-                    // TODO: What if we have a photo that doesn't have a latlng?
-                    // Add a nice way of testing that and ignore them.
-                    // TODO: And then add the photos that don't have a latlng 
-                    // as some kind of supplemental image that can also be
-                    // displayed.
-                    lat: image.latlng[0],
-                    lng: image.latlng[1],
-                    url: image.mediumImageUri,
-                    caption: image.title || '',
-                    thumbnail: image.markerImageUri,
-                    imageEntityAdminUri: image.imageEntityAdminUri,
-                    // TODO?
-                    video: null
-                });
+                //alert(image.latlng);
+                if (image.latlng.length > 0)
+                {
+                    photos.push({
+                        // TODO: What if we have a photo that doesn't have a latlng?
+                        // Add a nice way of testing that and ignore them.
+                        // TODO: And then add the photos that don't have a latlng 
+                        // as some kind of supplemental image that can also be
+                        // displayed.
+                        lat: image.latlng[0],
+                        lng: image.latlng[1],
+                        url: image.mediumImageUri,
+                        caption: image.title || '',
+                        thumbnail: image.markerImageUri,
+                        imageEntityAdminUri: image.imageEntityAdminUri,
+                        // TODO?
+                        video: null
+                    });
+                }
             });
             addPhotos(map, photos);
         }
