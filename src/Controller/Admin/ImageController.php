@@ -11,10 +11,14 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -55,22 +59,30 @@ class ImageController extends AbstractController
     /**
      * @Route("/upload", name="admin_image_upload", methods={"GET", "POST"})
      */
-    public function upload(Request $request): Response
+    public function upload(Request $request, SerializerInterface $serializer): Response
     {
         if ($request->isMethod('POST')) {
+
             $token = $request->request->get('token');
             if (!$this->isCsrfTokenValid('image_upload', $token)) {
                 return $this->json([ 'error' => 'Invalid CSRF token'], 401);
             }
+
             $files = $request->files->all();
             foreach ($files as $file) {
+
                 if ($file instanceof UploadedFile) {
                     $image = new Image();
                     $image->setImageFile($file);
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($image);
                     $entityManager->flush();
-                    return $this->json($image);
+                    // It's not exactly an API response, but it'll do until we switch to handling this 
+                    // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
+                    // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
+                    // image URIs in a postPersist event listener, this also contains everything you'd
+                    // need to build an image in HTML.
+                    return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
                 }
             }
         }

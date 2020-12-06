@@ -35,6 +35,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     ImageCalculatedFieldSetterListener::class
  * })
  * 
+ * This is just to control the stuff that goes back from our one controller
+ * action that returns a JSON response, ImageController::upload
+ * 
  * @Vich\Uploadable
  */
 
@@ -49,11 +52,13 @@ class Image
      */
     private $id;
 
+    // TODO: We probably don't want this massive field being returned 
+    // as part of any API response, etc.
     /**
      * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes", 
      *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
      *
-     * @Groups({"image:list", "image:item"})
+     * @Ignore()
      */
     private $imageFile;
 
@@ -147,9 +152,7 @@ class Image
     /**
      * @ORM\ManyToMany(targetEntity=Wander::class, mappedBy="images")
      * 
-     * Avoid circular reference:
-     * 
-     * @Ignore
+     * @Ignore()
      */
     private $wanders;
 
@@ -178,6 +181,9 @@ class Image
         }
     }
     
+    /**
+     * @Ignore()
+     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;

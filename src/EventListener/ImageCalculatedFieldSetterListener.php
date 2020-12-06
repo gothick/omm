@@ -23,12 +23,15 @@ class ImageCalculatedFieldSetterListener
         $this->imageService = $imageService;
     }
 
+    // Mostly we want to set these when they're loaded from the database
     public function postLoad(Image $image): void
     {
-        $uris = $this->imageService->getImageUris($image);
-        $image->setImageUri($uris['imageUri']);
-        $image->setMarkerImageUri($uris['markerImageUri']);
-        $image->setMediumImageUri($uris['mediumImageUri']);
-        $image->setImageEntityAdminUri($uris['imageEntityAdminUri']);
+        $this->imageService->setCalculatedImageUris($image);
+    }
+    // But also it's helpful to have them available just after we've created
+    // a new Image, so we can return them as part of the JSON response.
+    public function postPersist(Image $image): void
+    {
+        $this->imageService->setCalculatedImageUris($image);
     }
 }
