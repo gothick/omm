@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Image;
+use App\Repository\WanderRepository;
 use Deployer\Logger\Logger;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -25,16 +26,21 @@ class ImageService {
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var WanderRepository */
+    private $wanderRepository;
+
     public function __construct(
         UploaderHelper $uploaderHelper, 
         CacheManager $imagineCacheManager,
         UrlGeneratorInterface $router,
-        LoggerInterface $logger)
+        LoggerInterface $logger,
+        WanderRepository $wanderRepository)
     {
         $this->uploaderHelper = $uploaderHelper;
         $this->imagineCacheManager = $imagineCacheManager;
         $this->router = $router;
         $this->logger = $logger;
+        $this->wanderRepository = $wanderRepository;
     }
 
     public function setCalculatedImageUris(Image $image): void
