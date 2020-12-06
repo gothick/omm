@@ -75,9 +75,9 @@ class ImageUploadListener
             } else {
                 $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
             }
+        }
+        else {
             $this->logger->error("Hey, did you start to upload things that aren't images using Vich?");
         }
-        // $image->setTitle("Flobadob");
-        // $mapping = $event->getMapping();
     }
 }
