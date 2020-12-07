@@ -1,3 +1,5 @@
+// TODO: Refactor the heck out of this mess
+
 var streetMap, satelliteMap, highlightWanderLayer;
 var wgs84 = new GT_WGS84();
 var base = L.latLng(51.4511364, -2.6219148);
@@ -159,9 +161,15 @@ function addAllWanders(map)
     });    
 }
 
+var photoLayer = null;
+
 function addPhotos(map, photos)
 {
-    var photoLayer = L.photo.cluster().on('click', function(evt) {
+    if (photoLayer) {
+        map.removeLayer(photoLayer);
+    }
+
+    photoLayer = L.photo.cluster().on('click', function(evt) {
         var photo = evt.layer.photo;
         var template = '<a href="{imageEntityAdminUri}"><img src="{url}" width="300" height="300" /></a><p>{caption}</p>';
         // TODO: Video
