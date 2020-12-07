@@ -1,6 +1,6 @@
 // TODO: Refactor the heck out of this mess
 
-var streetMap, satelliteMap, highlightWanderLayer;
+var streetMap, satelliteMap;
 var wgs84 = new GT_WGS84();
 var base = L.latLng(51.4511364, -2.6219148);
 
@@ -90,23 +90,13 @@ function setUpMap(options = {})
 
     L.control.locate().addTo(map);
 
-    // Custom layer visually to set the most recent track
-    highlightWanderLayer = L.geoJson(null, {
-        // http://leafletjs.com/reference.html#geojson-style
-        style: function(feature) {
-            return { 
-                color: '#FFA500'
-            };
-        }
-    });
-
     addDraggableCoordsMarker(map);
     return map;
 }
 
 function selectedWanderStyle() {
     return {
-        color: '#ff0000'
+        color: '#FFA500'
     };
 }
 
@@ -123,7 +113,6 @@ const CustomGeoJSON = L.GeoJSON.extend({
         // TODO: Do we need to go to all this trouble to keep the wander id
         // handy? Maybe we could just capture it in the bindPopup closure?
         wander_id: null,
-        anotherCustomProperty: 'More data!'
     }
  });
 
@@ -137,7 +126,8 @@ function addAllWanders(map)
             var track = omnivore.gpx(wander.gpxFilename, 
                     null, 
                     new CustomGeoJSON(null, {
-                        wander_id: wander.id
+                        wander_id: wander.id,
+                        style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle()
                     }))
                 .bindPopup(function(layer) {
                     // Toggle styles
@@ -153,8 +143,6 @@ function addAllWanders(map)
             
             track.addTo(map);
             if (isLastWander) {
-                track.bringToFront();
-                track.setStyle(unselectedWanderStyle())
                 currentlySelected = track;
             }
         });
@@ -185,14 +173,10 @@ function addPhotos(map, photos)
 function addWanderImages(map, wander_id) {
     var photos = [];
 
+    // Our API allows us to grab only those photos with co-ordinates set
     $.getJSON("/api/wanders/" + wander_id + "/images?exists[latlng]=true", function(images) {
         $.each(images['hydra:member'], function(key, image) {
             photos.push({
-                // TODO: What if we have a photo that doesn't have a latlng?
-                // Add a nice way of testing that and ignore them.
-                // TODO: And then add the photos that don't have a latlng 
-                // as some kind of supplemental image that can also be
-                // displayed.
                 lat: image.latlng[0],
                 lng: image.latlng[1],
                 url: image.mediumImageUri,
