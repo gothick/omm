@@ -92,14 +92,38 @@ function setUpMap(options = {})
     highlightWanderLayer = L.geoJson(null, {
         // http://leafletjs.com/reference.html#geojson-style
         style: function(feature) {
-        return { color: '#FFA500' };
+            return { 
+                color: '#FFA500'
+            };
         }
     });
 
     addDraggableCoordsMarker(map);
-
     return map;
 }
+
+function selectedWanderStyle() {
+    return {
+        color: '#ff0000'
+    };
+}
+
+function unselectedWanderStyle() {
+    return {
+        color: '#3388FF'
+    };
+}
+
+var currentlySelected = null;
+
+const CustomGeoJSON = L.GeoJSON.extend({
+    options: { 
+        // TODO: Do we need to go to all this trouble to keep the wander id
+        // handy? Maybe we could just capture it in the bindPopup closure?
+        wander_id: null,
+        anotherCustomProperty: 'More data!'
+    }
+ });
 
 function addAllWanders(map)
 {
@@ -107,13 +131,29 @@ function addAllWanders(map)
     $.getJSON("/api/wanders", function(data) {
         var last = data['hydra:totalItems'];
         $.each(data['hydra:member'], function(key, wander) {
-            var track = omnivore.gpx(wander.gpxFilename, null, last - 1 == key ? highlightWanderLayer : null)
+            isLastWander = (last - 1 == key);
+            var track = omnivore.gpx(wander.gpxFilename, 
+                    null, 
+                    new CustomGeoJSON(null, {
+                        wander_id: wander.id
+                    }))
                 .bindPopup(function(layer) {
+                    // Toggle styles
+                    currentlySelected.setStyle(unselectedWanderStyle());
+                    layer.setStyle(selectedWanderStyle());
+                    currentlySelected = layer;
+
+                    addWanderImages(map, layer.options.wander_id);
+                    // Popup
                     return wander.title;
-                })
-                .addTo(map);
-            if (last - 1 == key) {
+                });
+            track.wander_id = wander.id;
+            
+            track.addTo(map);
+            if (isLastWander) {
                 track.bringToFront();
+                track.setStyle(unselectedWanderStyle())
+                currentlySelected = track;
             }
         });
     });    
@@ -134,6 +174,31 @@ function addPhotos(map, photos)
     photoLayer.add(photos).addTo(map);    
 }
 
+function addWanderImages(map, wander_id) {
+    var photos = [];
+
+    $.getJSON("/api/wanders/" + wander_id + "/images?exists[latlng]=true", function(images) {
+        $.each(images['hydra:member'], function(key, image) {
+            photos.push({
+                // TODO: What if we have a photo that doesn't have a latlng?
+                // Add a nice way of testing that and ignore them.
+                // TODO: And then add the photos that don't have a latlng 
+                // as some kind of supplemental image that can also be
+                // displayed.
+                lat: image.latlng[0],
+                lng: image.latlng[1],
+                url: image.mediumImageUri,
+                caption: image.title || '',
+                thumbnail: image.markerImageUri,
+                imageEntityAdminUri: image.imageEntityAdminUri,
+                // TODO?
+                video: null
+            });
+        });
+        addPhotos(map, photos);
+    });
+}
+
 function addWander(map, wander_id, add_images = false)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
@@ -146,30 +211,7 @@ function addWander(map, wander_id, add_images = false)
 
         // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
         if (add_images) {
-
-            var photos = [];
-            $.each(wander.images['hydra:member'], function(key, image) {
-                //alert(image.latlng);
-                if (image.latlng.length > 0)
-                {
-                    photos.push({
-                        // TODO: What if we have a photo that doesn't have a latlng?
-                        // Add a nice way of testing that and ignore them.
-                        // TODO: And then add the photos that don't have a latlng 
-                        // as some kind of supplemental image that can also be
-                        // displayed.
-                        lat: image.latlng[0],
-                        lng: image.latlng[1],
-                        url: image.mediumImageUri,
-                        caption: image.title || '',
-                        thumbnail: image.markerImageUri,
-                        imageEntityAdminUri: image.imageEntityAdminUri,
-                        // TODO?
-                        video: null
-                    });
-                }
-            });
-            addPhotos(map, photos);
+            addWanderImages(map, wander_id);
         }
     });
 }

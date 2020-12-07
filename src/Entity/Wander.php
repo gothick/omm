@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\WanderRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\EventListener\WanderUploadListener;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+
 
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
@@ -79,6 +81,7 @@ class Wander
      * @ORM\ManyToMany(targetEntity=Image::class, inversedBy="wanders")
      * 
      * @Groups({"wander:list", "wander:item"})
+     * @ApiSubresource
      */
     private $images;
 

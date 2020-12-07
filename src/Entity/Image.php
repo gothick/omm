@@ -65,21 +65,21 @@ class Image
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * 
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $name; // For Vich, not for us. We use Title.
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * 
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * 
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $description;
 
@@ -130,7 +130,7 @@ class Image
      *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair."
      * )
      * 
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      * 
      */
     private $latlng = [];
@@ -145,7 +145,7 @@ class Image
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * 
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $capturedAt;
 
@@ -355,22 +355,22 @@ class Image
     /* Computed (set up by Doctrine postLoad listener) */
     
     /**
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $imageUri;
     
     /**
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $markerImageUri;
   
     /**
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $mediumImageUri;
 
     /**
-     * @Groups({"image:list", "image:item", "wander:item"})
+     * @Groups({"image:list", "image:item"})
      */
     private $imageEntityAdminUri;    
     
