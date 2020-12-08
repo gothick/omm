@@ -68,8 +68,7 @@ services:
     App\EventListener\StatsCacheClearer:
         tags:
             -
-                name: 'doctrine.event_listener'
-                event: 'postPersist'
+                name: 'doctrine.event_subscriber'
 
     # Store session in database https://symfony.com/doc/current/session/database.html
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
