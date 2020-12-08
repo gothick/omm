@@ -10,6 +10,7 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPExif\Reader\Reader;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ImageService {
@@ -49,7 +50,7 @@ class ImageService {
         $image->setImageUri($image_asset_path);
         $image->setMarkerImageUri($this->imagineCacheManager->getBrowserPath($image_asset_path, 'marker_thumb'));
         $image->setMediumImageUri($this->imagineCacheManager->getBrowserPath($image_asset_path, 'square_thumb_600'));
-        $image->setImageEntityAdminUri($this->router->generate('admin_image_show', ['id' => $image->getId()]));
+        $image->setImageShowUri($this->router->generate('image_show', ['id' => $image->getId()]));
     }
     public function setPropertiesFromEXIF(Image $image): void
     {

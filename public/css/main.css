@@ -21,9 +21,13 @@ html.homepage, .homepage body, .homepage main, .homepage .container
     height: 100%;
 }
 
+.headerstrip {
+    padding-top: 12px;
+    background-color: #ddf;
+}
+
 .stats {
-    background-color: #456;
-    color: white;
+    padding-top: 0px;
     font-size: 10px;
 }
 

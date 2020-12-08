@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}One Mile Matt Image {{ image.title ?? image.name }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col mx-3 headerstrip">
+            <div class="row">
+                <div class="col">
+                    <h2>{{ image.title ?? image.name }}</h2>
+                    <p>{{ image.description |striptags|markdown }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {# 
+        TODO Add an alt text property so we can be more accessible
+        TODO What happens if the alt text has quotes in it? 
+    #}
+    <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" />
+
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <hr/>
+    <div id="adminlinks">
+        <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Image Edit Page</a>
+    </div>
+    {% endif %}
+{% endblock %}

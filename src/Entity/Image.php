@@ -372,7 +372,7 @@ class Image
     /**
      * @Groups({"image:list", "image:item"})
      */
-    private $imageEntityAdminUri;    
+    private $imageShowUri;    
     
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
@@ -396,11 +396,11 @@ class Image
         return $this->mediumImageUri;
     }
 
-    public function setImageEntityAdminUri($imageEntityAdminUri) {
-        $this->imageEntityAdminUri = $imageEntityAdminUri;
+    public function setImageShowUri($imageShowUri) {
+        $this->imageShowUri = $imageShowUri;
     }
-    public function getImageEntityAdminUri(): ?string { 
-        return $this->imageEntityAdminUri;
+    public function getImageShowUri(): ?string { 
+        return $this->imageShowUri;
     }    
 }
 
