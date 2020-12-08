@@ -20,6 +20,11 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [600, 600], mode: outbound }
+        map_popup_image:
+            quality: 75
+            filters:
+                scale:
+                    dim: [600, 600]
         # TODO: Do these srcset_filters need the quality setting on them? How large are our images? What does 75% look like?
         srcset_144:
             filters:

@@ -49,7 +49,7 @@ class ImageService {
         $image_asset_path = $this->uploaderHelper->asset($image);
         $image->setImageUri($image_asset_path);
         $image->setMarkerImageUri($this->imagineCacheManager->getBrowserPath($image_asset_path, 'marker_thumb'));
-        $image->setMediumImageUri($this->imagineCacheManager->getBrowserPath($image_asset_path, 'square_thumb_600'));
+        $image->setMediumImageUri($this->imagineCacheManager->getBrowserPath($image_asset_path, 'map_popup_image'));
         $image->setImageShowUri($this->router->generate('image_show', ['id' => $image->getId()]));
     }
     public function setPropertiesFromEXIF(Image $image): void
