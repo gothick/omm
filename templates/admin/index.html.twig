@@ -37,6 +37,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Average Distance per Wander:</th>
+                        <td>
+                            {% if wanderStats.hasWanders %}
+                            {{ ((wanderStats.totalDistance/wanderStats.totalCount)/1000.0)| number_format(2) ~ 'km' }}
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
                         <th>Total Duration:</th>
                         <td>
                             {{ wanderStats.totalDuration }}
