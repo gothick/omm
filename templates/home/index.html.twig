@@ -29,7 +29,7 @@
 
                 <div class="col px-2 pb-2">
                     {% if wanderStats.hasWanders %}
-                        Average: {{ ((wanderStats.shortestWanderDistance.distance / wanderStats.totalCount) / 1000.0) | number_format(2) ~ 'km' }}
+                        Average: {{ ((wanderStats.totalDistance / wanderStats.totalCount) / 1000.0) | number_format(2) ~ 'km' }}
                     {% endif %}
                 </div>
                 <div class="col px-2 pb-2">
