@@ -133,6 +133,7 @@ function addAllWanders(map)
                     // Toggle styles
                     currentlySelected.setStyle(unselectedWanderStyle());
                     layer.setStyle(selectedWanderStyle());
+                    layer.bringToFront();
                     currentlySelected = layer;
 
                     addWanderImages(map, layer.options.wander_id);
