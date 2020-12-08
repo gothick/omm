@@ -80,6 +80,7 @@
     <div id="mapid" style="height: 500px" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
     <hr/>
     <h2 class="mt-2">Wander Images</h2>
+    {{ include('admin/wander/_delete_images_form.html.twig') }}
     {% for row in wander.images | batch(3, 'no image') %}
     <div class="row mt-3 align-items-center">
         {% for image in row %}

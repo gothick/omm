@@ -126,4 +126,20 @@ class WanderController extends AbstractController
         return $this->redirectToRoute('admin_wander_index');
     }
 
+    /**
+     * @Route("/{id}/delete_images", name="admin_wander_delete_images", methods={"POST"})
+     */
+    public function deleteImages(Request $request, Wander $wander): Response
+    {
+        if ($this->isCsrfTokenValid('delete_images'.$wander->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $images = $wander->getImages();
+            foreach ($images as $image) {
+                $entityManager->remove($image);
+            }
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin_wander_show', ['id' => $wander->getId()]);
+    }
 }
