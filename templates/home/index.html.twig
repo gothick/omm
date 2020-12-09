@@ -36,7 +36,7 @@
                     {# TODO Make this wander link work when we have a public wander page #}
                     Longest:
                         {% if wanderStats.hasWanders %}
-                    og        <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                            <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
                         {% endif %}
                 </div>
             </div>
