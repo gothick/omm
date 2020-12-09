@@ -27,6 +27,10 @@
                 <td>{{ wander.description|striptags|markdown }}</td>
             </tr>
             <tr>
+                <th>Number of Images</th>
+                <td>{{ wander.images.count }}</td>
+            </tr>
+            <tr>
                 <th>StartTime</th>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
             </tr>

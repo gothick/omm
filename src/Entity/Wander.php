@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\WanderRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
@@ -117,6 +118,14 @@ class Wander
      * @ORM\Column(type="float", nullable=true)
      */
     private $cumulativeElevationGain;
+
+    /**
+     * @var string|null
+     *
+     * @ApiProperty(iri="http://schema.org/contentUrl")
+     * @Groups({"wander:list", "wander:item"})
+     */
+    public $contentUrl;
 
     public function __construct()
     {
