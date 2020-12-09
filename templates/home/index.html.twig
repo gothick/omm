@@ -18,7 +18,7 @@
                 <div class="col px-2 pt-2">
                     {# TODO Make this wander link work when we have a public wander page #}
                     {% if wanderStats.hasWanders %}
-                        Shortest: <a href="{# path('admin_wander_show', {'id': wanderStats.shortestWanderDistance.id) #}">{{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                        Shortest: <a href="{{ path('wander_show', {'id': wanderStats.shortestWanderDistance.id }) }}">{{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
                     {% endif %}
                 </div>
             </div>
@@ -33,10 +33,9 @@
                     {% endif %}
                 </div>
                 <div class="col px-2 pb-2">
-                    {# TODO Make this wander link work when we have a public wander page #}
                     Longest:
                         {% if wanderStats.hasWanders %}
-                            <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                            <a href="{{ path('wander_show', {'id': wanderStats.longestWanderDistance.id }) }}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
                         {% endif %}
                 </div>
             </div>
