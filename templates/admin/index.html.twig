@@ -5,6 +5,18 @@
 {% block body %}
 <div class="dashboard">
     <div class="row">
+        <div class="col">
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
         <div class="col-2 d-none d-md-block">
             <div class="headline">
                 <div class="name">Wanders</div>
@@ -110,6 +122,17 @@
                     </tr>
                 </table>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="details">
+                <h2>Utilities</h2>
+                <form action="{{ path('admin_clear_stats_cache') }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('admin_clear_stats_cache') }}">
+                    <button class="btn btn-info" type="submit" name="submit" value="submit" class="btn-link">Clear Stats Cache</button>
+                </form>            
             </div>
         </div>
     </div>
