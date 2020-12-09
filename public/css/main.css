@@ -37,3 +37,9 @@ html.homepage, .homepage body, .homepage main, .homepage .container
         font-size: inherit;
     }
 }
+
+.gallery-image-wrapper {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* TODO: Why doesn't this work? */
+}

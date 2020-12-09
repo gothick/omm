@@ -17,15 +17,15 @@
         </div>
     </div>
     <div id="mapid" style="height: 500px" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
-    <div class="row mt-3 align-items-center">
+    <div class="row mt-3 align-items-center gallery">
         {% for image in wander.images %}
-        <div class="col-lg-3 col-md-4 col-6">
+        <div class="col-lg-3 col-md-4 col-6 gallery-image-wrapper">
             {% if image.id is defined %}
             <a class="d-block mb-0 h-100" href="{{ path('image_show', {'id': image.id}) }}">
                 <img 
                     class="img-fluid img-thumbnail" 
                     src="{{ vich_uploader_asset(image) }}" 
-                    alt="{{ image.title }}"  {# TODO: What happens if this title has double quotes? #}
+                    title="{{ image.description }}"
                     srcset="{{ image | srcset }}"
                 />
             </a>
