@@ -79,7 +79,13 @@ class StatsService
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $seconds = $stmt->fetchOne();
-            $wanderStats['totalDuration'] = CarbonInterval::seconds($seconds)->cascade();
+
+            $interval = CarbonInterval::seconds($seconds)->cascade();
+
+            $wanderStats['totalDuration'] = $interval;
+            $wanderStats['totalDurationForHumans'] = $interval->forHumans([
+                    'short' => true
+                ]);
             
             $wanderStats['longestWanderDistance'] = $this->wanderRepository
                 ->createQueryBuilder('w')

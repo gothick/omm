@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="col px-2 pb-2">
-                    Total Duration: {{ wanderStats.totalDuration | duration_to_hms }}
+                    Total Duration: {{ wanderStats.totalDurationForHumans }}
                 </div>
 
                 <div class="col px-2 pb-2">
@@ -36,7 +36,7 @@
                     {# TODO Make this wander link work when we have a public wander page #}
                     Longest:
                         {% if wanderStats.hasWanders %}
-                            <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
+                    og        <a href="{# path('admin_wander_show', {'id': wanderStats.longestWanderDistance.id }) #}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
                         {% endif %}
                 </div>
             </div>
