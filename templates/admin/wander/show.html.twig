@@ -8,8 +8,8 @@
 {% block body %}
     <h1>Wander</h1>
     <p>
-    <a href="{{ path('admin_wander_index') }}">back to list</a> | 
-    <a href="{{ path('admin_wander_edit', {'id': wander.id}) }}">edit</a>
+    <a href="{{ path('admin_wanders_index') }}">back to list</a> | 
+    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a>
     </p>
 
     <table class="table">
@@ -25,6 +25,10 @@
             <tr>
                 <th>Description</th>
                 <td>{{ wander.description|striptags|markdown }}</td>
+            </tr>
+            <tr>
+                <th>Number of Images</th>
+                <td>{{ wander.images.count }}</td>
             </tr>
             <tr>
                 <th>StartTime</th>
@@ -86,7 +90,7 @@
         {% for image in row %}
         <div class="col-sm">
             {% if image.id is defined %}
-            <a href="{{ path('admin_image_show', {'id': image.id}) }}">
+            <a href="{{ path('admin_images_show', {'id': image.id}) }}">
                 <img 
                     class="img-fluid" 
                     src="{{ vich_uploader_asset(image) }}" 

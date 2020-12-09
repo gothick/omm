@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('admin_wander_delete_images', {'id': wander.id}) }}" onsubmit="return confirm('Are you sure you want to delete ALL images for this wander?');">
+<form method="post" action="{{ path('admin_wanders_delete_images', {'id': wander.id}) }}" onsubmit="return confirm('Are you sure you want to delete ALL images for this wander?');">
     <input type="hidden" name="_method" value="POST">
     <input type="hidden" name="_token" value="{{ csrf_token('delete_images' ~ wander.id) }}">
     <button class="btn btn-danger">Delete ALL related images</button>

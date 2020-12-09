@@ -23,12 +23,12 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
- * @Route("/admin/image")
+ * @Route("/admin/images", name="admin_images_")
  */
 class ImageController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_image_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -48,7 +48,7 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/cluster", name="admin_image_cluster", methods={"GET"})
+     * @Route("/cluster", name="cluster", methods={"GET"})
      */
     public function cluster(ImageRepository $imageRepository)
     {
@@ -57,7 +57,7 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/upload", name="admin_image_upload", methods={"GET", "POST"})
+     * @Route("/upload", name="upload", methods={"GET", "POST"})
      */
     public function upload(Request $request, SerializerInterface $serializer): Response
     {
@@ -93,7 +93,7 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_image_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Image $image): Response
     {
@@ -104,7 +104,7 @@ class ImageController extends AbstractController
 
     // TODO Remove responsiveTest once you're done playing
     /**
-     * @Route("/responsive_test/{id}", name="admin_image_responsive_test", methods={"GET"})
+     * @Route("/responsive_test/{id}", name="responsive_test", methods={"GET"})
      */
     public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
     {
@@ -115,7 +115,7 @@ class ImageController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="admin_image_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Image $image): Response
     {
@@ -125,7 +125,7 @@ class ImageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
+            return $this->redirectToRoute('admin_images_show', ['id' => $image->getId()]);
         }
 
         return $this->render('admin/image/edit.html.twig', [
@@ -135,7 +135,7 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_image_delete", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"DELETE"})
      */
     public function delete(Request $request, Image $image): Response
     {
@@ -145,6 +145,6 @@ class ImageController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_image_index');
+        return $this->redirectToRoute('admin_images_index');
     }
 }

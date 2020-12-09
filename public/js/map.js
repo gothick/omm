@@ -138,8 +138,9 @@ function addAllWanders(map)
 
                     addWanderImages(map, layer.options.wander_id);
                     // Popup
-                    return wander.title;
-                });
+                    var template = '<a href="{contentUrl}">{title}</a>';
+                    return L.Util.template(template, wander);
+                })
             track.wander_id = wander.id;
             
             track.addTo(map);

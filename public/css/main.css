@@ -43,3 +43,9 @@ html.homepage, .homepage body, .homepage main, .homepage .container
     overflow: hidden;
     text-overflow: ellipsis; /* TODO: Why doesn't this work? */
 }
+
+/*
+.startendtimes {
+    font-size: 12px;
+}
+*/

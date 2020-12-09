@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Wanders ({{ wanders|length }})</h1>
 
-    <p><a href="{{ path('admin_wander_new') }}">Create new Wander</a></p>
+    <p><a href="{{ path('admin_wanders_new') }}">Create new Wander</a></p>
     
     <table class="table">
         <thead>
@@ -29,8 +29,8 @@
                 <td>{{ wander.description|striptags|markdown }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>
-                    <a href="{{ path('admin_wander_show', {'id': wander.id}) }}">show</a>
-                    <a href="{{ path('admin_wander_edit', {'id': wander.id}) }}">edit</a>
+                    <a href="{{ path('admin_wanders_show', {'id': wander.id}) }}">show</a>
+                    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

@@ -11,6 +11,15 @@
             <div class="row">
                 <div class="col">
                     <h2>{{ wander.title }}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col startendtimes">
+                    {{ wander.startTime | date("D j F H:i") }} to {{ wander.endTime | date("D j F H:i") }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <p>{{ wander.description |striptags|markdown }}</p>
                 </div>
             </div>
@@ -37,7 +46,7 @@
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <hr/>
     <div id="adminlinks">
-        <a href="{{ path('admin_wander_edit', {'id': wander.id}) }}">Wander Edit Page</a>
+        <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Wander Edit Page</a>
     </div>
     {% endif %}
 {% endblock %}

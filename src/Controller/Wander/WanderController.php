@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/wander", name="wander_")
+ * @Route("/wanders", name="wander_")
  * 
  */
 class WanderController extends AbstractController

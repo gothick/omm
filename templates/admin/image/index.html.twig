@@ -4,11 +4,11 @@
 
 {% block body %}
     <h1>Image index ({{ pagination.getTotalItemCount }})</h1>
-    <p><a href="{{ path('admin_image_upload') }}">Upload</a></p>
+    <p><a href="{{ path('admin_images_upload') }}">Upload</a></p>
     {% for image in pagination %}
     <div class="row my-2">
         <div class="col-2">
-            <a href="{{ path('admin_image_show', {'id': image.id}) }}">
+            <a href="{{ path('admin_images_show', {'id': image.id}) }}">
                 <img width="150px" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_300') }}" />
             </a>
         </div>
@@ -30,8 +30,8 @@
             Late Updated: {{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s') : '' }}<br/>
         </div>
         <div class="col-1">
-            <a href="{{ path('admin_image_show', {'id': image.id}) }}">show</a><br/>
-            <a href="{{ path('admin_image_edit', {'id': image.id}) }}">edit</a><br/>
+            <a href="{{ path('admin_images_show', {'id': image.id}) }}">show</a><br/>
+            <a href="{{ path('admin_images_edit', {'id': image.id}) }}">edit</a><br/>
         </div>
     </div>
     {% else %}
