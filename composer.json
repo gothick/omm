@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "gabrielelana/byte-units": "^0.5.0",
         "knplabs/knp-markdown-bundle": "^1.8",
         "knplabs/knp-paginator-bundle": "^5.3",
         "liip/imagine-bundle": "^2.3",
@@ -51,6 +52,7 @@
         "symfony/web-profiler-bundle": "^5.2",
         "symfony/yaml": "5.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
+        "twig/intl-extra": "^3.1",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^1.15"
     },

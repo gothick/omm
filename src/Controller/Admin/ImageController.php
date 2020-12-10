@@ -59,7 +59,11 @@ class ImageController extends AbstractController
     /**
      * @Route("/upload", name="upload", methods={"GET", "POST"})
      */
-    public function upload(Request $request, SerializerInterface $serializer): Response
+    public function upload(
+        Request $request, 
+        SerializerInterface $serializer,
+        string $gpxDirectory
+        ): Response
     {
         if ($request->isMethod('POST')) {
 
@@ -88,7 +92,14 @@ class ImageController extends AbstractController
         }
         else
         {
-            return $this->render('admin/image/upload.html.twig', []);
+            $disk = [];
+            $disk['free'] = disk_free_space($gpxDirectory);
+            $disk['total'] = disk_total_space($gpxDirectory);
+            $disk['used'] = $disk['total'] - $disk['free'];
+            $disk['percent'] = $disk['used'] / $disk['total'];
+            return $this->render('admin/image/upload.html.twig', [
+                 'disk' => $disk
+            ]);
         }
     }
 

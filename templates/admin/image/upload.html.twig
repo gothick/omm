@@ -8,6 +8,18 @@
 {% endblock %}
 {% block body %}
     <h1>Upload Images</h1>
+    <div class="diskspace">
+        <div>Disk space used: {{ disk.used | format_bytes }} / {{ disk.total | format_bytes }} total
+         (<span class="diskusagepercent">{{ disk.percent | format_percent_number }})</span>
+        <br />
+        <div class="bargraph mb-4">
+            <div class="bar">
+                {# Javascript will make a disk usage percentage bargraph here #}
+            </div>
+        </div>
+
+         </div>
+    </div>
     <form action="{{ path('admin_images_upload') }}"
         method="POST"
         enctype="multipart/form-data" class="dropzone">
@@ -19,5 +31,18 @@
 {% block javascripts %}
 {{ parent() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js" integrity="sha512-9WciDs0XP20sojTJ9E7mChDXy6pcO0qHpwbEJID1YVavz2H6QBz5eLoDD8lseZOb2yGT8xDNIV7HIe1ZbuiDWg==" crossorigin="anonymous"></script>
+<script>
+    $(function() {
+        var percentage = parseFloat($('span.diskusagepercent').text());
+        var bar = $('div.bar');
+        if (percentage > 70) {
+            bar.addClass('warn');
+        }
+        if (percentage > 90) {
+            bar.addClass('critical');
+        }
+        bar.width(percentage + '%');
+    });
+</script>
 {% include '_fileinput.html.twig' %}
 {% endblock %}
