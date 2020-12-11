@@ -42,13 +42,12 @@ function setUpMap(options)
         interactive: false
     });
 
-    options = Object.assign(
-        options,
-        {
-            maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
-            layers: [streetMap, circle]
-        }
-    );
+    // Because Object.assign isn't supported in older browsers
+    // https://stackoverflow.com/a/41455739/300836
+    $.extend(options, {
+        maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
+        layers: [streetMap, circle]
+    });
 
     var map = L.map("mapid", options)
         .setView(base, 14);
