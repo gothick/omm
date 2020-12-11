@@ -6,7 +6,7 @@
     <h1>Wanders ({{ wanders|length }})</h1>
 
     <p><a href="{{ path('admin_wanders_new') }}">Create new Wander</a></p>
-    
+
     <table class="table">
         <thead>
             <tr>
@@ -14,6 +14,7 @@
                 <th>Title</th>
                 <th>StartTime</th>
                 <th>EndTime</th>
+                <th>Images</th>
                 <th>Description</th>
                 <th>GpxFilename</th>
                 <th>actions</th>
@@ -26,6 +27,7 @@
                 <td>{{ wander.title }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i:s') : '' }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i:s') : '' }}</td>
+                <td>{{ wander.images.count }}</td>
                 <td>{{ wander.description|striptags|markdown }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>
@@ -41,5 +43,5 @@
         </tbody>
     </table>
 
-    
+
 {% endblock %}
