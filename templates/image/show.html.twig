@@ -13,13 +13,17 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
 
 
-    {# 
-        TODO Add an alt text property so we can be more accessible
-        TODO What happens if the alt text has quotes in it? 
-    #}
-    <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" />
+            {#
+                TODO Add an alt text property so we can be more accessible
+                TODO What happens if the alt text has quotes in it?
+            #}
+            <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" />
+        </div>
+    </div>
 
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <hr/>
