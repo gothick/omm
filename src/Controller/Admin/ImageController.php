@@ -33,12 +33,13 @@ class ImageController extends AbstractController
     public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $imageRepository
-            ->createQueryBuilder('i') 
+            ->createQueryBuilder('i')
+            // Nice orphan check: ->where('i.wanders is empty')
             ->orderBy('i.capturedAt', 'DESC')
             ->getQuery();
 
         $pagination = $paginator->paginate(
-            $query, 
+            $query,
             $request->query->getInt('page', 1),
             10);
 
@@ -53,14 +54,14 @@ class ImageController extends AbstractController
     public function cluster(ImageRepository $imageRepository)
     {
         return $this->render('admin/image/cluster.html.twig', [
-        ]);        
+        ]);
     }
 
     /**
      * @Route("/upload", name="upload", methods={"GET", "POST"})
      */
     public function upload(
-        Request $request, 
+        Request $request,
         SerializerInterface $serializer,
         string $gpxDirectory
         ): Response
@@ -81,7 +82,7 @@ class ImageController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($image);
                     $entityManager->flush();
-                    // It's not exactly an API response, but it'll do until we switch to handling this 
+                    // It's not exactly an API response, but it'll do until we switch to handling this
                     // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
                     // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
                     // image URIs in a postPersist event listener, this also contains everything you'd

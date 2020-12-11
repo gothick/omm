@@ -5,6 +5,11 @@
 {% block body %}
     <h1>Image index ({{ pagination.getTotalItemCount }})</h1>
     <p><a href="{{ path('admin_images_upload') }}">Upload</a></p>
+    {#
+    {{ knp_pagination_filter(pagination, {
+        'i.wanders': 'Wanders',
+    }) }}
+    #}
     {% for image in pagination %}
     <div class="row my-2">
         <div class="col-2">
