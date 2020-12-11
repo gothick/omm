@@ -5,7 +5,7 @@ var satelliteMap;
 var wgs84 = new GT_WGS84();
 var base = L.latLng(51.4511364, -2.6219148);
 
-function setUpMap(options = {})
+function setUpMap(options)
 {
     var mapbox_access_token = $("#mapid").data("mapboxAccessToken");
     var locus_radius = 1609.34; // 1 mile
@@ -80,7 +80,7 @@ function unselectedWanderStyle() {
 
 var currentlySelected = null;
 
-const CustomGeoJSON = L.GeoJSON.extend({
+var CustomGeoJSON = L.GeoJSON.extend({
     options: {
         // TODO: Do we need to go to all this trouble to keep the wander id
         // handy? Maybe we could just capture it in the bindPopup closure?
@@ -112,7 +112,7 @@ function addAllWanders(map)
                     // Popup
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
-                })
+                });
             track.wander_id = wander.id;
 
             track.addTo(map);
