@@ -27,16 +27,11 @@ html.homepage, .homepage body, .homepage main, .homepage .container
 }
 
 .stats {
-    padding-top: 0px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     font-size: 10px;
 }
 
-/* TODO: Move to Sass and use Bootstrap mixins */
-@media (min-width: 576px) {
-    .stats {
-        font-size: inherit;
-    }
-}
 
 .gallery-image-wrapper {
     white-space: nowrap;
