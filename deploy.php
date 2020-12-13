@@ -21,7 +21,7 @@ add('shared_dirs', [
     'public/uploads/images',
     'public/uploads/incoming',
     'public/media',
-    'public/bin'
+    'bin'
 ]);
 
 // Writable dirs by web server 
