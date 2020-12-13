@@ -20,7 +20,8 @@ add('shared_dirs', [
     'public/uploads/gpx',
     'public/uploads/images',
     'public/uploads/incoming',
-    'public/media'
+    'public/media',
+    'public/bin'
 ]);
 
 // Writable dirs by web server 
