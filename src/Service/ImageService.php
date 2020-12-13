@@ -34,12 +34,16 @@ class ImageService {
     /** @var Reader */
     private $reader;
 
+    /** @var string */
+    private $imagesDirectory;
+
     public function __construct(
         UploaderHelper $uploaderHelper,
         CacheManager $imagineCacheManager,
         UrlGeneratorInterface $router,
         LoggerInterface $logger,
         WanderRepository $wanderRepository,
+        string $imagesDirectory,
         ?string $exiftoolPath)
     {
         $this->uploaderHelper = $uploaderHelper;
@@ -47,6 +51,7 @@ class ImageService {
         $this->router = $router;
         $this->logger = $logger;
         $this->wanderRepository = $wanderRepository;
+        $this->imagesDirectory = $imagesDirectory;
         $this->exiftoolPath = $exiftoolPath;
 
         if ($exiftoolPath !== null) {
@@ -69,11 +74,11 @@ class ImageService {
         $image->setImageShowUri($this->router->generate('image_show', ['id' => $image->getId()]));
     }
 
-    public function setPropertiesFromEXIF(Image $image): void
+    public function setPropertiesFromEXIF(Image $image, bool $updateRelatedWanders = true): void
     {
         if ($image->getMimeType() == 'image/jpeg') {
             try {
-                $exif = $this->reader->read($image->getImageFile()->getPathname());
+                $exif = $this->reader->read($this->imagesDirectory . '/' . $image->getName());
 
                 $title = $exif->getTitle();
                 $description = $exif->getCaption();
@@ -109,9 +114,11 @@ class ImageService {
 
                     // We can also try and find an associated wander by looking for
                     // wanders whose timespan includes this image.
-                    $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
-                    foreach ($wanders as $wander) {
-                        $image->addWander($wander);
+                    if ($updateRelatedWanders) {
+                        $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
+                        foreach ($wanders as $wander) {
+                            $image->addWander($wander);
+                        }
                     }
                 }
                 if ($rating !== false) {

@@ -63,7 +63,7 @@ class ImageController extends AbstractController
     public function upload(
         Request $request,
         SerializerInterface $serializer,
-        string $gpxDirectory
+        string $gpxDirectory // TODO Fix this; it should be using the image uploads directory
         ): Response
     {
         if ($request->isMethod('POST')) {
