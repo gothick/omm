@@ -22,6 +22,14 @@ class GeneralRuntime implements RuntimeExtensionInterface
         return $interval->format('%H:%I:%S');
     }
 
+    public function starRating(?int $rating): string
+    {
+        if (is_int($rating) && $rating >= 0) {
+            return str_repeat('★', $rating);
+        }
+        return "No rating";
+    }
+
     public function formatMetricBytes(int $bytes, string $format = null): string
     {
         return Metric::bytes($bytes)->format($format);

@@ -24,6 +24,9 @@
                 <td class="text-break">{{ image.description |striptags|markdown }}</td>
             </tr>
             <tr>
+                <th>Rating</th>
+                <td>{{ image.rating | star_rating }}</td>
+            <tr>
                 <th>SizeInBytes</th>
                 <td>{{ image.sizeInBytes }}</td>
             </tr>

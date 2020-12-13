@@ -25,19 +25,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  order={"capturedAt"="ASC"},
  *  paginationEnabled=false
  * )
- * 
+ *
  * @ApiFilter(SearchFilter::class, properties={"wanders": "exact"})
- * @ApiFilter(ExistsFilter::class, properties={"latlng"})     
+ * @ApiFilter(ExistsFilter::class, properties={"latlng"})
  *
  * @ORM\Entity(repositoryClass=ImageRepository::class)
- * 
+ *
  * @ORM\EntityListeners({
  *     ImageCalculatedFieldSetterListener::class
  * })
- * 
+ *
  * This is just to control the stuff that goes back from our one controller
  * action that returns a JSON response, ImageController::upload
- * 
+ *
  * @Vich\Uploadable
  */
 
@@ -47,15 +47,15 @@ class Image
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $id;
 
-    // TODO: We probably don't want this massive field being returned 
+    // TODO: We probably don't want this massive field being returned
     // as part of any API response, etc.
     /**
-     * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes", 
+     * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes",
      *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
      *
      * @Ignore()
@@ -64,58 +64,58 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $name; // For Vich, not for us. We use Title.
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $sizeInBytes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $originalName;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $dimensions = [];
 
     /**
      * @ORM\Column(type="datetime")
-     * 
+     *
      * @Groups({"image:list", "image:item"})
-     * 
+     *
      * @var \DateTimeInterface|null
      */
     private $updatedAt;
@@ -129,29 +129,35 @@ class Image
      *      maxMessage = "There must be exactly two numbers in a latitude/longitude pair",
      *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair."
      * )
-     * 
+     *
      * @Groups({"image:list", "image:item"})
-     * 
+     *
      */
     private $latlng = [];
 
     /**
      * @ORM\Column(type="array", nullable=true, )
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $keywords = [];
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * 
+     *
      * @Groups({"image:list", "image:item"})
      */
     private $capturedAt;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"image:list", "image:item"})
+     */
+    private $rating;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Wander::class, mappedBy="images")
-     * 
+     *
      * @Ignore()
      */
     private $wanders;
@@ -180,7 +186,7 @@ class Image
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
-    
+
     /**
      * @Ignore()
      */
@@ -352,18 +358,31 @@ class Image
         return $this;
     }
 
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?int $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+
     /* Computed (set up by Doctrine postLoad listener) */
-    
+
     /**
      * @Groups({"image:list", "image:item"})
      */
     private $imageUri;
-    
+
     /**
      * @Groups({"image:list", "image:item"})
      */
     private $markerImageUri;
-  
+
     /**
      * @Groups({"image:list", "image:item"})
      */
@@ -372,35 +391,36 @@ class Image
     /**
      * @Groups({"image:list", "image:item"})
      */
-    private $imageShowUri;    
-    
+    private $imageShowUri;
+
+
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
     }
-    
-    public function getImageUri(): ?string { 
+
+    public function getImageUri(): ?string {
         return $this->imageUri;
     }
 
     public function setMarkerImageUri($markerImageUri) {
         $this->markerImageUri = $markerImageUri;
     }
-    public function getMarkerImageUri(): ?string { 
+    public function getMarkerImageUri(): ?string {
         return $this->markerImageUri;
     }
 
     public function setMediumImageUri($mediumImageUri) {
         $this->mediumImageUri = $mediumImageUri;
     }
-    public function getMediumImageUri(): ?string { 
+    public function getMediumImageUri(): ?string {
         return $this->mediumImageUri;
     }
 
     public function setImageShowUri($imageShowUri) {
         $this->imageShowUri = $imageShowUri;
     }
-    public function getImageShowUri(): ?string { 
+    public function getImageShowUri(): ?string {
         return $this->imageShowUri;
-    }    
+    }
 }
 

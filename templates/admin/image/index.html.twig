@@ -26,6 +26,7 @@
             Captured At: {{ image.capturedAt ? image.capturedAt|date('Y-m-d H:i:s') : '' }}<br/>
             Size (bytes): {{ image.sizeInBytes }}<br/>
             MIME type: {{ image.mimeType }}<br/>
+            Rating: {{ image.rating | star_rating }}<br/>
         </div>
         <div class="col image-details small">
             Original Name: {{ image.originalName }}<br/>
