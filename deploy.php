@@ -21,7 +21,7 @@ add('shared_dirs', [
     'public/uploads/images',
     'public/uploads/incoming',
     'public/media',
-    'bin'
+    'php_external_tools_bin'
 ]);
 
 // Writable dirs by web server 
