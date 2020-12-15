@@ -61,7 +61,7 @@ class UpdateImagesFromExifCommand extends Command
         }
         $this->entityManager->flush();
         $progressBar->finish();
-
+        $output->writeln("\nImages updated.");
         return Command::SUCCESS;
     }
 }
