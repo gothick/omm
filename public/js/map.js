@@ -112,14 +112,23 @@ function addAllWanders(map)
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
-            track.on('ready', function() {
-                track.bringToFront();
-            });
             track.wander_id = wander.id;
-
             track.addTo(map);
             if (isLastWander) {
                 currentlySelected = track;
+                track.on('ready', function() {
+                    track.bringToFront();
+                });
+            } else {
+                track.on('ready', function() {
+                    // Our layers load asynchonously, and I can't find an event
+                    // that fires once all our geoJSON layers are loaded, so the
+                    // above bringToFront() for the most recent wander might
+                    // fire before other layers load. This is a bit of a hack to
+                    // send any layers that load later to the back, keeping the
+                    // most recent wander at the front.
+                    track.bringToBack();
+                });
             }
         });
     });
