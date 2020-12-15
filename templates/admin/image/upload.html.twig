@@ -10,7 +10,7 @@
     <h1>Upload Images</h1>
     <div class="diskspace">
         <div>Disk space used: {{ disk.used | format_bytes }} / {{ disk.total | format_bytes }} total
-         (<span class="diskusagepercent">{{ disk.percent | format_percent_number }})</span>
+         (<span class="diskusagepercent">{{ disk.percent | format_percent_number }}</span>)
         <br />
         <div class="bargraph mb-4">
             <div class="bar">
@@ -25,7 +25,7 @@
         enctype="multipart/form-data" class="dropzone">
         <input type="hidden" name="token" value="{{ csrf_token('image_upload') }}"/>
     </form>
-    
+
     <div class="mt-2"><a href="{{ path('admin_images_index') }}">back to list</a></div>
 {% endblock %}
 {% block javascripts %}
