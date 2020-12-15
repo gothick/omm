@@ -112,6 +112,9 @@ function addAllWanders(map)
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
+            track.on('ready', function() {
+                track.bringToFront();
+            });
             track.wander_id = wander.id;
 
             track.addTo(map);
