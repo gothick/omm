@@ -6,6 +6,7 @@ use App\Entity\Wander;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,10 +21,23 @@ class WanderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Wander::class);
     }
-    
+
     public function findAll()
     {
         return $this->findBy(array(), array('startTime' => 'DESC'));
+    }
+
+    public function standardQueryBuilder() {
+        return $this->createQueryBuilder('w')
+            ->orderBy('w.startTime');
+    }
+
+    public function addWhereHasImages(QueryBuilder $qb, ?bool $hasImages = null)
+    {
+        if ($hasImages !== null) {
+            return $qb->andWhere('w.images is ' . ($hasImages ? 'not' : '') . ' empty');
+        }
+        return $qb;
     }
 
     public function findWhereIncludesDate(DateTimeInterface $target)
@@ -35,6 +49,7 @@ class WanderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 
 
     // /**

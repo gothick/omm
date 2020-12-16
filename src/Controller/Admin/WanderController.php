@@ -24,11 +24,32 @@ class WanderController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(WanderRepository $wanderRepository): Response
+    public function index(Request $request, WanderRepository $wanderRepository): Response
     {
         // TODO: Try pagination
+
+        /*
+        if ($request->query->has('hasImages')) {
+            $request->query->getBoolean('filterHasImages');
+
+        }
+        */
+
+        $qb = $wanderRepository
+            ->standardQueryBuilder();
+
+        if ($request->query->has('hasImages')) {
+            $filterHasImages = $request->query->getBoolean('hasImages');
+            $wanderRepository->addWhereHasImages($qb, $filterHasImages);
+        }
+
+        $wanders = $qb
+            ->getQuery()
+            ->getResult();
+
+
         return $this->render('admin/wander/index.html.twig', [
-            'wanders' => $wanderRepository->findAll(),
+            'wanders' => $wanders,
         ]);
     }
 
@@ -38,7 +59,7 @@ class WanderController extends AbstractController
     public function new(Request $request, SluggerInterface $slugger, GpxService $gpxService) : Response {
         $wander = new Wander();
         // https://symfony.com/doc/current/controller/upload_file.html
-        
+
         $form = $this->createForm(WanderType::class, $wander, ['type' => 'new']);
 
         $form->handleRequest($request);
@@ -46,7 +67,7 @@ class WanderController extends AbstractController
 
             /** @var UploadedFile $gpxFile */
             $gpxFile = $form->get('gpxFilename')->getData();
-            
+
             if ($gpxFile) {
                 $originalFilename = pathinfo($gpxFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -62,7 +83,7 @@ class WanderController extends AbstractController
                 }
                 $wander->setGpxFilename($newFilename);
             }
-            
+
             $wander = $form->getData();
             $gpxService->updateWanderStatsFromGpx($wander);
 
@@ -74,7 +95,7 @@ class WanderController extends AbstractController
 
         return $this->render('admin/wander/new.html.twig', [
             'form' => $form->createView(),
-        ]);    
+        ]);
     }
 
     /**

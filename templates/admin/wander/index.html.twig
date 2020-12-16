@@ -5,7 +5,20 @@
 {% block body %}
     <h1>Wanders ({{ wanders|length }})</h1>
 
-    <p><a href="{{ path('admin_wanders_new') }}">Create new Wander</a></p>
+    <div class="row">
+        <div class="col">
+            <p><a href="{{ path('admin_wanders_new') }}">Create new Wander</a></p>
+        </div>
+        <div class="col text-right">
+            Filters:
+            <a href="{{ path('admin_wanders_index', { hasImages: false }) }}">No images</a>
+            :
+            <a href="{{ path('admin_wanders_index', { hasImages: true }) }}">Images</a>
+            :
+            <a href="{{ path('admin_wanders_index') }}">Clear</a>
+        </div>
+    </div>
+
 
     <table class="table">
         <thead>
@@ -28,7 +41,8 @@
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i:s') : '' }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i:s') : '' }}</td>
                 <td>{{ wander.images.count }}</td>
-                <td>{{ wander.description|striptags|markdown }}</td>
+                {#<td>{{ wander.description|striptags|markdown }}</td>#}
+                <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>
                     <a href="{{ path('admin_wanders_show', {'id': wander.id}) }}">show</a>
