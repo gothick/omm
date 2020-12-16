@@ -1,6 +1,6 @@
 ip: 192.168.10.63
-memory: 2048
-cpus: 2
+memory: 4096
+cpus: 4
 provider: virtualbox
 authorize: ~/.ssh/id_rsa.pub
 keys:
