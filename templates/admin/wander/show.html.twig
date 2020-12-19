@@ -8,7 +8,7 @@
 {% block body %}
     <h1>Wander</h1>
     <p>
-    <a href="{{ path('admin_wanders_index') }}">back to list</a> | 
+    <a href="{{ path('admin_wanders_index') }}">back to list</a> |
     <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a>
     </p>
 
@@ -32,11 +32,11 @@
             </tr>
             <tr>
                 <th>StartTime</th>
-                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s T') : '' }}</td>
             </tr>
             <tr>
                 <th>EndTime</th>
-                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('Y-m-d H:i:s T') : '' }}</td>
             </tr>
             <tr>
                 <th>Distance</th>
@@ -91,9 +91,9 @@
         <div class="col-sm">
             {% if image.id is defined %}
             <a href="{{ path('admin_images_show', {'id': image.id}) }}">
-                <img 
-                    class="img-fluid" 
-                    src="{{ vich_uploader_asset(image) }}" 
+                <img
+                    class="img-fluid"
+                    src="{{ vich_uploader_asset(image) }}"
                     alt="{{ image.title }}"  {# TODO: What happens if this title has double quotes? #}
                     srcset="{{ image | srcset }}"
                 />

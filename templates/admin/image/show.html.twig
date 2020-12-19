@@ -24,6 +24,9 @@
                 <td class="text-break">{{ image.description |striptags|markdown }}</td>
             </tr>
             <tr>
+                <th>Captured Time</th>
+                <td>{{  image.capturedAt |date('d M Y H:i T')  }}
+            <tr>
                 <th>Rating</th>
                 <td>{{ image.rating | star_rating }}</td>
             <tr>

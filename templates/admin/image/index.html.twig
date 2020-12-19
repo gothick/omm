@@ -23,7 +23,7 @@
         </div>
         <div class="col image-details small">
             Title: {{ image.title }}<br/>
-            Captured At: {{ image.capturedAt ? image.capturedAt|date('Y-m-d H:i:s') : '' }}<br/>
+            Captured At: {{ image.capturedAt ? image.capturedAt|date('Y-m-d H:i:s T') : '' }}<br/>
             Size (bytes): {{ image.sizeInBytes }}<br/>
             MIME type: {{ image.mimeType }}<br/>
             Rating: {{ image.rating | star_rating }}<br/>
@@ -33,7 +33,7 @@
             Keywords: {{ image.Keywords|join(', ') }}<br/>
             Dimensions: {{ image.dimensions|join('x') }}<br/>
             Co-ordinates: {{ image.latlng|join(', ') }}<br/>
-            Late Updated: {{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s') : '' }}<br/>
+            Late Updated: {{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s T') : '' }}<br/>
         </div>
         <div class="col-1">
             <a href="{{ path('admin_images_show', {'id': image.id}) }}">show</a><br/>
