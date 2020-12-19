@@ -27,7 +27,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if (is_int($rating) && $rating >= 0) {
             return str_repeat('★', $rating);
         }
-        return "No rating";
+        return "-";
     }
 
     public function formatMetricBytes(int $bytes, string $format = null): string
