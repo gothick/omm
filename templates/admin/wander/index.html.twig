@@ -21,7 +21,7 @@
     <table class="table sortable">
         <thead>
             <tr>
-                <th {% if pagination.isSorted('w.id') %} class="sorted"{% endif %}>
+                <th width="80px" {% if pagination.isSorted('w.id') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'Id', 'w.id') }}</th>
                 <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'Title', 'w.title') }}</th>
@@ -29,7 +29,7 @@
                     {{ knp_pagination_sortable(pagination, 'Start Time', 'w.startTime') }}</th>
                 <th {% if pagination.isSorted('w.endTime') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'End Time', 'w.endTime') }}</th>
-                <th {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
+                <th width="150px" {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'Image Count', 'imageCount') }}</th>
                 <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
@@ -44,8 +44,8 @@
             <tr>
                 <td>{{ wander.id }}</td>
                 <td>{{ wander.title }}</td>
-                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i:s') : '' }}</td>
-                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i:s') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i') : '' }}</td>
+                <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i') : '' }}</td>
                 <td>{{ wander.images.count }}</td>
                 {#<td>{{ wander.description|striptags|markdown }}</td>#}
                 <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
