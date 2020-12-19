@@ -14,17 +14,17 @@
         <div class="col-2">
             Image
         </div>
-        <div class="col-2 image-description text-break">
-            Title &amp; Description
+        <div class="col-2 image-description text-break{% if pagination.isSorted('i.title') %} sorted{% endif %}">
+            {{ knp_pagination_sortable(pagination, 'Title & Description', 'i.title') }}
         </div>
-        <div class="col">
-            Captured At
+        <div class="col {% if pagination.isSorted('i.capturedAt') %} sorted{% endif %}">
+            {{ knp_pagination_sortable(pagination, 'Captured At', 'i.capturedAt') }}
         </div>
-        <div class="col">
-            File Size
+        <div class="col {% if pagination.isSorted('i.sizeInBytes') %} sorted{% endif %}">
+            {{ knp_pagination_sortable(pagination, 'File Size', 'i.sizeInBytes') }}
         </div>
-        <div class="col">
-            Rating
+        <div class="col {% if pagination.isSorted('i.rating') %} sorted{% endif %}">
+            {{ knp_pagination_sortable(pagination, 'Rating', 'i.rating') }}
         </div>
         <div class="col image-details text-break d-none d-lg-block">
             Details
@@ -60,8 +60,11 @@
             <strong>Original Name</strong>: {{ image.originalName }}<br/>
             <strong>Keywords</strong>: {{ image.Keywords|join(', ') }}<br/>
             <strong>Dimensions</strong>: {{ image.dimensions|join('x') }}<br/>
-            <strong>Co-ordinates</strong>: {{ image.latlng|join(', ') }}<br/>
-            <strong>Late Updated</strong>: {{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s T') : '' }}<br/>
+            <strong>Co-ordinates</strong>:
+                <a href="https://www.google.com/maps/search/?api=1&amp;query={{ image.latlng|join(',') }}">
+                    {{ image.latlng|join(', ') }}
+                </a><br/>
+            <strong>Last Updated</strong>: {{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s T') : '' }}<br/>
         </div>
         <div class="col-1">
             <a href="{{ path('admin_images_show', {'id': image.id}) }}">show</a><br/>
@@ -82,4 +85,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{# The Knp Paginator uses Font Awesome for its sorting icons in the header #}
+<script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
 {% endblock %}
