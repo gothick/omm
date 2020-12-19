@@ -29,7 +29,7 @@ class WanderRepository extends ServiceEntityRepository
 
     public function standardQueryBuilder() {
         return $this->createQueryBuilder('w')
-            ->orderBy('w.startTime');
+            ->orderBy('w.startTime', 'desc');
     }
 
     public function addWhereHasImages(QueryBuilder $qb, ?bool $hasImages = null)

@@ -18,8 +18,6 @@
             <a href="{{ path('admin_wanders_index') }}">Clear</a>
         </div>
     </div>
-
-
     <table class="table sortable">
         <thead>
             <tr>
@@ -31,15 +29,18 @@
                     {{ knp_pagination_sortable(pagination, 'Start Time', 'w.startTime') }}</th>
                 <th {% if pagination.isSorted('w.endTime') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'End Time', 'w.endTime') }}</th>
-                <th>Images</th> {# TODO: Allow sorting by image count? #}
+                <th {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Image Count', 'imageCount') }}</th>
                 <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
                     {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
-                <th>GpxFilename</th>
+                <th {% if pagination.isSorted('w.gpxFilename') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'GPX Filename', 'w.gpxFilename') }}</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for wander in pagination %}
+        {% for results in pagination %}
+            {% set wander = results.wander %}
             <tr>
                 <td>{{ wander.id }}</td>
                 <td>{{ wander.title }}</td>

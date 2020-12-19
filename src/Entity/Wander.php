@@ -19,18 +19,18 @@ use Carbon\CarbonInterval;
 
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
- * 
+ *
  * @ORM\EntityListeners({
  *  WanderUploadListener::class, App\EventListener\WanderDeleteListener::class
  * })
- * 
+ *
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
  *  order={"endTime"="ASC"},
  *  paginationEnabled=false
  * )
- * 
+ *
  */
 class Wander
 {
@@ -38,49 +38,49 @@ class Wander
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=1024)
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $endTime;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      */
     private $gpxFilename;
 
     /**
      * @ORM\ManyToMany(targetEntity=Image::class, inversedBy="wanders")
-     * 
+     *
      * @Groups({"wander:list", "wander:item"})
      * @ApiSubresource
      */
@@ -90,7 +90,7 @@ class Wander
      * @ORM\Column(type="float", nullable=true)
      *
      * Distance walked, in metres.
-     * 
+     *
      */
     private $distance;
 
@@ -306,7 +306,7 @@ class Wander
         if (!isset($this->startTime, $this->endTime)) {
             return null;
         }
-        
+
         $difference = CarbonInterval::instance($this->startTime->diff($this->endTime));
         return $difference;
     }
@@ -315,5 +315,15 @@ class Wander
     {
         // TODO: I have no idea if this ?? actually does what I'm expecting. Test.
         return $this->getDuration()->totalSeconds ?? null;
+    }
+
+    // Utilities
+
+    // TODO: Put this in but didn't use it in the end; maybe I don't need it
+    // as in Twig we can use wander.images.count anyway. Take out?
+    public function getImageCount(): int
+    {
+        // https://stackoverflow.com/a/8511611/300836
+        return $this->images->count();
     }
 }

@@ -31,19 +31,16 @@ class WanderController extends AbstractController
         PaginatorInterface $paginator
         ): Response
     {
-        // TODO: Try pagination
-
-        /*
-        if ($request->query->has('hasImages')) {
-            $request->query->getBoolean('filterHasImages');
-
-        }
-        */
-
         $filterHasImages = null;
 
+        // Customise the query to add an imageCount built-in so we can efficiently
+        // (and at all :) ) sort it in our paginator.
         $qb = $wanderRepository
-            ->standardQueryBuilder();
+            ->standardQueryBuilder()
+            ->select('w AS wander')
+            ->addSelect('COUNT(i) AS imageCount')
+            ->leftJoin('w.images', 'i')
+            ->groupBy('w');
 
         if ($request->query->has('hasImages')) {
             $filterHasImages = $request->query->getBoolean('hasImages');
@@ -57,7 +54,6 @@ class WanderController extends AbstractController
             $request->query->getInt('page', 1),
             20
         );
-
 
         return $this->render('admin/wander/index.html.twig', [
             'pagination' => $pagination,
