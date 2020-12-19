@@ -8691,16 +8691,16 @@
     "packages-dev": [
         {
             "name": "deployer/deployer",
-            "version": "v7.0.0-beta.11",
+            "version": "v7.0.0-beta.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "799889806858eab0c07c1dfc47552abf837a96b8"
+                "reference": "0719f9c461aa0961b72650315bcb390c88aa975f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/799889806858eab0c07c1dfc47552abf837a96b8",
-                "reference": "799889806858eab0c07c1dfc47552abf837a96b8",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/0719f9c461aa0961b72650315bcb390c88aa975f",
+                "reference": "0719f9c461aa0961b72650315bcb390c88aa975f",
                 "shasum": ""
             },
             "require": {
@@ -8753,7 +8753,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-11-20T21:55:37+00:00"
+            "time": "2020-12-18T19:30:44+00:00"
         },
         {
             "name": "evenement/evenement",
