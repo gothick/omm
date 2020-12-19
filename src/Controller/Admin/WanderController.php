@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/admin/wanders", name="admin_wanders_")
@@ -24,7 +25,11 @@ class WanderController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(Request $request, WanderRepository $wanderRepository): Response
+    public function index(
+        Request $request,
+        WanderRepository $wanderRepository,
+        PaginatorInterface $paginator
+        ): Response
     {
         // TODO: Try pagination
 
@@ -35,6 +40,8 @@ class WanderController extends AbstractController
         }
         */
 
+        $filterHasImages = null;
+
         $qb = $wanderRepository
             ->standardQueryBuilder();
 
@@ -43,13 +50,18 @@ class WanderController extends AbstractController
             $wanderRepository->addWhereHasImages($qb, $filterHasImages);
         }
 
-        $wanders = $qb
-            ->getQuery()
-            ->getResult();
+        $query = $qb->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            20
+        );
 
 
         return $this->render('admin/wander/index.html.twig', [
-            'wanders' => $wanders,
+            'pagination' => $pagination,
+            'filter_has_images' => $filterHasImages
         ]);
     }
 

@@ -3,7 +3,7 @@
 {% block title %}Wanders{% endblock %}
 
 {% block body %}
-    <h1>Wanders ({{ wanders|length }})</h1>
+    <h1>Wanders ({{ pagination.getTotalItemCount }})</h1>
 
     <div class="row">
         <div class="col">
@@ -11,30 +11,35 @@
         </div>
         <div class="col text-right">
             Filters:
-            <a href="{{ path('admin_wanders_index', { hasImages: false }) }}">No images</a>
+            <a class="{% if filter_has_images is same as(false) %} font-weight-bold {% endif %}" href="{{ path('admin_wanders_index', { hasImages: false }) }}">No images</a>
             :
-            <a href="{{ path('admin_wanders_index', { hasImages: true }) }}">Images</a>
+            <a class="{% if filter_has_images is same as(true) %} font-weight-bold {% endif %}" href="{{ path('admin_wanders_index', { hasImages: true }) }}">Images</a>
             :
             <a href="{{ path('admin_wanders_index') }}">Clear</a>
         </div>
     </div>
 
 
-    <table class="table">
+    <table class="table sortable">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>StartTime</th>
-                <th>EndTime</th>
-                <th>Images</th>
-                <th>Description</th>
+                <th {% if pagination.isSorted('w.id') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Id', 'w.id') }}</th>
+                <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Title', 'w.title') }}</th>
+                <th {% if pagination.isSorted('w.startTime') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Start Time', 'w.startTime') }}</th>
+                <th {% if pagination.isSorted('w.endTime') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'End Time', 'w.endTime') }}</th>
+                <th>Images</th> {# TODO: Allow sorting by image count? #}
+                <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
                 <th>GpxFilename</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for wander in wanders %}
+        {% for wander in pagination %}
             <tr>
                 <td>{{ wander.id }}</td>
                 <td>{{ wander.title }}</td>
@@ -56,6 +61,17 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <div class="navigation my-2">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
 
 
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
 {% endblock %}
