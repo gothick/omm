@@ -51,8 +51,9 @@
                 <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
                 <td>{{ wander.gpxFilename }}</td>
                 <td>
-                    <a href="{{ path('admin_wanders_show', {'id': wander.id}) }}">show</a>
-                    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a>
+                    <a href="{{ path('admin_wanders_show', {'id': wander.id}) }}">details</a><br/>
+                    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a><br/>
+                    <a href="{{ path('wanders_show', {'id': wander.id}) }}">public&nbsp;page</a>
                 </td>
             </tr>
         {% else %}

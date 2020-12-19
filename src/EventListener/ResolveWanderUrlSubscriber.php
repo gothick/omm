@@ -49,14 +49,14 @@ final class ResolveWanderUrlSubscriber implements EventSubscriberInterface
         if (!is_iterable($wanders)) {
             $wanders = [$wanders];
         }
-        
+
         foreach ($wanders as $wander) {
-            
+
             if (!$wander instanceof Wander) {
                 continue;
             }
             $wander->contentUrl = $this->router->generate(
-                    'wander_show', 
+                    'wanders_show',
                     ['id' => $wander->getId()]
             );
         }
