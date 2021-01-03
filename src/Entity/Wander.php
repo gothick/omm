@@ -326,4 +326,13 @@ class Wander
         // https://stackoverflow.com/a/8511611/300836
         return $this->images->count();
     }
+
+    public function __toString():string
+    {
+        $result = $this->title ?? '';
+        if (isset($this->startTime)) {
+            $result .= ' (' . $this->startTime->format('j M Y') . ')';
+        }
+        return $result;
+    }
 }

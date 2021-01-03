@@ -3,8 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Image;
+use App\Entity\Wander;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,6 +26,15 @@ class ImageType extends AbstractType
             ->add('title', TextType::class)
             ->add('description', TextareaType::class, [
                 'attr' => ['rows' => 10]
+            ])
+            ->add('wanders', EntityType::class, [
+                'class' => Wander::class,
+                'multiple' => true,
+                'by_reference' => false, // https://stackoverflow.com/a/35765987/300836
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('w')
+                        ->orderBy('w.startTime', 'DESC');
+                }
             ])
             ->add('latlng', TextType::class)
             ->add('keywords', TextType::class)

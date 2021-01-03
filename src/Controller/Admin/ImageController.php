@@ -133,10 +133,9 @@ class ImageController extends AbstractController
     {
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            //dd($form);
             return $this->redirectToRoute('admin_images_show', ['id' => $image->getId()]);
         }
 
