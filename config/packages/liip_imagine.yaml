@@ -27,38 +27,47 @@ liip_imagine:
                     dim: [600, 600]
         # TODO: Do these srcset_filters need the quality setting on them? How large are our images? What does 75% look like?
         srcset_144:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 144
         srcset_288:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 288
         srcset_420:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 420
         srcset_576:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 576
         srcset_720:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 720
         srcset_840:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 840
         srcset_960:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 960
         srcset_1152:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 1152
         srcset_1440:
+            quality: 75
             filters:
                 relative_resize:
                     widen: 1440
