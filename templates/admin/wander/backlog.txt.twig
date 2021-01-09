@@ -1,0 +1,3 @@
+{% for wander in wanders %}
+- Process photos from {{ wander.startTime ? wander.startTime|date('jS M Y') : '' }} ({{ wander.title }}, wander {{wander.id}}) @context(Technology : Mac)
+{% endfor %}

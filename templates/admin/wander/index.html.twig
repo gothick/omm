@@ -9,6 +9,9 @@
         <div class="col">
             <p><a href="{{ path('admin_wanders_new') }}">Create new Wander</a></p>
         </div>
+        <div class="col">
+            <p><a href="{{ path('admin_wanders_backlog') }}">Show Backlog as Taskpaper</a></p>
+        </div>
         <div class="col text-right">
             Filters:
             <a class="{% if filter_has_images is same as(false) %} font-weight-bold {% endif %}" href="{{ path('admin_wanders_index', { hasImages: false }) }}">No images</a>

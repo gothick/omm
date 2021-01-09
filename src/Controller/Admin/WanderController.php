@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
+use Doctrine\ORM\Mapping\OrderBy;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
@@ -59,6 +60,30 @@ class WanderController extends AbstractController
             'pagination' => $pagination,
             'filter_has_images' => $filterHasImages
         ]);
+    }
+
+    /**
+     * @Route("/backlog", name="backlog", methods={"GET"})
+     */
+    public function backlog(
+        Request $request,
+        WanderRepository $wanderRepository
+    ): Response
+    {
+        $qb = $wanderRepository
+            ->standardQueryBuilder()
+            ->OrderBy('w.startTime');
+        $wanderRepository->addWhereHasImages($qb, false);
+        $wanders = $qb->getQuery()->getResult();
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/plain');
+        return $this->render(
+            'admin/wander/backlog.txt.twig',
+            [
+                'wanders' => $wanders
+            ],
+            $response
+        );
     }
 
     /**
