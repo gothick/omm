@@ -28,8 +28,8 @@ class StatsService
     private $entityManager;
 
     public function __construct(
-        ImageRepository $imageRepository, 
-        WanderRepository $wanderRepository, 
+        ImageRepository $imageRepository,
+        WanderRepository $wanderRepository,
         TagAwareCacheInterface $cache,
         EntityManagerInterface $entityManager)
     {
@@ -38,13 +38,13 @@ class StatsService
         $this->cache = $cache;
         $this->entityManager = $entityManager;
     }
-    
+
     public function getImageStats(): array
     {
         $stats = $this->cache->get('image_stats', function(ItemInterface $item) {
             $item->tag('stats');
             $imageStats = $this->imageRepository
-                ->createQueryBuilder('i') 
+                ->createQueryBuilder('i')
                 ->select('COUNT(i.id) as totalCount')
                 ->addSelect('COUNT(i.latlng) as countWithCoords')
                 ->addSelect('COUNT(i.title) as countWithTitle')
@@ -61,7 +61,7 @@ class StatsService
         $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {
             $item->tag('stats');
             $wanderStats = $this->wanderRepository
-                ->createQueryBuilder('w') 
+                ->createQueryBuilder('w')
                 ->select('COUNT(w.id) as totalCount')
                 ->addSelect('COUNT(w.title) as countWithTitle')
                 ->addSelect('COUNT(w.description) as countWithDescription')
@@ -70,6 +70,8 @@ class StatsService
                 ->addSelect('COALESCE(SUM(w.cumulativeElevationGain), 0) as totalCumulativeElevationGain')
                 ->getQuery()
                 ->getOneOrNullResult();
+
+            $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
 
             // Doctrine doesn't support calculating a difference
             // in seconds from two datetime values via ORM. Let's
@@ -86,7 +88,19 @@ class StatsService
             $wanderStats['totalDurationForHumans'] = $interval->forHumans([
                     'short' => true
                 ]);
-            
+
+            // Set up defaults for average, in case we have no wanders
+            $wanderStats['averageWanderDuration'] = 0;
+            $wanderStats['averageWanderDurationForHumans'] = '0s';
+
+            if ($wanderStats['hasWanders']) { // Avoid divide by zero
+                $interval = CarbonInterval::seconds($seconds / $wanderStats['totalCount'])->cascade();
+                $wanderStats['averageDuration'] = $interval;
+                $wanderStats['averageDurationForHumans'] = $interval->forHumans([
+                        'short' => true
+                    ]);
+            }
+
             $wanderStats['longestWanderDistance'] = $this->wanderRepository
                 ->createQueryBuilder('w')
                 ->select('w.id, w.distance')
@@ -94,7 +108,7 @@ class StatsService
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
-            
+
             $wanderStats['shortestWanderDistance'] = $this->wanderRepository
                 ->createQueryBuilder('w')
                 ->select('w.id, w.distance')
@@ -103,10 +117,15 @@ class StatsService
                 ->getQuery()
                 ->getOneOrNullResult();
 
-            $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
+            $wanderStats['averageWanderDistance'] = $this->wanderRepository
+                ->createQueryBuilder('w')
+                ->select('AVG(w.distance)')
+                ->getQuery()
+                ->getSingleScalarResult() ?? 0;
+
             return $wanderStats;
         });
-        
+
         return $stats;
     }
 }

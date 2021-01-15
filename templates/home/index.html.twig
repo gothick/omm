@@ -24,13 +24,12 @@
                         Longest: <a href="{{ path('wanders_show', {'id': wanderStats.longestWanderDistance.id }) }}">{{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}</a>
                     {% endif %}
                 </div>
-                {# Average distance
                 <div class="col">
                     {% if wanderStats.hasWanders %}
-                        Average: {{ ((wanderStats.totalDistance / wanderStats.totalCount) / 1000.0) | number_format(2) ~ 'km' }}
+                        Average Distance: {{ ((wanderStats.averageWanderDistance) / 1000.0) | number_format(2) ~ 'km' }}<br/>
+                        Average Duration: {{ wanderStats.averageDurationForHumans }}
                     {% endif %}
                 </div>
-                #}
             </div>
         </div>
     </div>

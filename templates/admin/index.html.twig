@@ -81,6 +81,18 @@
                             <a href="{{ path('admin_wanders_show', {'id': wanderStats.shortestWanderDistance.id }) }}">Wander {{ wanderStats.shortestWanderDistance.id }}</a>: {{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>Average Wander Length:</th>
+                        <td>
+                            {{ (wanderStats.averageWanderDistance / 1000.0) | number_format(2) ~ 'km' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Average Wander Duration:</th>
+                        <td>
+                            {{ wanderStats.averageDurationForHumans }}
+                        </td>
+                    </tr>
                     {% endif %}
                 </table>
             </div>
@@ -130,7 +142,7 @@
                 <form action="{{ path('admin_clear_stats_cache') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token('admin_clear_stats_cache') }}">
                     <button class="btn btn-info" type="submit" name="submit" value="submit" class="btn-link">Clear Stats Cache</button>
-                </form>            
+                </form>
             </div>
         </div>
     </div>
