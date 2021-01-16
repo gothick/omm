@@ -311,12 +311,6 @@ class Wander
         return $difference;
     }
 
-    public function getDurationSeconds(): ?int
-    {
-        // TODO: I have no idea if this ?? actually does what I'm expecting. Test.
-        return $this->getDuration()->totalSeconds ?? null;
-    }
-
     // Utilities
 
     // TODO: Put this in but didn't use it in the end; maybe I don't need it
