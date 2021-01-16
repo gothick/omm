@@ -19,7 +19,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index(ImageRepository $imageRepository, WanderRepository $wanderRepository, StatsService $statsService): Response
+    public function index(StatsService $statsService): Response
     {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
@@ -33,7 +33,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/clearStatsCache", name="clear_stats_cache")
      */
-    public function clearStatsCache(Request $request, TagAwareCacheInterface $cache) 
+    public function clearStatsCache(Request $request, TagAwareCacheInterface $cache)
     {
         if ($this->isCsrfTokenValid('admin_clear_stats_cache', $request->request->get('_token'))) {
             $cache->invalidateTags(['stats']);
