@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Backlog{% endblock %}
+
+{% block body %}
+    <h2>Processing Backlog ({{ wanders | length }})</h2>
+    <p><a href="{{ path('admin_wanders_backlog', { '_format': 'txt' }) }}">Taskpaper version</a></p>
+    <ul>
+    {% for wander in wanders %}
+        <li>{{ wander.startTime ? wander.startTime|date('jS M Y') : '' }} (<em>{{ wander.title }}</em>, wander {{wander.id}})</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+

@@ -63,7 +63,15 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/backlog", name="backlog", methods={"GET"})
+     * @Route(
+     *  "/backlog.{!_format}",
+     *  name="backlog",
+     *  methods={"GET"},
+     *  format="html",
+     *  requirements={
+     *      "_format": "html|txt"
+     *  }
+     * )
      */
     public function backlog(
         Request $request,
@@ -76,9 +84,9 @@ class WanderController extends AbstractController
         $wanderRepository->addWhereHasImages($qb, false);
         $wanders = $qb->getQuery()->getResult();
         $response = new Response();
-        $response->headers->set('Content-Type', 'text/plain');
+        $format = $request->getRequestFormat();
         return $this->render(
-            'admin/wander/backlog.txt.twig',
+            'admin/wander/backlog.'.$format.'.twig',
             [
                 'wanders' => $wanders
             ],
