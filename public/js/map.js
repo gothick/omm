@@ -1,7 +1,13 @@
 // TODO: Refactor the heck out of this mess
 
+/* LeafletJS and Omnivore */
+/** global: L */
+/** global: omnivore */
+
 var streetMap;
 var satelliteMap;
+
+
 var base = L.latLng(51.4511364, -2.6219148);
 
 function setUpMap(options)
@@ -92,7 +98,7 @@ function addAllWanders(map)
     $.getJSON("/api/wanders", function(data) {
         var last = data["hydra:totalItems"];
         $.each(data["hydra:member"], function(key, wander) {
-            isLastWander = (last - 1 == key);
+            var isLastWander = (last - 1 == key);
             var track = omnivore.gpx(wander.gpxFilename,
                     null,
                     new CustomGeoJSON(null, {
@@ -179,7 +185,7 @@ function addWander(map, wander_id, add_images)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
         var track = omnivore.gpx(wander.gpxFilename)
-            .bindPopup(function(layer) {
+            .bindPopup(function(/* layer */) {
                 return wander.title;
             })
             .addTo(map);
