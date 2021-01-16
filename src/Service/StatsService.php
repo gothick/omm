@@ -24,7 +24,7 @@ class StatsService
     /** @var TagAwareCacheInterface */
     private $cache;
 
-    /** @var EntityManager */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     public function __construct(
