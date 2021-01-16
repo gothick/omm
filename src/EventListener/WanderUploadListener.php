@@ -21,7 +21,7 @@ class WanderUploadListener
         $this->imageRepository = $imageRepository;
     }
 
-    public function prePersist(Wander $wander, LifecycleEventArgs $event): void
+    public function prePersist(Wander $wander, /** @scrutinizer ignore-unused */ LifecycleEventArgs $event): void
     {
         $startTime = $wander->getStartTime();
         $endTime = $wander->getEndTime();
