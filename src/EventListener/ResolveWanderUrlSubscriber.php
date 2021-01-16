@@ -6,14 +6,12 @@ namespace App\EventListener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
-use App\Entity\MediaObject;
 use App\Entity\Wander;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Vich\UploaderBundle\Storage\StorageInterface;
 
 final class ResolveWanderUrlSubscriber implements EventSubscriberInterface
 {
@@ -32,6 +30,8 @@ final class ResolveWanderUrlSubscriber implements EventSubscriberInterface
         ];
     }
 
+    // Add contentUrl property on Wander serialisation so it's available in
+    // our API.
     public function onPreSerialize(ViewEvent $event): void
     {
         $controllerResult = $event->getControllerResult();
