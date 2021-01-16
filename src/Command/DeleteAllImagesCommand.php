@@ -13,11 +13,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class DeleteAllImagesCommand extends Command
 {
     protected static $defaultName = 'images:delete';
-    
-    /** @var $imageRepository App\Repository\ImageRepository */
+
+    /** @var App\Repository\ImageRepository */
     private $imageRepository;
 
-    /** @var $entityManager Doctrine\ORM\EntityManagerInterface */
+    /** @var Doctrine\ORM\EntityManagerInterface */
     private $entityManager;
 
     public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager)
@@ -38,8 +38,8 @@ class DeleteAllImagesCommand extends Command
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete ALL images? ', false);
         if (!$helper->ask($input, $output, $question)) {
-            return Command::SUCCESS;
             $output->writeln('Aborting.');
+            return Command::SUCCESS; // Well, technically I think it's not a failure.
         }
 
         $images = $this->imageRepository->findAll();
@@ -57,6 +57,6 @@ class DeleteAllImagesCommand extends Command
         $progressBar->finish();
 
         return Command::SUCCESS;
-        
+
     }
 }
