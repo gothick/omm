@@ -37,6 +37,9 @@ class ImageService {
     /** @var string */
     private $imagesDirectory;
 
+    /** @var string */
+    private $exiftoolPath;
+
     public function __construct(
         UploaderHelper $uploaderHelper,
         CacheManager $imagineCacheManager,
