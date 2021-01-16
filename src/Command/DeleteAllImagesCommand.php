@@ -14,10 +14,10 @@ class DeleteAllImagesCommand extends Command
 {
     protected static $defaultName = 'images:delete';
 
-    /** @var App\Repository\ImageRepository */
+    /** @var ImageRepository */
     private $imageRepository;
 
-    /** @var Doctrine\ORM\EntityManagerInterface */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager)
