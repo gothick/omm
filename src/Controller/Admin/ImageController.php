@@ -73,22 +73,22 @@ class ImageController extends AbstractController
                 return $this->json([ 'error' => 'Invalid CSRF token'], 401);
             }
 
-            $files = $request->files->all();
-            foreach ($files as $file) {
+            $file = $request->files->get('file');
 
-                if ($file instanceof UploadedFile) {
-                    $image = new Image();
-                    $image->setImageFile($file);
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($image);
-                    $entityManager->flush();
-                    // It's not exactly an API response, but it'll do until we switch to handling this
-                    // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
-                    // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
-                    // image URIs in a postPersist event listener, this also contains everything you'd
-                    // need to build an image in HTML.
-                    return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
-                }
+            if ($file instanceof UploadedFile) {
+                $image = new Image();
+                $image->setImageFile($file);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($image);
+                $entityManager->flush();
+                // It's not exactly an API response, but it'll do until we switch to handling this
+                // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
+                // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
+                // image URIs in a postPersist event listener, this also contains everything you'd
+                // need to build an image in HTML.
+                return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
+            } else {
+                throw new HttpException(500, "No uploaded file found.");
             }
         }
         else
