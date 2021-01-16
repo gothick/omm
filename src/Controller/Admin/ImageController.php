@@ -114,18 +114,6 @@ class ImageController extends AbstractController
         ]);
     }
 
-    // TODO Remove responsiveTest once you're done playing
-    /**
-     * @Route("/responsive_test/{id}", name="responsive_test", methods={"GET"})
-     */
-    public function responsiveTest(Image $image, CacheManager $imagineCacheManager, FilterManager $filterManager, UploaderHelper $uploaderHelper): Response
-    {
-        return $this->render('admin/image/responsive_test.html.twig', [
-            'image' => $image
-        ]);
-    }
-
-
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
