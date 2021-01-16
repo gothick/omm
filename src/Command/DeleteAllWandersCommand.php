@@ -13,7 +13,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class DeleteAllWandersCommand extends Command
 {
     protected static $defaultName = 'wanders:delete';
-    
+
     /** @var WanderRepository */
     private $wanderRepository;
 
@@ -39,8 +39,8 @@ class DeleteAllWandersCommand extends Command
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete ALL wanders? ', false);
         if (!$helper->ask($input, $output, $question)) {
-            return Command::SUCCESS;
             $output->writeln('Aborting.');
+            return Command::SUCCESS;
         }
 
         $wanders = $this->wanderRepository->findAll();
@@ -58,6 +58,6 @@ class DeleteAllWandersCommand extends Command
         $progressBar->finish();
 
         return Command::SUCCESS;
-        
+
     }
 }
