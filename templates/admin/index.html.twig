@@ -138,6 +138,16 @@
     <div class="row">
         <div class="col">
             <div class="details">
+                <h2>Current Experiments</h2>
+                <ul>
+                    <li><a href="{{ path('admin_images_cluster') }}">All Images Clustering Experiment</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="details">
                 <h2>Utilities</h2>
                 <form action="{{ path('admin_clear_stats_cache') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token('admin_clear_stats_cache') }}">

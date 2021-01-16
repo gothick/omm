@@ -51,7 +51,7 @@ class ImageController extends AbstractController
     /**
      * @Route("/cluster", name="cluster", methods={"GET"})
      */
-    public function cluster(ImageRepository $imageRepository)
+    public function cluster()
     {
         return $this->render('admin/image/cluster.html.twig', [
         ]);
