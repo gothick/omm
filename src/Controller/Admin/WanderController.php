@@ -106,12 +106,12 @@ class WanderController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $gpxFile */
+            /** @var UploadedFile|null $gpxFile */
             $gpxFile = $form->get('gpxFilename')->getData();
 
             if ($gpxFile) {
                 $originalFilename = pathinfo($gpxFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
+                $safeFilename = $slugger->slug(/** @scrutinizer ignore-type */ $originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $gpxFile->guessExtension();
                 try {
                     $gpxFile->move(
@@ -144,11 +144,8 @@ class WanderController extends AbstractController
      */
     public function show(Wander $wander, ImageRepository $imageRepository): Response // Uses “param converter” to find the Wander in db through the {id}
     {
-        $images = $imageRepository->findBetweenDates($wander->getStartTime(), $wander->getEndTime());
-
         return $this->render('admin/wander/show.html.twig', [
             'wander' => $wander
-            //'images' => $images
         ]);
     }
 
