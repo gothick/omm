@@ -2,7 +2,6 @@
 
 var streetMap;
 var satelliteMap;
-var wgs84 = new GT_WGS84();
 var base = L.latLng(51.4511364, -2.6219148);
 
 function setUpMap(options)
