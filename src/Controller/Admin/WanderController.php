@@ -142,7 +142,7 @@ class WanderController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
-    public function show(Wander $wander, ImageRepository $imageRepository): Response // Uses “param converter” to find the Wander in db through the {id}
+    public function show(Wander $wander): Response // Uses “param converter” to find the Wander in db through the {id}
     {
         return $this->render('admin/wander/show.html.twig', [
             'wander' => $wander

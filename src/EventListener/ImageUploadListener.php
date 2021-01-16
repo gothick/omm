@@ -31,7 +31,6 @@ class ImageUploadListener
 
     public function onVichUploaderPostUpload(Event $event)
     {
-        /** @var \App\Entity\Image $object */
         $object = $event->getObject();
         if ($object instanceof Image) {
             $this->imageService->setPropertiesFromEXIF($object);
