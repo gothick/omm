@@ -21,7 +21,10 @@ class WanderDeleteListener
         $this->gpxService = $gpxService;
     }
 
-    public function postRemove(Wander $wander, LifecycleEventArgs $event): void
+    public function postRemove(
+            Wander $wander,
+            /** @scrutinizer ignore-unused */ LifecycleEventArgs $event
+        ): void
     {
         $path = $this->gpxService->getFullGpxFilePathFromWander($wander);
         if (file_exists($path)) {
