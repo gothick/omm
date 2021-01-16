@@ -15,7 +15,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class UpdateWanderStatsCommand extends Command
 {
     protected static $defaultName = 'wanders:stats:update';
-    
+
     /** @var WanderRepository */
     private $wanderRepository;
 
@@ -44,8 +44,8 @@ class UpdateWanderStatsCommand extends Command
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to update stats for all wanders? ', false);
         if (!$helper->ask($input, $output, $question)) {
-            return Command::SUCCESS;
             $output->writeln('Aborting.');
+            return Command::SUCCESS;
         }
 
         $wanders = $this->wanderRepository->findAll();
@@ -64,6 +64,6 @@ class UpdateWanderStatsCommand extends Command
         $progressBar->finish();
 
         return Command::SUCCESS;
-        
+
     }
 }

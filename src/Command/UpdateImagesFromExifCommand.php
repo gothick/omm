@@ -43,8 +43,8 @@ class UpdateImagesFromExifCommand extends Command
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to update properties (except related Wanders) for all images based on their EXIF data? ', false);
         if (!$helper->ask($input, $output, $question)) {
-            return Command::SUCCESS;
             $output->writeln('Aborting.');
+            return Command::SUCCESS;
         }
 
         $images = $this->imageRepository->findAll();
