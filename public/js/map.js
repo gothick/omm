@@ -184,7 +184,7 @@ function addWanderImages(map, wander_id) {
 function addWander(map, wander_id, add_images)
 {
     $.getJSON("/api/wanders/" + wander_id, function(wander) {
-        var track = omnivore.gpx(wander.gpxFilename)
+        omnivore.gpx(wander.gpxFilename)
             .bindPopup(function(/* layer */) {
                 return wander.title;
             })
