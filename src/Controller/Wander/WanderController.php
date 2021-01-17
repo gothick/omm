@@ -59,15 +59,16 @@ class WanderController extends AbstractController
      *  }
      * )
      */
-    public function feed(WanderRepository $wanderRepository): Response
+    public function feed(Request $request, WanderRepository $wanderRepository): Response
     {
         $qb = $wanderRepository
             ->standardQueryBuilder()
             ->setMaxResults(20);
 
         $wanders = $qb->getQuery()->getResult();
+        $format = $request->getRequestFormat();
 
-        return $this->render('wander/feed.rss2.twig', [
+        return $this->render('wander/feed.' . $format . '.twig', [
             'wanders' => $wanders
         ]);
     }
