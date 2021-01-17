@@ -7,7 +7,7 @@ use App\Entity\Settings;
 
 class SettingsService
 {
-    /* @var $settings App\Entity\Settings */
+    /** @var Settings */
     private $settings;
 
     public function __construct(SettingsRepository $settingsRepository)
@@ -22,16 +22,16 @@ class SettingsService
     // Helpers for Twig
     public function getSiteTitle() : string
     {
-        return $this->settings->getSiteTitle();
+        return $this->settings->getSiteTitle() ?? "";
     }
 
     public function getSiteSubtitle() : string
     {
-        return $this->settings->getSiteSubtitle();
+        return $this->settings->getSiteSubtitle() ?? "";
     }
-    
+
     public function getSiteAbout() : string
     {
-        return $this->settings->getSiteAbout();
+        return $this->settings->getSiteAbout() ?? "";
     }
 }
