@@ -4,20 +4,18 @@ namespace App\Controller\Wander;
 
 use App\Entity\Wander;
 use App\Repository\WanderRepository;
+use App\Service\SettingsService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/wanders", name="wanders_")
- *
- */
+
 class WanderController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/wanders", name="wanders_index", methods={"GET"})
      */
     public function index(
         Request $request,
@@ -48,7 +46,37 @@ class WanderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     *
+     * RSS, etc. feeds
+     *
+     * @Route(
+     *  "/feed.{!_format}",
+     *  name="feed",
+     *  methods={"GET"},
+     *  format="rss2",
+     *  requirements={
+     *      "_format": "rss2"
+     *  }
+     * )
+     */
+    public function feed(
+        Request $request,
+        WanderRepository $wanderRepository
+    ): Response
+    {
+        $qb = $wanderRepository
+            ->standardQueryBuilder()
+            ->setMaxResults(20);
+
+        $wanders = $qb->getQuery()->getResult();
+
+        return $this->render('wander/feed.rss2.twig', [
+            'wanders' => $wanders
+        ]);
+    }
+
+    /**
+     * @Route("/wanders/{id}", name="wanders_show", methods={"GET"})
      */
     public function show(Wander $wander): Response
     {

@@ -16,3 +16,7 @@ framework:
     #fragments: true
     php_errors:
         log: true
+
+    request:
+        formats:
+            rss2: 'application/rss+xml'

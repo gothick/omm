@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ settings.siteTitle }}</title>
+    <link>{{ url('home') }}</link>
+    <atom:link href="{{ url('feed', {'_format': 'rss2'}) }}" rel="self" type="application/rss+xml" />
+    <description>{{ settings.siteSubtitle }}</description>
+    {# TODO: Should we configure language somewhere? #}
+    <language>en-GB</language>
+    <pubDate>{{ "now" | date('r') }}</pubDate>
+    <lastBuildDate>{{ "now" | date('r') }}</lastBuildDate>
+    {% for wander in wanders %}
+      <item>
+        <title>{{ wander.title|striptags }}</title>
+        <link>{{ url('wanders_show', { 'id': wander.id }) }}</link>
+        <pubDate>{{ wander.startTime | date('r') }}</pubDate>
+        {# TODO: Have a settings value for Author/email #}
+        <author>gothick@gothick.org.uk (Matt Gibson)</author>
+        <guid>{{ url('wanders_show', { 'id': wander.id }) }}</guid>
+        <description>
+          <![CDATA[{{ wander.description |striptags|markdown }}]]>
+        </description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>
