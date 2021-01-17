@@ -77,7 +77,10 @@ class ImageService {
         $image->setImageShowUri($this->router->generate('image_show', ['id' => $image->getId()]));
     }
 
-    public function setPropertiesFromEXIF(Image $image, bool $updateRelatedWanders = true): void
+    public function setPropertiesFromEXIF(
+            Image $image,
+            bool $updateRelatedWanders = true
+        ): void
     {
         if ($image->getMimeType() == 'image/jpeg') {
             try {
@@ -85,34 +88,41 @@ class ImageService {
 
                 $title = $exif->getTitle();
                 $description = $exif->getCaption();
-                $gps = $exif->getGPS();
+                $gps = $exif->getGPS(); // PHPDoc for this says it returns an array, but it actually returns a string
                 $keywords = $exif->getKeywords();
                 $capturedAt = $exif->getCreationDate();
 
                 // Dig slightly deeper
                 $rating = false;
                 $raw = $exif->getRawData();
-                if ($raw && array_key_exists('XMP-xmp:Rating', $raw)) {
+                if (array_key_exists('XMP-xmp:Rating', $raw)) {
                     $rating = $raw['XMP-xmp:Rating'];
                 }
 
-                if ($title !== false) {
+                if (is_string($title)) {
                     $image->setTitle($title);
                 }
 
-                if ($description !== false) {
+                if (is_string($description)) {
                     $image->setDescription($description);
                 }
 
-                if ($gps !== false) {
+                // The PHPDoc for getGPS says it returns an array, but
+                // it definitely seems to return a string.
+                if (is_string($gps)) {
                     $array = array_map('doubleval', explode(',', $gps));
                     $image->setLatlng($array);
                 }
-                if ($keywords !== false) {
-                    $keywords = is_array($keywords) ? $keywords : array($keywords);
+
+                if (is_string($keywords)) {
+                    $keywords = [ $keywords ];
+                }
+
+                if (is_array($keywords)) {
                     $image->setKeywords($keywords);
                 }
-                if ($capturedAt !== false) {
+
+                if ($capturedAt instanceof \DateTime) {
                     $image->setCapturedAt($capturedAt);
 
                     // We can also try and find an associated wander by looking for
@@ -124,7 +134,7 @@ class ImageService {
                         }
                     }
                 }
-                if ($rating !== false) {
+                if (is_int($rating)) {
                     $image->setRating($rating);
                 }
             }
