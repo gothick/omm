@@ -59,10 +59,7 @@ class WanderController extends AbstractController
      *  }
      * )
      */
-    public function feed(
-        Request $request,
-        WanderRepository $wanderRepository
-    ): Response
+    public function feed(WanderRepository $wanderRepository): Response
     {
         $qb = $wanderRepository
             ->standardQueryBuilder()
