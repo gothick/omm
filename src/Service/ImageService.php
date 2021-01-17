@@ -88,8 +88,10 @@ class ImageService {
 
                 $title = $exif->getTitle();
                 $description = $exif->getCaption();
+                /** var $gps string|boolean */
                 $gps = $exif->getGPS(); // PHPDoc for this says it returns an array, but it actually returns a string
-                $keywords = $exif->getKeywords();
+                /** var $keywords array|string|boolean */
+                $keywords = $exif->getKeywords(); // PHPDoc for this says it returns an array, but for one keyword it returns a single string
                 $capturedAt = $exif->getCreationDate();
 
                 // Dig slightly deeper
