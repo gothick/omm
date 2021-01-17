@@ -97,14 +97,15 @@ class ImageService {
                 $image->setRating($exifHelper->getRating());
 
                 $capturedAt = $exifHelper->getCreationDate();
-                $image->setCapturedAt($capturedAt);
-
-                if ($capturedAt instanceof \DateTime && $updateRelatedWanders) {
-                    // Try and find associated wander(s) by looking for
-                    // wanders whose timespan includes this image.
-                    $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
-                    foreach ($wanders as $wander) {
-                        $image->addWander($wander);
+                if ($capturedAt instanceof \DateTime) {
+                    $image->setCapturedAt($capturedAt);
+                    if ($updateRelatedWanders) {
+                        // Try and find associated wander(s) by looking for
+                        // wanders whose timespan includes this image.
+                        $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
+                        foreach ($wanders as $wander) {
+                            $image->addWander($wander);
+                        }
                     }
                 }
             }
