@@ -55,7 +55,7 @@ class WanderController extends AbstractController
      *  methods={"GET"},
      *  format="rss2",
      *  requirements={
-     *      "_format": "rss2"
+     *      "_format": "rss2|atom"
      *  }
      * )
      */
