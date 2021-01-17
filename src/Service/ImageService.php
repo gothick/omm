@@ -88,10 +88,8 @@ class ImageService {
 
                 $title = $exif->getTitle();
                 $description = $exif->getCaption();
-                /** var $gps string|boolean */
-                $gps = $exif->getGPS(); // PHPDoc for this says it returns an array, but it actually returns a string
-                /** var $keywords array|string|boolean */
-                $keywords = $exif->getKeywords(); // PHPDoc for this says it returns an array, but for one keyword it returns a single string
+                $gps = $exif->getGPS();
+                $keywords = $exif->getKeywords();
                 $capturedAt = $exif->getCreationDate();
 
                 // Dig slightly deeper
@@ -111,12 +109,15 @@ class ImageService {
 
                 // The PHPDoc for getGPS says it returns an array, but
                 // it definitely seems to return a string.
-                if (is_string($gps)) {
+                if (is_string(/** @scrutinizer ignore-type */ $gps)) {
                     $array = array_map('doubleval', explode(',', $gps));
                     $image->setLatlng($array);
                 }
 
-                if (is_string($keywords)) {
+                // Similarly, PHPDoc for getKeywords says it returns an
+                // array, but if there's only one keyword it can return
+                // a plain string.
+                if (is_string(/** @scrutinizer ignore-type */ $keywords)) {
                     $keywords = [ $keywords ];
                 }
 
