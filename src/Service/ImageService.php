@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Image;
 use App\Repository\WanderRepository;
+use App\Utils\ExifHelper;
 use Deployer\Logger\Logger;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -13,6 +14,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use App\Utils\ExifHelperInterface;
 
 class ImageService {
 
@@ -85,60 +87,25 @@ class ImageService {
         if ($image->getMimeType() == 'image/jpeg') {
             try {
                 $exif = $this->reader->read($this->imagesDirectory . '/' . $image->getName());
+                /** @var ExifHelperInterface */
+                $exifHelper = new ExifHelper($exif);
 
-                $title = $exif->getTitle();
-                $description = $exif->getCaption();
-                $gps = $exif->getGPS();
-                $keywords = $exif->getKeywords();
-                $capturedAt = $exif->getCreationDate();
+                $image->setTitle($exifHelper->getTitle());
+                $image->setDescription($exifHelper->getDescription());
+                $image->setLatlng($exifHelper->getGPS());
+                $image->setKeywords($exifHelper->getKeywords());
+                $image->setRating($exifHelper->getRating());
 
-                // Dig slightly deeper
-                $rating = false;
-                $raw = $exif->getRawData();
-                if (array_key_exists('XMP-xmp:Rating', $raw)) {
-                    $rating = $raw['XMP-xmp:Rating'];
-                }
+                $capturedAt = $exifHelper->getCreationDate();
+                $image->setCapturedAt($capturedAt);
 
-                if (is_string($title)) {
-                    $image->setTitle($title);
-                }
-
-                if (is_string($description)) {
-                    $image->setDescription($description);
-                }
-
-                // The PHPDoc for getGPS says it returns an array, but
-                // it definitely seems to return a string.
-                if (is_string(/** @scrutinizer ignore-type */ $gps)) {
-                    $array = array_map('doubleval', explode(',', $gps));
-                    $image->setLatlng($array);
-                }
-
-                // Similarly, PHPDoc for getKeywords says it returns an
-                // array, but if there's only one keyword it can return
-                // a plain string.
-                if (is_string(/** @scrutinizer ignore-type */ $keywords)) {
-                    $keywords = [ $keywords ];
-                }
-
-                if (is_array($keywords)) {
-                    $image->setKeywords($keywords);
-                }
-
-                if ($capturedAt instanceof \DateTime) {
-                    $image->setCapturedAt($capturedAt);
-
-                    // We can also try and find an associated wander by looking for
+                if ($capturedAt instanceof \DateTime && $updateRelatedWanders) {
+                    // Try and find associated wander(s) by looking for
                     // wanders whose timespan includes this image.
-                    if ($updateRelatedWanders) {
-                        $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
-                        foreach ($wanders as $wander) {
-                            $image->addWander($wander);
-                        }
+                    $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
+                    foreach ($wanders as $wander) {
+                        $image->addWander($wander);
                     }
-                }
-                if (is_int($rating)) {
-                    $image->setRating($rating);
                 }
             }
             catch(Exception $e) {
