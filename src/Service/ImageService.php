@@ -84,38 +84,39 @@ class ImageService {
             bool $updateRelatedWanders = true
         ): void
     {
-        if ($image->getMimeType() == 'image/jpeg') {
-            try {
-                $exif = $this->reader->read($this->imagesDirectory . '/' . $image->getName());
-                /** @var ExifHelperInterface */
-                $exifHelper = new ExifHelper($exif);
+        if ($image->getMimeType() !== 'image/jpeg') {
+            $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
+            return;
+        }
 
-                $image->setTitle($exifHelper->getTitle());
-                $image->setDescription($exifHelper->getDescription());
-                $image->setLatlng($exifHelper->getGPS());
-                $image->setKeywords($exifHelper->getKeywords());
-                $image->setRating($exifHelper->getRating());
+        try {
+            $exif = $this->reader->read($this->imagesDirectory . '/' . $image->getName());
+            /** @var ExifHelperInterface */
+            $exifHelper = new ExifHelper($exif);
 
-                $capturedAt = $exifHelper->getCreationDate();
-                if ($capturedAt instanceof \DateTime) {
-                    $image->setCapturedAt($capturedAt);
-                    if ($updateRelatedWanders) {
-                        // Try and find associated wander(s) by looking for
-                        // wanders whose timespan includes this image.
-                        $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
-                        foreach ($wanders as $wander) {
-                            $image->addWander($wander);
-                        }
+            $image->setTitle($exifHelper->getTitle());
+            $image->setDescription($exifHelper->getDescription());
+            $image->setLatlng($exifHelper->getGPS());
+            $image->setKeywords($exifHelper->getKeywords());
+            $image->setRating($exifHelper->getRating());
+
+            $capturedAt = $exifHelper->getCreationDate();
+            if ($capturedAt instanceof \DateTime) {
+                $image->setCapturedAt($capturedAt);
+                if ($updateRelatedWanders) {
+                    // Try and find associated wander(s) by looking for
+                    // wanders whose timespan includes this image.
+                    $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
+                    foreach ($wanders as $wander) {
+                        $image->addWander($wander);
                     }
                 }
             }
-            catch(Exception $e) {
-                // We've started to rely on the information gathered here, so I think
-                // this should be a proper error now.
-                throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
-            }
-        } else {
-            $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
+        }
+        catch(Exception $e) {
+            // We've started to rely on the information gathered here, so I think
+            // this should be a proper error now.
+            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 }
