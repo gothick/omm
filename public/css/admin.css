@@ -77,3 +77,14 @@ div.bargraph div.bar.critical {
 .image-index-heading > div {
     font-weight: bold;
 }
+
+.image span.keyword {
+    display: inline-block;
+    background-color: #ccffcc;
+    padding: 0px 4px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #2e6d2e;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
