@@ -3,7 +3,7 @@
     background-color: grey;
     color: white;
     border-radius: 1em;
-    padding: 16px 0px;
+    padding: 16px 0;
 }
 
 .dashboard .row {
@@ -35,7 +35,6 @@
 .dashboard .details dl dd {
     display: inline-block;
 }
-
 
 .dashboard .headline .name {
     text-transform: uppercase;
@@ -81,7 +80,7 @@ div.bargraph div.bar.critical {
 .image span.keyword {
     display: inline-block;
     background-color: #ccffcc;
-    padding: 0px 4px;
+    padding: 0 4px;
     border-style: solid;
     border-width: 2px;
     border-color: #2e6d2e;
