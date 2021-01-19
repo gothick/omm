@@ -3,6 +3,7 @@
 /* LeafletJS and Omnivore */
 /** global: L */
 /** global: omnivore */
+/*global L, omnivore */ /* For ESLint */
 
 var streetMap;
 var satelliteMap;
