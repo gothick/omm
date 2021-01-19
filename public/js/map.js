@@ -93,6 +93,27 @@ var CustomGeoJSON = L.GeoJSON.extend({
     }
  });
 
+ var photoLayer = null;
+
+ function addPhotos(map, photos)
+ {
+     if (photoLayer) {
+         map.removeLayer(photoLayer);
+     }
+
+     photoLayer = L.photo.cluster().on("click", function(evt) {
+         var photo = evt.layer.photo;
+         var template = "<a href='{imageShowUri}'><img src='{url}' width='300' /></a><p>{caption}</p>";
+         // TODO: Video
+         evt.layer.bindPopup(L.Util.template(template, photo), {
+             className: "leaflet-popup-photo",
+             minWidth: 300
+         }).openPopup();
+     });
+
+     photoLayer.add(photos).addTo(map);
+ }
+
  function addWanderImages(map, wanderId) {
     var photos = [];
 
@@ -159,27 +180,6 @@ function addAllWanders(map)
             }
         });
     });
-}
-
-var photoLayer = null;
-
-function addPhotos(map, photos)
-{
-    if (photoLayer) {
-        map.removeLayer(photoLayer);
-    }
-
-    photoLayer = L.photo.cluster().on("click", function(evt) {
-        var photo = evt.layer.photo;
-        var template = "<a href='{imageShowUri}'><img src='{url}' width='300' /></a><p>{caption}</p>";
-        // TODO: Video
-        evt.layer.bindPopup(L.Util.template(template, photo), {
-            className: "leaflet-popup-photo",
-            minWidth: 300
-        }).openPopup();
-    });
-
-    photoLayer.add(photos).addTo(map);
 }
 
 function addWander(map, wanderId, addImages)
