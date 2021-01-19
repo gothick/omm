@@ -74,34 +74,32 @@ class ImageController extends AbstractController
             }
 
             $file = $request->files->get('file');
-
-            if ($file instanceof UploadedFile) {
-                $image = new Image();
-                $image->setImageFile($file);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($image);
-                $entityManager->flush();
-                // It's not exactly an API response, but it'll do until we switch to handling this
-                // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
-                // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
-                // image URIs in a postPersist event listener, this also contains everything you'd
-                // need to build an image in HTML.
-                return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
-            } else {
+            if (!$file instanceof UploadedFile) {
                 throw new HttpException(500, "No uploaded file found.");
             }
+
+            $image = new Image();
+            $image->setImageFile($file);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($image);
+            $entityManager->flush();
+            // It's not exactly an API response, but it'll do until we switch to handling this
+            // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
+            // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
+            // image URIs in a postPersist event listener, this also contains everything you'd
+            // need to build an image in HTML.
+            return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
         }
-        else
-        {
-            $disk = [];
-            $disk['free'] = disk_free_space($gpxDirectory);
-            $disk['total'] = disk_total_space($gpxDirectory);
-            $disk['used'] = $disk['total'] - $disk['free'];
-            $disk['percent'] = $disk['used'] / $disk['total'];
-            return $this->render('admin/image/upload.html.twig', [
-                 'disk' => $disk
-            ]);
-        }
+
+        // Normal GET request.
+        $disk = [];
+        $disk['free'] = disk_free_space($gpxDirectory);
+        $disk['total'] = disk_total_space($gpxDirectory);
+        $disk['used'] = $disk['total'] - $disk['free'];
+        $disk['percent'] = $disk['used'] / $disk['total'];
+        return $this->render('admin/image/upload.html.twig', [
+                'disk' => $disk
+        ]);
     }
 
     /**
