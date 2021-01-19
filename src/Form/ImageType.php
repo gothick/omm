@@ -44,7 +44,9 @@ class ImageType extends AbstractType
         $builder->get('latlng')
             ->addModelTransformer(new CallbackTransformer(
                 function($latlngAsArray) {
-                    return implode(', ', $latlngAsArray);
+                    if ($latlngAsArray !== null) {
+                        return implode(', ', $latlngAsArray);
+                    }
                 },
                 function($latlngAsString) {
                     return explode(', ', $latlngAsString);
@@ -53,7 +55,10 @@ class ImageType extends AbstractType
         $builder->get('keywords')
             ->addModelTransformer(new CallbackTransformer(
                 function($keywordsAsArray) {
-                    return implode(', ', $keywordsAsArray);
+                    if ($keywordsAsArray !== null)
+                    {
+                        return implode(', ', $keywordsAsArray);
+                    }
                 },
                 function($keywordsAsString) {
                     return explode(', ', $keywordsAsString);
