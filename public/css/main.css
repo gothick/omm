@@ -5,8 +5,7 @@ header {
 header h1 a:link,
 header h1 a:visited,
 header h1 a:hover,
-header h1 a:active
-{
+header h1 a:active {
     color: inherit;
     text-decoration: none;
 }
@@ -16,8 +15,10 @@ main {
     padding-top: 12px;
 }
 
-html.homepage, .homepage body, .homepage main, .homepage .container
-{
+html.homepage,
+.homepage body,
+.homepage main,
+.homepage .container {
     height: 100%;
 }
 
@@ -45,10 +46,10 @@ blockquote {
     font-style: italic;
     color: #555;
     padding: 1.2em 30px 1.2em 75px;
-    border-left: 8px solid #78c0a8 ;
+    border-left: 8px solid #78c0a8;
     line-height: 1.6;
     position: relative;
-    background: #EDEDED;
+    background: #ededed;
 }
 
 blockquote::before {
@@ -67,7 +68,7 @@ blockquote::after {
 
 blockquote span {
     display: block;
-    color: #333333;
+    color: #333;
     font-style: normal;
     font-weight: bold;
     margin-top: 1em;
