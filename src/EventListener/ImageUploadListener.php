@@ -32,11 +32,9 @@ class ImageUploadListener
     public function onVichUploaderPostUpload(Event $event)
     {
         $object = $event->getObject();
-        if ($object instanceof Image) {
-            $this->imageService->setPropertiesFromEXIF($object);
+        if (!$object instanceof Image) {
+            throw new \Exception("Vich upload listener invoked on non-image object.");
         }
-        else {
-            $this->logger->error("Hey, did you start to upload things that aren't images using Vich?");
-        }
+        $this->imageService->setPropertiesFromEXIF($object);
     }
 }
