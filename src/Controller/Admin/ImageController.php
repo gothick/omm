@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Image;
 use App\Form\ImageType;
-use App\Form\DropzoneImageType;
 use App\Repository\ImageRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
