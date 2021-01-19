@@ -27,11 +27,12 @@ class WanderDeleteListener
         ): void
     {
         $path = $this->gpxService->getFullGpxFilePathFromWander($wander);
-        if (file_exists($path)) {
-            $this->logger->debug("Removing GPX file " . $path . " on deletion of wander " . $wander->getId());
-            unlink($path);
-        } else {
+        if (!file_exists($path)) {
             $this->logger->debug("Could not find GPX file " . $path . " to remove");
+            return;
         }
+
+        $this->logger->debug("Removing GPX file " . $path . " on deletion of wander " . $wander->getId());
+        unlink($path);
     }
 }
