@@ -13,11 +13,11 @@ var base = L.latLng(51.4511364, -2.6219148);
 
 function setUpMap(options)
 {
-    var mapbox_access_token = $("#mapid").data("mapboxAccessToken");
-    var locus_radius = 1609.34; // 1 mile
+    var mapboxAccessToken = $("#mapid").data("mapboxAccessToken");
+    var locusRadius = 1609.34; // 1 mile
 
     streetMap = L.tileLayer(
-        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=" + mapbox_access_token,
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=" + mapboxAccessToken,
         {
             // These are mapbox-specific
             id: "gothick/ckhb31na304g619t67r3gcngx",
@@ -29,7 +29,7 @@ function setUpMap(options)
         });
 
     satelliteMap = L.tileLayer(
-        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=" + mapbox_access_token,
+        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=" + mapboxAccessToken,
         {
             // These are mapbox-specific
             id: "gothick/ckhwgr59r0uai19o077hp87w4",
@@ -44,14 +44,14 @@ function setUpMap(options)
         color: "green",
         fillColor: "#faa",
         fillOpacity: 0.15,
-        radius: locus_radius,
+        radius: locusRadius,
         interactive: false
     });
 
     // Because Object.assign isn't supported in older browsers
     // https://stackoverflow.com/a/41455739/300836
     $.extend(options, {
-        maxBounds: base.toBounds(locus_radius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
+        maxBounds: base.toBounds(locusRadius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
         layers: [streetMap, circle]
     });
 
@@ -89,9 +89,30 @@ var CustomGeoJSON = L.GeoJSON.extend({
     options: {
         // TODO: Do we need to go to all this trouble to keep the wander id
         // handy? Maybe we could just capture it in the bindPopup closure?
-        wander_id: null
+        wanderId: null
     }
  });
+
+ function addWanderImages(map, wanderId) {
+    var photos = [];
+
+    // Our API allows us to grab only those photos with co-ordinates set
+    $.getJSON("/api/wanders/" + wanderId + "/images?exists[latlng]=true", function(images) {
+        $.each(images["hydra:member"], function(key, image) {
+            photos.push({
+                lat: image.latlng[0],
+                lng: image.latlng[1],
+                url: image.mediumImageUri,
+                caption: image.title || "",
+                thumbnail: image.markerImageUri,
+                imageShowUri: image.imageShowUri,
+                // TODO?
+                video: null
+            });
+        });
+        addPhotos(map, photos);
+    });
+}
 
 function addAllWanders(map)
 {
@@ -99,11 +120,11 @@ function addAllWanders(map)
     $.getJSON("/api/wanders", function(data) {
         var last = data["hydra:totalItems"];
         $.each(data["hydra:member"], function(key, wander) {
-            var isLastWander = (last - 1 == key);
+            var isLastWander = (last - 1 === key);
             var track = omnivore.gpx(wander.gpxFilename,
                     null,
                     new CustomGeoJSON(null, {
-                        wander_id: wander.id,
+                        wanderId: wander.id,
                         style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle()
                     }))
                 .bindPopup(function(layer) {
@@ -113,20 +134,20 @@ function addAllWanders(map)
                     layer.bringToFront();
                     currentlySelected = layer;
 
-                    addWanderImages(map, layer.options.wander_id);
+                    addWanderImages(map, layer.options.wanderId);
                     // Popup
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
-            track.wander_id = wander.id;
+            track.wanderId = wander.id;
             track.addTo(map);
             if (isLastWander) {
                 currentlySelected = track;
-                track.on('ready', function() {
+                track.on("ready", function() {
                     track.bringToFront();
                 });
             } else {
-                track.on('ready', function() {
+                track.on("ready", function() {
                     // Our layers load asynchonously, and I can't find an event
                     // that fires once all our geoJSON layers are loaded, so the
                     // above bringToFront() for the most recent wander might
@@ -161,38 +182,17 @@ function addPhotos(map, photos)
     photoLayer.add(photos).addTo(map);
 }
 
-function addWanderImages(map, wander_id) {
-    var photos = [];
-
-    // Our API allows us to grab only those photos with co-ordinates set
-    $.getJSON("/api/wanders/" + wander_id + "/images?exists[latlng]=true", function(images) {
-        $.each(images["hydra:member"], function(key, image) {
-            photos.push({
-                lat: image.latlng[0],
-                lng: image.latlng[1],
-                url: image.mediumImageUri,
-                caption: image.title || "",
-                thumbnail: image.markerImageUri,
-                imageShowUri: image.imageShowUri,
-                // TODO?
-                video: null
-            });
-        });
-        addPhotos(map, photos);
-    });
-}
-
-function addWander(map, wander_id, add_images)
+function addWander(map, wanderId, addImages)
 {
-    $.getJSON("/api/wanders/" + wander_id, function(wander) {
+    $.getJSON("/api/wanders/" + wanderId, function(wander) {
         omnivore.gpx(wander.gpxFilename)
             .bindPopup(function(/* layer */) {
                 return wander.title;
             })
             .addTo(map);
         // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
-        if (add_images) {
-            addWanderImages(map, wander_id);
+        if (addImages) {
+            addWanderImages(map, wanderId);
         }
     });
 }
