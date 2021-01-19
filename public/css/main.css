@@ -32,7 +32,6 @@ html.homepage, .homepage body, .homepage main, .homepage .container
     font-size: 10px;
 }
 
-
 .gallery-image-wrapper {
     white-space: nowrap;
     overflow: hidden;
@@ -41,25 +40,25 @@ html.homepage, .homepage body, .homepage main, .homepage .container
 
 /* Blockquote from https://codepen.io/cliftwalker/pen/XJaEXY */
 blockquote {
-    width:80%;
-    margin:50px auto;
-    font-style:italic;
-    color: #555555;
-    padding:1.2em 30px 1.2em 75px;
-    border-left:8px solid #78C0A8 ;
-    line-height:1.6;
+    width: 80%;
+    margin: 50px auto;
+    font-style: italic;
+    color: #555;
+    padding: 1.2em 30px 1.2em 75px;
+    border-left: 8px solid #78c0a8 ;
+    line-height: 1.6;
     position: relative;
-    background:#EDEDED;
+    background: #EDEDED;
 }
 
 blockquote::before {
-    font-family:Arial;
+    font-family: Arial, sans-serif;
     content: "\201C";
-    color:#78C0A8;
-    font-size:4em;
+    color: #78c0a8;
+    font-size: 4em;
     position: absolute;
     left: 10px;
-    top:-10px;
+    top: -10px;
 }
 
 blockquote::after {
@@ -67,11 +66,11 @@ blockquote::after {
 }
 
 blockquote span {
-    display:block;
-    color:#333333;
+    display: block;
+    color: #333333;
     font-style: normal;
     font-weight: bold;
-    margin-top:1em;
+    margin-top: 1em;
 }
 
 /* We may not be using this any more. It was part of my sorting experiment on the admin_wanders_index page */
