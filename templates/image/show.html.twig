@@ -3,7 +3,7 @@
 {% block title %}One Mile Matt Image {{ image.title ?? image.name }}{% endblock %}
 
 {% block body %}
-    <div class="row">
+    <div class="row image">
         <div class="col mx-3 headerstrip">
             <div class="row">
                 <div class="col">
@@ -11,12 +11,22 @@
                     <p>{{ image.description |striptags|markdown }}</p>
                 </div>
             </div>
+            <div class="row details">
+                <div class="col">
+                    {% if image.wanders|length == 1 %}
+                        {% set wander = image.wanders | first %}
+                        <p>From wander: <a href="{{ path('wanders_show', { 'id': wander.id }) }}">{{ wander }}</a></p>
+                    {% endif %}
+                    {# TODO: Cope with multiple related wanders; we don't have any yet. #}
+                </div>
+                <div class="col">
+                    <p>Taken: {{ image.capturedAt| date("D j F Y H:i") }}</p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row mb-4">
         <div class="col">
-
-
             {#
                 TODO Add an alt text property so we can be more accessible
                 TODO What happens if the alt text has quotes in it?
