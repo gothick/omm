@@ -60,12 +60,13 @@ class StatsService
     {
         $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {
             $item->tag('stats');
+
+            // General statistics
             $wanderStats = $this->wanderRepository
                 ->createQueryBuilder('w')
                 ->select('COUNT(w.id) as totalCount')
                 ->addSelect('COUNT(w.title) as countWithTitle')
                 ->addSelect('COUNT(w.description) as countWithDescription')
-                //->addSelect('SUM(w.durationSeconds) as totalDuration')
                 ->addSelect('COALESCE(SUM(w.distance), 0) as totalDistance')
                 ->addSelect('COALESCE(SUM(w.cumulativeElevationGain), 0) as totalCumulativeElevationGain')
                 ->getQuery()
@@ -73,59 +74,36 @@ class StatsService
 
             $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
 
+            // Durations
             // Doctrine doesn't support calculating a difference
             // in seconds from two datetime values via ORM. Let's
             // go raw.
             $conn = $this->entityManager->getConnection();
-            $sql = 'SELECT COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(end_time, start_time))), 0) FROM wander';
+            $sql = 'SELECT
+                        COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(end_time, start_time))), 0) AS totalDuration,
+                        COALESCE(AVG(TIME_TO_SEC(TIMEDIFF(end_time, start_time))), 0) AS averageDuration
+                    FROM wander
+                ';
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            $seconds = $stmt->fetchOne();
+            $result = $stmt->fetchAssociative();
 
-            $interval = CarbonInterval::seconds($seconds)->cascade();
+            $wanderStats['totalDuration'] = CarbonInterval::seconds($result['totalDuration'])->cascade();
+            $wanderStats['averageDuration'] = CarbonInterval::seconds($result['averageDuration'])->cascade();
 
-            $wanderStats['totalDuration'] = $interval;
-            $wanderStats['totalDurationForHumans'] = $interval->forHumans([
-                    'short' => true
-                ]);
+            $wanderStats['totalDurationForHumans'] = $wanderStats['totalDuration']->forHumans(['short' => true]);
+            $wanderStats['averageDurationForHumans'] = $wanderStats['averageDuration']->forHumans(['short' => true]);
 
-            // Set up defaults for average, in case we have no wanders
-            $wanderStats['averageWanderDuration'] = 0;
-            $wanderStats['averageWanderDurationForHumans'] = '0s';
+            // Distances
+            $wanderStats['shortestWanderDistance'] = $this->wanderRepository->findShortest();
+            $wanderStats['longestWanderDistance'] = $this->wanderRepository->findLongest();
+            $wanderStats['averageWanderDistance'] = $this->wanderRepository->findAverageDistance();
 
-            if ($wanderStats['hasWanders']) { // Avoid divide by zero
-                $interval = CarbonInterval::seconds($seconds / $wanderStats['totalCount'])->cascade();
-                $wanderStats['averageDuration'] = $interval;
-                $wanderStats['averageDurationForHumans'] = $interval->forHumans([
-                        'short' => true
-                    ]);
-            }
-
-            $wanderStats['longestWanderDistance'] = $this->wanderRepository
-                ->createQueryBuilder('w')
-                ->select('w.id, w.distance')
-                ->orderBy('w.distance', 'desc')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-
-            $wanderStats['shortestWanderDistance'] = $this->wanderRepository
-                ->createQueryBuilder('w')
-                ->select('w.id, w.distance')
-                ->orderBy('w.distance', 'asc')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-
-            $wanderStats['averageWanderDistance'] = $this->wanderRepository
-                ->createQueryBuilder('w')
-                ->select('AVG(w.distance)')
-                ->getQuery()
-                ->getSingleScalarResult() ?? 0;
-
+            // Specialist stuff
             $qb = $this->wanderRepository
                 ->createQueryBuilder('w');
-            $wanderStats['imageProcessingBacklog'] = $this->wanderRepository->addWhereHasImages($qb, false)
+            $wanderStats['imageProcessingBacklog'] = $this->wanderRepository
+                ->addWhereHasImages($qb, false)
                 ->select('COUNT(w.id)')
                 ->getQuery()
                 ->getSingleScalarResult();

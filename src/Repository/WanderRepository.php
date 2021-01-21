@@ -50,7 +50,33 @@ class WanderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findShortest()
+    {
+        return $this->createQueryBuilder('w')
+            ->select('w.id, w.distance')
+            ->orderBy('w.distance', 'asc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
+    public function findLongest()
+    {
+        return $this->createQueryBuilder('w')
+            ->select('w.id, w.distance')
+            ->orderBy('w.distance', 'desc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findAverageDistance()
+    {
+        return $this->createQueryBuilder('w')
+            ->select('AVG(w.distance)')
+            ->getQuery()
+            ->getSingleScalarResult() ?? 0;
+    }
 
     // /**
     //  * @return Wander[] Returns an array of Wander objects
