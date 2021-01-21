@@ -29,6 +29,9 @@
                     <tr>
                         <th>Total Wander Count:</th><td>{{ wanderStats.totalCount }}</td>
                     </tr>
+                    <tr>
+                        <th>Image Processing Backlog:</th><td>{{ wanderStats.imageProcessingBacklog | default(0) }}</td>
+                    </tr>
                     {% if wanderStats.hasWanders %}
                     <tr>
                         <th>With Title:</th>

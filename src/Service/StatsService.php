@@ -123,6 +123,13 @@ class StatsService
                 ->getQuery()
                 ->getSingleScalarResult() ?? 0;
 
+            $qb = $this->wanderRepository
+                ->createQueryBuilder('w');
+            $wanderStats['imageProcessingBacklog'] = $this->wanderRepository->addWhereHasImages($qb, false)
+                ->select('COUNT(w.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+
             return $wanderStats;
         });
 
