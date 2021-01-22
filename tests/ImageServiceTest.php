@@ -99,5 +99,39 @@ class ImageServiceTest extends TestCase
         $this->assertCount(0, $result, "Trying to read a non-JPEG file shouldn't set any properties, even if they exist on the test image");
     }
 
+    public function testKeywords()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Keywords None.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $keywords = $image->getKeywords();
+        $this->assertIsArray($keywords, "Reading image with no keywords should still produce an array, albeit empty");
+        $this->assertEmpty($keywords, "Reading image with no keywords should result in an empty array");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Keywords One.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $keywords = $image->getKeywords();
+        $this->assertIsArray($keywords, "Reading an image with a single keyword should still result in an array");
+        $this->assertCount(1, $keywords, "Reading image with a single keyword should give an array with one element");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Keywords Multiple.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $keywords = $image->getKeywords();
+        $this->assertIsArray($keywords, "Reading an image with multiple keywords should result in an array");
+        $this->assertCount(7, $keywords, "Reading multiple keyword test image should find six keywords");
+        $this->assertContains("stack of books", $keywords, "Multi-word keyword not found in multiple keyword test image");
+        $this->assertContains("Bristol", $keywords, "Expected word not found in mutliple keyword test image");
+        $this->assertContains("Places", $keywords, "Expected word not found in mutliple keyword test image");
+        $this->assertContains("UK", $keywords, "Expected word not found in mutliple keyword test image");
+        $this->assertContains("books", $keywords, "Expected word not found in mutliple keyword test image");
+        $this->assertContains("desk", $keywords, "Expected word not found in mutliple keyword test image");
+        $this->assertContains("united kingdom", $keywords, "Expected word not found in mutliple keyword test image");
+    }
+
 }
 
