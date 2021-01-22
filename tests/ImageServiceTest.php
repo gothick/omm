@@ -35,7 +35,6 @@ class ImageServiceTest extends TestCase
             $imagesDirectory,
             null //?string $exiftoolPath
         );
-
     }
 
     public function testCapturedAt()
@@ -100,7 +99,6 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Location With.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getLatlng();
-        //dd($result);
         $this->assertIsArray($result, "Latitude/Longitude pair should be in array");
         $this->assertCount(2, $result, "Latitude/Longitude should be two numbers");
         $this->assertEqualsWithDelta(51.448236285, $result[0], "0.000001", "Latitude seems adrift");
@@ -158,8 +156,6 @@ class ImageServiceTest extends TestCase
         $this->assertIsArray($result, "Trying to read a non-JPEG file should keep the default value");
         $this->assertCount(0, $result, "Trying to read a non-JPEG file shouldn't set any properties, even if they exist on the test image");
     }
-
-    // TODO: Test capturedAt
 
     public function testMinimalMetadata()
     {
