@@ -5,7 +5,10 @@ php:
 before_script:
   - composer install --no-interaction
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install exiftool
+
 env:
   # It ain't that secret. This one's jut for Travis.
   - APP_SECRET=baec94fe745a3288a250ab99fa97790b2256ffc1
-  
