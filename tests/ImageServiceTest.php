@@ -37,6 +37,17 @@ class ImageServiceTest extends TestCase
         );
 
     }
+
+    public function testCapturedAt()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-CapturedAt With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $expected = new \DateTime("@1549892566");
+        $this->assertEquals($expected, $image->getCapturedAt(), "Unexpected value for capturedAt when reading image");
+    }
+
     public function testReadRating()
     {
         $image = new Image();
@@ -50,6 +61,21 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Stars None.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(0, $image->getRating(), "Failed to read zero rating from image");
+    }
+
+    public function testReadTitle()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Title With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals("Title With", $image->getTitle(), "Failed to read title from image.");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Title Without.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals(null, $image->getTitle(), "Failed to set empty title from image");
     }
 
     public function testReadDescription()
@@ -88,17 +114,6 @@ class ImageServiceTest extends TestCase
         $this->assertCount(0, $image->getLatlng(), "An image with no co-ordinates should result in an empty lat/lon array");
     }
 
-    public function testNonJPEG()
-    {
-        $image = new Image();
-        $image->setMimeType('image/gif');
-        $image->setName('20190211-ommtest-Location With.jpg');
-        $this->imageService->setPropertiesFromEXIF($image, false);
-        $result = $image->getLatlng();
-        $this->assertIsArray($result, "Trying to read a non-JPEG file should keep the default value");
-        $this->assertCount(0, $result, "Trying to read a non-JPEG file shouldn't set any properties, even if they exist on the test image");
-    }
-
     public function testKeywords()
     {
         $image = new Image();
@@ -133,5 +148,35 @@ class ImageServiceTest extends TestCase
         $this->assertContains("united kingdom", $keywords, "Expected word not found in mutliple keyword test image");
     }
 
+    public function testNonJPEG()
+    {
+        $image = new Image();
+        $image->setMimeType('image/gif');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLatlng();
+        $this->assertIsArray($result, "Trying to read a non-JPEG file should keep the default value");
+        $this->assertCount(0, $result, "Trying to read a non-JPEG file shouldn't set any properties, even if they exist on the test image");
+    }
+
+    // TODO: Test capturedAt
+
+    public function testMinimalMetadata()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Minimal Metadata.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+
+        $this->assertIsArray($image->getKeywords());
+        $this->assertCount(0, $image->getKeywords());
+
+        $this->assertIsArray($image->getLatlng());
+        $this->assertCount(0, $image->getLatlng());
+
+        $this->assertNull($image->getTitle());
+        $this->assertNull($image->getDescription());
+        $this->assertNull($image->getCapturedAt());
+    }
 }
 
