@@ -17,7 +17,7 @@ class ImageServiceTest extends TestCase
     /** @var ImageService */
     protected $imageService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $uploaderHelper = $this->createMock(UploaderHelper::class);
         $cacheManager = $this->createMock(CacheManager::class);
