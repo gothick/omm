@@ -84,9 +84,20 @@ class ImageServiceTest extends TestCase
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals(null, $image->getLatlng());
+        $this->assertIsArray($image->getLatlng(), "An image with no co-ordinates should leave the lat/lon as an array");
+        $this->assertCount(0, $image->getLatlng(), "An image with no co-ordinates should result in an empty lat/lon array");
     }
 
-    // TODO: test with non-JPEG image type; it should silently not do anything
+    public function testNonJPEG()
+    {
+        $image = new Image();
+        $image->setMimeType('image/gif');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLatlng();
+        $this->assertIsArray($result, "Trying to read a non-JPEG file should keep the default value");
+        $this->assertCount(0, $result, "Trying to read a non-JPEG file shouldn't set any properties, even if they exist on the test image");
+    }
+
 }
 

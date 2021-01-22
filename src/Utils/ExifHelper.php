@@ -38,7 +38,7 @@ class ExifHelper implements ExifHelperInterface
     }
     public function getGPS():?array
     {
-        $gps = null;
+        $gps = []; // Match the default in our Image entity
         $gps_as_string = $this->exif->getGPS();
         if (is_string($gps_as_string)) {
             $gps = array_map('doubleval', explode(',', $gps_as_string));
@@ -56,7 +56,7 @@ class ExifHelper implements ExifHelperInterface
         if (is_array($keywords)) {
             return $keywords;
         }
-        return null;
+        return []; // Match the default in our Image entity
     }
     public function getCreationDate():?\DateTime
     {
