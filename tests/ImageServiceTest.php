@@ -14,7 +14,10 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ImageServiceTest extends TestCase
 {
-    public function testSetPropertiesFromExif()
+    /** @var ImageService */
+    protected $imageService;
+
+    protected function setUp()
     {
         $uploaderHelper = $this->createMock(UploaderHelper::class);
         $cacheManager = $this->createMock(CacheManager::class);
@@ -23,7 +26,7 @@ class ImageServiceTest extends TestCase
         $wanderRepository = $this->createMock(WanderRepository::class);
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
-        $imageService = new ImageService(
+        $this->imageService = new ImageService(
             $uploaderHelper,
             $cacheManager,
             $router,
@@ -33,11 +36,34 @@ class ImageServiceTest extends TestCase
             null //?string $exiftoolPath
         );
 
+    }
+    public function testReadRating()
+    {
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Stars 5.jpg');
-        $imageService->setPropertiesFromEXIF($image, false);
-        // dd($image);
-        $this->assertEquals(5, $image->getRating());
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals(5, $image->getRating(), "Failed to read five-star rating from image.");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Stars None.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals(0, $image->getRating(), "Failed to read zero rating from image");
+    }
+
+    public function testReadDescription()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Caption With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals("This is a caption", $image->getDescription(), "Failed to read description from image.");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Caption Without.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals(null, $image->getDescription(), "Failed to set empty description from image");
     }
 }
