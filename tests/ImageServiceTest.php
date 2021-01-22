@@ -66,4 +66,27 @@ class ImageServiceTest extends TestCase
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(null, $image->getDescription(), "Failed to set empty description from image");
     }
+
+    public function testReadCoords()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLatlng();
+        //dd($result);
+        $this->assertIsArray($result, "Latitude/Longitude pair should be in array");
+        $this->assertCount(2, $result, "Latitude/Longitude should be two numbers");
+        $this->assertEqualsWithDelta(51.448236285, $result[0], "0.000001", "Latitude seems adrift");
+        $this->assertEqualsWithDelta(-2.6241279266667, $result[1], "0.000001", "Longitude seems adrift");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location Without.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals(null, $image->getLatlng());
+    }
+
+    // TODO: test with non-JPEG image type; it should silently not do anything
 }
+
