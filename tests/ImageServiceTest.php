@@ -5,6 +5,8 @@ namespace App\Tests;
 use App\Entity\Image;
 use App\Repository\WanderRepository;
 use App\Service\ImageService;
+use Exception;
+use InvalidArgumentException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -33,6 +35,45 @@ class ImageServiceTest extends TestCase
             $wanderRepository,
             $imagesDirectory,
             null //?string $exiftoolPath
+        );
+    }
+
+    public function testToolPath()
+    {
+        // Similar to our setUp function, only we want to create our own
+        // ImageService just for this test.
+        $uploaderHelper = $this->createMock(UploaderHelper::class);
+        $cacheManager = $this->createMock(CacheManager::class);
+        $router = $this->createMock(UrlGeneratorInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
+        $wanderRepository = $this->createMock(WanderRepository::class);
+        $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
+
+        // The path to an actual copy of exiftool in this test
+        // environment. We just want to make sure that passing
+        // an explicit path that should work, works:
+        $exiftool_path = getenv('TEST_EXIFTOOL_PATH');
+
+        $imageService = new ImageService(
+            $uploaderHelper,
+            $cacheManager,
+            $router,
+            $logger,
+            $wanderRepository,
+            $imagesDirectory,
+            $exiftool_path
+        );
+        $this->assertInstanceOf(ImageService::class, $imageService, "Couldn't create ImageService with exiftool path that should be valid: " . $exiftool_path);
+
+        $this->expectException(InvalidArgumentException::class);
+        $imageService = new ImageService(
+            $uploaderHelper,
+            $cacheManager,
+            $router,
+            $logger,
+            $wanderRepository,
+            $imagesDirectory,
+            '/floople/oojimaflip/wrong'
         );
     }
 
