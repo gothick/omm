@@ -10,5 +10,8 @@ before_install:
   - sudo apt-get -y install exiftool
 
 env:
-  # Standard build env with throwaway APP_SECRET and the real path to exiftool in test environment
-  - APP_SECRET=baec94fe745a3288a250ab99fa97790b2256ffc1 TEST_EXIFTOOL_PATH=/usr/bin/exiftool
+  global:
+    # Throwaway APP_SECRET, only used on Travis
+    - APP_SECRET=baec94fe745a3288a250ab99fa97790b2256ffc1
+    # Actual path to exiftool in Travis test environment
+    - TEST_EXIFTOOL_PATH=/usr/bin/exiftool
