@@ -8,6 +8,7 @@ parameters:
     images_directory: '%kernel.project_dir%/public/uploads/images'
     env(EXIFTOOL_PATH): ~
     exiftool_path: '%env(EXIFTOOL_PATH)%'
+    app.homebase_coords: [ '%env(float:HOME_BASE_LAT)%', '%env(float:HOME_BASE_LNG)%' ]
 
 services:
     # default configuration for services in *this* file
@@ -20,6 +21,7 @@ services:
             $gpxDirectory: '%gpx_directory%'
             $imagesDirectory: '%images_directory%'
             $exiftoolPath: '%exiftool_path%'
+            $homebaseCoords: '%app.homebase_coords%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

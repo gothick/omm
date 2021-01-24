@@ -127,6 +127,16 @@ class Wander
      */
     public $contentUrl;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $centroid = [];
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $angleFromHome;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -311,7 +321,77 @@ class Wander
         return $difference;
     }
 
+    /**
+     * @return array<float>
+     */
+    public function getCentroid(): ?array
+    {
+        return $this->centroid;
+    }
+
+    /**
+     * @param array<float> $centroid
+     */
+    public function setCentroid(?array $centroid): self
+    {
+        $this->centroid = $centroid;
+
+        return $this;
+    }
+
+    // We could calculate the angle from the Centroid each time, but
+    // for now I'm just going to store it to save time.
+    public function getAngleFromHome(): ?float
+    {
+        return $this->angleFromHome;
+    }
+
+    public function setAngleFromHome(?float $angleFromHome): self
+    {
+        $this->angleFromHome = $angleFromHome;
+
+        return $this;
+    }
+
     // Utilities
+
+    /**
+     * @var array<int, string>
+     */
+    private static $compass = [
+        0 => 'N',
+        1 => 'NE',
+        2 => 'NE',
+        3 => 'E',
+        4 => 'E',
+        5 => 'SE',
+        6 => 'SE',
+        7 => 'S',
+        8 => 'S',
+        9 => 'SW',
+        10 => 'SW',
+        11 => 'W',
+        12 => 'W',
+        13 => 'NW',
+        14 => 'NW',
+        15 => 'N'
+      ];
+
+    public function getSector(): ?string
+    {
+        if ($this->angleFromHome !== null) {
+            if ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0) {
+                return self::$compass[floor($this->angleFromHome / 22.5)];
+            }
+        }
+        return null;
+    }
+
+    public function getCentroidAsString(): ?string {
+        if ($this->centroid !== null) {
+            return implode(", ", $this->centroid);
+        }
+    }
 
     // TODO: Put this in but didn't use it in the end; maybe I don't need it
     // as in Twig we can use wander.images.count anyway. Take out?
@@ -329,4 +409,6 @@ class Wander
         }
         return $result;
     }
+
+
 }

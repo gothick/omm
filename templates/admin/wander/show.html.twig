@@ -71,6 +71,14 @@
                 <td>{{ wander.gpxFilename }}</td>
             </tr>
             <tr>
+                <th>Centroid</th>
+                <td>{{ wander.centroidAsString }}</td>
+            </tr>
+            <tr>
+                <th>Sector</th>
+                <td>{{ wander.sector }}</td>
+            </tr>
+            <tr>
                 <th>Gpx File Link</th>
                 <td><a href="{{ asset('uploads/gpx/' ~ wander.gpxFilename) }}">View GPX file</a></td>
             </tr>
