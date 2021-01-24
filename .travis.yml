@@ -15,3 +15,7 @@ env:
     - APP_SECRET=baec94fe745a3288a250ab99fa97790b2256ffc1
     # Actual path to exiftool in Travis test environment
     - TEST_EXIFTOOL_PATH=/usr/bin/exiftool
+
+notifications:
+  email:
+    on_success: always
