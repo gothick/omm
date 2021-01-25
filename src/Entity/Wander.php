@@ -355,6 +355,9 @@ class Wander
 
     // Utilities
 
+    // TODO: This is more like display code. Perhaps this should be in
+    // a Twig extension and we should stick to storing the angle in here.
+
     /**
      * @var array<int, string>
      */
@@ -391,6 +394,7 @@ class Wander
         if ($this->centroid !== null) {
             return implode(", ", $this->centroid);
         }
+        return null;
     }
 
     // TODO: Put this in but didn't use it in the end; maybe I don't need it
