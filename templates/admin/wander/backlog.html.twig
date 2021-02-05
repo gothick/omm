@@ -6,7 +6,7 @@
     <p><a href="{{ path('admin_wanders_backlog', { '_format': 'txt' }) }}">Taskpaper version</a></p>
     <ul>
     {% for wander in wanders %}
-        <li>{{ wander.startTime ? wander.startTime|date('jS M Y') : '' }} (<em>{{ wander.title }}</em>, wander {{wander.id}})</li>
+        <li>{{ wander.startTime ? wander.startTime|date('jS M Y') : '' }} (<em><a href="{{ path('admin_wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></em>, wander {{wander.id}})</li>
     {% endfor %}
     </ul>
 {% endblock %}
