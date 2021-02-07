@@ -30,7 +30,8 @@
                         <th>Total Wander Count:</th><td>{{ wanderStats.totalCount }}</td>
                     </tr>
                     <tr>
-                        <th>Image Processing Backlog:</th><td>{{ wanderStats.imageProcessingBacklog | default(0) }}</td>
+                        <th><a href="{{ path('admin_wanders_backlog', { '_format': 'html' }) }}">Image Processing Backlog</a>:</th>
+                        <td>{{ wanderStats.imageProcessingBacklog | default(0) }}</td>
                     </tr>
                     {% if wanderStats.hasWanders %}
                     <tr>
