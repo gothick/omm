@@ -31,7 +31,16 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    
+    public function findFromIdOnwards(int $id)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.id >= :id')
+            ->setParameter('id', $id)
+            ->orderBy('i.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Image[] Returns an array of Image objects
