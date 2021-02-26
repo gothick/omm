@@ -38,6 +38,10 @@
                     src="{{ vich_uploader_asset(image) }}"
                     title="{{ image.description }}"
                     srcset="{{ image | srcset }}"
+                    sizes="(min-width: 1200px) 262.5px,
+                        (min-width: 992px) 25vw,
+                        (min-width: 768px) 33.3333vw,
+                        50vw "
                 />
             </a>
             <p class="mx-2">{{ image.title }}</p>
