@@ -31,7 +31,12 @@
                 TODO Add an alt text property so we can be more accessible
                 TODO What happens if the alt text has quotes in it?
             #}
-            <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" />
+            <img class="img-fluid w-100"
+                src="{{ vich_uploader_asset(image, 'imageFile') }}"
+                srcset="{{ image | srcset }}"
+                sizes="(min-width: 1200px) 1140px,
+                        100vw"
+                 />
         </div>
     </div>
 
