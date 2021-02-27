@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Image;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,6 +42,60 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /*
+    public function findPrevFromDate(DateTime $from): ?Image
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.id  :id')
+            ->setParameter('id', $id)
+            ->orderBy('i.capturedAt DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    */
+
+    public function findNextByCapturedAtAndId(?DateTimeInterface $capturedAt, ?int $id): ?Image
+    {
+        // Needs to match the exact sort order of @ORM\OrderBy({"capturedAt" = "ASC", "id" = "ASC"}) in
+        // Wander entity images property
+
+        if ($capturedAt == null || $id == null)
+            return null;
+
+        // Somewhat tricksy, but we don't have a clean order for images
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.capturedAt > :capturedAt')
+            ->orWhere('i.capturedAt = :capturedAt AND i.id > :id')
+            ->setParameter('capturedAt', $capturedAt)
+            ->setParameter('id', $id)
+            ->orderBy('i.capturedAt')
+            ->addOrderBy('i.id')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findPrevByCapturedAtAndId(?DateTimeInterface $capturedAt, ?int $id): ?Image
+    {
+        // Needs to match the reverse of the exact sort order of
+        // @ORM\OrderBy({"capturedAt" = "ASC", "id" = "ASC"}) in Wander entity images property
+
+        if ($capturedAt == null || $id == null)
+            return null;
+
+        // Somewhat tricksy, but we don't have a clean order for images
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.capturedAt < :capturedAt')
+            ->orWhere('i.capturedAt = :capturedAt AND i.id < :id')
+            ->setParameter('capturedAt', $capturedAt)
+            ->setParameter('id', $id)
+            ->orderBy('i.capturedAt', 'DESC')
+            ->addOrderBy('i.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     // /**
     //  * @return Image[] Returns an array of Image objects
