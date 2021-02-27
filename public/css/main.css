@@ -78,3 +78,7 @@ blockquote span {
 table.sortable thead th {
     white-space: nowrap;
 }
+
+.linkchain .next {
+    text-align: right;
+}

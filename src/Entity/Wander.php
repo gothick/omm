@@ -80,7 +80,7 @@ class Wander
 
     /**
      * @ORM\ManyToMany(targetEntity=Image::class, inversedBy="wanders")
-     *
+     * @ORM\OrderBy({"capturedAt" = "ASC", "id" = "ASC"})
      * @Groups({"wander:list", "wander:item"})
      * @ApiSubresource
      */

@@ -14,6 +14,8 @@
             <div class="row details">
                 <div class="col">
                     {% if image.wanders|length == 1 %}
+                        {# TODO: We should probably be passed a wander, rather than just arbitrarily choosing the first one, though so far
+                           there's only ever one wander per image #}
                         {% set wander = image.wanders | first %}
                         <p>From wander: <a href="{{ path('wanders_show', { 'id': wander.id }) }}">{{ wander }}</a></p>
                     {% endif %}
@@ -23,6 +25,20 @@
                     <p>Taken: {{ image.capturedAt| date("D j F Y H:i") }}</p>
                 </div>
             </div>
+            {% if next_image or prev_image %}
+            <div class="row linkchain">
+                {% if prev_image %}
+                <div class="col prev">
+                    <p><a href="{{ path('image_show', {'id': prev_image.id}) }}">&larr; Previous Image</a></p>
+                </div>
+                {% endif %}
+                {% if next_image %}
+                <div class="col next">
+                    <p><a href="{{ path('image_show', {'id': next_image.id}) }}">Next Image &rarr;</a></p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
     </div>
     <div class="row mb-4">
