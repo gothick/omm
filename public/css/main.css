@@ -78,3 +78,8 @@ blockquote span {
 table.sortable thead th {
     white-space: nowrap;
 }
+
+.gallery .rating {
+    font-size: x-small;
+    color: gold;
+}

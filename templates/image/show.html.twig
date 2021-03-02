@@ -22,6 +22,9 @@
                 <div class="col">
                     <p>Taken: {{ image.capturedAt| date("D j F Y H:i") }}</p>
                 </div>
+                <div class="col">
+                    <p>Rating: {{ image.rating | star_rating }}</p>
+                </div>
             </div>
         </div>
     </div>

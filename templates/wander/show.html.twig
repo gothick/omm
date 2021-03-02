@@ -44,7 +44,9 @@
                         50vw "
                 />
             </a>
-            <p class="mx-2">{{ image.title }}</p>
+            <div class="mx-2 image-details">{{ image.title }}</div>
+            <div class="mx-2 rating">{{ image.rating | star_rating }}</div>
+            </p>
             {% endif %}
         </div>
         {% endfor %}
