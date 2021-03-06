@@ -23,6 +23,11 @@
                     <p>{{ wander.description |striptags|markdown }}</p>
                 </div>
             </div>
+            <div class="row minor-details py-2">
+                <div class="col">
+                    <p><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;Sector: {{ wander.sector }}</p>
+                </div>
+            </div>
         </div>
     </div>
     {# TODO: Move this hardcoded style into the CSS. It's a 80% viewport height

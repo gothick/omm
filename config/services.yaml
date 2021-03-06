@@ -22,6 +22,8 @@ services:
             $imagesDirectory: '%images_directory%'
             $exiftoolPath: '%exiftool_path%'
             $homebaseCoords: '%app.homebase_coords%'
+            $sectorImgUrl: '/images/sectors/'
+            $sectorImgUrlFileType: 'png'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

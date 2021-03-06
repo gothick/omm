@@ -21,7 +21,7 @@
                 <thead>
                     <tr>
                         <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Title', 'w.title') }}</th>
+                            {{ knp_pagination_sortable(pagination, 'Wander', 'w.title') }}</th>
                         <th {% if pagination.isSorted('w.startTime') %} class="sorted"{% endif %}>
                             {{ knp_pagination_sortable(pagination, 'Date', 'w.startTime') }}</th>
                         <th width="150px" {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
@@ -34,7 +34,7 @@
                 {% for results in pagination %}
                     {% set wander = results.wander %}
                     <tr>
-                        <td><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
+                        <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
                         <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
                         <td>{% if wander.images.count > 0 %}
                                 {{ wander.images.count }}
