@@ -3,4 +3,21 @@ fos_elastica:
     clients:
         default: { url: '%env(ELASTICSEARCH_URL)%' }
     indexes:
-        app: null
+        wander:
+            persistence:
+                driver: orm
+                model: App\Entity\Wander
+                provider: ~
+                finder: ~
+            properties:
+                description: ~
+                title: ~
+        image:
+            persistence:
+                driver: orm
+                model: App\Entity\Image
+                provider: ~
+                finder: ~
+            properties:
+                description: ~
+                title: ~
