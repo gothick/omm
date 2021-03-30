@@ -47,7 +47,7 @@ class DeleteImagesNewerThanCommand extends Command
         $images = $this->imageRepository->findFromIdOnwards($id);
         $count = count($images);
 
-        $question = new ConfirmationQuestion('Are you sure you want to delete the ' . $count . ' images from wander ' . $id . ' onwards? ', false);
+        $question = new ConfirmationQuestion('Are you sure you want to delete the ' . $count . ' images from image ' . $id . ' onwards? ', false);
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('Aborting.');
             return Command::SUCCESS; // Well, technically I think it's not a failure.
