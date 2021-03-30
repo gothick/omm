@@ -62,7 +62,13 @@ class ExifHelper implements ExifHelperInterface
     {
         $creationDate = $this->exif->getCreationDate();
         if ($creationDate instanceof \DateTime) {
-            return $creationDate;
+            // PHPExif assumes that the camera time string is UTC. It's not for many
+            // people's cameras, including mine. Re-interpret it as local time in
+            // Bristol. Not much of a bodge given that this project is specifically
+            // limited to a small geographical region!
+            $converted = new \DateTime($creationDate->format("Y-m-d\TH:i:s"), new \DateTimeZone("Europe/London"));
+            $converted->setTimezone(new \DateTimeZone("UTC"));
+            return $converted;
         }
         return null;
     }

@@ -4,3 +4,6 @@ twig:
     globals:
         mapbox_access_token: '%env(MAPBOX_ACCESS_TOKEN)%'
         settings: '@App\Service\SettingsService'
+
+    date:
+        timezone: 'Europe/London'
