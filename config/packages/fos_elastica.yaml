@@ -3,8 +3,8 @@ fos_elastica:
     clients:
         default: { url: '%env(ELASTICSEARCH_URL)%' }
     indexes:
-        app:
-            finder: ~
+#        app:
+#            finder: ~
         wander:
             persistence:
                 driver: orm

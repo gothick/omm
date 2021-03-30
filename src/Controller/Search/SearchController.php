@@ -18,11 +18,14 @@ class SearchController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(PaginatedFinderInterface $wanderFinder, PaginatorInterface $paginator): Response
+    public function index(PaginatedFinderInterface $imageFinder, PaginatedFinderInterface $wanderFinder, PaginatorInterface $paginator): Response
     {
+        // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
+
         // dd($wanderFinder);
-        $results = $wanderFinder->createPaginatorAdapter('ipsum');
+        $results = $wanderFinder->createHybridPaginatorAdapter('ipsum');
         $pagination = $paginator->paginate($results);
+        dd($pagination);
         // dd($pagination);
         return $this->render('/search/index.html.twig', [
             'pagination' => $pagination
