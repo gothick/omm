@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}One Mile Matt Search{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{# TODO: Do we need leaflet here? #}
+{{ include('_leaflet_stylesheets.html.twig') }}
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col mx-3 headerstrip">
+            <div class="row">
+                <div class="col">
+                    <h2>Search</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>Hi. I'm testing.</p>
+
+            {% for wander in pagination %}
+                <tr>
+                    <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
+                    <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
+                    <td>{% if wander.images.count > 0 %}
+                            {{ wander.images.count }}
+                        {% else %}
+                            To be uploaded
+                        {% endif %}
+                    </td>
+                    <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+
+            {#
+            <table class="table sortable">
+                <thead>
+                    <tr>
+                        <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Wander', 'w.title') }}</th>
+                        <th {% if pagination.isSorted('w.startTime') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Date', 'w.startTime') }}</th>
+                        <th width="150px" {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Pictures', 'imageCount') }}</th>
+                        <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
+                            {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for results in pagination %}
+                    {% set wander = results.wander %}
+                    <tr>
+                        <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
+                        <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
+                        <td>{% if wander.images.count > 0 %}
+                                {{ wander.images.count }}
+                            {% else %}
+                                To be uploaded
+                            {% endif %}
+                        </td>
+                        <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            #}
+        </div>
+    </div>
+    {#
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <div class="navigation my-2">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+    #}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{# The Knp Paginator uses Font Awesome for its sorting icons in the header #}
+<script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
+{% endblock %}
