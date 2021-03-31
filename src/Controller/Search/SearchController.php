@@ -22,10 +22,11 @@ class SearchController extends AbstractController
     {
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
 
-        // dd($wanderFinder);
-        $results = $wanderFinder->createHybridPaginatorAdapter('ipsum');
+        //dd($wanderFinder);
+        //$results = $wanderFinder->createHybridPaginatorAdapter('ipsum');
+        $results = $imageFinder->createHybridPaginatorAdapter('tell');
         $pagination = $paginator->paginate($results);
-        dd($pagination);
+        //dd($pagination);
         // dd($pagination);
         return $this->render('/search/index.html.twig', [
             'pagination' => $pagination

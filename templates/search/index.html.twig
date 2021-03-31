@@ -18,73 +18,53 @@
     </div>
     <div class="row">
         <div class="col">
-            <p>Hi. I'm testing.</p>
-
-            {% for wander in pagination %}
-                <tr>
-                    <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
-                    <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
-                    <td>{% if wander.images.count > 0 %}
-                            {{ wander.images.count }}
-                        {% else %}
-                            To be uploaded
-                        {% endif %}
-                    </td>
-                    <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7">no records found</td>
-                </tr>
-            {% endfor %}
-
-            {#
-            <table class="table sortable">
-                <thead>
-                    <tr>
-                        <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Wander', 'w.title') }}</th>
-                        <th {% if pagination.isSorted('w.startTime') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Date', 'w.startTime') }}</th>
-                        <th width="150px" {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Pictures', 'imageCount') }}</th>
-                        <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for results in pagination %}
-                    {% set wander = results.wander %}
-                    <tr>
-                        <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
-                        <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
-                        <td>{% if wander.images.count > 0 %}
-                                {{ wander.images.count }}
-                            {% else %}
-                                To be uploaded
-                            {% endif %}
-                        </td>
-                        <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7">no records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            #}
+            <p class="search resultcount">{{ pagination.getTotalItemCount }} results</p>
         </div>
     </div>
-    {#
+
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                {% for hybrid_result in pagination %}
+                <tr>
+                    {% if hybrid_result.result.hit._index == 'wander' %}
+                    {% set wander = hybrid_result.transformed %}
+                    <td>Wander</td>
+                    <td>{{ wander.title | striptags }}</td>
+                    <td>{{ wander.description | striptags | u.truncate(500, '...') }}</td>
+                    {% endif %}
+                    {% if hybrid_result.result.hit._index == 'image' %}
+                    {% set image = hybrid_result.transformed %}
+                    <td>Image</td>
+                    <td><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title | striptags }}</a></td>
+                    <td>{{ image.description | striptags | u.truncate(500, '...') }}</td>
+                    {% endif %}
+
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No results found</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
     <div class="row justify-content-md-center">
-        <div class="col-6">
-            <div class="navigation my-2">
-                {{ knp_pagination_render(pagination) }}
+            <div class="col-6">
+                <div class="navigation my-2">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
             </div>
         </div>
     </div>
-    #}
+
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
