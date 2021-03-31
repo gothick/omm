@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col mx-2 mt-4">
             <p class="search resultcount">{{ pagination.getTotalItemCount }} results</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
                     {% if hybrid_result.result.hit._index == 'wander' %}
                     {% set wander = hybrid_result.transformed %}
                     <td>Wander</td>
-                    <td>{{ wander.title | striptags }}</td>
+                    <td><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title | striptags }}</a></td>
                     <td>{{ wander.description | striptags | u.truncate(500, '...') }}</td>
                     {% endif %}
                     {% if hybrid_result.result.hit._index == 'image' %}
