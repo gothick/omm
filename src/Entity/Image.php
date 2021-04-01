@@ -155,16 +155,19 @@ class Image
      */
     private $rating;
 
+
+    // TODO: This @Ignore was here from when this was a many-to-many. Do we still
+    // need it?
     /**
-     * @ORM\ManyToMany(targetEntity=Wander::class, mappedBy="images")
+     * @ORM\ManyToOne(targetEntity=Wander::class, inversedBy="images")
      *
      * @Ignore()
      */
-    private $wanders;
+    private $wander;
 
     public function __construct()
     {
-        $this->wanders = new ArrayCollection();
+        // $this->wanders = new ArrayCollection();
     }
 
     /**
@@ -331,30 +334,41 @@ class Image
         return $this;
     }
 
-    /**
-     * @return Collection|Wander[]
-     */
-    public function getWanders(): Collection
+    // /**
+    //  * @return Collection|Wander[]
+    //  */
+    // public function getWanders(): Collection
+    // {
+    //     return $this->wanders;
+    // }
+
+    // public function addWander(Wander $wander): self
+    // {
+    //     if (!$this->wanders->contains($wander)) {
+    //         $this->wanders[] = $wander;
+    //         $wander->addImage($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeWander(Wander $wander): self
+    // {
+    //     if ($this->wanders->removeElement($wander)) {
+    //         $wander->removeImage($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    public function getWander(): Wander
     {
-        return $this->wanders;
+        return $this->wander;
     }
 
-    public function addWander(Wander $wander): self
+    public function setWander(?Wander $wander): self
     {
-        if (!$this->wanders->contains($wander)) {
-            $this->wanders[] = $wander;
-            $wander->addImage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWander(Wander $wander): self
-    {
-        if ($this->wanders->removeElement($wander)) {
-            $wander->removeImage($this);
-        }
-
+        $this->wander = $wander;
         return $this;
     }
 

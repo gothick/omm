@@ -27,10 +27,10 @@ class ImageType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => ['rows' => 10]
             ])
-            ->add('wanders', EntityType::class, [
+            ->add('wander', EntityType::class, [
                 'class' => Wander::class,
-                'multiple' => true,
-                'by_reference' => false, // https://stackoverflow.com/a/35765987/300836
+                //'multiple' => true,
+                //'by_reference' => false, // You took this back out when you changed to One-to-Many https://stackoverflow.com/a/35765987/300836
                 'query_builder' => function(EntityRepository $er) {
                     return $er->createQueryBuilder('w')
                         ->orderBy('w.startTime', 'DESC');

@@ -81,7 +81,7 @@ class ImageService {
 
     public function setPropertiesFromEXIF(
             Image $image,
-            bool $updateRelatedWanders = true
+            bool $updateRelatedWander = true
         ): void
     {
         if ($image->getMimeType() !== 'image/jpeg') {
@@ -103,12 +103,14 @@ class ImageService {
             $capturedAt = $exifHelper->getCreationDate();
             if ($capturedAt instanceof \DateTime) {
                 $image->setCapturedAt($capturedAt);
-                if ($updateRelatedWanders) {
-                    // Try and find associated wander(s) by looking for
+                if ($updateRelatedWander) {
+                    // Try and find associated wander by looking for
                     // wanders whose timespan includes this image.
-                    $wanders = $this->wanderRepository->findWhereIncludesDate($capturedAt);
-                    foreach ($wanders as $wander) {
-                        $image->addWander($wander);
+                    // TODO: Rewrite this so we only find the first wander that
+                    // matches.
+                    $wander = $this->wanderRepository->findFirstWhereIncludesDate($capturedAt);
+                    if ($wander !== null) {
+                        $image->setWander($wander);
                     }
                 }
             }

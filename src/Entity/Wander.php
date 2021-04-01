@@ -79,7 +79,7 @@ class Wander
     private $gpxFilename;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Image::class, inversedBy="wanders")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="wander", cascade={"persist"})
      *
      * @Groups({"wander:list", "wander:item"})
      * @ApiSubresource
@@ -225,6 +225,7 @@ class Wander
     {
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
+            $image->setWander($this);
         }
 
         return $this;

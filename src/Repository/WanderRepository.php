@@ -40,6 +40,7 @@ class WanderRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    // TODO: Do we still use this? We might only be using findFirstWhereIncludesDate now
     public function findWhereIncludesDate(DateTimeInterface $target)
     {
         return $this->createQueryBuilder('w')
@@ -48,6 +49,17 @@ class WanderRepository extends ServiceEntityRepository
             ->orderBy('w.startTime')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findFirstWhereIncludesDate(DateTimeInterface $target)
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere(':target BETWEEN w.startTime AND w.endTime')
+            ->setParameter('target', $target)
+            ->orderBy('w.startTime')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function findShortest()

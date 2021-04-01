@@ -26,6 +26,16 @@
             <tr>
                 <th>Captured Time</th>
                 <td>{{  image.capturedAt |date('d M Y H:i T')  }}
+            </tr>
+            <tr>
+                <th>Wander</th>
+                {% if image.wander %}
+                <td><a href="{{ path('admin_wanders_show', {'id': image.wander.id}) }}">{{ image.wander.title }}</a></td>
+                {% else %}
+                <td>None</td>
+                {% endif %}
+            </tr>
+
             <tr>
                 <th>Rating</th>
                 <td>{{ image.rating | star_rating }}</td>
