@@ -3,6 +3,11 @@
 namespace App\Controller\Search;
 
 use App\Entity\Image;
+use Elastica\Query;
+use Elastica\Query\MatchQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\QueryString;
+use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,13 +25,24 @@ class SearchController extends AbstractController
      */
     public function index(PaginatedFinderInterface $imageFinder, PaginatedFinderInterface $wanderFinder, PaginatorInterface $paginator): Response
     {
+        // $finder = $this->container->get('fos_elastica.finder.app');
+
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
 
+        $qs = new QueryString('floopy');
+
+        $nested = new Nested();
+        $nested->setPath('images');
+        $nested->setQuery($qs);
+        $results = $wanderFinder->createHybridPaginatorAdapter($nested);
+
+
+
         //dd($wanderFinder);
-        $results = $wanderFinder->createHybridPaginatorAdapter('ipsum');
-        //$results = $imageFinder->createHybridPaginatorAdapter('tell');
+        //$results = $wanderFinder->createHybridPaginatorAdapter('floopy');
+        // $results = $imageFinder->createHybridPaginatorAdapter('floopy');
         $pagination = $paginator->paginate($results);
-        //dd($pagination);
+        dd($pagination);
         // dd($pagination);
         return $this->render('/search/index.html.twig', [
             'pagination' => $pagination
