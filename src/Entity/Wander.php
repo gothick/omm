@@ -30,6 +30,7 @@ use Carbon\CarbonInterval;
  *  order={"endTime"="ASC"},
  *  paginationEnabled=false
  * )
+ * @ORM\HasLifecycleCallbacks()
  *
  */
 class Wander
@@ -233,8 +234,21 @@ class Wander
 
     public function removeImage(Image $image): self
     {
+        $image->setWander(null);
         $this->images->removeElement($image);
 
+        return $this;
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function removeAllImages(): self
+    {
+        $images = $this->images;
+        foreach ($images as $image) {
+            $this->removeImage($image);
+        }
         return $this;
     }
 
