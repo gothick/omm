@@ -4,6 +4,8 @@ namespace App\Controller\Search;
 
 use App\Entity\Image;
 use Elastica\Query;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\InnerHits;
 use Elastica\Query\MatchQuery;
 use Elastica\Query\Nested;
 use Elastica\Query\QueryString;
@@ -11,6 +13,8 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,30 +25,46 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET", "POST"})
      */
-    public function index(PaginatedFinderInterface $imageFinder, PaginatedFinderInterface $wanderFinder, PaginatorInterface $paginator): Response
+    public function index(
+        Request $request,
+        PaginatedFinderInterface $imageFinder,
+        PaginatedFinderInterface $wanderFinder,
+        PaginatorInterface $paginator): Response
     {
         // $finder = $this->container->get('fos_elastica.finder.app');
 
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
 
-        $qs = new QueryString('floopy');
+        $form = $this->createFormBuilder(null, ['method' => 'GET' ])
+            ->add('query', SearchType::class, ['label' => false])
+            ->getForm();
 
-        $nested = new Nested();
-        $nested->setPath('images');
-        $nested->setQuery($qs);
-        $results = $wanderFinder->createHybridPaginatorAdapter($nested);
+        $form->handleRequest($request);
+        $pagination = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$nested->setInnerHits(new InnerHits());
+
+            $data = $form->getData();
+            $qs = new QueryString($data['query']);
+
+            // This finds Wanders with images that match the query
+            $nested = new Nested();
+            $nested->setPath('images');
+            $nested->setQuery($qs);
 
 
+            $bool = new BoolQuery();
+            $bool->addShould($nested);
+            $bool->addShould($qs);
 
-        //dd($wanderFinder);
-        //$results = $wanderFinder->createHybridPaginatorAdapter('floopy');
-        // $results = $imageFinder->createHybridPaginatorAdapter('floopy');
-        $pagination = $paginator->paginate($results);
-        dd($pagination);
-        // dd($pagination);
+            $results = $wanderFinder->createHybridPaginatorAdapter($bool);
+            $pagination = $paginator->paginate($results);
+
+        }
         return $this->render('/search/index.html.twig', [
+            'form' => $form->createView(),
             'pagination' => $pagination
         ]);
     }

@@ -18,60 +18,70 @@
     </div>
     <div class="row">
         <div class="col mx-2 mt-4">
-            <p class="search resultcount">{{ pagination.getTotalItemCount }} results</p>
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit"/>
+            {{ form_end(form) }}
         </div>
     </div>
 
-    {% for hybrid_result in pagination %}
-    <div class="row search results">
-        <div class="col mx-2">
-            {#
-
-                Wander results
-
-            #}
-            {% if hybrid_result.result.hit._index == 'wander' %}
-            {% set wander = hybrid_result.transformed %}
-
-            <div class="row wander">
-                <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">Wander: {{ wander.title | striptags }}</a></h4></div>
-            </div>
-            <div class="row wander">
-                <div class="col mx-3"><span class="createdat">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }} &mdash; </span> {{ wander.description | striptags | u.truncate(500, '...') }}</div>
-            </div>
-            {% endif %}
-            {#
-
-                Image results
-
-            #}
-            {% if hybrid_result.result.hit._index == 'image' %}
-            {% set image = hybrid_result.transformed %}
-            <div class="row">
-                <div class="col"><h4><a href="{{ path('image_show', {'id': image.id}) }}">Image: {{ image.title | striptags }}</a></h4></div>
-            </div>
-            <div class="row">
-                <div class="col mx-3"><span class="createdat">{{ image.capturedat ? image.capturedat|date('d M Y') : '' }} &mdash; </span>{{ image.description | striptags | u.truncate(500, '...') }}</div>
-            </div>
-        {% endif %}
-        </div>
-    </div>
-    {% else %}
     <div class="row">
-        <div class="col">
-            No results found
+        <div class="col mx-2 mt-4">
+            <p class="search resultcount">
+                {% if pagination %}
+                    {{ pagination.getTotalItemCount }} results
+                {% else %}
+                    No results found
+                {% endif %}
+            </p>
         </div>
     </div>
-    {% endfor %}
 
-    <div class="row justify-content-md-center">
-            <div class="col-6">
-                <div class="navigation my-2">
-                    {{ knp_pagination_render(pagination) }}
+    {% if pagination %}
+        {% for hybrid_result in pagination %}
+        <div class="row search results">
+            <div class="col mx-2">
+                {#
+
+                    Wander results
+
+                #}
+                {% if hybrid_result.result.hit._index == 'wander' %}
+                {% set wander = hybrid_result.transformed %}
+
+                <div class="row wander">
+                    <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">Wander: {{ wander.title | striptags }}</a></h4></div>
+                </div>
+                <div class="row wander">
+                    <div class="col mx-3"><span class="createdat">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }} &mdash; </span> {{ wander.description | striptags | u.truncate(500, '...') }}</div>
+                </div>
+                {% endif %}
+                {#
+
+                    Image results
+
+                #}
+                {% if hybrid_result.result.hit._index == 'image' %}
+                {% set image = hybrid_result.transformed %}
+                <div class="row">
+                    <div class="col"><h4><a href="{{ path('image_show', {'id': image.id}) }}">Image: {{ image.title | striptags }}</a></h4></div>
+                </div>
+                <div class="row">
+                    <div class="col mx-3"><span class="createdat">{{ image.capturedat ? image.capturedat|date('d M Y') : '' }} &mdash; </span>{{ image.description | striptags | u.truncate(500, '...') }}</div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <div class="navigation my-2">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}
 {% block javascripts %}
