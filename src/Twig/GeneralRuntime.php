@@ -11,7 +11,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class GeneralRuntime implements RuntimeExtensionInterface
 {
-    /** @var $markdownService */
+    /** @var MarkdownService */
     private $markdownService;
 
     public function __construct(MarkdownService $markdownService)
