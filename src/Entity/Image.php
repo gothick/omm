@@ -361,7 +361,7 @@ class Image
     //     return $this;
     // }
 
-    public function getWander(): Wander
+    public function getWander(): ?Wander
     {
         return $this->wander;
     }

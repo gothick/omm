@@ -13,11 +13,13 @@
             </div>
             <div class="row details">
                 <div class="col">
+
                     {% if image.wander %}
                         {% set wander = image.wander %}
                         <p>From wander: <a href="{{ path('wanders_show', { 'id': wander.id }) }}">{{ wander }}</a></p>
+                    {% else %}
+                        <p>No associated Wander</p>
                     {% endif %}
-                    {# TODO: Cope with multiple related wanders; we don't have any yet. #}
                 </div>
                 <div class="col">
                     <p>Taken: {{ image.capturedAt| date("D j F Y H:i") }}</p>
