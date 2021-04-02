@@ -177,10 +177,6 @@ class WanderController extends AbstractController
     public function delete(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
-            $images = $wander->getImages();
-            foreach ($images as $image) {
-                $image->setWander(null);
-            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($wander);
             $entityManager->flush();
