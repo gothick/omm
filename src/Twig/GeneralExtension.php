@@ -20,7 +20,10 @@ class GeneralExtension extends AbstractExtension
             new TwigFilter('format_bytes', [GeneralRuntime::class, 'formatBinaryBytes']),
 
             // Picture rating
-            new TwigFilter('star_rating', [GeneralRuntime::class, 'starRating'])
+            new TwigFilter('star_rating', [GeneralRuntime::class, 'starRating']),
+
+            // Text
+            new TwigFilter('markdown_to_plain_text', [GeneralRuntime::class, 'markdownToPlainText'])
         ];
     }
 }

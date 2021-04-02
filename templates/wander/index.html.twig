@@ -42,7 +42,7 @@
                                 To be uploaded
                             {% endif %}
                         </td>
-                        <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
+                        <td>{{ wander.description | markdown_to_plain_text | u.truncate(100, '...', false) }}</td>
                     </tr>
                 {% else %}
                     <tr>

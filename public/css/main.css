@@ -33,12 +33,6 @@ html.homepage,
     font-size: 10px;
 }
 
-.gallery-image-wrapper {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* TODO: Why doesn't this work? */
-}
-
 /* Blockquote from https://codepen.io/cliftwalker/pen/XJaEXY */
 blockquote {
     width: 80%;
