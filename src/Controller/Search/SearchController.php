@@ -55,14 +55,23 @@ class SearchController extends AbstractController
             $nested->setPath('images');
             $nested->setQuery($qs);
             $innerHits = new InnerHits();
+            $innerHits->setHighlight(['fields' => [
+                'images.title' => new \stdClass(),
+                'images.description' => new \stdClass()
+            ]]);
             $nested->setInnerHits($innerHits);
-
-
             $bool = new BoolQuery();
             $bool->addShould($nested);
             $bool->addShould($qs);
 
-            $results = $wanderFinder->createHybridPaginatorAdapter($bool);
+            $searchQuery = new Query();
+            $searchQuery->setQuery($bool);
+            $searchQuery->setHighlight(['fields' => [
+                'title' => new \stdClass(),
+                'description' => new \stdClass()
+            ]]);
+
+            $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
             $pagination = $paginator->paginate($results);
             dd($pagination);
         }
