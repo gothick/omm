@@ -19,6 +19,8 @@ fos_elastica:
                         properties:
                             description: ~
                             title: ~
+                            image_id:
+                                property_path: id
         #image:
         #    persistence:
         #        driver: orm
