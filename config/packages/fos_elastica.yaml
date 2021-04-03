@@ -19,15 +19,15 @@ fos_elastica:
                         properties:
                             description: ~
                             title: ~
-        image:
-            persistence:
-                driver: orm
-                model: App\Entity\Image
-                provider: ~
-                finder: ~
-            properties:
-                description: ~
-                title: ~
-                id: ~
+        #image:
+        #    persistence:
+        #        driver: orm
+        #        model: App\Entity\Image
+        #        provider: ~
+        #        finder: ~
+        #    properties:
+        #        description: ~
+        #        title: ~
+        #        id: ~
 
 

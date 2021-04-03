@@ -30,7 +30,7 @@ class SearchController extends AbstractController
      */
     public function index(
         Request $request,
-        PaginatedFinderInterface $imageFinder,
+        //PaginatedFinderInterface $imageFinder,
         PaginatedFinderInterface $wanderFinder,
         PaginatorInterface $paginator): Response
     {
