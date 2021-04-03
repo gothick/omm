@@ -3,6 +3,7 @@
 namespace App\Controller\Search;
 
 use App\Entity\Image;
+use Elastica\Collapse\InnerHits as CollapseInnerHits;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\InnerHits;
@@ -53,6 +54,8 @@ class SearchController extends AbstractController
             $nested = new Nested();
             $nested->setPath('images');
             $nested->setQuery($qs);
+            $innerHits = new InnerHits();
+            $nested->setInnerHits($innerHits);
 
 
             $bool = new BoolQuery();
@@ -61,7 +64,7 @@ class SearchController extends AbstractController
 
             $results = $wanderFinder->createHybridPaginatorAdapter($bool);
             $pagination = $paginator->paginate($results);
-
+            dd($pagination);
         }
         return $this->render('/search/index.html.twig', [
             'form' => $form->createView(),
