@@ -24,3 +24,27 @@
 # Install Node.js v10.x
 #curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 #sudo apt-get install -y nodejs
+
+# Refresh packages & upgrade to latest stuff
+sudo apt-get update
+sudo apt-get -y upgrade
+
+# Useful packages
+sudo apt-get -y install emacs-nox
+
+# Necessary packages
+sudo apt-get -y install exiftool
+
+# Elasticsearch
+sudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
+sudo apt-get -y install elasticsearch
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+
+# Allow bigger file uploads
+sudo echo "client_max_body_size 20M;" > /etc/nginx/conf.d/nginx.conf
+sudo systemctl reload nginx
+
+
