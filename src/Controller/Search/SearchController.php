@@ -45,12 +45,11 @@ class SearchController extends AbstractController
         $form->handleRequest($request);
         $pagination = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            //$nested->setInnerHits(new InnerHits());
-
             $data = $form->getData();
             $qs = new QueryString($data['query']);
 
-            // This finds Wanders with images that match the query
+            // Nested query to find all wanders with images that match
+            // the text.
             $nested = new Nested();
             $nested->setPath('images');
             $nested->setQuery($qs);
@@ -60,20 +59,35 @@ class SearchController extends AbstractController
                 'images.description' => new \stdClass()
             ]]);
             $nested->setInnerHits($innerHits);
+
+            // Combine that with a normal query to find all wanders that
+            // themselves match the text
             $bool = new BoolQuery();
             $bool->addShould($nested);
             $bool->addShould($qs);
 
+            // Wrap it with an outer query to add highlighting to the
+            // Wander-level query.
             $searchQuery = new Query();
             $searchQuery->setQuery($bool);
             $searchQuery->setHighlight(['fields' => [
-                'title' => new \stdClass(),
+                'title' => [
+                    'number_of_fragments' => 0,
+                    'pre_tags' => ['<strong>'],
+                    'post_tags' => ['</strong>']
+                ],
                 'description' => new \stdClass()
             ]]);
+            // $searchQuery->setHighlight(
+            //         [
+            //             'fields' => [
+            //                 'title' => new \stdClass()
+            //             ]
+            //         ]);
 
             $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
             $pagination = $paginator->paginate($results);
-            dd($pagination);
+            //dd($pagination);
         }
         return $this->render('/search/index.html.twig', [
             'form' => $form->createView(),

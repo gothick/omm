@@ -41,26 +41,27 @@
         {% for hybrid_result in pagination %}
         <div class="row search results">
             <div class="col mx-2">
-                {#
 
-                    Wander results
-
-                #}
-                {% if hybrid_result.result.hit._index == 'wander' %}
                 {% set wander = hybrid_result.transformed %}
 
                 <div class="row wander">
-                    <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">Wander: {{ wander.title | striptags }}</a></h4></div>
+                    <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">Wander:
+                    {% if not hybrid_result.result.hit.highlight.title is empty %}
+                        {{ hybrid_result.result.hit.highlight.title[0] | raw }}
+                    {% else %}
+                        {{ wander.title | striptags | markdown }}
+                    {% endif %}
+                    </a></h4></div>
                 </div>
                 <div class="row wander">
                     <div class="col mx-3"><span class="createdat">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }} &mdash; </span> {{ wander.description | striptags | u.truncate(500, '...') }}</div>
                 </div>
-                {% endif %}
+                {# {% endif %} #}
                 {#
 
-                    Image results
+                    Image results -- won't be any like this now we're using nested.
 
-                #}
+
                 {% if hybrid_result.result.hit._index == 'image' %}
                 {% set image = hybrid_result.transformed %}
                 <div class="row">
@@ -69,7 +70,9 @@
                 <div class="row">
                     <div class="col mx-3"><span class="createdat">{{ image.capturedat ? image.capturedat|date('d M Y') : '' }} &mdash; </span>{{ image.description | striptags | u.truncate(500, '...') }}</div>
                 </div>
-            {% endif %}
+
+                {% endif %}
+                #}
             </div>
         </div>
         {% endfor %}
