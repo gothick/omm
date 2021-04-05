@@ -20,7 +20,7 @@
         <div class="col mx-2 mt-4">
             {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <input type="submit"/>
+                <input type="submit" value="Search"/>
             {{ form_end(form) }}
         </div>
     </div>
@@ -47,14 +47,14 @@
                 <div class="row wander">
                     <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}:
                         {# We set a no_match_size on the query so we should always get the title returned if there's nothing to highlight #}
-                        {{ hybrid_result.result.hit.highlight.title[0] | raw }}
+                        {{ hybrid_result.result.hit.highlight.title[0] | striptags('<mark>') | raw }}
                     </a></h4></div>
                 </div>
                 {% for highlight in hybrid_result.result.hit.highlight.description %}
                     <div class="row mx-2 wander description highlights">
                         <div class="col">
                         {# TODO Danger make sure elasticsearch index doesn't include HTML #}
-                        <small>{{ highlight | raw }}</small>
+                        <small>{{ highlight | striptags('<mark>') | raw }}</small>
                         </div>
                     </div>
                 {% endfor %}

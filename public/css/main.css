@@ -82,3 +82,9 @@ img.sector {
     height: 16px;
     vertical-align: text-bottom;
 }
+
+/* Search page */
+.search.results mark {
+    background-color: rgb(255, 255, 158);
+    color: black;
+}

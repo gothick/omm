@@ -64,9 +64,14 @@ class SearchController extends AbstractController
             $innerHits->setHighlight(['fields' => [
                 'images.title' => [
                     'number_of_fragments' => 0,
-                    'no_match_size' => 1024
+                    'no_match_size' => 1024,
+                    'pre_tags' => '[<mark>]',
+                    'post_tags' => '[</mark>]',
                 ],
-                'images.description' => new \stdClass()
+                'images.description' => [
+                    'pre_tags' => '[<mark>]',
+                    'post_tags' => '[</mark>]',
+                ]
             ]]);
             $nested->setInnerHits($innerHits);
 
@@ -74,7 +79,7 @@ class SearchController extends AbstractController
             // themselves match the text
             $mm = new MultiMatch();
             $mm->setQuery($data['query']);
-            $mm->setFields(['images.title', 'description']);
+            $mm->setFields(['title', 'description']);
             $bool = new BoolQuery();
             $bool->addShould($nested);
             $bool->addShould($mm);
@@ -87,11 +92,13 @@ class SearchController extends AbstractController
                 'title' => [
                     'number_of_fragments' => 0,
                     'no_match_size' => 1024,
-                    //'pre_tags' => ['<strong>'],
-                    //'post_tags' => ['</strong>']
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
                 ],
                 'description' => [
-                    'no_match_size' => 200
+                    'no_match_size' => 200,
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
                 ]
             ]]);
 
