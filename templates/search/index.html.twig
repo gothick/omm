@@ -70,14 +70,14 @@
                         {% set image = wander.images[imagehit._nested['offset']] %}
 
                         <div class="col-2">
-                            <a href="{{ path('admin_images_show', {'id': image.id}) }}">
+                            <a href="{{ path('image_show', {'id': image.id}) }}">
                                 <img class="w-100" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_100') }}" />
                             </a>
                         </div>
 
                         <div class="col-2">
                             {% for titlehighlight in imagehit.highlight['images.title'] %}
-                                <a href="{{ path('admin_images_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
+                                <a href="{{ path('image_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
 
                             {% endfor %}
                         </div>
