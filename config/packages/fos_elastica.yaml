@@ -16,15 +16,19 @@ fos_elastica:
             properties:
                 description:
                     analyzer: my_analyzer
+                    property_path: false
                 title:
                     analyzer: my_analyzer
+                    property_path: false
                 images:
                         type: "nested"
                         properties:
                             description:
                                 analyzer: my_analyzer
+                                property_path: false
                             title:
                                 analyzer: my_analyzer
+                                property_path: false
                             image_id:
                                 property_path: id
             settings:

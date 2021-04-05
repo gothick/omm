@@ -53,7 +53,6 @@
                 {% for highlight in hybrid_result.result.hit.highlight.description %}
                     <div class="row mx-2 wander description highlights">
                         <div class="col">
-                        {# TODO Danger make sure elasticsearch index doesn't include HTML #}
                         <small>{{ highlight | striptags('<mark>') | raw }}</small>
                         </div>
                     </div>
@@ -78,14 +77,12 @@
 
                         <div class="col-2">
                             {% for titlehighlight in imagehit.highlight['images.title'] %}
-                                {# TODO Danger make sure elasticsearch index doesn't include HTML #}
                                 <a href="{{ path('admin_images_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
 
                             {% endfor %}
                         </div>
                         <div class="col-8">
                             {% for descriptionhighlight in imagehit.highlight['images.description'] %}
-                                {# TODO Danger make sure elasticsearch index doesn't include HTML #}
                                 <small>{{ descriptionhighlight | raw }}</small>
                             {% endfor %}
                         </div>

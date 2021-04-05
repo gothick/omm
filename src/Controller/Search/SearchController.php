@@ -65,12 +65,12 @@ class SearchController extends AbstractController
                 'images.title' => [
                     'number_of_fragments' => 0,
                     'no_match_size' => 1024,
-                    'pre_tags' => '[<mark>]',
-                    'post_tags' => '[</mark>]',
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
                 ],
                 'images.description' => [
-                    'pre_tags' => '[<mark>]',
-                    'post_tags' => '[</mark>]',
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
                 ]
             ]]);
             $nested->setInnerHits($innerHits);
