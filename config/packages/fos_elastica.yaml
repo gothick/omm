@@ -35,6 +35,7 @@ fos_elastica:
                                 type: custom
                                 tokenizer: standard
                                 filter: [lowercase, possessive_english_stemmer, 'english_stemmer']
+                                char_filter: [html_strip]
                         filter:
                             possessive_english_stemmer:
                                 type: 'stemmer'
