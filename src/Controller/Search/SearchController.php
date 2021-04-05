@@ -8,6 +8,7 @@ use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\InnerHits;
 use Elastica\Query\MatchQuery;
+use Elastica\Query\MultiMatch;
 use Elastica\Query\Nested;
 use Elastica\Query\QueryString;
 use FOS\ElasticaBundle\Finder\FinderInterface;
@@ -46,13 +47,19 @@ class SearchController extends AbstractController
         $pagination = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $qs = new QueryString($data['query']);
 
             // Nested query to find all wanders with images that match
             // the text.
+            $nmm = new MultiMatch();
+            $nmm->setQuery($data['query']);
+            // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
+            // you might be able to just not setFields and it'll default to * and might catch everything
+            // anyway.
+            $nmm->setFields(['images.title', 'images.description']);
+
             $nested = new Nested();
             $nested->setPath('images');
-            $nested->setQuery($qs);
+            $nested->setQuery($nmm);
             $innerHits = new InnerHits();
             $innerHits->setHighlight(['fields' => [
                 'images.title' => [
@@ -65,9 +72,12 @@ class SearchController extends AbstractController
 
             // Combine that with a normal query to find all wanders that
             // themselves match the text
+            $mm = new MultiMatch();
+            $mm->setQuery($data['query']);
+            $mm->setFields(['images.title', 'description']);
             $bool = new BoolQuery();
             $bool->addShould($nested);
-            $bool->addShould($qs);
+            $bool->addShould($mm);
 
             // Wrap it with an outer query to add highlighting to the
             // Wander-level query.
@@ -84,12 +94,6 @@ class SearchController extends AbstractController
                     'no_match_size' => 200
                 ]
             ]]);
-            // $searchQuery->setHighlight(
-            //         [
-            //             'fields' => [
-            //                 'title' => new \stdClass()
-            //             ]
-            //         ]);
 
             $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
             $pagination = $paginator->paginate($results);

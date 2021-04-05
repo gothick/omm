@@ -14,16 +14,36 @@ fos_elastica:
                 elastica_to_model_transformer:
                     query_builder_method: createSearchQueryBuilder
             properties:
-                description: ~
-                title: ~
+                description:
+                    analyzer: my_analyzer
+                title:
+                    analyzer: my_analyzer
                 images:
                         type: "nested"
                         properties:
-                            description: ~
-                            title: ~
+                            description:
+                                analyzer: my_analyzer
+                            title:
+                                analyzer: my_analyzer
                             image_id:
                                 property_path: id
-        #image:
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            my_analyzer:
+                                type: custom
+                                tokenizer: standard
+                                filter: [lowercase, possessive_english_stemmer, 'english_stemmer']
+                        filter:
+                            possessive_english_stemmer:
+                                type: 'stemmer'
+                                language: 'possessive_english'
+                            english_stemmer:
+                                type: 'stemmer'
+                                language: 'english'
+
+                                #image:
         #    persistence:
         #        driver: orm
         #        model: App\Entity\Image
