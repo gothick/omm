@@ -442,6 +442,7 @@ class Image
 
     /**
      * @ORM\PostUpdate
+     * @ORM\PostPersist
      */
     public function updateWanderToForceElasticReindex(LifecycleEventArgs $args): self
     {

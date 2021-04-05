@@ -69,6 +69,7 @@ class SearchController extends AbstractController
                     'post_tags' => ['</mark>']
                 ],
                 'images.description' => [
+                    'no_match_size' => 1024,
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
                 ]
@@ -103,7 +104,9 @@ class SearchController extends AbstractController
             ]]);
 
             $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
-            $pagination = $paginator->paginate($results);
+            $pagination = $paginator->paginate(
+                $results,
+                $request->query->getInt('page', 1));
             //dd($pagination);
         }
         return $this->render('/search/index.html.twig', [
