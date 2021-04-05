@@ -39,23 +39,25 @@
 
     {% if pagination %}
         {% for hybrid_result in pagination %}
-        <div class="row search results">
+        <div class="row search results mb-4">
             <div class="col mx-2">
 
                 {% set wander = hybrid_result.transformed %}
 
                 <div class="row wander">
-                    <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">Wander:
-                    {% if not hybrid_result.result.hit.highlight.title is empty %}
+                    <div class="col"><h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}:
+                        {# We set a no_match_size on the query so we should always get the title returned if there's nothing to highlight #}
                         {{ hybrid_result.result.hit.highlight.title[0] | raw }}
-                    {% else %}
-                        {{ wander.title | striptags | markdown }}
-                    {% endif %}
                     </a></h4></div>
                 </div>
-                <div class="row wander">
-                    <div class="col mx-3"><span class="createdat">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }} &mdash; </span> {{ wander.description | striptags | u.truncate(500, '...') }}</div>
-                </div>
+                {% for highlight in hybrid_result.result.hit.highlight.description %}
+                    <div class="row mx-2 wander description highlights">
+                        <div class="col">
+                        {# TODO Danger make sure elasticsearch index doesn't include HTML #}
+                        <small>{{ highlight | raw }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
                 {# {% endif %} #}
                 {#
 

@@ -73,10 +73,13 @@ class SearchController extends AbstractController
             $searchQuery->setHighlight(['fields' => [
                 'title' => [
                     'number_of_fragments' => 0,
-                    'pre_tags' => ['<strong>'],
-                    'post_tags' => ['</strong>']
+                    'no_match_size' => 1024,
+                    //'pre_tags' => ['<strong>'],
+                    //'post_tags' => ['</strong>']
                 ],
-                'description' => new \stdClass()
+                'description' => [
+                    'no_match_size' => 200
+                ]
             ]]);
             // $searchQuery->setHighlight(
             //         [
