@@ -58,6 +58,34 @@
                         </div>
                     </div>
                 {% endfor %}
+
+                {# Inner hits: images #}
+                {% for imagehit in hybrid_result.result.hit.inner_hits.images.hits.hits %}
+                    <div class="row mx-2 mt-2 image title highlights">
+                        {% set image = wander.images[imagehit._nested['offset']] %}
+
+                        <div class="col-2">
+                            <a href="{{ path('admin_images_show', {'id': image.id}) }}">
+                                <img src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_100') }}" />
+                            </a>
+                        </div>
+
+                        <div class="col-2">
+                            {% for titlehighlight in imagehit.highlight['images.title'] %}
+                                {# TODO Danger make sure elasticsearch index doesn't include HTML #}
+                                <small>{{ titlehighlight | raw }}</small>
+
+                            {% endfor %}
+                        </div>
+                        <div class="col-8">
+                            {% for descriptionhighlight in imagehit.highlight['images.description'] %}
+                                {# TODO Danger make sure elasticsearch index doesn't include HTML #}
+                                <small>{{ descriptionhighlight | raw }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
                 {# {% endif %} #}
                 {#
 

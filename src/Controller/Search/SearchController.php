@@ -55,7 +55,10 @@ class SearchController extends AbstractController
             $nested->setQuery($qs);
             $innerHits = new InnerHits();
             $innerHits->setHighlight(['fields' => [
-                'images.title' => new \stdClass(),
+                'images.title' => [
+                    'number_of_fragments' => 0,
+                    'no_match_size' => 1024
+                ],
                 'images.description' => new \stdClass()
             ]]);
             $nested->setInnerHits($innerHits);

@@ -40,6 +40,19 @@ class WanderRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * Used by Elastica to transform results to model
+     *
+     * @param string $entityAlias
+     * @return QueryBuilder
+     */
+    public function createSearchQueryBuilder(string $entityAlias): QueryBuilder {
+        $qb = $this->createQueryBuilder($entityAlias);
+        $qb->select($entityAlias, 'i')
+            ->innerJoin($entityAlias.'.images', 'i');
+        return $qb;
+    }
+
     // TODO: Do we still use this? We might only be using findFirstWhereIncludesDate now
     public function findWhereIncludesDate(DateTimeInterface $target)
     {
