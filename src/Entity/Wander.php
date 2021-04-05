@@ -395,6 +395,11 @@ class Wander
         15 => 'N'
       ];
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $modifiedAt;
+
     public function getSector(): ?string
     {
         if ($this->angleFromHome !== null) {
@@ -427,6 +432,17 @@ class Wander
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
         return $result;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(): self
+    {
+        $this->modifiedAt = new \DateTime();
+        return $this;
     }
 
 

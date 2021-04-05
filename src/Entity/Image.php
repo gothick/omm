@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * @ApiResource(
@@ -34,6 +35,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\EntityListeners({
  *     ImageCalculatedFieldSetterListener::class
  * })
+ *
+ * @ORM\HasLifecycleCallbacks()
  *
  * This is just to control the stuff that goes back from our one controller
  * action that returns a JSON response, ImageController::upload
@@ -435,6 +438,26 @@ class Image
     }
     public function getImageShowUri(): ?string {
         return $this->imageShowUri;
+    }
+
+    /**
+     * @ORM\PostUpdate
+     */
+    public function updateWanderToForceElasticReindex(LifecycleEventArgs $args): self
+    {
+        // TODO: We may need extra code or a different function
+        // if we're to cover the event of an image being deleted,
+        // maybe. Test. But for now this is good enough and we can
+        // re-index manually if need be.
+        $wander = $this->getWander();
+        if ($wander === null) {
+            return $this;
+        }
+        $wander->setModifiedAt();
+        $entityManager = $args->getEntityManager();
+        $entityManager->persist($wander);
+        $entityManager->flush();
+        return $this;
     }
 }
 
