@@ -48,7 +48,7 @@
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <hr/>
     <div id="adminlinks">
-        <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Image Edit Page</a>
+        <a href="{{ path('admin_images_edit', {'id': image.id}) }}">Edit</a>
     </div>
     {% endif %}
 {% endblock %}
