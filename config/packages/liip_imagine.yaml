@@ -8,10 +8,10 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [40, 40], mode: outbound }
-        square_thumb_100:
+        square_thumb_200:
             quality: 75
             filters:
-                thumbnail: { size: [100, 100], mode: outbound }
+                thumbnail: { size: [200, 200], mode: outbound }
         square_thumb_300:
             quality: 75
             filters:
