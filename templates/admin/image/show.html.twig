@@ -79,9 +79,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('admin_images_index') }}">back to list</a>
+    <a href="{{ path('admin_image_index') }}">back to list</a>
 
-    <a href="{{ path('admin_images_edit', {'id': image.id}) }}">edit</a>
+    <a href="{{ path('admin_image_edit', {'id': image.id}) }}">edit</a>
 
     {{ include('admin/image/_delete_form.html.twig') }}
 {% endblock %}

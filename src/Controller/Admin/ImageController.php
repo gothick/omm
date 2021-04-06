@@ -22,7 +22,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
- * @Route("/admin/images", name="admin_images_")
+ * @Route("/admin/image", name="admin_image_")
  */
 class ImageController extends AbstractController
 {
@@ -121,7 +121,7 @@ class ImageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             //dd($form);
-            return $this->redirectToRoute('admin_images_show', ['id' => $image->getId()]);
+            return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
         }
 
         return $this->render('admin/image/edit.html.twig', [
@@ -141,6 +141,6 @@ class ImageController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_images_index');
+        return $this->redirectToRoute('admin_image_index');
     }
 }

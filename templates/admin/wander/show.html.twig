@@ -97,7 +97,7 @@
         {% for image in row %}
         <div class="col-sm">
             {% if image.id is defined %}
-            <a href="{{ path('admin_images_show', {'id': image.id}) }}">
+            <a href="{{ path('admin_image_show', {'id': image.id}) }}">
                 <img
                     class="img-fluid"
                     src="{{ vich_uploader_asset(image) }}"
