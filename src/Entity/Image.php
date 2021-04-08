@@ -410,6 +410,11 @@ class Image
      */
     private $imageShowUri;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $auto_tags = [];
+
 
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
@@ -458,6 +463,18 @@ class Image
         $entityManager = $args->getEntityManager();
         $entityManager->persist($wander);
         $entityManager->flush();
+        return $this;
+    }
+
+    public function getAutoTags(): ?array
+    {
+        return $this->auto_tags;
+    }
+
+    public function setAutoTags(?array $auto_tags): self
+    {
+        $this->auto_tags = $auto_tags;
+
         return $this;
     }
 }

@@ -20,3 +20,16 @@ framework:
     request:
         formats:
             rss2: 'application/rss+xml'
+
+    http_client:
+        scoped_clients:
+            # only requests matching scope will use these options
+            imagga:
+                base_uri: 'https://api.imagga.com'
+                auth_basic: '%env(IMAGGA_API_KEY)%:%env(IMAGGA_API_SECRET)%'
+                #max_host_connections: 1
+                #headers:
+                #    Accept: 'application/vnd.github.v3+json'
+                #    Authorization: 'token %env(GITHUB_API_TOKEN)%'
+
+
