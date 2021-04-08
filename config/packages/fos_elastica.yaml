@@ -29,6 +29,8 @@ fos_elastica:
                             title:
                                 analyzer: my_analyzer
                                 property_path: false
+                            keywords:
+                                type: keyword
                             image_id:
                                 property_path: id
             settings:
