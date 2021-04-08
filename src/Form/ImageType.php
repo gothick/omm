@@ -25,6 +25,7 @@ class ImageType extends AbstractType
             //->add('imageFile', VichImageType::class)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class, [
+                'required' => false,
                 'attr' => ['rows' => 10]
             ])
             ->add('wander', EntityType::class, [
