@@ -8,8 +8,9 @@
 {% block body %}
     <h1>Wander</h1>
     <p>
-    <a href="{{ path('admin_wanders_index') }}">back to list</a> |
-    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a>
+    <a href="{{ path('admin_wanders_index') }}">back to list</a> <strong>|</strong>
+    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">edit</a> <strong>|</strong>
+    <a href="{{ path('wanders_show', {'id': wander.id}) }}">public page</a>
     </p>
 
     <table class="table">
