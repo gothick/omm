@@ -74,7 +74,6 @@ class SearchController extends AbstractController
                     'post_tags' => ['</mark>']
                 ],
                 'images.keywords' => [
-                    'no_match_size' => 1024,
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
                 ]
