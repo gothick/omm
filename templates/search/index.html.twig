@@ -87,6 +87,13 @@
                                     <small>{{ descriptionhighlight | raw }}</small>
                                 {% endfor %}
                             {% endif %}
+                            {% if imagehit.highlight['images.keywords'] is defined %}
+                                <hr />
+                                <small>Matching keywords:</small>
+                                {% for keywordshighlight in imagehit.highlight['images.keywords'] %}
+                                    <small>{{ keywordshighlight | raw }}</small>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

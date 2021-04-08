@@ -55,7 +55,7 @@ class SearchController extends AbstractController
             // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
             // you might be able to just not setFields and it'll default to * and might catch everything
             // anyway.
-            $nmm->setFields(['images.title', 'images.description']);
+            $nmm->setFields(['images.title', 'images.description', 'images.keywords']);
 
             $nested = new Nested();
             $nested->setPath('images');
@@ -69,6 +69,11 @@ class SearchController extends AbstractController
                     'post_tags' => ['</mark>']
                 ],
                 'images.description' => [
+                    'no_match_size' => 1024,
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
+                ],
+                'images.keywords' => [
                     'no_match_size' => 1024,
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']

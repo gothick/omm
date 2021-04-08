@@ -31,11 +31,16 @@ fos_elastica:
                                 property_path: false
                             keywords:
                                 type: keyword
+                                normalizer: keyword_normalizer
                             image_id:
                                 property_path: id
             settings:
                 index:
                     analysis:
+                        normalizer:
+                            keyword_normalizer:
+                                type: custom
+                                filter: [lowercase]
                         analyzer:
                             my_analyzer:
                                 type: custom
