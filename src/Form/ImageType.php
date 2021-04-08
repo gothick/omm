@@ -36,6 +36,16 @@ class ImageType extends AbstractType
                         ->orderBy('w.startTime', 'DESC');
                 }
             ])
+            ->add('rating', ChoiceType::class, [
+                'choices'  => [
+                    '-' => null,
+                    '★' => 1,
+                    '★★' => 2,
+                    '★★★' => 3,
+                    '★★★★' => 4,
+                    '★★★★★' => 5,
+                ],
+            ])
             ->add('latlng', TextType::class)
             ->add('keywords', TextType::class)
             ->add('capturedAt')
