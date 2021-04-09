@@ -33,7 +33,7 @@ class DeleteImagesNewerThanCommand extends Command
         $this
             ->setDescription('Deletes Images newer than a certain id.')
             ->setHelp('Deletes specific Image entities and their associated uploaded files.')
-            ->addArgument('id', InputArgument::REQUIRED, 'Wander ID. Images with IDs from this ID onward will be deleted.');
+            ->addArgument('id', InputArgument::REQUIRED, 'Image ID. Images with IDs from this ID onward will be deleted.');
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
