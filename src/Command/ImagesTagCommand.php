@@ -101,7 +101,8 @@ class ImagesTagCommand extends Command
     {
         $response = $this->imagga->request('GET', 'https://api.imagga.com/v2/tags', [
             'query' => [
-                'image_url' => $image->getMediumImageUri(),
+                //'image_url' => $image->getMediumImageUri(),
+                'image_url' => 'https://omm.gothick.org.uk/media/cache/srcset_576/uploads/images/20210328-mg-9921-terry-house-6067172c952d1544478055.jpg',
                 'threshold' => 15.0
             ]
         ]);
@@ -128,6 +129,6 @@ class ImagesTagCommand extends Command
         // imagga are whining about multiple connections as surely
         // this code will be waiting until this request is complete
         // before getting past the getContent() call?
-        sleep(1);
+        //sleep(1);
     }
 }
