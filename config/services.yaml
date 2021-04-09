@@ -9,6 +9,9 @@ parameters:
     env(EXIFTOOL_PATH): ~
     exiftool_path: '%env(EXIFTOOL_PATH)%'
     app.homebase_coords: [ '%env(float:HOME_BASE_LAT)%', '%env(float:HOME_BASE_LNG)%' ]
+    # For command-line stuff that doesn't have a Request: https://symfony.com/doc/4.1/console/request_context.html
+    router.request_context.host: 'omm.gothick.org.uk'
+    router.request_context.scheme: 'https'
 
 services:
     # default configuration for services in *this* file

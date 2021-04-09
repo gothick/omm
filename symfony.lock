@@ -309,6 +309,9 @@
     "spatie/guzzle-rate-limiter-middleware": {
         "version": "2.0.1"
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.2.4"
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -374,6 +377,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v5.1.8"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v5.2.5"
     },
     "symfony/dom-crawler": {
         "version": "v5.1.8"
@@ -470,6 +476,18 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/messenger": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "e9a414b113ceadbf4e52abe37bf8f1b443f06ccb"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
     "symfony/mime": {
         "version": "v5.1.8"
     },
@@ -559,6 +577,9 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v5.1.8"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.2.4"
     },
     "symfony/routing": {
         "version": "5.1",

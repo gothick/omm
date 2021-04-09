@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Image;
+use App\Message\RecogniseImage;
 use App\Repository\WanderRepository;
 use App\Service\ImaggaService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -34,18 +36,23 @@ class ImagesTagCommand extends Command
     /** @var RouterInterface */
     private $router;
 
+    /** @var MessageBusInterface */
+    private $messageBus;
+
     public function __construct(
         //Client $imaggaClient,
         ImaggaService $imaggaService,
         WanderRepository $wanderRepository,
         EntityManagerInterface $entityManager,
-        RouterInterface $router
+        RouterInterface $router,
+        MessageBusInterface $messageBus
         )
     {
         $this->imaggaService = $imaggaService;
         $this->wanderRepository = $wanderRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
+        $this->messageBus = $messageBus;
 
         parent::__construct();
     }
@@ -77,20 +84,12 @@ class ImagesTagCommand extends Command
             return Command::FAILURE;
         }
 
-        // TODO: As we're a Command, we don't have a Request to set these up.
-        // Bodge it manually for now. You can configure these in config/services.yml;
-        // see https://symfony.com/doc/4.1/console/request_context.html and
-        // do that later.
-
-        $context = $this->router->getContext();
-        $context->setHost('omm.gothick.org.uk');
-        $context->setScheme('https');
-
         $images = $wander->getImages();
         $progressBar = new ProgressBar($output, count($images));
         $progressBar->start();
         foreach ($images as $image) {
-            $this->imaggaService->tagImage($image, $overwrite);
+            //$this->imaggaService->tagImage($image, $overwrite);
+            $this->messageBus->dispatch(new RecogniseImage($image->getId()));
             $progressBar->advance();
         }
         $progressBar->finish();
