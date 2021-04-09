@@ -93,7 +93,6 @@ class ImagesTagCommand extends Command
             $this->imaggaService->tagImage($image);
             $progressBar->advance();
         }
-        $this->entityManager->flush();
         $progressBar->finish();
 
         $io->success("Tagged the wander's images.");

@@ -477,5 +477,11 @@ class Image
 
         return $this;
     }
+    public function getAutoTagsCount(): int {
+        if (is_array($this->auto_tags)) {
+            return count($this->auto_tags);
+        }
+        return 0;
+    }
 }
 

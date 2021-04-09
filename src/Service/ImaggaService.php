@@ -6,6 +6,8 @@ use App\Entity\Image;
 use Doctrine\ORM\EntityManagerInterface;
 use ErrorException;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 
 class ImaggaService
 {
@@ -21,7 +23,14 @@ class ImaggaService
         EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+
+        $stack = HandlerStack::create();
+        // TODO: Parameterise rate limit
+        $stack->push(RateLimiterMiddleware::perSecond(1));
+
         $this->guzzle = new Client([
+            'handler' => $stack,
+            // TODO: Parameterise URI
             'base_uri' => 'https://api.imagga.com',
             'auth' => [
                 $imaggaApiKey,
@@ -30,8 +39,12 @@ class ImaggaService
         ]);
     }
 
-    public function tagImage(Image $image): void
+    public function tagImage(Image $image, bool $overwriteExisting = false): bool
     {
+        if ($overwriteExisting == false && $image->getAutoTagsCount() > 0) {
+            return false;
+        }
+
         $response = $this->guzzle->request('GET', '/v2/tags', [
             'query' => [
                 //'image_url' => $image->getMediumImageUri(),
@@ -44,9 +57,6 @@ class ImaggaService
         $imagga_result = json_decode($content);
 
         if ($imagga_result->status->type != 'success') {
-            //$output->writeln('<error>Error returned from imagga:</error>');
-            //$output->writeln('<error> Type: ' . $imagga_result->status->type . '</error>');
-            //$output->writeln('<error> Text: ' . $imagga_result->status->text . '</error>');
             throw new ErrorException("Error returned from imagga: " . $imagga_result->status->text);
         }
 
@@ -56,5 +66,7 @@ class ImaggaService
         }
         $image->setAutoTags($tags);
         $this->entityManager->persist($image);
+        $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
+        return true;
     }
 }
