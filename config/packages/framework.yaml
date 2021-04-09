@@ -22,12 +22,18 @@ framework:
             rss2: 'application/rss+xml'
 
     http_client:
+        # This isn't going to be good if we start calling other APIs, but
+        # for now it seems to at least prevent us making multiple concurrent
+        # connections to imagga. Can't see any other easy way to limit it,
+        # oddly.
+        max_host_connections: 1
+
         scoped_clients:
             # only requests matching scope will use these options
             imagga:
                 base_uri: 'https://api.imagga.com'
                 auth_basic: '%env(IMAGGA_API_KEY)%:%env(IMAGGA_API_SECRET)%'
-                #max_host_connections: 1
+                #max_host_connections: 1 # THIS DIDN'T WORK HERE
                 #headers:
                 #    Accept: 'application/vnd.github.v3+json'
                 #    Authorization: 'token %env(GITHUB_API_TOKEN)%'
