@@ -47,4 +47,5 @@ sudo systemctl start elasticsearch.service
 sudo echo "client_max_body_size 20M;" > /etc/nginx/conf.d/nginx.conf
 sudo systemctl reload nginx
 
-
+# More elbow-room for Composer
+echo "memory_limit = 4096M" > /etc/php/7.4/cli/conf.d/30-matt-increase-memory.ini
