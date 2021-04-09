@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row">
         <div class="col">
             {#
                 TODO Add an alt text property so we can be more accessible
@@ -42,6 +42,20 @@
                 sizes="(min-width: 1200px) 1140px,
                         100vw"
                  />
+        </div>
+    </div>
+    <div class="row image">
+        <div class="col pt-3 mx-3 footerstrip">
+            <p><b>Keywords</b>:
+                {% for keyword in image.Keywords %}
+                    <span class="keyword">{{ keyword }}</span>
+                {% endfor %}
+            </p>
+            <p><b>Experimental Machine-Learning Auto-Tags</b>:
+                {% for tag in image.autoTags %}
+                <span class="keyword autotag">{{ tag }}</span>
+                {% endfor %}
+            </p>
         </div>
     </div>
 

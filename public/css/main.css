@@ -27,6 +27,10 @@ html.homepage,
     background-color: #ddf;
 }
 
+.footerstrip {
+    background-color: #ddf;
+}
+
 .stats {
     padding-top: 4px;
     padding-bottom: 4px;
@@ -87,4 +91,20 @@ img.sector {
 .search.results mark {
     background-color: rgb(255, 255, 158);
     color: black;
+}
+
+.image span.keyword {
+    display: inline-block;
+    font-size: 0.8em;
+    background-color: #cfc;
+    padding: 2px 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #2e6d2e;
+    border-radius: 10px;
+    margin-bottom: 3px;
+}
+
+.image span.keyword.autotag {
+    background-color: rgb(152, 225, 253);
 }
