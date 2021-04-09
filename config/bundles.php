@@ -19,5 +19,4 @@ return [
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     FOS\ElasticaBundle\FOSElasticaBundle::class => ['all' => true],
-    Csa\Bundle\GuzzleBundle\CsaGuzzleBundle::class => ['all' => true],
 ];

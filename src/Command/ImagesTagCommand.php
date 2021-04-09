@@ -4,9 +4,11 @@ namespace App\Command;
 
 use App\Entity\Image;
 use App\Repository\WanderRepository;
+use App\Service\ImaggaService;
 use Doctrine\ORM\EntityManagerInterface;
 use ErrorException;
 use Exception;
+use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,8 +22,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ImagesTagCommand extends Command
 {
     protected static $defaultName = 'images:tag';
-    /** @var HttpClientInterface */
-    private $imagga;
+    /** @var ImaggaService */
+    private $imaggaService;
 
     /** @var WanderRepository */
     private $wanderRepository;
@@ -33,12 +35,14 @@ class ImagesTagCommand extends Command
     private $router;
 
     public function __construct(
-        HttpClientInterface $imagga,
+        //Client $imaggaClient,
+        ImaggaService $imaggaService,
         WanderRepository $wanderRepository,
         EntityManagerInterface $entityManager,
-        RouterInterface $router)
+        RouterInterface $router
+        )
     {
-        $this->imagga = $imagga;
+        $this->imaggaService = $imaggaService;
         $this->wanderRepository = $wanderRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
@@ -86,7 +90,7 @@ class ImagesTagCommand extends Command
         $progressBar = new ProgressBar($output, count($images));
         $progressBar->start();
         foreach ($images as $image) {
-            $this->tagImage($image, $input, $output);
+            $this->imaggaService->tagImage($image);
             $progressBar->advance();
         }
         $this->entityManager->flush();
@@ -95,40 +99,5 @@ class ImagesTagCommand extends Command
         $io->success("Tagged the wander's images.");
 
         return Command::SUCCESS;
-    }
-
-    protected function tagImage(Image $image, InputInterface $input, OutputInterface $output): void
-    {
-        $response = $this->imagga->request('GET', 'https://api.imagga.com/v2/tags', [
-            'query' => [
-                //'image_url' => $image->getMediumImageUri(),
-                'image_url' => 'https://omm.gothick.org.uk/media/cache/srcset_576/uploads/images/20210328-mg-9921-terry-house-6067172c952d1544478055.jpg',
-                'threshold' => 15.0
-            ]
-        ]);
-
-        $content = $response->getContent(false);
-        $imagga_result = json_decode($content);
-
-        if ($imagga_result->status->type != 'success') {
-            $output->writeln('<error>Error returned from imagga:</error>');
-            $output->writeln('<error> Type: ' . $imagga_result->status->type . '</error>');
-            $output->writeln('<error> Text: ' . $imagga_result->status->text . '</error>');
-            throw new ErrorException("Error returned from imagga");
-        }
-
-        $tags = [];
-        foreach($imagga_result->result->tags as $tag) {
-            $tags[] = $tag->tag->en;
-        }
-        $image->setAutoTags($tags);
-        $this->entityManager->persist($image);
-        // BODGE ALERT: This is the only way I've found of limiting
-        // Symfony's irritating HttpClient to one connection. The
-        // max_host_connections didn't work and I have no idea why
-        // imagga are whining about multiple connections as surely
-        // this code will be waiting until this request is complete
-        // before getting past the getContent() call?
-        //sleep(1);
     }
 }

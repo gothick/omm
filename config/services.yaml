@@ -25,7 +25,9 @@ services:
             $sectorImgUrl: '/images/sectors/'
             $sectorImgUrlFileType: 'png'
             $wanderFinder: '@fos_elastica.finder.wander'
-            #$imageFinder: '@fos_elastica.finder.image'
+            $imaggaClient: '@csa_guzzle.client.imagga'
+            $imaggaApiKey: '%env(IMAGGA_API_KEY)%'
+            $imaggaApiSecret: '%env(IMAGGA_API_SECRET)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

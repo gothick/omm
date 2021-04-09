@@ -19,27 +19,6 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
     },
-    "csa/guzzle-bundle": {
-        "version": "3.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.0",
-            "ref": "37c8c8a6c9b4365529a27975dced0589fea4bb48"
-        },
-        "files": [
-            "config/packages/csa_guzzle.yaml"
-        ]
-    },
-    "csa/guzzle-cache-middleware": {
-        "version": "v1.0.1"
-    },
-    "csa/guzzle-history-middleware": {
-        "version": "v1.0.1"
-    },
-    "csa/guzzle-stopwatch-middleware": {
-        "version": "v1.0.1"
-    },
     "deployer/deployer": {
         "version": "v6.8.0"
     },
@@ -66,6 +45,9 @@
     },
     "doctrine/dbal": {
         "version": "2.12.0"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
@@ -153,7 +135,7 @@
         "version": "0.5.0"
     },
     "guzzlehttp/guzzle": {
-        "version": "6.5.5"
+        "version": "7.3.0"
     },
     "guzzlehttp/promises": {
         "version": "1.4.1"
@@ -194,6 +176,9 @@
             "config/packages/liip_imagine.yaml",
             "config/routes/liip_imagine.yaml"
         ]
+    },
+    "marcj/topsort": {
+        "version": "2.0.0"
     },
     "michelf/php-markdown": {
         "version": "1.9.0"
@@ -258,6 +243,9 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.1"
+    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -317,6 +305,9 @@
     },
     "sibyx/phpgpx": {
         "version": "1.0-rc5"
+    },
+    "spatie/guzzle-rate-limiter-middleware": {
+        "version": "2.0.1"
     },
     "symfony/apache-pack": {
         "version": "1.0",
@@ -620,9 +611,6 @@
         "version": "v5.1.8"
     },
     "symfony/string": {
-        "version": "v5.1.8"
-    },
-    "symfony/templating": {
         "version": "v5.1.8"
     },
     "symfony/test-pack": {
