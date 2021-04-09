@@ -122,5 +122,12 @@ class ImagesTagCommand extends Command
         }
         $image->setAutoTags($tags);
         $this->entityManager->persist($image);
+        // BODGE ALERT: This is the only way I've found of limiting
+        // Symfony's irritating HttpClient to one connection. The
+        // max_host_connections didn't work and I have no idea why
+        // imagga are whining about multiple connections as surely
+        // this code will be waiting until this request is complete
+        // before getting past the getContent() call?
+        sleep(1);
     }
 }

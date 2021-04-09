@@ -22,12 +22,6 @@ framework:
             rss2: 'application/rss+xml'
 
     http_client:
-        # This isn't going to be good if we start calling other APIs, but
-        # for now it seems to at least prevent us making multiple concurrent
-        # connections to imagga. Can't see any other easy way to limit it,
-        # oddly.
-        max_host_connections: 1
-
         scoped_clients:
             # only requests matching scope will use these options
             imagga:
