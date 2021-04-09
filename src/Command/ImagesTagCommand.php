@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ImagesTagCommand extends Command
@@ -28,11 +29,20 @@ class ImagesTagCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    public function __construct(HttpClientInterface $imagga, WanderRepository $wanderRepository, EntityManagerInterface $entityManager)
+    /** @var RouterInterface */
+    private $router;
+
+    public function __construct(
+        HttpClientInterface $imagga,
+        WanderRepository $wanderRepository,
+        EntityManagerInterface $entityManager,
+        RouterInterface $router)
     {
         $this->imagga = $imagga;
         $this->wanderRepository = $wanderRepository;
         $this->entityManager = $entityManager;
+        $this->router = $router;
+
         parent::__construct();
     }
 
@@ -62,6 +72,15 @@ class ImagesTagCommand extends Command
             $io->error("Failed to find wander $id");
             return Command::FAILURE;
         }
+
+        // TODO: As we're a Command, we don't have a Request to set these up.
+        // Bodge it manually for now. You can configure these in config/services.yml;
+        // see https://symfony.com/doc/4.1/console/request_context.html and
+        // do that later.
+
+        $context = $this->router->getContext();
+        $context->setHost('omm.gothick.org.uk');
+        $context->setScheme('https');
 
         $images = $wander->getImages();
         $progressBar = new ProgressBar($output, count($images));
