@@ -56,14 +56,14 @@ class ImagesTagCommand extends Command
             ->setDescription('Retrieve and apply imagga tags to all images in a Wander')
             ->addArgument('id', InputArgument::REQUIRED, 'Wander ID')
             // TODO: Add option to overwrite existing tags
-            //->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing tags')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $helper = $this->getHelper('question');
         $io = new SymfonyStyle($input, $output);
+        $overwrite = (bool) $input->getOption('overwrite');
 
         $id = filter_var($input->getArgument('id'), FILTER_VALIDATE_INT, ['min_range' => 0]);
         if ($id === false) {
@@ -90,7 +90,7 @@ class ImagesTagCommand extends Command
         $progressBar = new ProgressBar($output, count($images));
         $progressBar->start();
         foreach ($images as $image) {
-            $this->imaggaService->tagImage($image);
+            $this->imaggaService->tagImage($image, $overwrite);
             $progressBar->advance();
         }
         $progressBar->finish();

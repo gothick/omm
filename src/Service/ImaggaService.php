@@ -47,8 +47,8 @@ class ImaggaService
 
         $response = $this->guzzle->request('GET', '/v2/tags', [
             'query' => [
-                //'image_url' => $image->getMediumImageUri(),
-                'image_url' => 'https://omm.gothick.org.uk/media/cache/srcset_576/uploads/images/20210328-mg-9921-terry-house-6067172c952d1544478055.jpg',
+                'image_url' => $image->getMediumImageUri(),
+                // 'image_url' => 'https://omm.gothick.org.uk/media/cache/srcset_576/uploads/images/20210328-mg-9921-terry-house-6067172c952d1544478055.jpg',
                 'threshold' => 15.0
             ]
         ]);
