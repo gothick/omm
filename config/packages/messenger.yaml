@@ -12,6 +12,8 @@ framework:
                     max_retries: 3
                     delay: 1000
                     multiplier: 2
+                options:
+                    redeliver_timeout: 300
             failed: '%env(MESSENGER_TRANSPORT_FAILED_DSN)%'
             # sync: 'sync://'
 
