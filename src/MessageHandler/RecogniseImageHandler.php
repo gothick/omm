@@ -5,18 +5,19 @@ namespace App\MessageHandler;
 use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
 use App\Service\ImaggaService;
+use App\Service\ImaggaServiceInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RecogniseImageHandler implements MessageHandlerInterface {
 
-    /** @var ImaggaService */
+    /** @var ImaggaServiceInterface */
     private $imaggaService;
 
     /** @var ImageRepository */
     private $imageRepository;
 
     public function __construct(
-        ImaggaService $imaggaService,
+        ImaggaServiceInterface $imaggaService,
         ImageRepository $imageRepository)
     {
         $this->imaggaService = $imaggaService;

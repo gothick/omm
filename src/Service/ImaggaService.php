@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 
-class ImaggaService
+class ImaggaService implements ImaggaServiceInterface
 {
     /** @var Client */
     private $guzzle;
@@ -20,6 +20,7 @@ class ImaggaService
     public function __construct(
         string $imaggaApiKey,
         string $imaggaApiSecret,
+        string $baseUri,
         EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -31,7 +32,7 @@ class ImaggaService
         $this->guzzle = new Client([
             'handler' => $stack,
             // TODO: Parameterise URI
-            'base_uri' => 'https://api.imagga.com',
+            'base_uri' => $baseUri,
             'auth' => [
                 $imaggaApiKey,
                 $imaggaApiSecret

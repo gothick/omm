@@ -1,6 +1,9 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
+imports:
+    - { resource: imagga_service.yaml }
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
@@ -28,7 +31,6 @@ services:
             $sectorImgUrl: '/images/sectors/'
             $sectorImgUrlFileType: 'png'
             $wanderFinder: '@fos_elastica.finder.wander'
-            $imaggaClient: '@csa_guzzle.client.imagga'
             $imaggaApiKey: '%env(IMAGGA_API_KEY)%'
             $imaggaApiSecret: '%env(IMAGGA_API_SECRET)%'
 
@@ -56,6 +58,12 @@ services:
         # if that happens before the migration to add the database table. Making
         # this service lazy is a cheap workaround.
         lazy: true
+
+    App\Service\ImaggaService:
+        arguments:
+            $baseUri: '%imagga.base_uri%'
+
+    App\Service\ImaggaServiceInterface: '@App\Service\ImaggaService'
 
     # Moved to a global binding, above.
     #App\Service\GpxService:
