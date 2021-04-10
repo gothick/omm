@@ -41,7 +41,7 @@ class ImaggaService
 
     public function tagImage(Image $image, bool $overwriteExisting = false): bool
     {
-        if ($overwriteExisting == false && $image->getAutoTagsCount() > 0) {
+        if ($overwriteExisting === false && $image->getAutoTagsCount() > 0) {
             return false;
         }
 
