@@ -60,6 +60,7 @@ services:
         lazy: true
 
     App\Service\ImaggaService:
+        lazy: true
         arguments:
             $baseUri: '%imagga.base_uri%'
 
