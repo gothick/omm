@@ -89,7 +89,7 @@ class ImagesTagCommand extends Command
         $progressBar->start();
         foreach ($images as $image) {
             //$this->imaggaService->tagImage($image, $overwrite);
-            $this->messageBus->dispatch(new RecogniseImage($image->getId()));
+            $this->messageBus->dispatch(new RecogniseImage($image->getId(), $overwrite));
             $progressBar->advance();
         }
         $progressBar->finish();

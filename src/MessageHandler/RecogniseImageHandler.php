@@ -27,7 +27,7 @@ class RecogniseImageHandler implements MessageHandlerInterface {
     {
         $image = $this->imageRepository->find($recogniseImage->getImageId());
         if ($image !== null) {
-            $this->imaggaService->tagImage($image, false);
+            $this->imaggaService->tagImage($image, $recogniseImage->getOverwrite());
         }
     }
 }
