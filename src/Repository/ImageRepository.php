@@ -41,6 +41,61 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findNext(Image $image)
+    {
+        $wander = $image->getWander();
+        if ($wander === null) {
+            return null;
+        }
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->add('where', $qb->expr()->andX(
+            $qb->expr()->eq('i.wander', ':wander'),
+            $qb->expr()->orX(
+                $qb->expr()->gt('i.capturedAt', ':capturedAt'),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('i.capturedAt', ':capturedAt'),
+                    $qb->expr()->gt('i.id', ':id')
+                )
+            )
+        ));
+        $qb->setParameter('wander', $wander)
+            ->setParameter('capturedAt', $image->getCapturedAt())
+            ->setParameter('id', $image->getId());
+
+        $qb->addOrderBy('i.capturedAt')
+            ->addOrderBy('i.id');
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findPrev(Image $image)
+    {
+        $wander = $image->getWander();
+        if ($wander === null) {
+            return null;
+        }
+
+        $qb = $this->createQueryBuilder('i');
+        $qb->add('where', $qb->expr()->andX(
+            $qb->expr()->eq('i.wander', ':wander'),
+            $qb->expr()->orX(
+                $qb->expr()->lt('i.capturedAt', ':capturedAt'),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('i.capturedAt', ':capturedAt'),
+                    $qb->expr()->lt('i.id', ':id')
+                )
+            )
+        ));
+        $qb->setParameter('wander', $wander)
+            ->setParameter('capturedAt', $image->getCapturedAt())
+            ->setParameter('id', $image->getId());
+
+        $qb->addOrderBy('i.capturedAt', 'desc')
+            ->addOrderBy('i.id', 'desc');
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 
     // /**
     //  * @return Image[] Returns an array of Image objects
