@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Image;
 use App\Form\ImageType;
+use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -62,7 +64,8 @@ class ImageController extends AbstractController
     public function upload(
         Request $request,
         SerializerInterface $serializer,
-        string $gpxDirectory // TODO Fix this; it should be using the image uploads directory
+        string $gpxDirectory, // TODO Fix this; it should be using the image uploads directory
+        MessageBusInterface $messageBus
         ): Response
     {
         if ($request->isMethod('POST')) {
@@ -82,6 +85,9 @@ class ImageController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($image);
             $entityManager->flush();
+            // Queue up some image recognition
+            $messageBus->dispatch(new RecogniseImage($image->getId()));
+
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
             // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
