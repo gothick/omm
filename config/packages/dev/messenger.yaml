@@ -1,0 +1,7 @@
+framework:
+    messenger:
+        transports:
+            # The in-memory transport doesn't send anything anywhere, so we'll
+            # use that for dev for now. Later maybe we'll find a better way of
+            # testing the API in dev instead.
+            async: 'in-memory://'
