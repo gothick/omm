@@ -4,6 +4,25 @@
 
 {% block body %}
     <h1>Image Problems</h1>
+    <h2>Orphan Images</h2>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Image</th>
+                <th>CapturedAt</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in orphans %}
+            <tr>
+                <td><a href="{{ path('admin_image_show', {'id': image.id}) }}">{{ image.title ?? image.id }}</a></td>
+                <td>{{ image.capturedAt |date('d M Y H:i T') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>General Problems</h2>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -17,6 +36,7 @@
                 <th>Score</th>
             </tr>
         </thead>
+        <tbody>
             {% for problem in problems %}
             <tr>
                 <td><a href="{{ path('admin_wanders_show', {'id': problem.wander.id}) }}">{{ problem.wander.title }}</a></td>
@@ -34,7 +54,7 @@
                 <td>{{ problem.weighted_problem_score }}</td>
             </tr>
             {% endfor %}
-        <tbody>
+
         </tbody>
     </table>
     <a class="btn btn-primary" href="{{ path('admin_settings_edit') }}">Edit settings</a>

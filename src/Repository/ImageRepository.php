@@ -31,6 +31,15 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findWithNoWander()
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.wander IS NULL')
+            ->orderBy('i.capturedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findFromIdOnwards(int $id)
     {
         return $this->createQueryBuilder('i')

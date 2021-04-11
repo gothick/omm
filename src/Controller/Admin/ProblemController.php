@@ -17,7 +17,10 @@ class ProblemController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(WanderRepository $wanderRepository): Response
+    public function index(
+        WanderRepository $wanderRepository,
+        ImageRepository $imageRepository
+        ): Response
     {
         $qb = $wanderRepository->createQueryBuilder('w');
 
@@ -56,10 +59,11 @@ class ProblemController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        // TODO: Orphans
+        $orphans = $imageRepository->findWithNoWander();
 
         return $this->render('/admin/problems/index.html.twig', [
-            'problems' => $problems
+            'problems' => $problems,
+            'orphans' => $orphans
         ]);
     }
 
