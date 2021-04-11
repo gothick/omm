@@ -42,8 +42,7 @@ class ProblemController extends AbstractController
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END)) AS total_problems")
+                "(SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END)) AS total_problems_excl_auto")
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
