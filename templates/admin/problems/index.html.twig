@@ -1,0 +1,31 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}One-Mile Matt Problems{% endblock %}
+
+{% block body %}
+    <h1>Image Problems</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Wander</th>
+                <th>No Title</th>
+                <th>No LatLng</th>
+                <th>No Keywords</th>
+                <th>No Auto Tags</th>
+            </tr>
+        </thead>
+            {% for problem in problems %}
+            <tr>
+                <td>{{ problem.wander.id }}</td>
+                <td>{{ problem.no_title }}</td>
+                <td>{{ problem.no_latlng }}</td>
+                <td>{{ problem.no_keywords }}</td>
+                <td>{{ problem.no_auto_tags }}</td>
+            </tr>
+            {% endfor %}
+        <tbody>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="{{ path('admin_settings_edit') }}">Edit settings</a>
+
+{% endblock %}
