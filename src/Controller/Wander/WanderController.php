@@ -76,10 +76,15 @@ class WanderController extends AbstractController
     /**
      * @Route("/wanders/{id}", name="wanders_show", methods={"GET"})
      */
-    public function show(Wander $wander): Response
+    public function show(Wander $wander, WanderRepository $wanderRepository): Response
     {
+        $prev = $wanderRepository->findPrev($wander);
+        $next = $wanderRepository->findNext($wander);
+
         return $this->render('/wander/show.html.twig', [
             'wander' => $wander,
+            'prev' => $prev,
+            'next' => $next
         ]);
     }
 }

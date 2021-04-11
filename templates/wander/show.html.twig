@@ -8,6 +8,18 @@
 {% block body %}
     <div class="row">
         <div class="col mx-3 headerstrip">
+            <div class="row prevnext">
+                <div class="col">
+                    {% if prev %}
+                    <a href="{{ path('wanders_show', { 'id': prev.id }) }}">&larr;Previous</a>
+                    {% endif %}
+                </div>
+                <div class="col text-right">
+                    {% if next %}
+                    <a href="{{ path('wanders_show', { 'id': next.id }) }}">Next&rarr;</a>
+                    {% endif %}
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                     <h2>{{ wander.title }}</h2>

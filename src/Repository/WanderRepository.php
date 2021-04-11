@@ -103,6 +103,29 @@ class WanderRepository extends ServiceEntityRepository
             ->getSingleScalarResult() ?? 0;
     }
 
+    public function findNext(Wander $wander): ?Wander
+    {
+        $qb = $this->createQueryBuilder('w');
+        return $qb->add('where', $qb->expr()->gt('w.startTime', ':startTime'))
+            ->setParameter('startTime', $wander->getStartTime())
+            ->addOrderBy('w.startTime')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findPrev(Wander $wander): ?Wander
+    {
+        $qb = $this->createQueryBuilder('w');
+        return $qb->add('where', $qb->expr()->lt('w.startTime', ':startTime'))
+            ->setParameter('startTime', $wander->getStartTime())
+            ->addOrderBy('w.startTime', 'desc')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     // /**
     //  * @return Wander[] Returns an array of Wander objects
     //  */
