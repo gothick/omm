@@ -29,6 +29,7 @@ class ImageType extends AbstractType
                 'attr' => ['rows' => 10]
             ])
             ->add('wander', EntityType::class, [
+                'required' => false,
                 'class' => Wander::class,
                 //'multiple' => true,
                 //'by_reference' => false, // You took this back out when you changed to One-to-Many https://stackoverflow.com/a/35765987/300836
