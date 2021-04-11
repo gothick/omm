@@ -23,11 +23,19 @@
                     <p>{{ wander.description |striptags|markdown }}</p>
                 </div>
             </div>
-            <div class="row minor-details py-2">
+            <div class="row minor-details pt-2">
                 <div class="col">
                     <p><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;Sector: {{ wander.sector }}</p>
                 </div>
             </div>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <div class="row adminlinks pb-2">
+                <div class="col">
+                    <hr/>
+                    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Wander Edit Page</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     {# TODO: Move this hardcoded style into the CSS. It's a 80% viewport height
@@ -62,12 +70,6 @@
         </div>
         {% endfor %}
     </div>
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <hr/>
-    <div id="adminlinks">
-        <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Wander Edit Page</a>
-    </div>
-    {% endif %}
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}

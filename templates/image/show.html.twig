@@ -40,6 +40,14 @@
                     <p>Rating: {{ image.rating | star_rating }}</p>
                 </div>
             </div>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <div class="row adminlinks pb-2">
+                <div class="col">
+                    <hr/>
+                    <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Image Edit Page</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -70,11 +78,4 @@
             </p>
         </div>
     </div>
-
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <hr/>
-    <div id="adminlinks">
-        <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Edit</a>
-    </div>
-    {% endif %}
 {% endblock %}
