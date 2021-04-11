@@ -1,0 +1,23 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}One-Mile Matt Wander: {{ wander.title }}: Images with No Rating{% endblock %}
+
+{% block body %}
+    <h1>Images with No Rating for Wander {{ wander.title }}</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Image ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in wander.imagesWithNoRating %}
+            <tr>
+                <td><a href="{{ path('admin_image_show', {'id': image.id}) }}">{{ image.title ?? image.id }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-primary" href="{{ path('admin_settings_edit') }}">Edit settings</a>
+
+{% endblock %}

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\EventListener\WanderUploadListener;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
-
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
@@ -220,6 +220,36 @@ class Wander
     public function getImages(): Collection
     {
         return $this->images;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesWithNoTitle(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->isNull('title'));
+        return $this->getImages()->matching($criteria);
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesWithNoLatLng(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->isNull('latlng'));
+        return $this->getImages()->matching($criteria);
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesWithNoRating(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->isNull('rating'));
+        return $this->getImages()->matching($criteria);
     }
 
     public function addImage(Image $image): self

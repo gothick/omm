@@ -11,6 +11,7 @@
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') == 'admin_index' %} active {% endif %}" href="{{ path('admin_index') }}">Dashboard</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'admin_wanders_' %} active {% endif %}" href="{{ path('admin_wanders_index') }}">Wanders</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'admin_image_' %} active {% endif %}" href="{{ path('admin_image_index') }}">Images</a>
+            <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'admin_problems_' %} active {% endif %}" href="{{ path('admin_problems_index') }}">Problems</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'admin_settings_' %} active {% endif %}" href="{{ path('admin_settings_index') }}">Settings</a>
         </div>
         <div class="navbar-nav">
