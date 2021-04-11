@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use DOMDocument;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -39,5 +40,23 @@ class MarkdownService
             $item->tag('markdown_text');
             return strip_tags($this->markdownParser->transformMarkdown($markdown));
         });
+    }
+
+    public function findLinks(?string $markdown): array
+    {
+        if ($markdown === null || $markdown === '') {
+            return [];
+        }
+
+        $results = [];
+        $html = $this->markdownParser->transformMarkdown($markdown);
+        $dom = new DOMDocument();
+        $dom->loadHTML($html);
+        //dd($dom->saveHTML());
+        $links = $dom->getElementsByTagName('a');
+        foreach ($links as $link) {
+            $results[] = $link->getAttribute('href');
+        }
+        return $results;
     }
 }
