@@ -27,6 +27,7 @@
         <thead class="thead-dark">
             <tr>
                 <th>Wander</th>
+                <th>Image Count</th>
                 <th>Total Problems (excl. auto tags)</th>
                 <th>No Title</th>
                 <th>No LatLng</th>
@@ -40,6 +41,7 @@
             {% for problem in problems %}
             <tr>
                 <td><a href="{{ path('admin_wanders_show', {'id': problem.wander.id}) }}">{{ problem.wander.title }}</a></td>
+                <td>{{ problem.image_count }}</td>
                 <td>{{ problem.total_problems_excl_auto }}</td>
                 <td><a href="{{ path('admin_problems_no_title', {'id': problem.wander.id}) }}">{{ problem.no_title }}</a></td>
                 <td><a href="{{ path('admin_problems_no_latlng', {'id': problem.wander.id}) }}">{{ problem.no_latlng }}</a></td>

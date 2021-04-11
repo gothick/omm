@@ -29,6 +29,7 @@ class ProblemController extends AbstractController
         $problems = $qb
             ->join('w.images', 'i')
             ->select('w AS wander')
+            ->addSelect('COUNT(i) AS image_count')
             ->addSelect('SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END) AS no_title')
             ->addSelect('SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END) AS no_latlng')
             ->addSelect('SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END) AS no_rating')
