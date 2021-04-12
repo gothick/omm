@@ -55,7 +55,10 @@ class MarkdownService
         //dd($dom->saveHTML());
         $links = $dom->getElementsByTagName('a');
         foreach ($links as $link) {
-            $results[] = $link->getAttribute('href');
+            $results[] = [
+                'uri' => $link->getAttribute('href'),
+                'text' => $link->textContent
+            ];
         }
         return $results;
     }

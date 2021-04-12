@@ -68,20 +68,18 @@ class ProblemService
             $uri = $this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $validUris[$uri] = true; // Really I just want a hash that doesn't actually map
         }
-        //dd($validUris);
-
         $homepage = $this->router->generate('home', [], RouterInterface::ABSOLUTE_URL);
 
         // Okay, now we've got a list of all valid URIs, let's have a look through all our descriptions
 
         // Wanders first...
         foreach($wanders as $wander) {
-            $uris = $this->markdownService->findLinks($wander->getDescription());
-            foreach ($uris as $uri) {
-                if (substr($uri, 0, strlen($homepage)) == $homepage) {
-                    if (!array_key_exists($uri, $validUris)) {
+            $links  = $this->markdownService->findLinks($wander->getDescription());
+            foreach ($links as $link) {
+                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
+                    if (!array_key_exists($link['uri'], $validUris)) {
                         $problem = new Problem();
-                        $problem->setDescription('Wander ' . $wander->getId() . ' links to invalid URI: ' . $uri);
+                        $problem->setDescription('Wander ' . $wander->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
                         $problem->setUri($this->router->generate('wanders_show', [ 'id' => $wander->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
                         $this->entityManager->persist($problem);
                     }
@@ -91,12 +89,12 @@ class ProblemService
         $this->entityManager->flush();
         // ...then Images:
         foreach($images as $image) {
-            $uris = $this->markdownService->findLinks($image->getDescription());
-            foreach ($uris as $uri) {
-                if (substr($uri, 0, strlen($homepage)) == $homepage) {
-                    if (!array_key_exists($uri, $validUris)) {
+            $links = $this->markdownService->findLinks($image->getDescription());
+            foreach ($links as $link) {
+                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
+                    if (!array_key_exists($link['uri'], $validUris)) {
                         $problem = new Problem();
-                        $problem->setDescription('Image ' . $image->getId() . ' links to invalid URI: ' . $uri);
+                        $problem->setDescription('Image ' . $image->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
                         $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
                         $this->entityManager->persist($problem);
                     }

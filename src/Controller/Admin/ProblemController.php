@@ -4,8 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Wander;
 use App\Repository\ImageRepository;
+use App\Repository\ProblemRepository;
 use App\Repository\WanderRepository;
+use App\Service\ProblemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -74,7 +77,7 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_title/wander/{id}", name="no_title", methods={"GET"})
      */
-    public function no_title(Wander $wander): Response {
+    public function noTitle(Wander $wander): Response {
         return $this->render('/admin/problems/no_title.html.twig', [
             'wander' => $wander
         ]);
@@ -82,7 +85,7 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_latlng/wander/{id}", name="no_latlng", methods={"GET"})
      */
-    public function no_latlng(Wander $wander): Response {
+    public function noLatlng(Wander $wander): Response {
         return $this->render('/admin/problems/no_latlng.html.twig', [
             'wander' => $wander
         ]);
@@ -90,10 +93,32 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_rating/wander/{id}", name="no_rating", methods={"GET"})
      */
-    public function no_rating(Wander $wander): Response {
+    public function noRating(Wander $wander): Response {
         return $this->render('/admin/problems/no_rating.html.twig', [
             'wander' => $wander
         ]);
+    }
+
+    /**
+     * @Route("/broken_links", name="broken_links", methods={"GET"})
+     */
+    public function brokenLinks(ProblemRepository $problemRepository): Response {
+        $problems = $problemRepository->findAll();
+        return $this->render('/admin/problems/broken_links.html.twig', [
+            'problems' => $problems
+        ]);
+    }
+
+    /**
+     * @Route("/regenerate", name="regenerate", methods={"POST"})
+     */
+    public function regenerateProblems(Request $request, ProblemService $problemService): Response
+    {
+        if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
+            $problemService->createProblemReport();
+        }
+
+        return $this->redirectToRoute('admin_problems_broken_links');
     }
 
 }

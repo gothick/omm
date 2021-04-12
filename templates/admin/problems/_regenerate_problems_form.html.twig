@@ -1,0 +1,7 @@
+<div class="mt-5">
+    <form method="post" action="{{ path('admin_problems_regenerate') }}" onsubmit="return confirm('Are you sure you want to regenerate the problems report?');">
+        <input type="hidden" name="_method" value="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('problems_regenerate') }}">
+        <button class="btn btn-danger">Regenerate Problem Report</button>
+    </form>
+</div>
