@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProblemRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Problem
 {
+    function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
