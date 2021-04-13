@@ -49,15 +49,30 @@ class MarkdownServiceTest extends KernelTestCase
             'link'    => ['*[This](https://gothick.org.uk)* is a _test_', "This is a test\n"],
         ];
     }
+
     public function testFindLinks(): void
     {
         $result = $this->markdownService->findLinks('This [is](https://gothick.org.uk) a test');
-        $this->assertSame(['https://gothick.org.uk'], $result, "Couldn't find single link");
+        $this->assertSame(
+            [
+                [
+                    'uri' => 'https://gothick.org.uk',
+                    'text' => 'is'
+                ]
+            ], $result, "Couldn't find single link");
 
         $result = $this->markdownService->findLinks('This [is](https://gothick.org.uk) a test with [two](https://twitter.com/gothick) URLs');
         $this->assertSame(
-            ['https://gothick.org.uk',
-            'https://twitter.com/gothick'], $result, "Couldn't find two links"
+            [
+                [
+                    'uri' => 'https://gothick.org.uk',
+                    'text' => 'is'
+                ],
+                [
+                    'uri' => 'https://twitter.com/gothick',
+                    'text' => 'two'
+                ]
+            ], $result, "Couldn't find two links"
         );
 
         $result = $this->markdownService->findLinks(null);
@@ -72,8 +87,16 @@ class MarkdownServiceTest extends KernelTestCase
 
         $result = $this->markdownService->findLinks("I've got <a href='https://gothick.org.uk'>multiple</a> links in [different](https://twitter.com/gothick) formats.");
         $this->assertSame(
-            ['https://gothick.org.uk',
-            'https://twitter.com/gothick'], $result, "Couldn't find both HTML and Markdown links"
+            [
+                [
+                    'uri' => 'https://gothick.org.uk',
+                    'text' => 'multiple'
+                ],
+                [
+                    'uri' => 'https://twitter.com/gothick',
+                    'text' => 'different'
+                ]
+            ], $result, "Couldn't find both HTML and Markdown links"
         );
 
     }
