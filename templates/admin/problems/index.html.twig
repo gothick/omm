@@ -42,7 +42,7 @@
         <tbody>
             {% for problem in problems %}
             <tr>
-                <td><a href="{{ path('admin_wanders_show', {'id': problem.wander.id}) }}">{{ problem.wander.title }}</a></td>
+                <td><a href="{{ path('admin_wanders_show', {'id': problem.wander.id}) }}">{{ problem.wander.title }} ({{ problem.wander.startTime ? problem.wander.startTime|date('d M Y') : '' }})</a></td>
                 <td>{{ problem.image_count }}</td>
                 <td>{{ problem.total_problems_excl_auto }}</td>
                 <td><a href="{{ path('admin_problems_no_title', {'id': problem.wander.id}) }}">{{ problem.no_title }}</a></td>
