@@ -75,7 +75,7 @@ class WanderSetImageLocationsCommand extends Command
         }
         $progressBar->finish();
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Image locations updated.');
 
         return Command::SUCCESS;
     }
