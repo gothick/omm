@@ -3,9 +3,30 @@
 {% block title %}One-Mile Matt Problems{% endblock %}
 
 {% block body %}
-    <h1>Image Problems</h1>
+    <h1>Problems</h1>
     <h2>Broken Links</h2>
-    <p><a href="{{ path('admin_problems_broken_links') }}">Show problem report</a></p>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Problem ID</th>
+                <th>Description</th>
+                <th>Link to Problem Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for problem in built_problems %}
+            <tr>
+                <td>{{ problem.id }}</td>
+                <td>{{ problem.description }}</td>
+                <td><a href="{{ problem.uri }}">{{ problem.uri }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-2">
+        {{ include('admin/problems/_regenerate_problems_form.html.twig') }}
+    </div>
+
     <h2>Orphan Images</h2>
     <table class="table">
         <thead class="thead-dark">

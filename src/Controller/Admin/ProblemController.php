@@ -22,9 +22,18 @@ class ProblemController extends AbstractController
      */
     public function index(
         WanderRepository $wanderRepository,
-        ImageRepository $imageRepository
+        ImageRepository $imageRepository,
+        ProblemRepository $problemRepository
         ): Response
     {
+        // Problems that might take time/resources to find, that are
+        // popped into a table on specific demand rather than every
+        // time we load this page:
+        $builtProblems = $problemRepository->findAll();
+
+        // TODO: Might be sensible to do everything here into the problems
+        // table, depending on how much we add to this.
+        // Other issues, found on the fly:
         $qb = $wanderRepository->createQueryBuilder('w');
 
         // TODO: This doesn't work, as e.g. keywords being an empty array
@@ -66,9 +75,23 @@ class ProblemController extends AbstractController
 
         return $this->render('/admin/problems/index.html.twig', [
             'problems' => $problems,
-            'orphans' => $orphans
+            'orphans' => $orphans,
+            'built_problems' => $builtProblems
         ]);
     }
+
+    /**
+     * @Route("/regenerate", name="regenerate", methods={"POST"})
+     */
+    public function regenerateProblems(Request $request, ProblemService $problemService): Response
+    {
+        if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
+            $problemService->createProblemReport();
+        }
+
+        return $this->redirectToRoute('admin_problems_index');
+    }
+
 
     // TODO: These all share a lot of things in common, but I'm not sure
     // how much this is going to get used, so I'm keeping it fairly brain-dead
@@ -109,16 +132,5 @@ class ProblemController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/regenerate", name="regenerate", methods={"POST"})
-     */
-    public function regenerateProblems(Request $request, ProblemService $problemService): Response
-    {
-        if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
-            $problemService->createProblemReport();
-        }
-
-        return $this->redirectToRoute('admin_problems_broken_links');
-    }
 
 }
