@@ -152,7 +152,7 @@ class ImageServiceTest extends TestCase
         $this->assertCount(0, $image->getLatlng(), "An image with no co-ordinates should result in an empty lat/lon array");
     }
 
-    public function testLocationText()
+    public function testReadLocationText()
     {
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -166,6 +166,30 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location');
+    }
+
+    public function testStandaloneLocationSetter()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setLocationFromEXIF($image);
+        $result = $image->getLocation();
+        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image using standalone setter');
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location Without.jpg');
+        $this->imageService->setLocationFromEXIF($image);
+        $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location using standalone setter');
+
+        $image = new Image();
+        $image->setLocation('Existing');
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setLocationFromEXIF($image);
+        $result = $image->getLocation();
+        $this->assertEquals('Existing', $result, 'Standalone Location setter unexpectedly overwrote data.');
     }
 
     public function testKeywords()

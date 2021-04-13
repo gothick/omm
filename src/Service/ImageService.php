@@ -79,6 +79,33 @@ class ImageService {
         $image->setImageShowUri($this->router->generate('image_show', ['id' => $image->getId()]));
     }
 
+    /**
+     * Location was a late addition and we have a Command to update existing ones. We don't want to touch
+     * any other existing data, so this is a special one-off to set Location.
+     */
+    public function setLocationFromEXIF(Image $image): void
+    {
+        if ($image->getMimeType() !== 'image/jpeg') {
+            $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
+            return;
+        }
+
+        try {
+            $exif = $this->reader->read($this->imagesDirectory . '/' . $image->getName());
+            /** @var ExifHelperInterface */
+            $exifHelper = new ExifHelper($exif);
+            // Don't want to overwrite anything we've already set.
+            if ($image->getLocation() === null || $image->getLocation() === '') {
+                $image->setLocation($exifHelper->getLocation());
+            }
+        }
+        catch(Exception $e) {
+            // We've started to rely on the information gathered here, so I think
+            // this should be a proper error now.
+            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
     public function setPropertiesFromEXIF(
             Image $image,
             bool $updateRelatedWander = true
