@@ -76,6 +76,10 @@
                 <td>{{ image.latlng|join(', ') }}</td>
             </tr>
             <tr>
+                <th>Location</th>
+                <td>{{ image.location }}</td>
+            </tr>
+            <tr>
                 <th>UpdatedAt</th>
                 <td>{{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>

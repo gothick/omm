@@ -83,5 +83,15 @@ class ExifHelper implements ExifHelperInterface
         }
         return null;
     }
-
+    public function getLocation(): ?string
+    {
+        $raw = $this->exif->getRawData();
+        if (array_key_exists('IPTC:Sub-location', $raw)) {
+            $location = $raw['IPTC:Sub-location'];
+            if (is_string($location)) {
+                return $location;
+            }
+        }
+        return null;
+    }
 }

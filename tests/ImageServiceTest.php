@@ -152,6 +152,22 @@ class ImageServiceTest extends TestCase
         $this->assertCount(0, $image->getLatlng(), "An image with no co-ordinates should result in an empty lat/lon array");
     }
 
+    public function testLocationText()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location With.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLocation();
+        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image');
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Location Without.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location');
+    }
+
     public function testKeywords()
     {
         $image = new Image();

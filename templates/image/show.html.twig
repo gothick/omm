@@ -40,6 +40,14 @@
                     <p>Rating: {{ image.rating | star_rating }}</p>
                 </div>
             </div>
+            <div class="row details">
+                <div class="col">
+                    <p class="small">
+                    {% if image.latlng and image.latlng | length > 0 %}GPS Coordinates: {{ image.latlng|join(', ') }}{% endif %}
+                    {% if image.location %}<br/>Location: {{ image.location }}{% endif %}
+                    </p>
+                </div>
+            </div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <div class="row adminlinks pb-2">
                 <div class="col">

@@ -49,6 +49,9 @@ class ImageType extends AbstractType
                 ],
             ])
             ->add('latlng', TextType::class)
+            ->add('location', TextType::class, [
+                'required' => false
+            ])
             ->add('keywords', TextType::class)
             ->add('capturedAt')
         ;

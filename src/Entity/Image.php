@@ -415,6 +415,11 @@ class Image
      */
     private $auto_tags = [];
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $location;
+
 
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
@@ -482,6 +487,18 @@ class Image
             return count($this->auto_tags);
         }
         return 0;
+    }
+
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 }
 

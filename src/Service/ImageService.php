@@ -99,6 +99,7 @@ class ImageService {
             $image->setLatlng($exifHelper->getGPS());
             $image->setKeywords($exifHelper->getKeywords());
             $image->setRating($exifHelper->getRating());
+            $image->setLocation($exifHelper->getLocation());
 
             $capturedAt = $exifHelper->getCreationDate();
             if ($capturedAt instanceof \DateTime) {
@@ -106,8 +107,9 @@ class ImageService {
                 if ($updateRelatedWander) {
                     // Try and find associated wander by looking for
                     // wanders whose timespan includes this image.
-                    // TODO: Rewrite this so we only find the first wander that
-                    // matches.
+                    // TODO: Work out a way of adding some windage so images
+                    // shot a little time either side of the track log still
+                    // match.
                     $wander = $this->wanderRepository->findFirstWhereIncludesDate($capturedAt);
                     if ($wander !== null) {
                         $image->setWander($wander);
