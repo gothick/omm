@@ -301,9 +301,30 @@ class Image
         return $this;
     }
 
+    public function getLatitude(): ?float
+    {
+        if ($this->latlng === null || !is_array($this->latlng)) {
+            return null;
+        }
+        return $this->latlng[0];
+    }
+
+    public function getLongitude(): ?float
+    {
+        if ($this->latlng === null || !is_array($this->latlng)) {
+            return null;
+        }
+        return $this->latlng[1];
+    }
+
     public function getLatlng(): ?array
     {
         return $this->latlng;
+    }
+
+    public function hasLatlng(): bool
+    {
+        return is_array($this->latlng) && count($this->latlng) == 2;
     }
 
     public function setLatlng(?array $latlng): self
@@ -492,6 +513,11 @@ class Image
     public function getLocation(): ?string
     {
         return $this->location;
+    }
+
+    public function hasLocation(): bool
+    {
+        return $this->location !== null && $this->location <> '';
     }
 
     public function setLocation(?string $location): self

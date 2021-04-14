@@ -6,6 +6,8 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
+use App\Service\LocationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -148,5 +150,19 @@ class ImageController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_image_index');
+    }
+
+    /**
+     * @Route("/{id}/set_location", name="set_location", methods={"POST"})
+     */
+    public function setLocation(Request $request, Image $image, LocationService $locationService, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('set_location'.$image->getId(), $request->request->get('_token'))) {
+            $locationService->setImageLocation($image, true);
+            $entityManager->persist($image);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
     }
 }

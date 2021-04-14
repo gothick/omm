@@ -95,5 +95,6 @@
 
     <a href="{{ path('admin_image_edit', {'id': image.id}) }}">edit</a>
 
-    {{ include('admin/image/_delete_form.html.twig') }}
+    <p>{{ include('admin/image/_delete_form.html.twig') }}</p>
+    <p>{{ include('admin/image/_set_location_form.html.twig') }}</p>
 {% endblock %}

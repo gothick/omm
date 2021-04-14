@@ -16,6 +16,8 @@ parameters:
     env(HOST_FOR_COMMANDS): 'omm.gothick.org.uk'
     router.request_context.host: '%env(HOST_FOR_COMMANDS)%'
     router.request_context.scheme: 'https'
+    # Unused at the moment, but might be handy later.
+    google.api_key: '%env(GOOGLE_API_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -64,6 +66,9 @@ services:
         lazy: true
         arguments:
             $baseUri: '%imagga.base_uri%'
+
+    App\Service\LocationService:
+        lazy: true
 
     App\Service\ImaggaServiceInterface: '@App\Service\ImaggaService'
 

@@ -40,6 +40,16 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findWithNoLocation()
+    {
+        return $this->createQueryBuilder('i')
+        ->andWhere('i.location IS NULL')
+        ->orWhere("i.location = ''")
+        ->orderBy('i.capturedAt', 'desc')
+        ->getQuery()
+        ->getResult();
+    }
+
     public function findFromIdOnwards(int $id)
     {
         return $this->createQueryBuilder('i')
