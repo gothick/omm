@@ -303,7 +303,9 @@ class Image
 
     public function getLatitude(): ?float
     {
-        if ($this->latlng === null || !is_array($this->latlng)) {
+        if ($this->latlng === null ||
+            !is_array($this->latlng) ||
+            empty($this->latlng)) {
             return null;
         }
         return $this->latlng[0];
@@ -311,7 +313,9 @@ class Image
 
     public function getLongitude(): ?float
     {
-        if ($this->latlng === null || !is_array($this->latlng)) {
+        if ($this->latlng === null ||
+            !is_array($this->latlng) ||
+            empty($this->latlng)) {
             return null;
         }
         return $this->latlng[1];
