@@ -12,7 +12,6 @@ class NeighbourhoodFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $rings = $this->getPolygonRings();
-        $polygon = new Polygon($rings);
         $neighbourhood = new Neighbourhood();
         $neighbourhood->setBoundingPolygon(new Polygon($this->getPolygonRings()));
         $neighbourhood
