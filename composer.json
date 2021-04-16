@@ -64,6 +64,7 @@
         "vich/uploader-bundle": "^1.15"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^6.5",
         "deployer/deployer": "^7.0@beta",
         "laravel/homestead": "^11.2",
         "phpstan/phpstan": "^0.12.68",
