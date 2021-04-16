@@ -8,7 +8,7 @@ doctrine:
 
         # https://doctrine2-spatial.readthedocs.io/en/latest/Configuration.html
         types:
-            #polygon: CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            polygon: CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
             # point: CrEOF\Spatial\DBAL\Types\Geography\PointType
             point: CrEOF\Spatial\DBAL\Types\Geometry\PointType
             geometry: CrEOF\Spatial\DBAL\Types\GeometryType
