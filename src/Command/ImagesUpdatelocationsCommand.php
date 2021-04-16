@@ -49,7 +49,7 @@ class ImagesUpdatelocationsCommand extends Command
 
         $io->info("Attempting to add locations to images missing locations.");
 
-        $images = $this->imageRepository->findWithNoLocation();
+        $images = $this->imageRepository->findWithNoLocationButHasLatLng();
         $total = count($images);
         $success = 0;
         $failure = 0;
@@ -57,14 +57,15 @@ class ImagesUpdatelocationsCommand extends Command
         $progressBar = new ProgressBar($output, $total);
         $progressBar->start();
         foreach ($images as $image) {
-            $result = $this->locationService->setImageLocation($image, true);
-            if ($result) {
+            $neighbourhood = $this->locationService->getLocationName($image->getLatitude(), $image->getLongitude());
+            if ($neighbourhood !== null) {
+                $image->setLocation($neighbourhood);
+                $this->entityManager->persist($image);
+                $this->entityManager->flush(); // It actually seems faster to flush in the loop, rather than afterwards. Odd.
                 $success++;
             } else {
                 $failure++;
             }
-            $this->entityManager->persist($image);
-            $this->entityManager->flush(); // It actually seems faster to flush in the loop, rather than afterwards. Odd.
             $progressBar->advance();
         }
         $progressBar->finish();

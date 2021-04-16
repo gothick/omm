@@ -39,6 +39,9 @@ class ImageService {
     /** @var string */
     private $imagesDirectory;
 
+    /** @var LocationService */
+    private $locationService;
+
     /** @var string */
     private $exiftoolPath;
 
@@ -48,6 +51,7 @@ class ImageService {
         UrlGeneratorInterface $router,
         LoggerInterface $logger,
         WanderRepository $wanderRepository,
+        LocationService $locationService,
         string $imagesDirectory,
         ?string $exiftoolPath)
     {
@@ -56,6 +60,7 @@ class ImageService {
         $this->router = $router;
         $this->logger = $logger;
         $this->wanderRepository = $wanderRepository;
+        $this->locationService = $locationService;
         $this->imagesDirectory = $imagesDirectory;
         $this->exiftoolPath = $exiftoolPath;
 
@@ -126,7 +131,16 @@ class ImageService {
             $image->setLatlng($exifHelper->getGPS());
             $image->setKeywords($exifHelper->getKeywords());
             $image->setRating($exifHelper->getRating());
-            $image->setLocation($exifHelper->getLocation());
+
+            $neighbourhood = $exifHelper->getLocation();
+            if ($neighbourhood === null && $image->hasLatlng()) {
+                // If we didn't set the location from the EXIF, this will try setting it
+                // from the GPS co-ordinates.
+                $neighbourhood = $this->locationService->getLocationName($image->getLatitude(), $image->getLongitude());
+            }
+            if ($neighbourhood !== null) {
+                $image->setLocation($neighbourhood);
+            }
 
             $capturedAt = $exifHelper->getCreationDate();
             if ($capturedAt instanceof \DateTime) {

@@ -158,9 +158,12 @@ class ImageController extends AbstractController
     public function setLocation(Request $request, Image $image, LocationService $locationService, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('set_location'.$image->getId(), $request->request->get('_token'))) {
-            $locationService->setImageLocation($image, true);
-            $entityManager->persist($image);
-            $entityManager->flush();
+            $neighbourhood  = $locationService->getLocationName($image->getLatitude(), $image->getLongitude());
+            if ($neighbourhood !== null) {
+                $image->setLocation($neighbourhood);
+                $entityManager->persist($image);
+                $entityManager->flush();
+            }
         }
 
         return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);

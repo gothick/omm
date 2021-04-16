@@ -50,6 +50,25 @@ class ImageRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    public function findWithNoLocationButHasLatLng()
+    {
+        $qb = $this->createQueryBuilder('i');
+        return $qb
+            ->add('where',
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->eq('i.location', "''"),
+                        $qb->expr()->isNull('i.location')
+                    ),
+                    $qb->expr()->isNotNull('i.latlng')
+                )
+            )
+            ->addOrderBy('i.capturedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findFromIdOnwards(int $id)
     {
         return $this->createQueryBuilder('i')

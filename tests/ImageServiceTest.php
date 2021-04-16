@@ -5,6 +5,7 @@ namespace App\Tests;
 use App\Entity\Image;
 use App\Repository\WanderRepository;
 use App\Service\ImageService;
+use App\Service\LocationService;
 use Exception;
 use InvalidArgumentException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -25,6 +26,21 @@ class ImageServiceTest extends TestCase
         $router = $this->createMock(UrlGeneratorInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
         $wanderRepository = $this->createMock(WanderRepository::class);
+
+        $locationService = $this->createMock(LocationService::class);
+        $locationService->method('getLocationName')
+            ->will($this->returnCallback( function($lat, $lng) {
+                // This fakes what the location service does well enough
+                if ($lat === null || $lng === null) {
+                    return null;
+                }
+                // Null Island
+                if ($lat === 0.0 && $lng === 0.0) {
+                    return null;
+                }
+                return 'Rome'; // All roads lead to Rome
+            }));
+
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
         $this->imageService = new ImageService(
@@ -33,6 +49,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
+            $locationService,
             $imagesDirectory,
             null //?string $exiftoolPath
         );
@@ -47,6 +64,7 @@ class ImageServiceTest extends TestCase
         $router = $this->createMock(UrlGeneratorInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
         $wanderRepository = $this->createMock(WanderRepository::class);
+        $locationService = $this->createMock(LocationService::class);
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
         // The path to an actual copy of exiftool in this test
@@ -60,6 +78,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
+            $locationService,
             $imagesDirectory,
             $exiftool_path
         );
@@ -72,6 +91,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
+            $locationService,
             $imagesDirectory,
             '/floople/oojimaflip/wrong'
         );
@@ -166,6 +186,23 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location');
+    }
+
+    public function testSetLocationFromLatLng()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20200925-IMG_3823-Location Without But Has LatLng.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLocation();
+        $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based location lookup.");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20200925-IMG_3823-Location Without LatLng Is Null Island.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getLocation();
+        $this->assertNull($result, "Null Island should quietly resolve to a null location");
     }
 
     public function testStandaloneLocationSetter()
