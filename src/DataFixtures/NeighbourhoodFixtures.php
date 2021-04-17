@@ -11,9 +11,9 @@ class NeighbourhoodFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $rings = $this->getPolygonRings();
         $neighbourhood = new Neighbourhood();
         $neighbourhood->setBoundingPolygon(new Polygon($this->getPolygonRings()));
+        // "Ashton" area, just hardcoded.
         $neighbourhood
             ->setObjectId(140)
             ->setMiPrinx(140)
@@ -31,6 +31,7 @@ class NeighbourhoodFixtures extends Fixture
         $manager->flush();
     }
 
+    // This is just the "Ashton" area hardcoded :)
     private function getPolygonRings() {
         return
         array (
