@@ -4,7 +4,7 @@ php:
 
 before_script:
   # DATABASE_URL=mysql://homestead:secret@127.0.0.1:3306/omm_test?serverVersion=5.7
-  - mysql -u root -e 'CREATE DATABASE omm_test;'
+  # - mysql -u root -e 'CREATE DATABASE omm_test;'
   - mysql -u root -e "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';"
   - mysql -u root -e "GRANT ALL ON omm_test.* TO 'homestead'@'localhost';"
   - composer install --no-interaction
