@@ -91,7 +91,6 @@ class WanderController extends AbstractController
         $prev = $wanderRepository->findPrev($wander);
         $next = $wanderRepository->findNext($wander);
 
-        $offset = max(0, $request->query->getInt('offset', 0));
         $paginatorQuery = $imageRepository->getPaginatorQuery($wander);
 
         $pagination = $paginator->paginate(
