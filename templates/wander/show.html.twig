@@ -54,7 +54,7 @@
        with a fallback of a hardcoded pixel value for older browsers #}
     <div id="mapid" style="height: 500px; height: 70vh;" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
     <div class="row mt-3 align-items-center gallery">
-        {% for image in wander.images | sort((a, b) => a.capturedAt <=> b.capturedAt) %}
+        {% for image in image_pagination %}
         <div class="col-lg-3 col-md-4 col-6 gallery-image-wrapper">
             {% if image.id is defined %}
             <a class="d-block mb-0 h-100" href="{{ path('image_show', {'id': image.id}) }}">
@@ -82,6 +82,14 @@
         </div>
         {% endfor %}
     </div>
+    <div class="row pb-4">
+        <div class="col">
+            <div class="navigation pb-4">
+                {{ knp_pagination_render(image_pagination) }}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}

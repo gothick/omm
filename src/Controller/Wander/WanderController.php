@@ -3,8 +3,10 @@
 namespace App\Controller\Wander;
 
 use App\Entity\Wander;
+use App\Repository\ImageRepository;
 use App\Repository\WanderRepository;
 use App\Service\SettingsService;
+use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,13 +78,32 @@ class WanderController extends AbstractController
     /**
      * @Route("/wanders/{id}", name="wanders_show", methods={"GET"})
      */
-    public function show(Wander $wander, WanderRepository $wanderRepository): Response
+    public function show(
+        Request $request,
+        Wander $wander,
+        WanderRepository $wanderRepository,
+        ImageRepository $imageRepository,
+        PaginatorInterface $paginator): Response
     {
+        // TODO: Parameterise
+        $perPage = 20;
+
         $prev = $wanderRepository->findPrev($wander);
         $next = $wanderRepository->findNext($wander);
 
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginatorQuery = $imageRepository->getPaginatorQuery($wander);
+
+        $pagination = $paginator->paginate(
+            $paginatorQuery,
+            $request->query->getInt('page', 1),
+            $perPage,
+            ['align' => 'center']
+        );
+
         return $this->render('/wander/show.html.twig', [
             'wander' => $wander,
+            'image_pagination' => $pagination,
             'prev' => $prev,
             'next' => $next
         ]);

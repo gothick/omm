@@ -3,9 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use App\Entity\Wander;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Paginator;
 
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
@@ -77,6 +80,17 @@ class ImageRepository extends ServiceEntityRepository
             ->orderBy('i.id')
             ->getQuery()
             ->getResult();
+    }
+
+    public function getPaginatorQuery(Wander $wander): Query
+    {
+        $qb = $this->createQueryBuilder('i');
+        return $qb
+            ->andWhere('i.wander = :wander')
+            ->setParameter('wander', $wander)
+            ->addOrderBy('i.capturedAt')
+            ->addOrderBy('i.id') // tie-breaker
+            ->getQuery();
     }
 
     public function findNext(Image $image)
