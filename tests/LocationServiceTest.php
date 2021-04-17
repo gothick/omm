@@ -22,15 +22,6 @@ class LocationServiceTest extends KernelTestCase
         $this->neighbourhoodRepository = $container->get(NeighbourhoodRepository::class);
 
         $this->locationService = new LocationService($this->neighbourhoodRepository);
-        /*
-        static::bootKernel();
-
-        $container = self::$container;
-        $this->neighbourhoodRepository = $container->get(NeighbourhoodRepository::class);
-        $neighbourhood = $this->neighbourhoodRepository->findAll();
-        //$neighbourhood = $this->neighbourhoodRepository->findByLatlng(51.441480601667, -2.612271505);
-        dd($neighbourhood);
-        */
     }
 
     public function testGetLocationName()
