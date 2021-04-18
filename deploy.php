@@ -15,7 +15,9 @@ set('repository', 'git@github.com:gothick/omm.git');
 set('git_tty', true);
 
 // Shared files/dirs between deploys
-add('shared_files', []);
+add('shared_files', [
+    'google-cloud-service-account.json'
+]);
 add('shared_dirs', [
     'public/uploads/gpx',
     'public/uploads/images',

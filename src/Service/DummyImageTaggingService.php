@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Image;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ImaggaServiceDummy implements ImageTaggingServiceInterface
+class DummyImageTaggingService implements ImageTaggingServiceInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -22,7 +22,7 @@ class ImaggaServiceDummy implements ImageTaggingServiceInterface
             return false;
         }
 
-        $image->setAutoTags(['dummy', 'imagga', 'service']);
+        $image->setAutoTags(['dummy', 'image', 'tagging', 'service']);
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
         return true;

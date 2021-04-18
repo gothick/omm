@@ -72,7 +72,14 @@ services:
     App\Service\LocationService:
         lazy: true
 
-    App\Service\ImageTaggingServiceInterface: '@App\Service\ImaggaService'
+    App\Service\ImageTaggingServiceInterface: '@App\Service\GoogleImageTaggingService'
+
+    App\Service\GoogleImageTaggingService:
+        lazy: true
+        arguments:
+            $apiKey: '%google.api_key%'
+            $projectId: '%google.project_id%'
+            $serviceAccountFile: '%google.service_account_file%'
 
     # Moved to a global binding, above.
     #App\Service\GpxService:
