@@ -18,6 +18,8 @@ parameters:
     router.request_context.scheme: 'https'
     # Unused at the moment, but might be handy later.
     google.api_key: '%env(GOOGLE_API_KEY)%'
+    google.project_id: '%env(GOOGLE_PROJECT_ID)%'
+    google.service_account_file: '%kernel.project_dir%/%env(GOOGLE_SERVICE_ACCOUNT_FILE)%'
 
 services:
     # default configuration for services in *this* file
