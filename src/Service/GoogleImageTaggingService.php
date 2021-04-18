@@ -17,7 +17,6 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
     private $client;
 
     public function __construct(
-        $apiKey,
         $projectId,
         $serviceAccountFile,
         EntityManagerInterface $entityManager
