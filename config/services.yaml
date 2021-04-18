@@ -72,7 +72,7 @@ services:
     App\Service\LocationService:
         lazy: true
 
-    App\Service\ImaggaServiceInterface: '@App\Service\ImaggaService'
+    App\Service\ImageTaggingServiceInterface: '@App\Service\ImaggaService'
 
     # Moved to a global binding, above.
     #App\Service\GpxService:

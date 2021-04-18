@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 
-class ImaggaService implements ImaggaServiceInterface
+class ImaggaService implements ImageTaggingServiceInterface
 {
     /** @var Client */
     private $guzzle;

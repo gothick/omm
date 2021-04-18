@@ -4,24 +4,23 @@ namespace App\MessageHandler;
 
 use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
-use App\Service\ImaggaService;
-use App\Service\ImaggaServiceInterface;
+use App\Service\ImageTaggingServiceInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class RecogniseImageHandler implements MessageHandlerInterface {
 
-    /** @var ImaggaServiceInterface */
-    private $imaggaService;
+    /** @var ImageTaggingServiceInterface */
+    private $imageTaggingService;
 
     /** @var ImageRepository */
     private $imageRepository;
 
     public function __construct(
-        ImaggaServiceInterface $imaggaService,
+        ImageTaggingServiceInterface $imageTaggingService,
         ImageRepository $imageRepository)
     {
-        $this->imaggaService = $imaggaService;
+        $this->imageTaggingService = $imageTaggingService;
         $this->imageRepository = $imageRepository;
     }
 
@@ -30,7 +29,7 @@ class RecogniseImageHandler implements MessageHandlerInterface {
         $image = $this->imageRepository->find($recogniseImage->getImageId());
         if ($image !== null) {
             try {
-                $this->imaggaService->tagImage($image, $recogniseImage->getOverwrite());
+                $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
             }
             catch(\Exception $e) {
                 // Later on I might get cleverer, but for now let's just

@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Image;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ImaggaServiceDummy implements ImaggaServiceInterface
+class ImaggaServiceDummy implements ImageTaggingServiceInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;

@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Image;
 
-interface ImaggaServiceInterface
+interface ImageTaggingServiceInterface
 {
     public function tagImage(Image $image, bool $overwriteExisting = false): bool;
 }
