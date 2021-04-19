@@ -245,6 +245,16 @@ class Wander
     /**
      * @return Collection|Image[]
      */
+    public function getImagesWithNoLocation(): Collection
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->isNull('location'));
+        return $this->getImages()->matching($criteria);
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
     public function getImagesWithNoRating(): Collection
     {
         $criteria = Criteria::create()

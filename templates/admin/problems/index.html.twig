@@ -54,6 +54,7 @@
                 <th>Total Problems (excl. auto tags)</th>
                 <th>No Title</th>
                 <th>No LatLng</th>
+                <th>No Location</th>
                 <th>No Rating</th>
                 <th>No Keywords</th>
                 <th>No Auto Tags</th>
@@ -68,6 +69,7 @@
                 <td>{{ problem.total_problems_excl_auto }}</td>
                 <td><a href="{{ path('admin_problems_no_title', {'id': problem.wander.id}) }}">{{ problem.no_title }}</a></td>
                 <td><a href="{{ path('admin_problems_no_latlng', {'id': problem.wander.id}) }}">{{ problem.no_latlng }}</a></td>
+                <td><a href="{{ path('admin_problems_no_location', {'id': problem.wander.id}) }}">{{ problem.no_location }}</a></td>
                 <td><a href="{{ path('admin_problems_no_rating', {'id': problem.wander.id}) }}">{{ problem.no_rating }}</td>
                 {#
                    TODO: Add links to these when we've converted them to relations rather than
