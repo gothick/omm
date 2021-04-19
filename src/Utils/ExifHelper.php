@@ -23,18 +23,24 @@ class ExifHelper implements ExifHelperInterface
     public function getTitle():?string
     {
         $title = $this->exif->getTitle();
-        if (is_string($title)) {
-            return $title;
+        if ($title === false) {
+            return null;
         }
-        return null;
+        // I cast to string to work around a weird bug in
+        // what looks like exiftool, where PHPExif's use
+        // of it uses its JSON output, and exiftool's
+        // JSON returns titles that look like numbers
+        // (e.g. "42") as integer (i.e. unquoted 42 in the
+        // JSON.)
+        return (string) $title;
     }
     public function getDescription():?string
     {
         $description = $this->exif->getCaption();
-        if (is_string($description)) {
-            return $description;
+        if ($description === false) {
+            return null;
         }
-        return null;
+        return (string) $description;
     }
     public function getGPS():?array
     {

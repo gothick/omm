@@ -135,12 +135,24 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Title Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(null, $image->getTitle(), "Failed to set empty title from image");
+    }
 
+    public function testNumericTitle()
+    {
         $image = new Image();
         $image->setMimeType('image/jpeg');
-        $this->setName('20210411-ommtest-Title Numeric.jpg');
+        $image->setName('20210411-ommtest-Title Numeric.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals('42', $image->getTitle(), 'Failed to set title for a  numeric title string');
+        $this->assertEquals("42", $image->getTitle(), 'Failed to set title for a numeric title');
+    }
+
+    public function testNumericDescription()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20210419-ommtest-Description Numeric.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertEquals("1984", $image->getDescription(), 'Failed to set title for a numeric description');
     }
 
     public function testReadDescription()
