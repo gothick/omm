@@ -210,14 +210,14 @@ class ImageServiceTest extends TestCase
     {
         $image = new Image();
         $image->setMimeType('image/jpeg');
-        $image->setName('20200925-IMG_3823-Location Without But Has LatLng.jpg');
+        $image->setName('20200925-ommtest-Location Without But Has LatLng.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getLocation();
         $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based location lookup.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
-        $image->setName('20200925-IMG_3823-Location Without LatLng Is Null Island.jpg');
+        $image->setName('20200925-ommtest-Location Without LatLng Is Null Island.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getLocation();
         $this->assertNull($result, "Null Island should quietly resolve to a null location");
