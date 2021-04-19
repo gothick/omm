@@ -64,6 +64,9 @@ services:
         # this service lazy is a cheap workaround.
         lazy: true
 
+    App\Service\ImageService:
+        lazy: true # It's expensive.
+
     App\Service\ImaggaService:
         lazy: true
         arguments:
