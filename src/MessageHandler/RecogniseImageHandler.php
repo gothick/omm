@@ -33,12 +33,9 @@ class RecogniseImageHandler implements MessageHandlerInterface {
             }
             catch(\Exception $e) {
                 // Later on I might get cleverer, but for now let's just
-                // mark everything as non-retryable so we don't annoy
-                // Imagga too much, given that we've run out of free
-                // recognitions for the month. We can always manually
-                // re-try sending queued messages.
+                // mark everything as non-retryable.
                 throw new UnrecoverableMessageHandlingException(
-                    "Imagga service threw exception. Marking no retries for now.",
+                    "Image tagging service threw exception. Marking no retries for now.",
                     $e->getCode(),
                     $e
                 );
