@@ -83,6 +83,9 @@ services:
             $projectId: '%google.project_id%'
             $serviceAccountFile: '%google.service_account_file%'
 
+    Liip\ImagineBundle\Service\FilterService:
+        alias: 'liip_imagine.service.filter'
+
     # Moved to a global binding, above.
     #App\Service\GpxService:
     #    arguments:

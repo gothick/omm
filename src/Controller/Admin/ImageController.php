@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Image;
 use App\Form\ImageType;
 use App\Message\RecogniseImage;
+use App\Message\WarmImageCache;
 use App\Repository\ImageRepository;
 use App\Service\LocationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,7 +68,8 @@ class ImageController extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         string $gpxDirectory, // TODO Fix this; it should be using the image uploads directory
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        UploaderHelper $uploaderHelper
         ): Response
     {
         if ($request->isMethod('POST')) {
@@ -89,6 +91,7 @@ class ImageController extends AbstractController
             $entityManager->flush();
             // Queue up some image recognition
             $messageBus->dispatch(new RecogniseImage($image->getId()));
+            $messageBus->dispatch(new WarmImageCache($uploaderHelper->asset($image)));
 
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
