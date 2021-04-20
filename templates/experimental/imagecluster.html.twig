@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image Cluster Experiment{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{{ include('_leaflet_stylesheets.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <h1>Image Cluster Experiment</h1>
+    {# TODO Don't hardcode the height #}
+    <div id="mapid" style="height: 500px; height: 70vh;" data-mapbox-access-token="{{ mapbox_access_token }}" ></div>
+    <div id="debug"></div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    {{ include('_leaflet_javascripts.html.twig') }}
+    <script src="/js/map.js"></script>
+    <script>
+        $(function() {
+            var map = setUpMap({
+                scrollWheelZoom: false
+            });
+
+            $.getJSON("/api/images?exists[latlng]=true", function(data) {
+                var photos = [];
+                $.each(data['hydra:member'], function(key, image) {
+                    photos.push({
+                        lat: image.latlng[0],
+                        lng: image.latlng[1],
+                        url: image.mediumImageUri,
+                        caption: image.title || '',
+                        thumbnail: image.markerImageUri,
+                        imageShowUri: image.imageShowUri,
+                        imageEntityAdminUri: image.imageEntityAdminUri,
+                        // TODO?
+                        video: null
+                    });
+                });
+                addPhotos(map, photos);
+            });
+
+            {#
+            //addWander(map, {{ wander.id }}, true);
+            #}
+        });
+    </script>
+{% endblock %}

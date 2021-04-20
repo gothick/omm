@@ -10,6 +10,7 @@
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') == 'home' %} active {% endif %}" href="{{ path('home') }}">Home</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'wanders' %} active {% endif %}" href="{{ path('wanders_index') }}">Wanders</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'search' %} active {% endif %}" href="{{ path('search_index') }}">Search</a>
+            <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'experimental' %} active {% endif %}" href="{{ path('experimental_index') }}">Experimental</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'about_' %} active {% endif %}" href="{{ path('about_index') }}">About</a>
         </div>
         <div class="navbar-nav">
