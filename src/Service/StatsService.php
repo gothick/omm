@@ -91,8 +91,10 @@ class StatsService
             $wanderStats['totalDuration'] = CarbonInterval::seconds($result['totalDuration'])->cascade();
             $wanderStats['averageDuration'] = CarbonInterval::seconds($result['averageDuration'])->cascade();
 
-            $wanderStats['totalDurationForHumans'] = $wanderStats['totalDuration']->forHumans(['short' => true]);
-            $wanderStats['averageDurationForHumans'] = $wanderStats['averageDuration']->forHumans(['short' => true]);
+            $wanderStats['totalDurationForHumans'] = $wanderStats['totalDuration']
+                ->forHumans(['short' => true, 'options' => 0]); // https://github.com/briannesbitt/Carbon/issues/2035
+            $wanderStats['averageDurationForHumans'] = $wanderStats['averageDuration']
+                ->forHumans(['short' => true, 'options' => 0]); // https://github.com/briannesbitt/Carbon/issues/2035
 
             // Distances
             $wanderStats['shortestWanderDistance'] = $this->wanderRepository->findShortest();
