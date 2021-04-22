@@ -110,8 +110,9 @@ class SearchController extends AbstractController
             $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
             $pagination = $paginator->paginate(
                 $results,
-                $request->query->getInt('page', 1));
-            //dd($pagination);
+                $request->query->getInt('page', 1),
+                10
+            );
         }
         return $this->render('/search/index.html.twig', [
             'form' => $form->createView(),

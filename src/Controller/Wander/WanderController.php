@@ -85,9 +85,6 @@ class WanderController extends AbstractController
         ImageRepository $imageRepository,
         PaginatorInterface $paginator): Response
     {
-        // TODO: Parameterise
-        $perPage = 20;
-
         $prev = $wanderRepository->findPrev($wander);
         $next = $wanderRepository->findNext($wander);
 
@@ -96,8 +93,7 @@ class WanderController extends AbstractController
         $pagination = $paginator->paginate(
             $paginatorQuery,
             $request->query->getInt('page', 1),
-            $perPage,
-            ['align' => 'center']
+            20, // Per page
         );
 
         return $this->render('/wander/show.html.twig', [
