@@ -9,6 +9,7 @@ use Carbon\CarbonInterval;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -39,6 +40,9 @@ class StatsService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getImageStats(): array
     {
         $stats = $this->cache->get('image_stats', function(ItemInterface $item) {
@@ -56,6 +60,9 @@ class StatsService
         return $stats;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getWanderStats(): array
     {
         $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {
@@ -85,11 +92,15 @@ class StatsService
                     FROM wander
                 ';
             $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchAssociative();
+            $result = $stmt->executeQuery();
+            $durations = $result->fetchAssociative();
 
-            $wanderStats['totalDuration'] = CarbonInterval::seconds($result['totalDuration'])->cascade();
-            $wanderStats['averageDuration'] = CarbonInterval::seconds($result['averageDuration'])->cascade();
+            if ($durations === false) {
+                throw new Exception("Got no results when finding duration stats.");
+            }
+
+            $wanderStats['totalDuration'] = CarbonInterval::seconds($durations['totalDuration'])->cascade();
+            $wanderStats['averageDuration'] = CarbonInterval::seconds($durations['averageDuration'])->cascade();
 
             $wanderStats['totalDurationForHumans'] = $wanderStats['totalDuration']
                 ->forHumans(['short' => true, 'options' => 0]); // https://github.com/briannesbitt/Carbon/issues/2035
