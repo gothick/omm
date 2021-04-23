@@ -27,26 +27,25 @@ class SearchIndexer
     public function __construct(LoggerInterface $logger, ObjectPersisterInterface $wanderPersister)
     {
         $this->logger = $logger;
-        // TODO: Check this logging to see if the listener is lazy
-        $logger->info("Constructing SearchIndexer Doctrine Entity Listener");
+        $logger->debug("Constructing SearchIndexer Doctrine Entity Listener");
         $this->wanderPersister = $wanderPersister;
     }
 
     public function postPersist(Image $image): void
     {
-        $this->logger->info("In SeachIndexer PostPersist method");
+        $this->logger->debug("In SeachIndexer PostPersist method");
         $this->updateRelatedWander($image);
     }
 
     public function postUpdate(Image $image): void
     {
-        $this->logger->info("In SeachIndexer PostUpdate method");
+        $this->logger->debug("In SeachIndexer PostUpdate method");
         $this->updateRelatedWander($image);
     }
 
     public function postRemove(Image $image): void
     {
-        $this->logger->info("In SeachIndexer postRemove method");
+        $this->logger->debug("In SeachIndexer postRemove method");
         $this->updateRelatedWander($image);
     }
 
