@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\EventListener\SearchIndexer;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
@@ -33,7 +34,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  *
  * @ORM\EntityListeners({
- *     ImageCalculatedFieldSetterListener::class
+ *     ImageCalculatedFieldSetterListener::class,
+ *     SearchIndexer::class
  * })
  *
  * @ORM\HasLifecycleCallbacks()
@@ -473,27 +475,6 @@ class Image
     }
     public function getImageShowUri(): ?string {
         return $this->imageShowUri;
-    }
-
-    /**
-     * @ORM\PostUpdate
-     * @ORM\PostPersist
-     */
-    public function updateWanderToForceElasticReindex(LifecycleEventArgs $args): self
-    {
-        // TODO: We may need extra code or a different function
-        // if we're to cover the event of an image being deleted,
-        // maybe. Test. But for now this is good enough and we can
-        // re-index manually if need be.
-        $wander = $this->getWander();
-        if ($wander === null) {
-            return $this;
-        }
-        $wander->setModifiedAt();
-        $entityManager = $args->getEntityManager();
-        $entityManager->persist($wander);
-        $entityManager->flush();
-        return $this;
     }
 
     public function getAutoTags(): ?array
