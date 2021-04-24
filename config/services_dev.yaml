@@ -4,4 +4,11 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\Service\ImageTaggingServiceInterface: '@App\Service\DummyImageTaggingService'
+    App\Service\ImageTaggingServiceInterface: '@App\Service\DevGoogleImageTaggingService'
+
+    App\Service\DevGoogleImageTaggingService:
+        lazy: true
+        arguments:
+            $projectId: '%google.project_id%'
+            $serviceAccountFile: '%google.service_account_file%'
+
