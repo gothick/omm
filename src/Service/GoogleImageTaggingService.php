@@ -17,8 +17,8 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
     private $client;
 
     public function __construct(
-        $projectId,
-        $serviceAccountFile,
+        string $projectId,
+        string $serviceAccountFile,
         EntityManagerInterface $entityManager
     )
     {
@@ -40,7 +40,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         $feature->setType(Type::LABEL_DETECTION);
         $feature->setMaxResults(15);
         $result = $this->client->annotateImage(
-            $image->getMediumImageUri(),
+            $this->getImageToSend($image),
             [$feature]
         );
 
@@ -52,5 +52,19 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
         return true;
+    }
+
+    /**
+     *
+     * Can be overridden, e.g. our dev service overrides this to provide
+     * the actual image data through readfile as the dev service's URLs
+     * aren't public.
+     *
+     * @return mixed|string
+     */
+    protected function getImageToSend(Image $image)
+    {
+        // We just send back a reasonable-resolution public URL
+        return $image->getMediumImageUri();
     }
 }
