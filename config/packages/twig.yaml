@@ -3,6 +3,8 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         mapbox_access_token: '%env(MAPBOX_ACCESS_TOKEN)%'
+        homebase_lat: '%env(float:HOME_BASE_LAT)%'
+        homebase_lng: '%env(float:HOME_BASE_LNG)%'
         settings: '@App\Service\SettingsService'
 
     date:
