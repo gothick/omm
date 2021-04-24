@@ -18,6 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EventListener\SearchIndexer;
+use Beelab\TagBundle\Tag\TaggableInterface;
+use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
@@ -46,7 +48,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @Vich\Uploadable
  */
 
-class Image
+class Image implements TaggableInterface
 {
     /**
      * @ORM\Id
@@ -141,11 +143,10 @@ class Image
     private $latlng = [];
 
     /**
-     * @ORM\Column(type="array", nullable=true, )
-     *
-     * @Groups({"image:list", "image:item"})
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Tag")
      */
-    private $keywords = [];
+    private $tags;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -172,7 +173,7 @@ class Image
 
     public function __construct()
     {
-        // $this->wanders = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -340,16 +341,69 @@ class Image
         return $this;
     }
 
-    public function getKeywords(): ?array
+    public function addTag(TagInterface $tag): void
     {
-        return $this->keywords;
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
     }
 
-    public function setKeywords(?array $keywords): self
+    public function clearTags(): void
     {
-        $this->keywords = $keywords;
+        $this->tags->clear();
+    }
 
+    public function removeTag(TagInterface $tag): void
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    public function hasTag(TagInterface $tag): bool
+    {
+        return $this->tags->contains($tag);
+    }
+
+    /**
+     * @return iterable<TagInterface>
+     */
+    public function getTags(): iterable
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Collection<TagInterface> $tags
+     */
+    public function setTags($tags): self
+    {
+        $this->clearTags();
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
         return $this;
+    }
+
+    /** @var string|null */
+    private $tagsText;
+
+    public function setTagsText(?string $tagsText): void
+    {
+        $this->tagsText = $tagsText;
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getTagsText(): ?string
+    {
+        $this->tagsText = \implode(', ', $this->tags->toArray());
+        return $this->tagsText;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getTagNames(): array
+    {
+        return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
     }
 
     public function getCapturedAt(): ?\DateTimeInterface
@@ -364,32 +418,6 @@ class Image
         return $this;
     }
 
-    // /**
-    //  * @return Collection|Wander[]
-    //  */
-    // public function getWanders(): Collection
-    // {
-    //     return $this->wanders;
-    // }
-
-    // public function addWander(Wander $wander): self
-    // {
-    //     if (!$this->wanders->contains($wander)) {
-    //         $this->wanders[] = $wander;
-    //         $wander->addImage($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeWander(Wander $wander): self
-    // {
-    //     if ($this->wanders->removeElement($wander)) {
-    //         $wander->removeImage($this);
-    //     }
-
-    //     return $this;
-    // }
 
     public function getWander(): ?Wander
     {

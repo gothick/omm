@@ -74,9 +74,9 @@
     </div>
     <div class="row image">
         <div class="col pt-3 mx-3 footerstrip">
-            <p><b>Keywords</b>:
-                {% for keyword in image.Keywords %}
-                    <span class="keyword">{{ keyword }}</span>
+            <p><b>Tags:</b>:
+                {% for tag in image.tags %}
+                    <span class="keyword">{{ tag }}</span>
                 {% endfor %}
             </p>
             <p><b>Experimental Machine-Learning Auto-Tags</b>:

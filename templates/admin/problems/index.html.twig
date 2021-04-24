@@ -56,7 +56,7 @@
                 <th>No LatLng</th>
                 <th>No Location</th>
                 <th>No Rating</th>
-                <th>No Keywords</th>
+                <th>No Tags</th>
                 <th>No Auto Tags</th>
                 <th>Score</th>
             </tr>
@@ -71,12 +71,12 @@
                 <td><a href="{{ path('admin_problems_no_latlng', {'id': problem.wander.id}) }}">{{ problem.no_latlng }}</a></td>
                 <td><a href="{{ path('admin_problems_no_location', {'id': problem.wander.id}) }}">{{ problem.no_location }}</a></td>
                 <td><a href="{{ path('admin_problems_no_rating', {'id': problem.wander.id}) }}">{{ problem.no_rating }}</td>
+                <td><a href="{{ path('admin_problems_no_tags', {'id': problem.wander.id}) }}">{{ problem.no_tags }}</td>
                 {#
                    TODO: Add links to these when we've converted them to relations rather than
                    arrays stored in a string and therefore aren't just adding to more technical
                    debt
                 #}
-                <td>{{ problem.no_keywords }}</td>
                 <td>{{ problem.no_auto_tags }}</td>
                 <td>{{ problem.weighted_problem_score }}</td>
             </tr>

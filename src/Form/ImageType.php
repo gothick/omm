@@ -52,7 +52,12 @@ class ImageType extends AbstractType
             ->add('location', TextType::class, [
                 'required' => false
             ])
-            ->add('keywords', TextType::class)
+            ->add('tagsText', TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'Tags'
+                ]
+            )
             ->add('capturedAt')
         ;
         // Transform latitude, longitude string to/from array
@@ -67,19 +72,6 @@ class ImageType extends AbstractType
                     return explode(', ', $latlngAsString);
                 }
             ));
-        $builder->get('keywords')
-            ->addModelTransformer(new CallbackTransformer(
-                function($keywordsAsArray) {
-                    if ($keywordsAsArray !== null)
-                    {
-                        return implode(', ', $keywordsAsArray);
-                    }
-                },
-                function($keywordsAsString) {
-                    return explode(', ', $keywordsAsString);
-                }
-            ));
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

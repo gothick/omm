@@ -1,9 +1,9 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}One-Mile Matt Wander: {{ wander.title }}: Images with No LatLng{% endblock %}
+{% block title %}One-Mile Matt Wander: {{ wander.title }}: Images with No Tags{% endblock %}
 
 {% block body %}
-    <h1>Images with No LatLng for Wander {{ wander.title }}</h1>
+    <h1>Images with No Tags for Wander {{ wander.title }}</h1>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for image in wander.imagesWithNoLatLng %}
+            {% for image in wander.imagesWithNoTags %}
             <tr>
                 <td><a href="{{ path('admin_image_show', {'id': image.id}) }}">{{ image.title ?? image.id }}</a></td>
             </tr>

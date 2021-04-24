@@ -40,6 +40,7 @@ class ImageController extends AbstractController
             ->createQueryBuilder('i')
             // Nice orphan check: ->where('i.wanders is empty')
             ->orderBy('i.capturedAt', 'DESC')
+            ->addOrderBy('i.id', 'DESC')
             ->getQuery();
 
         $pagination = $paginator->paginate(

@@ -3,9 +3,11 @@
 namespace App\Tests;
 
 use App\Entity\Image;
+use App\Entity\Tag;
 use App\Repository\WanderRepository;
 use App\Service\ImageService;
 use App\Service\LocationService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use InvalidArgumentException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -247,38 +249,40 @@ class ImageServiceTest extends TestCase
         $this->assertEquals('Existing', $result, 'Standalone Location setter unexpectedly overwrote data.');
     }
 
-    public function testKeywords()
+    public function testTags()
     {
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Keywords None.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $keywords = $image->getKeywords();
-        $this->assertIsArray($keywords, "Reading image with no keywords should still produce an array, albeit empty");
-        $this->assertEmpty($keywords, "Reading image with no keywords should result in an empty array");
-
-        $image = new Image();
-        $image->setMimeType('image/jpeg');
-        $image->setName('20190211-ommtest-Keywords One.jpg');
-        $this->imageService->setPropertiesFromEXIF($image, false);
-        $keywords = $image->getKeywords();
-        $this->assertIsArray($keywords, "Reading an image with a single keyword should still result in an array");
-        $this->assertCount(1, $keywords, "Reading image with a single keyword should give an array with one element");
+        $tags = $image->getTagNames();
+        $this->assertIsIterable($tags, "Reading image with no keywords should still produce an array, albeit empty");
+        $this->assertEmpty($tags, "Reading image with no keywords should result in an empty array");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Keywords Multiple.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $keywords = $image->getKeywords();
-        $this->assertIsArray($keywords, "Reading an image with multiple keywords should result in an array");
-        $this->assertCount(7, $keywords, "Reading multiple keyword test image should find six keywords");
-        $this->assertContains("stack of books", $keywords, "Multi-word keyword not found in multiple keyword test image");
-        $this->assertContains("Bristol", $keywords, "Expected word not found in mutliple keyword test image");
-        $this->assertContains("Places", $keywords, "Expected word not found in mutliple keyword test image");
-        $this->assertContains("UK", $keywords, "Expected word not found in mutliple keyword test image");
-        $this->assertContains("books", $keywords, "Expected word not found in mutliple keyword test image");
-        $this->assertContains("desk", $keywords, "Expected word not found in mutliple keyword test image");
-        $this->assertContains("united kingdom", $keywords, "Expected word not found in mutliple keyword test image");
+        $tags = $image->getTagNames();
+
+        $this->assertIsIterable($tags, "Reading an image with multiple keywords should result in an array");
+        $this->assertCount(7, $tags, "Reading multiple keyword test image should find six keywords");
+        $this->assertContains("stack of books", $tags, "Multi-word keyword not found in multiple keyword test image");
+        $this->assertContains("Bristol", $tags, "Expected word not found in multiple keyword test image");
+        $this->assertContains("Places", $tags, "Expected word not found in multiple keyword test image");
+        $this->assertContains("UK", $tags, "Expected word not found in multiple keyword test image");
+        $this->assertContains("books", $tags, "Expected word not found in multiple keyword test image");
+        $this->assertContains("desk", $tags, "Expected word not found in multiple keyword test image");
+        $this->assertContains("united kingdom", $tags, "Expected word not found in multiple keyword test image");
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Keywords One.jpg');
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $tags = $image->getTagNames();
+        $this->assertIsIterable($tags, "Reading an image with a single keyword should still result in an array");
+        $this->assertCount(1, $tags, "Reading image with a single keyword should give an array with one element");
+
     }
 
     public function testNonJPEG()
@@ -299,8 +303,8 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Minimal Metadata.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
 
-        $this->assertIsArray($image->getKeywords());
-        $this->assertCount(0, $image->getKeywords());
+        $this->assertIsIterable($image->getTags());
+        $this->assertCount(0, $image->getTags());
 
         $this->assertIsArray($image->getLatlng());
         $this->assertCount(0, $image->getLatlng());

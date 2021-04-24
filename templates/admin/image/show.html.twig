@@ -52,10 +52,10 @@
                 <td>{{ image.originalName }}</td>
             </tr>
             <tr>
-                <th>Keywords</th>
+                <th>Tags</th>
                 <td>
-                    {% for keyword in image.Keywords %}
-                    <span class="keyword">{{ keyword }}</span>
+                    {% for tag in image.tags %}
+                    <span class="keyword">{{ tag }}</span>
                     {% endfor %}
                 </td>
             </tr>

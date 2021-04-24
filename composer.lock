@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e9b00d9b05f39fd4fafefe06a4b78f9",
+    "content-hash": "3c227e323bb4c7c3068472bc5c27b57b",
     "packages": [
         {
             "name": "alexandret/doctrine2-spatial",
@@ -229,6 +229,62 @@
                 }
             ],
             "time": "2021-04-12T14:53:14+00:00"
+        },
+        {
+            "name": "beelab/tag-bundle",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bee-Lab/BeelabTagBundle.git",
+                "reference": "f80b6e27c94632a2a37d57820753ed4b1bf75f2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bee-Lab/BeelabTagBundle/zipball/f80b6e27c94632a2a37d57820753ed4b1bf75f2c",
+                "reference": "f80b6e27c94632a2a37d57820753ed4b1bf75f2c",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.7",
+                "php": "^7.2",
+                "symfony/config": "^4.4 || ^5.0",
+                "symfony/dependency-injection": "^4.4 || ^5.0",
+                "symfony/form": "^4.4 || ^5.0",
+                "symfony/http-kernel": "^4.4 || ^5.0",
+                "symfony/routing": "^4.4 || ^5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.4"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Beelab\\TagBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Massimiliano Arione",
+                    "email": "garakkio@gmail.com"
+                }
+            ],
+            "description": "Provide tags for Doctrine entities in Symfony",
+            "homepage": "https://github.com/bee-lab/",
+            "keywords": [
+                "symfony",
+                "tag",
+                "tags"
+            ],
+            "time": "2019-12-03T08:53:27+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
