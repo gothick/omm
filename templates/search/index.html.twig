@@ -74,10 +74,12 @@
                         </div>
 
                         <div class="col-2">
-                            {% for titlehighlight in imagehit.highlight['images.title'] %}
-                                <a href="{{ path('image_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
+                            {% if imagehit.highlight['images.title'] is defined %}
+                                {% for titlehighlight in imagehit.highlight['images.title'] %}
+                                    <a href="{{ path('image_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
 
-                            {% endfor %}
+                                {% endfor %}
+                            {% endif %}
                         </div>
                         <div class="col-8">
                             {% if imagehit.highlight['images.description'] is defined %}
