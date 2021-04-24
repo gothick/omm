@@ -9,7 +9,7 @@ var streetMap;
 var satelliteMap;
 
 
-var base = L.latLng(51.4511364, -2.6219148);
+var base = L.latLng($("#mapid").data("homebaseLat"), $("#mapid").data("homebaseLng"));
 
 function setUpMap(options)
 {
