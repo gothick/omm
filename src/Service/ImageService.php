@@ -129,7 +129,7 @@ class ImageService {
             $image->setTitle($exifHelper->getTitle());
             $image->setDescription($exifHelper->getDescription());
             $image->setLatlng($exifHelper->getGPS());
-            $image->setKeywords($exifHelper->getKeywords());
+            $image->setTagsText(implode(",", $exifHelper->getKeywords() ?? []));
             $image->setRating($exifHelper->getRating());
 
             $neighbourhood = $exifHelper->getLocation();

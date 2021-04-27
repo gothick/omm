@@ -58,7 +58,7 @@
             {# Name: {{ image.name }}<br/> #}
             {# MIME type: {{ image.mimeType }}<br/> #}
             <strong>Original Name</strong>: {{ image.originalName }}<br/>
-            <strong>Keywords</strong>: {{ image.Keywords|join(', ') }}<br/>
+            <strong>Tags</strong>: {{ image.Tags|join(', ') }}<br/>
             <strong>Dimensions</strong>: {{ image.dimensions|join('x') }}<br/>
             <strong>Co-ordinates</strong>:
                 <a href="https://www.google.com/maps/search/?api=1&amp;query={{ image.latlng|join(',') }}">

@@ -262,6 +262,16 @@ class Wander
         return $this->getImages()->matching($criteria);
     }
 
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesWithNoTags(): Collection
+    {
+        return $this->getImages()->filter(function($image) {
+            return $image->getTags()->isEmpty();
+        });
+    }
+
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {

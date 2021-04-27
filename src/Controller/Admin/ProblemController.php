@@ -49,7 +49,8 @@ class ProblemController extends AbstractController
             // TODO: This is a hideous bodge and will break when we finally give in and move
             // keywords and auto-tags to being related entities rather than a dirty PHP
             // array, but it's good enough for a problem admin page for now.
-            ->addSelect("SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END) AS no_keywords")
+            //->addSelect("SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END) AS no_keywords")
+            ->addSelect("SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END) AS no_tags")
             ->addSelect("SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END) AS no_auto_tags")
 
             ->addSelect(
@@ -57,19 +58,19 @@ class ProblemController extends AbstractController
                 "(SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END)) AS total_problems_excl_auto")
+                "(SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) AS total_problems_excl_auto")
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
                 "(2 * SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
                 "(5 * SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
-                "(0.01 * SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END)) + " .
+                "(0.01 * SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) + " .
                 "(0.001 * SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END)) AS weighted_problem_score")
             ->addGroupBy('w')
             ->having('no_title > 0')
             ->orHaving('no_latlng > 0')
             ->orHaving('no_location > 0')
-            ->orHaving('no_keywords > 0')
+            ->orHaving('no_tags > 0')
             ->orHaving('no_auto_tags > 0')
             ->orderBy('weighted_problem_score', 'desc')
             ->getQuery()
@@ -104,7 +105,8 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_title/wander/{id}", name="no_title", methods={"GET"})
      */
-    public function noTitle(Wander $wander): Response {
+    public function noTitle(Wander $wander): Response
+    {
         return $this->render('/admin/problems/no_title.html.twig', [
             'wander' => $wander
         ]);
@@ -112,7 +114,8 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_latlng/wander/{id}", name="no_latlng", methods={"GET"})
      */
-    public function noLatlng(Wander $wander): Response {
+    public function noLatlng(Wander $wander): Response
+    {
         return $this->render('/admin/problems/no_latlng.html.twig', [
             'wander' => $wander
         ]);
@@ -120,7 +123,8 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_location/wander/{id}", name="no_location", methods={"GET"})
      */
-    public function noLocation(Wander $wander): Response {
+    public function noLocation(Wander $wander): Response
+    {
         return $this->render('/admin/problems/no_location.html.twig', [
             'wander' => $wander
         ]);
@@ -128,8 +132,19 @@ class ProblemController extends AbstractController
     /**
      * @Route("/no_rating/wander/{id}", name="no_rating", methods={"GET"})
      */
-    public function noRating(Wander $wander): Response {
+    public function noRating(Wander $wander): Response
+    {
         return $this->render('/admin/problems/no_rating.html.twig', [
+            'wander' => $wander
+        ]);
+    }
+
+    /**
+     * @Route("/no_tags/wander/{id}", name="no_tags", methods={"GET"})
+     */
+    public function noTags(Wander $wander): Response
+    {
+        return $this->render('/admin/problems/no_tags.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -137,12 +152,11 @@ class ProblemController extends AbstractController
     /**
      * @Route("/broken_links", name="broken_links", methods={"GET"})
      */
-    public function brokenLinks(ProblemRepository $problemRepository): Response {
+    public function brokenLinks(ProblemRepository $problemRepository): Response
+    {
         $problems = $problemRepository->findAll();
         return $this->render('/admin/problems/broken_links.html.twig', [
             'problems' => $problems
         ]);
     }
-
-
 }

@@ -29,7 +29,7 @@ fos_elastica:
                             title:
                                 analyzer: my_analyzer
                                 property_path: false
-                            keywords:
+                            tags:
                                 type: keyword
                                 normalizer: keyword_normalizer
                             image_id:
