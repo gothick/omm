@@ -399,6 +399,17 @@ class Image implements TaggableInterface
     }
 
     /**
+     * @ORM\PostLoad
+     */
+    public function postLoad(): void {
+        // Bodge to workaround behaviour of BeelabTagBundle, which updates
+        // tags on persist, but only from the text tags. So if you don't
+        // get/set the tags text, when you persist your entity all its
+        // tags disappear. Sigh.
+        $this->getTagsText();
+    }
+
+    /**
      * @return array<string>
      */
     public function getTagNames(): array
