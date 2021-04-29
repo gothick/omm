@@ -23,7 +23,8 @@ class GeneralExtension extends AbstractExtension
             new TwigFilter('star_rating', [GeneralRuntime::class, 'starRating']),
 
             // Text
-            new TwigFilter('markdown_to_plain_text', [GeneralRuntime::class, 'markdownToPlainText'])
+            new TwigFilter('markdown_to_plain_text', [GeneralRuntime::class, 'markdownToPlainText']),
+            new TwigFilter('stripmosttags', [GeneralRuntime::class, 'stripMostTags'])
         ];
     }
 }
