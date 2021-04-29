@@ -7,6 +7,7 @@
 {{ okaytag1 | stripmosttags | raw }}
 {{ okaytag2 | stripmosttags | raw }}
 {{ br | stripmosttags | raw }}
+{{ null | stripmosttags | raw }}
 --DATA--
 return [
     'safe' => 'This is an entirely safe string',
@@ -15,6 +16,7 @@ return [
     'okaytag1' => "We're okay with superscript<sup>1</sup> tags. <sup>1</sup> Anywhere.",
     'okaytag2' => "And also with <hr/> horizontal rules",
     'br' => "This<br>is<br/>a<br>test",
+    'null' => null
 ]
 --EXPECT--
 This is an entirely safe string

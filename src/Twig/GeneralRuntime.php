@@ -48,8 +48,11 @@ class GeneralRuntime implements RuntimeExtensionInterface
         return $this->markdownService->markdownToText($markdown);
     }
 
-    public function stripMostTags(string $in): string
+    public function stripMostTags(?string $in): string
     {
+        if ($in === null) {
+            return '';
+        }
         return strip_tags($in, '<sup><hr>');
     }
 }
