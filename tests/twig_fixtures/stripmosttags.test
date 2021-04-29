@@ -1,0 +1,25 @@
+--TEST--
+"stripmosttags" filter
+--TEMPLATE--
+{{ safe | stripmosttags | raw }}
+{{ script | stripmosttags | raw }}
+{{ emphasis | stripmosttags | raw }}
+{{ okaytag1 | stripmosttags | raw }}
+{{ okaytag2 | stripmosttags | raw }}
+{{ br | stripmosttags | raw }}
+--DATA--
+return [
+    'safe' => 'This is an entirely safe string',
+    'script' => 'This has a <script>alert("w00t!")</script> element',
+    'emphasis' => 'This has <em>some HTML tags that we want to strip, too</em>.',
+    'okaytag1' => "We're okay with superscript<sup>1</sup> tags. <sup>1</sup> Anywhere.",
+    'okaytag2' => "And also with <hr/> horizontal rules",
+    'br' => "This<br>is<br/>a<br>test",
+]
+--EXPECT--
+This is an entirely safe string
+This has a alert("w00t!") element
+This has some HTML tags that we want to strip, too.
+We're okay with superscript<sup>1</sup> tags. <sup>1</sup> Anywhere.
+And also with <hr/> horizontal rules
+Thisisatest

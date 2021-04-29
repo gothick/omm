@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
@@ -14,6 +13,12 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
     </php>
+    <groups>
+      <exclude>
+	    <!-- skip over Twig's weird legacy tests -->
+	    <group>legacy</group>
+      </exclude>
+    </groups>
 
     <testsuites>
         <testsuite name="Project Test Suite">

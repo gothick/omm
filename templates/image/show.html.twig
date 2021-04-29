@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col">
                     <h2>{{ image.title ?? image.name }}</h2>
-                    <p>{{ image.description |striptags|markdown }}</p>
+                    <p>{{ image.description | stripmosttags | markdown }}</p>
                 </div>
             </div>
             <div class="row details">
