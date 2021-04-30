@@ -5,54 +5,51 @@
 {% block body %}
     <div class="row image">
         <div class="col mx-3 headerstrip">
-            <div class="row prevnext">
-                <div class="col">
+            <div class="row title">
+                <div class="col-2">
                     {% if prev %}
-                    <a href="{{ path('image_show', { 'id': prev.id }) }}">&larr;Previous</a>
+                    <a class="align-middle" href="{{ path('image_show', { 'id': prev.id }) }}">&larr;Previous</a>
                     {% endif %}
                 </div>
-                <div class="col text-right">
-                    {% if next %}
-                    <a href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
+                <div class="col-8 text-center">
                     <h2>{{ image.title ?? image.name }}</h2>
-                    <p>{{ image.description | stripmosttags | markdown }}</p>
+                </div>
+                <div class="col-2 text-right">
+                    {% if next %}
+                    <a class="align-middle" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="row details">
+            <div class="row description pt-4 pb-2">
+                <div class="col">
+                    {{ image.description | stripmosttags | markdown }}
+                </div>
+            </div>
+            <div class="row details mt-2">
                 <div class="col">
 
                     {% if image.wander %}
                         {% set wander = image.wander %}
-                        <p>From wander: <a href="{{ path('wanders_show', { 'id': wander.id }) }}">{{ wander }}</a></p>
+                        From wander: <a href="{{ path('wanders_show', { 'id': wander.id }) }}">{{ wander.title }}</a>
                     {% else %}
-                        <p>No associated Wander</p>
+                        (No associated Wander)
                     {% endif %}
+                    <br/>Taken: {{ image.capturedAt| date("D j F Y H:i") }}
+                    <br/>Rating: {{ image.rating | star_rating }}
                 </div>
-                <div class="col">
-                    <p>Taken: {{ image.capturedAt| date("D j F Y H:i") }}</p>
-                </div>
-                <div class="col">
-                    <p>Rating: {{ image.rating | star_rating }}</p>
-                </div>
-            </div>
-            <div class="row details">
                 <div class="col">
                     <p class="small">
-                    {% if image.latlng and image.latlng | length > 0 %}GPS Coordinates: {{ image.latlng|join(', ') }}{% endif %}
+                    {% if image.latlng and image.latlng | length > 0 %}
+                        GPS Coordinates: {{ image.latitude | number_format(5) }}, {{ image.longitude | number_format(5) }}
+                    {% endif %}
                     {% if image.location %}<br/>Location: {{ image.location }}{% endif %}
                     </p>
                 </div>
             </div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="row adminlinks pb-2">
-                <div class="col">
-                    <hr/>
-                    <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Image Edit Page</a>
+            <div class="row adminlinks my-2">
+                <div class="col text-right">
+                    <a class="btn btn-primary" href="{{ path('admin_image_edit', {'id': image.id}) }}">Edit</a>
                 </div>
             </div>
             {% endif %}
@@ -64,7 +61,7 @@
                 TODO Add an alt text property so we can be more accessible
                 TODO What happens if the alt text has quotes in it?
             #}
-            <img class="img-fluid w-100"
+            <img alt="{{ image.title | e('html_attr') }}" class="img-fluid w-100"
                 src="{{ vich_uploader_asset(image, 'imageFile') }}"
                 srcset="{{ image | srcset }}"
                 sizes="(min-width: 1200px) 1140px,
@@ -74,12 +71,12 @@
     </div>
     <div class="row image">
         <div class="col pt-3 mx-3 footerstrip">
-            <p><b>Tags:</b>:
+            <p><b>Tags:</b>
                 {% for tag in image.tags %}
                     <span class="keyword">{{ tag }}</span>
                 {% endfor %}
             </p>
-            <p><b>Experimental Machine-Learning Auto-Tags</b>:
+            <p><b>Experimental Machine-Learning Auto-Tags:</b>
                 {% for tag in image.autoTags %}
                 <span class="keyword autotag">{{ tag }}</span>
                 {% endfor %}
