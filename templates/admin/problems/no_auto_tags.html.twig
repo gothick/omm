@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}One-Mile Matt Wander: {{ wander.title }}: Images with No Auto Tags{% endblock %}
+
+{% block body %}
+    <h1>Images with No Auto Tags for Wander {{ wander.title }}</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in wander.imagesWithNoAutoTags %}
+            <tr>
+                <td><a href="{{ path('admin_image_show', {'id': image.id}) }}">{{ image.title ?? image.id }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
