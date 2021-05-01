@@ -150,6 +150,16 @@ class ProblemController extends AbstractController
     }
 
     /**
+     * @Route("/no_auto_tags/wander/{id}", name="no_auto_tags", methods={"GET"})
+     */
+    public function noAutoTags(Wander $wander): Response
+    {
+        return $this->render('/admin/problems/no_auto_tags.html.twig', [
+            'wander' => $wander
+        ]);
+    }
+
+    /**
      * @Route("/broken_links", name="broken_links", methods={"GET"})
      */
     public function brokenLinks(ProblemRepository $problemRepository): Response

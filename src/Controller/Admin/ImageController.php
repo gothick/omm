@@ -9,6 +9,7 @@ use App\Message\WarmImageCache;
 use App\Repository\ImageRepository;
 use App\Service\LocationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -170,6 +172,22 @@ class ImageController extends AbstractController
             }
         }
 
+        return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
+    }
+
+    /**
+     * @Route("/{id}/set_auto_tags", name="set_auto_tags", methods={"POST"})
+     */
+    public function setAutoTags(Request $request, Image $image, MessageBusInterface $messageBus): Response
+    {
+        if ($this->isCsrfTokenValid('set_auto_tags'.$image->getId(), $request->request->get('_token'))) {
+            $imageId = $image->getId();
+            if ($imageId === null) {
+                throw new InvalidParameterException('No image id in setAutoTags');
+            }
+            $messageBus->dispatch(new RecogniseImage($imageId, true));
+            $this->addFlash('success', 'Image re-queued for recognition.');
+        }
         return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
     }
 }

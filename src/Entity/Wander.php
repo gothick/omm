@@ -272,6 +272,16 @@ class Wander
         });
     }
 
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesWithNoAutoTags(): Collection
+    {
+        return $this->getImages()->filter(function($image) {
+            return $image->getAutoTagsCount() == 0;
+        });
+    }
+
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
