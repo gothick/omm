@@ -47,6 +47,9 @@ class MarkdownServiceTest extends KernelTestCase
             'simple text'   => ['This is a test', "This is a test\n"],
             'formatting'    => ['*This* is a _test_', "This is a test\n"],
             'link'    => ['*[This](https://gothick.org.uk)* is a _test_', "This is a test\n"],
+            'html'  => ["I'm <em>just</em> testing...", "I'm just testing...\n"],
+            'entities1' => ["I'm just testing & testing", "I'm just testing & testing\n"],
+            'entities2' => ["Not Testing < Testing", "Not Testing < Testing\n"]
         ];
     }
 
