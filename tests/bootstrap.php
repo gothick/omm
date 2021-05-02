@@ -11,3 +11,8 @@ if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
 }
 
 define('PHPEXIF_TEST_ROOT', __DIR__);
+
+// Things like e.g. our Markdown Service use the cache; we want a clean cache
+// each time we test otherwise we'll end up caching test results from previous
+// runs.
+(new \Symfony\Component\Filesystem\Filesystem())->remove(__DIR__.'/../var/cache/test');

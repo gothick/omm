@@ -38,7 +38,7 @@ class MarkdownService
         $key = 'md_' . md5($markdown);
         return $this->cache->get($key, function(ItemInterface $item) use ($markdown) {
             $item->tag('markdown_text');
-            return strip_tags($this->markdownParser->transformMarkdown($markdown));
+            return html_entity_decode(strip_tags($this->markdownParser->transformMarkdown($markdown)), ENT_QUOTES);
         });
     }
 
