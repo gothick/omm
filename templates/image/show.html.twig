@@ -41,7 +41,7 @@
                     <p class="small">
                     {% if image.latlng and image.latlng | length > 0 %}
                         GPS Coordinates:
-                            <a href="http://www.openstreetmap.org/?mlat={{ image.latitude }}&mlon={{ image.longitude }}&zoom=18">
+                            <a href="https://www.openstreetmap.org/?mlat={{ image.latitude }}&mlon={{ image.longitude }}&zoom=18">
                             {{ image.latitude | number_format(5) }}, {{ image.longitude | number_format(5) }}
                             </a>
                     {% endif %}
