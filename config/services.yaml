@@ -133,8 +133,8 @@ services:
     # it stays consistent across deployments, allowing them to be terminated correctly
     # even after our Deployer deployment clears the cache.
     restart_workers_signal.cache:
-        parent: cache.app
+        parent: 'cache.app'
         tags:
-            - { name: cache.pool, namespace: messenger-worker-namespace }
+            - { name: 'cache.pool', namespace: 'messenger-worker-namespace' }
 
     cache.messenger.restart_workers_signal: '@restart_workers_signal.cache'

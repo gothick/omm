@@ -19,6 +19,7 @@ add('shared_files', [
     'google-cloud-service-account.json'
 ]);
 add('shared_dirs', [
+    'var/cache',
     'public/uploads/gpx',
     'public/uploads/images',
     'public/uploads/incoming',
