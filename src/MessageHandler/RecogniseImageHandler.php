@@ -28,18 +28,7 @@ class RecogniseImageHandler implements MessageHandlerInterface {
     {
         $image = $this->imageRepository->find($recogniseImage->getImageId());
         if ($image !== null) {
-            try {
-                $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
-            }
-            catch(\Exception $e) {
-                // Later on I might get cleverer, but for now let's just
-                // mark everything as non-retryable.
-                throw new UnrecoverableMessageHandlingException(
-                    "Image tagging service threw exception. Marking no retries for now.",
-                    $e->getCode(),
-                    $e
-                );
-            }
+            $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
         }
     }
 }
