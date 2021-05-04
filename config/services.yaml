@@ -127,3 +127,14 @@ services:
             arguments:
                 - '%env(DATABASE_URL)%'
 
+
+    # https://github.com/symfony/symfony/issues/40477#issuecomment-825457203
+    # Custom cache with custom namespace for messenger restart worker signal cache, so
+    # it stays consistent across deployments, allowing them to be terminated correctly
+    # even after our Deployer deployment clears the cache.
+    restart_workers_signal.cache:
+        parent: cache.app
+        tags:
+            - { name: cache.pool, namespace: messenger-worker-namespace }
+
+    cache.messenger.restart_workers_signal: '@restart_workers_signal.cache'
