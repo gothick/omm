@@ -140,6 +140,7 @@ function addAllWanders(map)
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON("/api/wanders", function(data) {
         var last = data["hydra:totalItems"];
+        var layers = [];
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = (last - 1 === key);
             var track = omnivore.gpx(wander.gpxFilename,
@@ -162,6 +163,7 @@ function addAllWanders(map)
                 });
             track.wanderId = wander.id;
             track.addTo(map);
+            layers.push(track);
             if (isLastWander) {
                 currentlySelected = track;
                 track.on("ready", function() {
@@ -178,6 +180,9 @@ function addAllWanders(map)
                     track.bringToBack();
                 });
             }
+        });
+        $.when.apply($, layers).then(function() {
+            console.log('All loaded');
         });
     });
 }
