@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping\OrderBy;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -97,7 +98,12 @@ class WanderController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request, SluggerInterface $slugger, GpxService $gpxService) : Response {
+    public function new(
+            Request $request,
+            GpxService $gpxService,
+            UploaderHelper $uploaderHelper
+        ): Response
+    {
         $wander = new Wander();
         // https://symfony.com/doc/current/controller/upload_file.html
 
@@ -110,19 +116,7 @@ class WanderController extends AbstractController
             $gpxFile = $form->get('gpxFilename')->getData();
 
             if ($gpxFile) {
-                $originalFilename = pathinfo($gpxFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug(/** @scrutinizer ignore-type */ $originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $gpxFile->guessExtension();
-                try {
-                    $gpxFile->move(
-                        $this->getParameter('gpx_directory'),
-                        $newFilename
-                    );
-                }
-                catch (FileException $e) {
-                    throw new HttpException(500, "Failed finishing GPX upload: " . $e->getMessage());
-                }
-                $wander->setGpxFilename($newFilename);
+                $wander->setGpxFilename($uploaderHelper->uploadGpxFile($gpxFile));
             }
 
             $wander = $form->getData();
