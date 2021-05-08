@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class UploaderHelper
+class UploadHelper
 {
 
     /** @var SluggerInterface */

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
-use App\Service\UploaderHelper;
+use App\Service\UploadHelper;
 use Doctrine\ORM\Mapping\OrderBy;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -101,7 +101,7 @@ class WanderController extends AbstractController
     public function new(
             Request $request,
             GpxService $gpxService,
-            UploaderHelper $uploaderHelper
+            UploadHelper $uploadHelper
         ): Response
     {
         $wander = new Wander();
@@ -116,7 +116,7 @@ class WanderController extends AbstractController
             $gpxFile = $form->get('gpxFilename')->getData();
 
             if ($gpxFile) {
-                $wander->setGpxFilename($uploaderHelper->uploadGpxFile($gpxFile));
+                $wander->setGpxFilename($uploadHelper->uploadGpxFile($gpxFile));
             }
 
             $wander = $form->getData();

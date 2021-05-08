@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Wander;
 use App\Service\GpxService;
-use App\Service\UploaderHelper;
+use App\Service\UploadHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -14,15 +14,15 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class WanderFixtures extends Fixture implements FixtureGroupInterface
 {
-    /** @var UploaderHelper */
-    private $uploaderHelper;
+    /** @var UploadHelper */
+    private $uploadHelper;
 
     /** @var GpxService */
     private $gpxService;
 
-    public function __construct(UploaderHelper $uploaderHelper, GpxService $gpxService)
+    public function __construct(UploadHelper $uploadHelper, GpxService $gpxService)
     {
-        $this->uploaderHelper = $uploaderHelper;
+        $this->uploadHelper = $uploadHelper;
         $this->gpxService = $gpxService;
     }
 
@@ -38,7 +38,7 @@ class WanderFixtures extends Fixture implements FixtureGroupInterface
         foreach($finder->in(__DIR__ . '/gpx')->name('/\.gpx$/i') as $source) {
             $targetPath = sys_get_temp_dir() . '/' . $source->getFilename();
             $fs->copy($source->getPathname(), $targetPath);
-            $uploadedFile = $this->uploaderHelper->uploadGpxFile(new File($targetPath));
+            $uploadedFile = $this->uploadHelper->uploadGpxFile(new File($targetPath));
             $wander = new Wander();
             $wander->setGpxFilename($uploadedFile);
             $this->gpxService->updateWanderStatsFromGpx($wander);
