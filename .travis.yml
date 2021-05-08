@@ -8,6 +8,8 @@ before_script:
   - mysql -u root -e "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';"
   - mysql -u root -e "GRANT ALL ON omm_test.* TO 'homestead'@'localhost';"
   - composer install --no-interaction
+  # Delay a bit for Elasticsearch to stabilise
+  - sleep 10
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
@@ -29,3 +31,5 @@ notifications:
 
 services:
   - mysql
+  - elasticsearch
+  
