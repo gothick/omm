@@ -140,7 +140,7 @@ function addAllWanders(map)
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON("/api/wanders", function(data) {
         var last = data["hydra:totalItems"];
-        var layers = [];
+        var deferreds = [];
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = (last - 1 === key);
             var track = omnivore.gpx(wander.gpxFilename,
@@ -163,14 +163,20 @@ function addAllWanders(map)
                 });
             track.wanderId = wander.id;
             track.addTo(map);
-            layers.push(track);
+            var deferred = $.Deferred();
+            deferreds.push(deferred);
+            track.on("ready", function() {
+                deferred.resolve();
+            });
             if (isLastWander) {
                 currentlySelected = track;
                 track.on("ready", function() {
+                    console.log('last track loaded');
                     track.bringToFront();
                 });
             } else {
                 track.on("ready", function() {
+                    console.log('intermediate track loaded');
                     // Our layers load asynchonously, and I can't find an event
                     // that fires once all our geoJSON layers are loaded, so the
                     // above bringToFront() for the most recent wander might
@@ -181,7 +187,7 @@ function addAllWanders(map)
                 });
             }
         });
-        $.when.apply($, layers).then(function() {
+        $.when.apply($, deferreds).then(function() {
             console.log('All loaded');
         });
     });
