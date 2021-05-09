@@ -8,8 +8,6 @@ before_script:
   - mysql -u root -e "CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';"
   - mysql -u root -e "GRANT ALL ON omm_test.* TO 'homestead'@'localhost';"
   - composer install --no-interaction
-  # Delay a bit for Elasticsearch to stabilise
-  - sleep 10
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
@@ -17,6 +15,12 @@ before_script:
 before_install:
   - sudo apt-get update
   - sudo apt-get -y install exiftool
+  - curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.12.1-amd64.deb -o elasticsearch.deb
+  - sudo dpkg -i --force-confnew elasticsearch.deb
+  - sudo chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
+  - sudo service elasticsearch restart
+  # Elasticsearch can take a while to start
+  - sleep 10
 
 env:
   global:
@@ -31,5 +35,4 @@ notifications:
 
 services:
   - mysql
-  - elasticsearch
   
