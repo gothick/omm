@@ -6,45 +6,44 @@
 {{ include('_leaflet_stylesheets.html.twig') }}
 {% endblock %}
 {% block body %}
-    <div class="row">
+    <div class="row wander">
         <div class="col mx-3 headerstrip">
-            <div class="row prevnext">
-                <div class="col">
+            <div class="row title">
+                <div class="col-2">
                     {% if prev %}
-                    <a href="{{ path('wanders_show', { 'id': prev.id }) }}">&larr;Previous</a>
+                    <a class="align-middle" href="{{ path('wanders_show', { 'id': prev.id }) }}">&larr;Previous</a>
                     {% endif %}
                 </div>
-                <div class="col text-right">
-                    {% if next %}
-                    <a href="{{ path('wanders_show', { 'id': next.id }) }}">Next&rarr;</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
+                <div class="col-8 text-center">
                     <h2>{{ wander.title }}</h2>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col startendtimes">
-                    {{ wander.startTime | date("D j F Y, H:i") }} to {{ wander.endTime | date("H:i") }}
+                <div class="col-2 text-right">
+                    {% if next %}
+                    <a class="align-middle" href="{{ path('wanders_show', { 'id': next.id }) }}">Next&rarr;</a>
+                    {% endif %}
                 </div>
             </div>
-            <div class="row">
+            <div class="row description pt-4 pb-2">
                 <div class="col">
-                    <p>{{ wander.description | stripmosttags | markdown }}</p>
+                    {{ wander.description | stripmosttags | markdown }}
                 </div>
             </div>
-            <div class="row minor-details pt-2">
+            <div class="row details mt-2">
                 <div class="col">
-                    <p><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;Sector: {{ wander.sector }}</p>
+                    {{ wander.startTime | date("D j F Y, H:i") }} to {{ wander.endTime | date("H:i") }}<br/>
+                    Sector:&nbsp;<img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;{{ wander.sector }}<br/>
+                    Images: {{ wander.images | length }}
+                </div>
+                <div class="col">
+                    Distance: {{ (wander.distance / 1000.0) | number_format(2) ~ 'km' }}<br/>
+                    Duration: {{ wander.duration | duration_to_hms }}<br/>
+                    Total Elevation Gain: {{ wander.cumulativeElevationGain | number_format(0) ~ 'm' }}
                 </div>
             </div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="row adminlinks pb-2">
-                <div class="col">
-                    <hr/>
-                    <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Wander Edit Page</a>
+            <div class="row adminlinks my-2">
+                <div class="col text-right">
+                    <a class="btn btn-primary" href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Edit</a>
                 </div>
             </div>
             {% endif %}

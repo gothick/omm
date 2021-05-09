@@ -384,8 +384,6 @@ class Wander
         return $this;
     }
 
-    // TODO: We probably don't need this any more; I've replaced
-    // existing uses with our seconds_to_hms Twig filter.
     public function getDuration(): ?CarbonInterval
     {
         if (!isset($this->startTime, $this->endTime)) {

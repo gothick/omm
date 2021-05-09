@@ -109,6 +109,7 @@ img.sector {
     background-color: rgb(152, 225, 253);
 }
 
-.image .row.description {
+.image .row.description,
+.wander .row.description {
     background-color: #F0F1FF;
 }
