@@ -87,10 +87,8 @@ services:
     Liip\ImagineBundle\Service\FilterService:
         alias: 'liip_imagine.service.filter'
 
-    # Moved to a global binding, above.
-    #App\Service\GpxService:
-    #    arguments:
-    #       $gpxDirectory: '%gpx_directory%'
+    App\Service\GpxService:
+        public: true
 
     # Event listeners
     App\EventListener\ImageUploadListener:
@@ -138,3 +136,8 @@ services:
             - { name: 'cache.pool', namespace: 'messenger-worker-namespace' }
 
     cache.messenger.restart_workers_signal: '@restart_workers_signal.cache'
+
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\Migrations\Factory\MigrationFactoryDecorator.inner', '@service_container']

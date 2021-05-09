@@ -29,19 +29,33 @@ class GpxService
     /**
      * @throws \Exception
      */
-    public function getFullGpxFilePathFromWander(Wander $wander):string
+    public function getFullGpxFilePathFromWander(Wander $wander): string
     {
         $filename = $wander->getGpxFilename();
         if (!$filename) {
             throw new \Exception("No GPX file path found in wander.");
         }
+        return $this->getFullGpxFilePathFromFilename($filename);
+    }
+
+    public function getFullGpxFilePathFromFilename(string $filename): string
+    {
         return $this->gpxDirectory . '/' . $filename;
+    }
+
+    public function getGpxStringFromFilename(string $filename): string
+    {
+        $gpx = \file_get_contents($this->getFullGpxFilePathFromFilename($filename));
+        if ($gpx === false) {
+            throw new Exception("Couldn't read GPX file from $filename");
+        }
+        return $gpx;
     }
 
     private function updateGeneralStats(string $gpxxml, Wander $wander): void
     {
         $gpx = $this->phpGpx->parse($gpxxml);
-        // TODO: Cope with mutliple tracks in a file? I don't think
+        // TODO: Cope with multiple tracks in a file? I don't think
         // we've done that often, if ever.
         foreach ($gpx->tracks as $track)
         {
@@ -95,16 +109,30 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
+    public function gpxToGeoJson(string $gpx): string
+    {
+        $geometry = \geoPHP::load($gpx, 'gpx');
+        return $geometry->out('json');
+    }
+
+    public function getWanderGeoJson(Wander $wander): string
+    {
+        $gpxPath = $this->getFullGpxFilePathFromWander($wander);
+        $gpxData = file_get_contents($gpxPath);
+        if ($gpxData === false) {
+            throw new Exception("Couldn't read GPX data from $gpxPath");
+        }
+        return $this->gpxToGeoJson($gpxData);
+    }
+
     public function updateWanderStatsFromGpx(Wander $wander): void
     {
         $filename = $wander->getGpxFilename();
         if (isset($filename))
         {
             // Basic stats, updated using phpGpx
-            $gpxxml = file_get_contents($this->getFullGpxFilePathFromWander($wander));
-            if ($gpxxml === false) {
-                throw new Exception("Error loading GPX file for wander " . $wander->getId());
-            }
+            $gpxxml = $this->getGpxStringFromFilename($filename);
+            $wander->setGeoJson($this->gpxToGeoJson($gpxxml));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);
         }

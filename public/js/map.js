@@ -146,6 +146,7 @@ function addAllWanders(map)
         var deferreds = [];
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = (last - 1 === key);
+            console.log(wander.gpxFilename);
             var track = omnivore.gpx(wander.gpxFilename,
                     null,
                     new CustomGeoJSON(null, {

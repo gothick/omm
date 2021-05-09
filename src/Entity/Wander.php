@@ -453,6 +453,14 @@ class Wander
         15 => 'N'
       ];
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"wander:list", "wander:item"})
+     *
+     */
+    private $geoJson;
+
     public function getSector(): ?string
     {
         if ($this->angleFromHome !== null) {
@@ -485,5 +493,17 @@ class Wander
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
         return $result;
+    }
+
+    public function getGeoJson(): ?string
+    {
+        return $this->geoJson;
+    }
+
+    public function setGeoJson(?string $geoJson): self
+    {
+        $this->geoJson = $geoJson;
+
+        return $this;
     }
 }
