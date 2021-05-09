@@ -24,7 +24,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if (!isset($interval))
             return "";
 
-        return $interval->format('%H:%I:%S');
+        return $interval->format('%hh %im %ss');
     }
 
     public function starRating(?int $rating): string
