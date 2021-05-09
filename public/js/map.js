@@ -52,7 +52,8 @@ function setUpMap(options)
     // https://stackoverflow.com/a/41455739/300836
     $.extend(options, {
         maxBounds: base.toBounds(locusRadius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
-        layers: [streetMap, circle]
+        layers: [streetMap, circle],
+        loadingControl: true, // https://github.com/ebrelsford/Leaflet.loading
     });
 
     var map = L.map("mapid", options)
@@ -137,8 +138,10 @@ var CustomGeoJSON = L.GeoJSON.extend({
 
 function addAllWanders(map)
 {
+    map.fireEvent('dataloading');
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON("/api/wanders", function(data) {
+
         var last = data["hydra:totalItems"];
         var deferreds = [];
         $.each(data["hydra:member"], function(key, wander) {
@@ -161,6 +164,9 @@ function addAllWanders(map)
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
+            if (isLastWander) {
+                currentlySelected = track;
+            }
             track.wanderId = wander.id;
             track.addTo(map);
             var deferred = $.Deferred();
@@ -168,27 +174,11 @@ function addAllWanders(map)
             track.on("ready", function() {
                 deferred.resolve();
             });
-            if (isLastWander) {
-                currentlySelected = track;
-                track.on("ready", function() {
-                    console.log('last track loaded');
-                    track.bringToFront();
-                });
-            } else {
-                track.on("ready", function() {
-                    console.log('intermediate track loaded');
-                    // Our layers load asynchonously, and I can't find an event
-                    // that fires once all our geoJSON layers are loaded, so the
-                    // above bringToFront() for the most recent wander might
-                    // fire before other layers load. This is a bit of a hack to
-                    // send any layers that load later to the back, keeping the
-                    // most recent wander at the front.
-                    track.bringToBack();
-                });
-            }
         });
         $.when.apply($, deferreds).then(function() {
             console.log('All loaded');
+            currentlySelected.bringToFront();
+            map.fireEvent("dataload");
         });
     });
 }
