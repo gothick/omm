@@ -129,7 +129,7 @@ var currentlySelected = null;
 
 function addAllWanders(map)
 {
-    map.fireEvent('dataloading');
+    map.fireEvent('dataloading'); // Triggers loading spinner
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON("/api/wanders", function(data) {
 
@@ -162,8 +162,11 @@ function addAllWanders(map)
             }
             geoJsonTrack.addTo(map);
         });
+    })
+    .always(function() {
+        map.fireEvent("dataload"); // Finishes loading spinner
     });
-    map.fireEvent("dataload");
+
 }
 
 function addWander(map, wanderId, addImages)
