@@ -125,6 +125,8 @@ class GpxService
         return $this->gpxToGeoJson($gpxData);
     }
 
+    // TODO: This is updating more than the stats now. Change the name to
+    // reflect that.
     public function updateWanderStatsFromGpx(Wander $wander): void
     {
         $filename = $wander->getGpxFilename();
