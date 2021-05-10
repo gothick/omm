@@ -1,9 +1,8 @@
 // TODO: Refactor the heck out of this mess
 
-/* LeafletJS and Omnivore */
+/* LeafletJS */
 /** global: L */
-/** global: omnivore */
-/*global L, omnivore */ /* For ESLint */
+/* global L */ /* For ESLint */
 
 var streetMap;
 var satelliteMap;
@@ -170,7 +169,11 @@ function addAllWanders(map)
 function addWander(map, wanderId, addImages)
 {
     $.getJSON("/api/wanders/" + wanderId, function(wander) {
-        omnivore.gpx(wander.gpxFilename)
+        var geoJsonFeature = {
+            "type": "Feature",
+            "geometry": $.parseJSON(wander.geoJson)
+        };
+        L.geoJSON(geoJsonFeature)
             .bindPopup(function(/* layer */) {
                 return wander.title;
             })
