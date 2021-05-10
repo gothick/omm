@@ -120,7 +120,7 @@ class WanderController extends AbstractController
             }
 
             $wander = $form->getData();
-            $gpxService->updateWanderStatsFromGpx($wander);
+            $gpxService->updateWanderFromGpx($wander);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($wander);
