@@ -108,6 +108,14 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener' }
 
+    App\EventListener\ImageGeneralPostPersistListener:
+        tags:
+            -
+                name: 'doctrine.orm.entity_listener'
+                event: 'postPersist'
+                entity: 'App\Entity\Image'
+                lazy: true # We'll be uploading a new image very rarely, comparatively speaking
+
     # Update related wander search index entry when image is updated
     App\EventListener\SearchIndexer:
         tags:

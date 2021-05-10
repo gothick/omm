@@ -7,6 +7,7 @@ use App\Form\ImageType;
 use App\Message\RecogniseImage;
 use App\Message\WarmImageCache;
 use App\Repository\ImageRepository;
+use App\Service\DiskStatsService;
 use App\Service\LocationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -68,11 +69,10 @@ class ImageController extends AbstractController
      * @Route("/upload", name="upload", methods={"GET", "POST"})
      */
     public function upload(
-        Request $request,
-        SerializerInterface $serializer,
-        string $gpxDirectory, // TODO Fix this; it should be using the image uploads directory
-        MessageBusInterface $messageBus,
-        UploaderHelper $uploaderHelper
+            Request $request,
+            SerializerInterface $serializer,
+            string $imagesDirectory,
+            DiskStatsService $diskStatsService
         ): Response
     {
         if ($request->isMethod('POST')) {
@@ -93,18 +93,6 @@ class ImageController extends AbstractController
             $entityManager->persist($image);
             $entityManager->flush();
 
-            // Queue up some image recognition
-            $id = $image->getId();
-            if ($id !== null) {
-                $messageBus->dispatch(new RecogniseImage($id));
-            }
-
-            // And warm up the image cache the new image
-            $imagePath = $uploaderHelper->asset($image);
-            if ($imagePath !== null) {
-                $messageBus->dispatch(new WarmImageCache($imagePath));
-            }
-
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
             // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
@@ -114,11 +102,8 @@ class ImageController extends AbstractController
         }
 
         // Normal GET request.
-        $disk = [];
-        $disk['free'] = disk_free_space($gpxDirectory);
-        $disk['total'] = disk_total_space($gpxDirectory);
-        $disk['used'] = $disk['total'] - $disk['free'];
-        $disk['percent'] = $disk['used'] / $disk['total'];
+        $disk = $diskStatsService->getDiskStats($imagesDirectory);
+
         return $this->render('admin/image/upload.html.twig', [
                 'disk' => $disk
         ]);
