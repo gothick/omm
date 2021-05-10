@@ -41,7 +41,7 @@ class WanderFixtures extends Fixture implements FixtureGroupInterface
             $uploadedFile = $this->uploadHelper->uploadGpxFile(new File($targetPath));
             $wander = new Wander();
             $wander->setGpxFilename($uploadedFile);
-            $this->gpxService->updateWanderStatsFromGpx($wander);
+            $this->gpxService->updateWanderFromGpx($wander);
             $wander->setTitle('Test Wander Title for ' . $source->getFilename());
             $wander->setDescription('Test wander description for ' . $source->getFilename());
             $manager->persist($wander);

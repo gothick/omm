@@ -1,9 +1,8 @@
 // TODO: Refactor the heck out of this mess
 
-/* LeafletJS and Omnivore */
+/* LeafletJS */
 /** global: L */
-/** global: omnivore */
-/*global L, omnivore */ /* For ESLint */
+/* global L */ /* For ESLint */
 
 var streetMap;
 var satelliteMap;
@@ -86,14 +85,6 @@ function unselectedWanderStyle() {
 
 var currentlySelected = null;
 
-var CustomGeoJSON = L.GeoJSON.extend({
-    options: {
-        // TODO: Do we need to go to all this trouble to keep the wander id
-        // handy? Maybe we could just capture it in the bindPopup closure?
-        wanderId: null
-    }
- });
-
  var photoLayer = null;
 
  function addPhotos(map, photos)
@@ -143,50 +134,46 @@ function addAllWanders(map)
     $.getJSON("/api/wanders", function(data) {
 
         var last = data["hydra:totalItems"];
-        var deferreds = [];
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = (last - 1 === key);
-            var track = omnivore.gpx(wander.gpxFilename,
-                    null,
-                    new CustomGeoJSON(null, {
-                        wanderId: wander.id,
-                        style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle()
-                    }))
+            var geoJsonFeature = {
+                "type": "Feature",
+                "geometry":  $.parseJSON(wander.geoJson)
+            };
+            var geoJsonTrack = L.geoJSON(
+                geoJsonFeature,
+                {
+                    style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle(),
+                    wanderId: wander.id
+                })
                 .bindPopup(function(layer) {
-                    // Toggle styles
                     currentlySelected.setStyle(unselectedWanderStyle());
                     layer.setStyle(selectedWanderStyle());
                     layer.bringToFront();
                     currentlySelected = layer;
-
                     addWanderImages(map, layer.options.wanderId);
                     // Popup
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
+
             if (isLastWander) {
-                currentlySelected = track;
+                currentlySelected = geoJsonTrack;
             }
-            track.wanderId = wander.id;
-            track.addTo(map);
-            var deferred = $.Deferred();
-            deferreds.push(deferred);
-            track.on("ready", function() {
-                deferred.resolve();
-            });
-        });
-        $.when.apply($, deferreds).then(function() {
-            console.log('All loaded');
-            currentlySelected.bringToFront();
-            map.fireEvent("dataload");
+            geoJsonTrack.addTo(map);
         });
     });
+    map.fireEvent("dataload");
 }
 
 function addWander(map, wanderId, addImages)
 {
     $.getJSON("/api/wanders/" + wanderId, function(wander) {
-        omnivore.gpx(wander.gpxFilename)
+        var geoJsonFeature = {
+            "type": "Feature",
+            "geometry": $.parseJSON(wander.geoJson)
+        };
+        L.geoJSON(geoJsonFeature)
             .bindPopup(function(/* layer */) {
                 return wander.title;
             })

@@ -12,9 +12,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class UpdateWanderStatsCommand extends Command
+class WanderUpdateFromGpxCommand extends Command
 {
-    protected static $defaultName = 'wanders:stats:update';
+    protected static $defaultName = 'wander:updatefromgpx';
 
     /** @var WanderRepository */
     private $wanderRepository;
@@ -36,13 +36,13 @@ class UpdateWanderStatsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Updates GPX stats on all wanders.')
-            ->setHelp('Updates GPX stats on all wanders. Overwrites all existing data.');
+            ->setDescription('Updates Wander data (including GeoJSON) with GPX information on all wanders.')
+            ->setHelp('Updates GPX data on all wanders. Overwrites all existing data.');
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('Are you sure you want to update stats for all wanders? ', false);
+        $question = new ConfirmationQuestion('Are you sure you want to update all wanders based on their GPX track? ', false);
         if (!$helper->ask($input, $output, $question)) {
             $output->writeln('Aborting.');
             return Command::SUCCESS;
@@ -56,7 +56,7 @@ class UpdateWanderStatsCommand extends Command
         $progressBar->start();
 
         foreach ($wanders as $wander) {
-            $this->gpxService->updateWanderStatsFromGpx($wander);
+            $this->gpxService->updateWanderFromGpx($wander);
             $this->entityManager->persist($wander);
             $progressBar->advance();
         }
