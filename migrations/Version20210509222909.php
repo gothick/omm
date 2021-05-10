@@ -62,5 +62,4 @@ final class Version20210509222909 extends AbstractMigration implements Container
             $updateGeoJsonStatement->executeStatement();
         }
     }
-
 }
