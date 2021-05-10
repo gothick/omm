@@ -8,6 +8,9 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+// TODO: I think that now we've started storing geoJSON in the database and returning it
+// directly, nothing actually uses this any more. Can we ditch it? Is this also configured
+// somewhere (services.yaml?) that would also need removing?
 class WanderNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     private $normalizer;
