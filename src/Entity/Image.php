@@ -129,13 +129,18 @@ class Image implements TaggableInterface
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     * @Assert\Count(
+     * @Assert\AtLeastOneOf({
+     *   @Assert\Count(
      *      min = 2,
      *      max = 2,
-     *      minMessage = "There must be exactly two numbers in a latitude/longitude pair",
-     *      maxMessage = "There must be exactly two numbers in a latitude/longitude pair",
-     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair."
-     * )
+     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair (or nothing.)"
+     *   ),
+     *   @Assert\Count(
+     *      min = 0,
+     *      max = 0,
+     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair (or nothing.)"
+     *   )
+     * })
      *
      * @Groups({"image:list", "image:item"})
      *

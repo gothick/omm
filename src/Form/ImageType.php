@@ -48,7 +48,9 @@ class ImageType extends AbstractType
                     '★★★★★' => 5,
                 ],
             ])
-            ->add('latlng', TextType::class)
+            ->add('latlng', TextType::class, [
+                'required' => false
+            ])
             ->add('location', TextType::class, [
                 'required' => false
             ])
@@ -69,7 +71,10 @@ class ImageType extends AbstractType
                     }
                 },
                 function($latlngAsString) {
-                    return explode(', ', $latlngAsString);
+                    if ($latlngAsString === null) {
+                        return null;
+                    }
+                    return explode(',', preg_replace('/\s+/', '', $latlngAsString));
                 }
             ));
     }
