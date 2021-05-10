@@ -92,9 +92,18 @@ class ImageController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($image);
             $entityManager->flush();
+
             // Queue up some image recognition
-            $messageBus->dispatch(new RecogniseImage($image->getId()));
-            $messageBus->dispatch(new WarmImageCache($uploaderHelper->asset($image)));
+            $id = $image->getId();
+            if ($id !== null) {
+                $messageBus->dispatch(new RecogniseImage($id));
+            }
+
+            // And warm up the image cache the new image
+            $imagePath = $uploaderHelper->asset($image);
+            if ($imagePath !== null) {
+                $messageBus->dispatch(new WarmImageCache($imagePath));
+            }
 
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire

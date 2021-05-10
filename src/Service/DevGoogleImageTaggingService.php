@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Image;
+use Exception;
 
 class DevGoogleImageTaggingService extends GoogleImageTaggingService implements ImageTaggingServiceInterface
 {
@@ -11,10 +12,14 @@ class DevGoogleImageTaggingService extends GoogleImageTaggingService implements 
      * our local URL and throws it at Google directly, because its URLs
      * aren't public.
      *
-     * @return mixed|string
+     * @return resource|bool
      */
     protected function getImageToSend(Image $image)
     {
-        return fopen($image->getMediumImageUri(), 'r');
+        $url = $image->getMediumImageUri();
+        if ($url === null) {
+            throw new Exception("Couldn't get image URL in image tagger.");
+        }
+        return fopen($url, 'r');
     }
 }
