@@ -22,6 +22,7 @@ class SettingsRepository extends ServiceEntityRepository
     public function getTheSingleRow(): ?Settings
     {
         return $this->createQueryBuilder('s')
+            ->orderBy('s.id')
             ->getQuery()
             ->getOneOrNullResult();
     }
