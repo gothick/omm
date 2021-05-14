@@ -114,7 +114,7 @@ class SearchController extends AbstractController
                 10
             );
         }
-        return $this->render('/search/index.html.twig', [
+        return $this->render('search/index.html.twig', [
             'form' => $form->createView(),
             'pagination' => $pagination
         ]);

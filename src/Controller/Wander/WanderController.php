@@ -96,7 +96,7 @@ class WanderController extends AbstractController
             20, // Per page
         );
 
-        return $this->render('/wander/show.html.twig', [
+        return $this->render('wander/show.html.twig', [
             'wander' => $wander,
             'image_pagination' => $pagination,
             'prev' => $prev,

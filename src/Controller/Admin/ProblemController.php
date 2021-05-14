@@ -78,7 +78,7 @@ class ProblemController extends AbstractController
 
         $orphans = $imageRepository->findWithNoWander();
 
-        return $this->render('/admin/problems/index.html.twig', [
+        return $this->render('admin/problems/index.html.twig', [
             'problems' => $problems,
             'orphans' => $orphans,
             'built_problems' => $builtProblems
@@ -107,7 +107,7 @@ class ProblemController extends AbstractController
      */
     public function noTitle(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_title.html.twig', [
+        return $this->render('admin/problems/no_title.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -116,7 +116,7 @@ class ProblemController extends AbstractController
      */
     public function noLatlng(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_latlng.html.twig', [
+        return $this->render('admin/problems/no_latlng.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -125,7 +125,7 @@ class ProblemController extends AbstractController
      */
     public function noLocation(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_location.html.twig', [
+        return $this->render('admin/problems/no_location.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -134,7 +134,7 @@ class ProblemController extends AbstractController
      */
     public function noRating(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_rating.html.twig', [
+        return $this->render('admin/problems/no_rating.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -144,7 +144,7 @@ class ProblemController extends AbstractController
      */
     public function noTags(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_tags.html.twig', [
+        return $this->render('admin/problems/no_tags.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -154,7 +154,7 @@ class ProblemController extends AbstractController
      */
     public function noAutoTags(Wander $wander): Response
     {
-        return $this->render('/admin/problems/no_auto_tags.html.twig', [
+        return $this->render('admin/problems/no_auto_tags.html.twig', [
             'wander' => $wander
         ]);
     }
@@ -165,7 +165,7 @@ class ProblemController extends AbstractController
     public function brokenLinks(ProblemRepository $problemRepository): Response
     {
         $problems = $problemRepository->findAll();
-        return $this->render('/admin/problems/broken_links.html.twig', [
+        return $this->render('admin/problems/broken_links.html.twig', [
             'problems' => $problems
         ]);
     }

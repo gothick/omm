@@ -114,7 +114,7 @@ class ImageController extends AbstractController
      */
     public function show(Image $image): Response
     {
-        return $this->render('/admin/image/show.html.twig', [
+        return $this->render('admin/image/show.html.twig', [
             'image' => $image,
         ]);
     }

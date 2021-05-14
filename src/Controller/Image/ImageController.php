@@ -20,7 +20,7 @@ class ImageController extends AbstractController
     {
         $prev = $imageRepository->findPrev($image);
         $next = $imageRepository->findNext($image);
-        return $this->render('/image/show.html.twig', [
+        return $this->render('image/show.html.twig', [
             'image' => $image,
             'prev' => $prev,
             'next' => $next
