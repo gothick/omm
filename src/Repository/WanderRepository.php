@@ -49,7 +49,7 @@ class WanderRepository extends ServiceEntityRepository
     public function createSearchQueryBuilder(string $entityAlias): QueryBuilder {
         $qb = $this->createQueryBuilder($entityAlias);
         $qb->select($entityAlias, 'i')
-            ->innerJoin($entityAlias.'.images', 'i');
+            ->leftJoin($entityAlias.'.images', 'i');
         return $qb;
     }
 
