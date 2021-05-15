@@ -5,11 +5,15 @@ namespace App\Tests\Controller;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class HomeControllerTest Extends WebTestCase
 {
     /** @var AbstractDatabaseTool */
     private $databaseTool;
+
+    /** @var KernelBrowser */
+    private $client = null;
 
     public function setUp(): void
     {

@@ -5,12 +5,16 @@ namespace App\Tests\Controller;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
-use Symfony\Compnent\DomCrawler;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\DomCrawler\Crawler;
 
 class WanderControllerTest Extends WebTestCase
 {
     /** @var AbstractDatabaseTool */
     private $databaseTool;
+
+    /** @var KernelBrowser */
+    private $client = null;
 
     public function setUp(): void
     {
@@ -44,13 +48,15 @@ class WanderControllerTest Extends WebTestCase
     public function testIndexPageCanSeeWanders(): void
     {
         // :)
-        /** @var DomCrawler */
+        /** @var Crawler */
         $crawler = $this->client->request('GET', '/wanders');
         $this->assertResponseIsSuccessful();
         // Should be in date order, most recent first
         $this->assertSelectorTextContains('table tbody tr:nth-child(1) td:nth-child(1)', 'Test Wander Title for 01-APR-21.GPX');
         $this->assertSelectorTextContains('table tbody tr:nth-child(2) td:nth-child(1)', 'Test Wander Title for 01-FEB-21.GPX');
         $this->assertSelectorTextContains('table tbody tr:nth-child(3) td:nth-child(1)', 'Test Wander Title for 01-DEC-20.GPX');
+        // Shouldn't be *more* than three!
         $this->assertSelectorNotExists('table tbody tr:nth-child(4)');
+
     }
 }
