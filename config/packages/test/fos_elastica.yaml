@@ -1,0 +1,5 @@
+fos_elastica:
+    indexes:
+        wander:
+            use_alias: true
+            index_name: wander_test
