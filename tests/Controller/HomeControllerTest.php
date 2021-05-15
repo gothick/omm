@@ -2,15 +2,44 @@
 
 namespace App\Tests\Controller;
 
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 
 class HomeControllerTest Extends WebTestCase
 {
+    /** @var AbstractDatabaseTool */
+    private $databaseTool;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->client = static::createClient();
+        $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
+
+        // Fixture contains this wander:
+        // GPX: 01-APR-21 125735.GPX
+        // $wander->setTitle('Single test wander');
+        // $wander->setDescription('Single wander description');
+
+        $this->databaseTool->loadFixtures([
+            'App\DataFixtures\SingleWanderFixture'
+        ]);
+        //$userRepository = static::$container->get(UserRepository::class);
+        //$this->adminUser = $userRepository->findOneByUsername('admin');
+    }
+
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $crawler = $this->client->request('GET', '/');
         $this->assertResponseIsSuccessful();
+    }
+
+    public function testShouldHaveOneWander(): void
+    {
+        $crawler = $this->client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('.headerstrip .row .col', 'Total Wanders: 1');
     }
 }
