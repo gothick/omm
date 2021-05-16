@@ -133,9 +133,11 @@ function addWanders(url, map)
     map.fireEvent('dataloading'); // Triggers loading spinner
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON(url, function(data) {
-        var last = data["hydra:totalItems"];
+        var nextPage = data["hydra:view"]["hydra:next"];
+        var isLastPage = (typeof nextPage) == 'undefined';
+        var last = data["hydra:member"].length - 1;
         $.each(data["hydra:member"], function(key, wander) {
-            var isLastWander = (last - 1 === key);
+            var isLastWander = isLastPage && (last === key);
             var geoJsonFeature = {
                 "type": "Feature",
                 "geometry":  $.parseJSON(wander.geoJson)
@@ -164,8 +166,8 @@ function addWanders(url, map)
         });
 
         // Recurse through all the pages in the pagination we got back.
-        var nextPage = data["hydra:view"]["hydra:next"];
-        if (typeof nextPage != 'undefined') {
+
+        if (!isLastPage) {
             addWanders(nextPage, map);
         }
     })
