@@ -85,10 +85,10 @@ function unselectedWanderStyle() {
 
 var currentlySelected = null;
 
- var photoLayer = null;
+var photoLayer = null;
 
- function addPhotos(map, photos)
- {
+function addPhotos(map, photos)
+{
     if (photoLayer) {
         map.removeLayer(photoLayer);
     }
@@ -137,31 +137,27 @@ function addAllWanders(map)
         var last = data["hydra:totalItems"];
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = (last - 1 === key);
-            var geoJsonFeature = {
-                "type": "Feature",
-                "geometry":  $.parseJSON(wander.geoJson)
+            var popupFunction = function(layer) {
+                currentlySelected.setStyle(unselectedWanderStyle());
+                layer.setStyle(selectedWanderStyle());
+                layer.bringToFront();
+                currentlySelected = layer;
+                addWanderImages(map, layer.options.wanderId);
+                // Popup
+                var template = "<a href='{contentUrl}'>{title}</a>";
+                return L.Util.template(template, wander);
             };
-            var geoJsonTrack = L.geoJSON(
-                geoJsonFeature,
-                {
-                    style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle(),
-                    wanderId: wander.id
-                })
-                .bindPopup(function(layer) {
-                    currentlySelected.setStyle(unselectedWanderStyle());
-                    layer.setStyle(selectedWanderStyle());
-                    layer.bringToFront();
-                    currentlySelected = layer;
-                    addWanderImages(map, layer.options.wanderId);
-                    // Popup
-                    var template = "<a href='{contentUrl}'>{title}</a>";
-                    return L.Util.template(template, wander);
-                });
-
-            if (isLastWander) {
-                currentlySelected = geoJsonTrack;
-            }
-            geoJsonTrack.addTo(map);
+            addWander(
+                map,
+                wander.id,
+                false,
+                popupFunction,
+                isLastWander ? selectedWanderStyle() : unselectedWanderStyle(),
+                function(geoJsonTrack) {
+                    if (isLastWander) {
+                        currentlySelected = geoJsonTrack;
+                    }
+            });
         });
     })
     .always(function() {
@@ -170,21 +166,37 @@ function addAllWanders(map)
 
 }
 
-function addWander(map, wanderId, addImages)
+function addWander(map, wanderId, addImages, popupFunction, style, callback)
 {
-    $.getJSON("/api/wanders/" + wanderId, function(wander) {
+    var deferred = $.Deferred();
+
+    if (!popupFunction) {
+        popupFunction = function() {
+            return wander.title;
+        };
+    }
+
+    var jqxhr = $.getJSON("/api/wanders/" + wanderId, function(wander) {
         var geoJsonFeature = {
             "type": "Feature",
             "geometry": $.parseJSON(wander.geoJson)
         };
-        L.geoJSON(geoJsonFeature)
-            .bindPopup(function(/* layer */) {
-                return wander.title;
+        var geoJsonTrack = L.geoJSON(geoJsonFeature,
+            {
+                style: style,
+                wanderId: wander.id
+            })
+            .bindPopup(popupFunction)
+            .on("add", function() {
+                deferred.resolve();
             })
             .addTo(map);
         // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
         if (addImages) {
             addWanderImages(map, wanderId);
         }
+        callback(geoJsonTrack);
+
     });
+    return deferred;
 }

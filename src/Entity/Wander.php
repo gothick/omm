@@ -456,7 +456,7 @@ class Wander
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"wander:list", "wander:item"})
+     * @Groups({"wander:item"})
      *
      */
     private $geoJson;
