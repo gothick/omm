@@ -27,8 +27,7 @@ use Doctrine\Common\Collections\Criteria;
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
- *  order={"endTime"="ASC"},
- *  paginationEnabled=false
+ *  order={"endTime"="ASC"}
  * )
  * @ORM\HasLifecycleCallbacks()
  *
