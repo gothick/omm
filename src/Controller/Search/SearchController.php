@@ -55,11 +55,12 @@ class SearchController extends AbstractController
             // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
             // you might be able to just not setFields and it'll default to * and might catch everything
             // anyway.
-            $nmm->setFields(['images.title', 'images.description', 'images.tags']);
+            $nmm->setFields(['images.title', 'images.description', 'images.tags', 'images.auto_tags']);
 
             $nested = new Nested();
             $nested->setPath('images');
             $nested->setQuery($nmm);
+
             $innerHits = new InnerHits();
             $innerHits->setHighlight(['fields' => [
                 'images.title' => [
@@ -76,6 +77,10 @@ class SearchController extends AbstractController
                 'images.tags' => [
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
+                ],
+                'images.auto_tags' => [
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
                 ]
             ]]);
             $nested->setInnerHits($innerHits);
@@ -85,6 +90,7 @@ class SearchController extends AbstractController
             $mm = new MultiMatch();
             $mm->setQuery($data['query']);
             $mm->setFields(['title', 'description']);
+
             $bool = new BoolQuery();
             $bool->addShould($nested);
             $bool->addShould($mm);
@@ -93,6 +99,7 @@ class SearchController extends AbstractController
             // Wander-level query.
             $searchQuery = new Query();
             $searchQuery->setQuery($bool);
+
             $searchQuery->setHighlight(['fields' => [
                 'title' => [
                     'number_of_fragments' => 0,

@@ -17,19 +17,27 @@ fos_elastica:
                 description:
                     analyzer: my_analyzer
                     property_path: false
+                    boost: 5
                 title:
                     analyzer: my_analyzer
                     property_path: false
+                    boost: 8
                 images:
                         type: "nested"
                         properties:
                             description:
                                 analyzer: my_analyzer
                                 property_path: false
+                                boost: 5
                             title:
                                 analyzer: my_analyzer
                                 property_path: false
+                                boost: 8
                             tags:
+                                type: keyword
+                                normalizer: keyword_normalizer
+                                boost: 3
+                            auto_tags:
                                 type: keyword
                                 normalizer: keyword_normalizer
                             image_id:
