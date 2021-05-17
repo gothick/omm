@@ -8,7 +8,7 @@
             <div class="row title">
                 <div class="col-2">
                     {% if prev %}
-                    <a class="align-middle" href="{{ path('image_show', { 'id': prev.id }) }}">&larr;Previous</a>
+                    <a class="align-middle" id="navigatePrev" href="{{ path('image_show', { 'id': prev.id }) }}">&larr;Previous</a>
                     {% endif %}
                 </div>
                 <div class="col-8 text-center">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-2 text-right">
                     {% if next %}
-                    <a class="align-middle" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
+                    <a class="align-middle" id="navigateNext" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
                     {% endif %}
                 </div>
             </div>
@@ -86,4 +86,8 @@
             </p>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/keyboard_nav.js"></script>
 {% endblock %}
