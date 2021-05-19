@@ -22,7 +22,7 @@ class SettingsType extends AbstractType
                 'label' => 'Site Sub-title'
             ])
             ->add('twitterHandle', TextType::class, [
-                'label' => 'Twitter Handle for Twitter Cards',
+                'label' => 'Twitter Handle for Twitter Cards (without "@")',
                 'required' => false
             ])
             ->add('siteAbout', TextareaType::class, [
