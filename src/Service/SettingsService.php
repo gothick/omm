@@ -46,4 +46,14 @@ class SettingsService
     {
         return $this->settings->getSiteAbout() ?? "";
     }
+
+    public function displayTwitterCards(): bool
+    {
+        return !empty($this->settings->getTwitterHandle());
+    }
+
+    public function getTwitterHandle(): string
+    {
+        return $this->settings->getTwitterHandle() ?? "";
+    }
 }

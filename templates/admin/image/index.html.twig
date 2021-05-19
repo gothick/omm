@@ -38,7 +38,7 @@
     <div class="row my-2">
         <div class="col-2">
             <a href="{{ path('admin_image_show', {'id': image.id}) }}">
-                <img class="w-100" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_300') }}" />
+                <img class="w-100" src="{{ vich_uploader_asset(image) | imagine_filter('open_graph_image') }}" />
             </a>
         </div>
         <div class="col-2 image-description small text-break">

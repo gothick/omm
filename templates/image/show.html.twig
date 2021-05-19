@@ -2,6 +2,22 @@
 
 {% block title %}Image {{ image.title ?? image.name }}{% endblock %}
 
+{% block twittercard %}
+    {% if settings.displayTwitterCards %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta name="twitter:creator" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta property="og:url" content="{{ url('image_show', {'id': image.id}) }}" />
+    <meta property="og:title" content="{{ (image.title ?? image.name) | e('html_attr') }}" />
+    {% if image.description %}
+        <meta property="og:description" content="{{ image.description | markdown_to_plain_text | u.truncate(255, '...', false) | e('html_attr') }}" />
+    {% else %}
+        <meta property="og:description" content="An image on {{ settings.siteTitle | e('html_attr') }}" />
+    {% endif %}
+    <meta property="og:image" content="{{ vich_uploader_asset(image) | imagine_filter('open_graph_image') }}" />
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="row image">
         <div class="col mx-3 headerstrip">

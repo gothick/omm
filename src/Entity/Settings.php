@@ -32,6 +32,11 @@ class Settings
      */
     private $siteAbout;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $twitterHandle;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Settings
     public function setSiteAbout(?string $siteAbout): self
     {
         $this->siteAbout = $siteAbout;
+
+        return $this;
+    }
+
+    public function getTwitterHandle(): ?string
+    {
+        return $this->twitterHandle;
+    }
+
+    public function setTwitterHandle(?string $twitterHandle): self
+    {
+        $this->twitterHandle = $twitterHandle;
 
         return $this;
     }

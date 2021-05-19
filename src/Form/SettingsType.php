@@ -21,6 +21,10 @@ class SettingsType extends AbstractType
             ->add('siteSubtitle', TextType::class, [
                 'label' => 'Site Sub-title'
             ])
+            ->add('twitterHandle', TextType::class, [
+                'label' => 'Twitter Handle for Twitter Cards',
+                'required' => false
+            ])
             ->add('siteAbout', TextareaType::class, [
                 'label' => 'About Page text',
                 'attr' => ['rows' => 10]
