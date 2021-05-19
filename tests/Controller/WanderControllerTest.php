@@ -42,7 +42,7 @@ class WanderControllerTest Extends WebTestCase
         // :)
         $crawler = $this->client->request('GET', '/wanders');
         $this->assertResponseIsSuccessful();
-        $this->assertPageTitleSame('One Mile Matt Wanders');
+        $this->assertPageTitleSame('Wanders');
     }
 
     public function testIndexPageCanSeeWanders(): void

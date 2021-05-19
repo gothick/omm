@@ -63,6 +63,7 @@ class SettingsControllerTest Extends WebTestCase
         $crawler = $this->client->submitForm('settings_save', [
             'settings[siteTitle]' => 'Test Site Title',
             'settings[siteSubtitle]' => 'Test Site Subtitle',
+            'settings[twitterHandle]' => 'testTwitterHandle',
             'settings[siteAbout]' => 'Test Site About Text'
         ]);
         $this->assertResponseRedirects();
@@ -70,7 +71,8 @@ class SettingsControllerTest Extends WebTestCase
         $this->assertRouteSame('admin_settings_index');
         $this->assertSelectorTextContains('tbody tr:nth-child(1) td:nth-child(2)', 'Test Site Title');
         $this->assertSelectorTextContains('tbody tr:nth-child(2) td:nth-child(2)', 'Test Site Subtitle');
-        $this->assertSelectorTextContains('tbody tr:nth-child(3) td:nth-child(2)', 'Test Site About Text');
+        $this->assertSelectorTextContains('tbody tr:nth-child(3) td:nth-child(2)', 'testTwitterHandle');
+        $this->assertSelectorTextContains('tbody tr:nth-child(4) td:nth-child(2)', 'Test Site About Text');
     }
 
 }
