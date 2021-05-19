@@ -25,6 +25,11 @@ liip_imagine:
             filters:
                 scale:
                     dim: [600, 600]
+        open_graph_image:
+            quality: 75
+            filters:
+                relative_resize:
+                    widen: 1024
         # TODO: Do these srcset_filters need the quality setting on them? How large are our images? What does 75% look like?
         srcset_144:
             quality: 75
