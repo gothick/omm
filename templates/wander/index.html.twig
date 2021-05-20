@@ -32,11 +32,13 @@
                 <tbody>
                 {% for results in pagination %}
                     {% set wander = results.wander %}
+                    {# imageCount is done through a wander-level left-join and count for efficiency, so it's in the results, not the wander #}
+                    {% set imageCount = results.imageCount %}
                     <tr>
                         <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
                         <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
-                        <td>{% if wander.images.count > 0 %}
-                                {{ wander.images.count }}
+                        <td>{% if imageCount > 0 %}
+                                {{ imageCount }}
                             {% else %}
                                 To be uploaded
                             {% endif %}
