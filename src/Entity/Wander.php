@@ -17,8 +17,14 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Doctrine\Common\Collections\Criteria;
 
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Index;
+
+
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
+ *
+ * @Table(indexes={@Index(name="ix_wander_start_time", columns={"start_time"})})
  *
  * @ORM\EntityListeners({
  *  WanderUploadListener::class, App\EventListener\WanderDeleteListener::class
