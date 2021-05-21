@@ -103,6 +103,7 @@ img.sector {
     border-color: #2e6d2e;
     border-radius: 10px;
     margin-bottom: 3px;
+    white-space: nowrap;
 }
 
 .image span.keyword.autotag {
