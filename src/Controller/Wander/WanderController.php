@@ -30,6 +30,8 @@ class WanderController extends AbstractController
         $qb = $wanderRepository
             ->standardQueryBuilder()
             ->select('w AS wander')
+            // TODO: Is there a better way to do this without namespacing? This is *fast* compared
+            // to a grouped query and works fine, though.
             ->addSelect('(SELECT COUNT(i) FROM App\Entity\Image i WHERE i.wander = w) AS imageCount');
 
         $query = $qb->getQuery();
