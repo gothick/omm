@@ -30,9 +30,7 @@ class WanderController extends AbstractController
         $qb = $wanderRepository
             ->standardQueryBuilder()
             ->select('w AS wander')
-            ->addSelect('COUNT(i) AS imageCount')
-            ->leftJoin('w.images', 'i')
-            ->groupBy('w');
+            ->addSelect('(SELECT COUNT(i) FROM App\Entity\Image i WHERE i.wander = w) AS imageCount');
 
         $query = $qb->getQuery();
 
