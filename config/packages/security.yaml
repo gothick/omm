@@ -40,4 +40,5 @@ security:
     # TODO: Simplify this now we've moved all of our admin interface under /admin
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/user, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
