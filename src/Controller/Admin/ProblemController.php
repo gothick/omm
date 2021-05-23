@@ -17,6 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProblemController extends AbstractController
 {
+   /**
+     * @Route("/throw", name="throw", methods={"GET"})
+     */
+    public function throw(): Response
+    {
+        throw new \Exception("DIEDIEDIE!");
+    }
+
     /**
      * @Route("/", name="index", methods={"GET"})
      */
