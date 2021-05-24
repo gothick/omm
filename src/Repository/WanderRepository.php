@@ -6,6 +6,7 @@ use App\Entity\Wander;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,9 +28,19 @@ class WanderRepository extends ServiceEntityRepository
         return $this->findBy(array(), array('startTime' => 'DESC'));
     }
 
-    public function standardQueryBuilder() {
+    public function standardQueryBuilder(): QueryBuilder
+    {
         return $this->createQueryBuilder('w')
             ->orderBy('w.startTime', 'desc');
+    }
+
+    public function wandersWithImageCountQueryBuilder(): QueryBuilder
+    {
+        return $this->standardQueryBuilder()
+            ->select('w as wander')
+            // TODO: Is there a better way to do this without namespacing? This is *fast* compared
+            // to a grouped query and works fine, though.
+            ->addSelect('(SELECT COUNT(i) FROM App\Entity\Image i WHERE i.wander = w) AS imageCount');
     }
 
     public function addWhereHasImages(QueryBuilder $qb, ?bool $hasImages = null)

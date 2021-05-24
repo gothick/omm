@@ -37,12 +37,7 @@ class WanderController extends AbstractController
 
         // Customise the query to add an imageCount built-in so we can efficiently
         // (and at all :) ) sort it in our paginator.
-        $qb = $wanderRepository
-            ->standardQueryBuilder()
-            ->select('w AS wander')
-            ->addSelect('COUNT(i) AS imageCount')
-            ->leftJoin('w.images', 'i')
-            ->groupBy('w');
+        $qb = $wanderRepository->wandersWithImageCountQueryBuilder();
 
         if ($request->query->has('hasImages')) {
             $filterHasImages = $request->query->getBoolean('hasImages');
