@@ -25,17 +25,8 @@ class WanderController extends AbstractController
         PaginatorInterface $paginator
         ): Response
     {
-        // Customise the query to add an imageCount built-in so we can efficiently
-        // (and at all :) ) sort it in our paginator.
-        $qb = $wanderRepository
-            ->standardQueryBuilder()
-            ->select('w AS wander')
-            // TODO: Is there a better way to do this without namespacing? This is *fast* compared
-            // to a grouped query and works fine, though.
-            ->addSelect('(SELECT COUNT(i) FROM App\Entity\Image i WHERE i.wander = w) AS imageCount');
-
+        $qb = $wanderRepository->wandersWithImageCountQueryBuilder();
         $query = $qb->getQuery();
-
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
