@@ -22,6 +22,7 @@
                 scrollWheelZoom: false
             });
 
+            map.fireEvent('dataloading');
             $.getJSON("/api/images?exists[latlng]=true", function(data) {
                 var photos = [];
                 $.each(data['hydra:member'], function(key, image) {
@@ -38,6 +39,9 @@
                     });
                 });
                 addPhotos(map, photos);
+            })
+            .always(function() {
+                map.fireEvent("dataload");
             });
 
             {#
