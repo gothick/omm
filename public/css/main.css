@@ -119,3 +119,10 @@ img.sector {
     color: #803d48;
     text-decoration: inherit;
 }
+
+.error {
+    background-color: rgb(226, 208, 221);
+}
+.error p {
+    font-size: 1.2rem;
+}

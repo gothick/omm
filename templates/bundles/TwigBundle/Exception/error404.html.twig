@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Not Found{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col mx-3 headerstrip">
+            <div class="row">
+                <div class="col">
+                    <h2>404 Page Not Found. Ooops.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mx-3 error error-404 pt-3 px-3">
+            <p>I'm afraid I couldn't find that page on {{ settings.siteTitle }}. Sorry.<br/>
+            Maybe try returning to <a href="{{ path('home') }}"> the home page</a>? Or perhaps <a href="{{ path('search_index') }}">a search</a> might help...</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img class="img-fluid" src="{{ asset("images/errors/404.jpg") }}" alt="Car crash" />
+        </div>
+    </div>
+
+</div>
+{% endblock %}

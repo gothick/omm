@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col mx-3 headerstrip">
+            <div class="row">
+                <div class="col">
+                    <h2>Curses! An Error Occurred.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mx-3 error pt-3">
+            <p>I'm afraid an <span class="text-danger">error</span> of some kind has occurred on {{ settings.siteTitle }}. That sucks. Maybe try returning to <a href="{{ path('home') }}"> the home page</a>?</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img class="img-fluid" src="{{ asset("images/errors/general-error.jpg") }}" alt="Car crash" />
+        </div>
+    </div>
+
+</div>
+{% endblock %}
