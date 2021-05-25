@@ -166,13 +166,10 @@ function addWanders(url, map)
         });
 
         // Recurse through all the pages in the pagination we got back.
-
+        map.fireEvent("dataload");
         if (!isLastPage) {
             addWanders(nextPage, map);
         }
-    })
-    .always(function() {
-        map.fireEvent("dataload"); // Finishes loading spinner
     });
 }
 
