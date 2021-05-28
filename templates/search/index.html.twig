@@ -80,6 +80,7 @@
 
                                 {% endfor %}
                             {% endif %}
+                            <div class="rating">{{ image.rating | star_rating }}</div>
                         </div>
                         <div class="col-8">
                             {% if imagehit.highlight['images.description'] is defined %}
