@@ -39,6 +39,11 @@ sudo apt-get -y install exiftool
 sudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 sudo apt-get -y install elasticsearch
+
+# Increase service startup timeout
+sudo mkdir /etc/systemd/system/elasticsearch.service.d
+echo -e '[Service]\nTimeoutStartSec=600' | sudo tee /etc/systemd/system/elasticsearch.service.d/startup-timeout.conf
+
 sudo systemctl daemon-reload
 sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch.service
