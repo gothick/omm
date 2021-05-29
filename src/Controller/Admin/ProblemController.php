@@ -70,6 +70,7 @@ class ProblemController extends AbstractController
             ->having('no_title > 0')
             ->orHaving('no_latlng > 0')
             ->orHaving('no_location > 0')
+            ->orHaving('no_rating > 0')
             ->orHaving('no_tags > 0')
             ->orHaving('no_auto_tags > 0')
             ->orderBy('weighted_problem_score', 'desc')
