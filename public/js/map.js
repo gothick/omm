@@ -73,12 +73,14 @@ function setUpMap(options)
 
 function selectedWanderStyle() {
     return {
+        weight: 5,
         color: "#FFA500"
     };
 }
 
 function unselectedWanderStyle() {
     return {
+        weight: 4,
         color: "#3388FF"
     };
 }
