@@ -85,6 +85,36 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->flush();
         $this->assertNull($wander->getFeaturedImage());
 
+        $this->entityManager->refresh($wander);
+        $this->assertNotNull($wander, "Featuring Wander should remain when featured image is deleted.");
+
+    }
+
+    public function testDeleteFeaturingWander()
+    {
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+
+        $wander = $this->entityManager
+            ->getRepository(Wander::class)
+            ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
+
+        $wander->setFeaturedImage($testImage1);
+        $this->entityManager->flush();
+
+        $this->entityManager->refresh($testImage1);
+        $this->entityManager->refresh($wander);
+
+        $this->entityManager->remove($wander);
+        $this->entityManager->flush();
+
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+        $this->assertNotNull($testImage1, "Featured Image should remain even if featuring Wander is deleted.");
+
+
     }
 }
 
