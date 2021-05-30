@@ -491,6 +491,11 @@ class Image implements TaggableInterface
      */
     private $location;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Wander::class, mappedBy="featuredImage", cascade={"persist", "remove"})
+     */
+    private $featuringWander;
+
 
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
@@ -552,6 +557,28 @@ class Image implements TaggableInterface
     public function setLocation(?string $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getFeaturingWander(): ?Wander
+    {
+        return $this->featuringWander;
+    }
+
+    public function setFeaturingWander(?Wander $featuringWander): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($featuringWander === null && $this->featuringWander !== null) {
+            $this->featuringWander->setFeaturedImage(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($featuringWander !== null && $featuringWander->getFeaturedImage() !== $this) {
+            $featuringWander->setFeaturedImage($this);
+        }
+
+        $this->featuringWander = $featuringWander;
 
         return $this;
     }

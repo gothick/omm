@@ -466,6 +466,11 @@ class Wander
      */
     private $geoJson;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="featuringWander", cascade={"persist", "remove"})
+     */
+    private $featuredImage;
+
     public function getSector(): ?string
     {
         if ($this->angleFromHome !== null) {
@@ -508,6 +513,18 @@ class Wander
     public function setGeoJson(?string $geoJson): self
     {
         $this->geoJson = $geoJson;
+
+        return $this;
+    }
+
+    public function getFeaturedImage(): ?Image
+    {
+        return $this->featuredImage;
+    }
+
+    public function setFeaturedImage(?Image $featuredImage): self
+    {
+        $this->featuredImage = $featuredImage;
 
         return $this;
     }
