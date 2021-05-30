@@ -522,6 +522,11 @@ class Wander
         return $this->featuredImage;
     }
 
+    public function hasFeaturedImage(): bool
+    {
+        return $this->featuredImage !== null;
+    }
+
     public function setFeaturedImage(?Image $featuredImage): self
     {
         $this->featuredImage = $featuredImage;

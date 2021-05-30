@@ -108,6 +108,14 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener' }
 
+    App\EventListener\ImageDeleteListener:
+        tags:
+            -
+                name: 'doctrine.orm.entity_listener'
+                event: 'preRemove'
+                entity: 'App\Entity\Image'
+                lazy: true
+
     App\EventListener\ImageGeneralPostPersistListener:
         tags:
             -

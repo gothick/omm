@@ -406,7 +406,8 @@ class Image implements TaggableInterface
     /**
      * @ORM\PostLoad
      */
-    public function postLoad(): void {
+    public function postLoad(): void
+    {
         // Bodge to workaround behaviour of BeelabTagBundle, which updates
         // tags on persist, but only from the text tags. So if you don't
         // get/set the tags text, when you persist your entity all its
@@ -492,7 +493,7 @@ class Image implements TaggableInterface
     private $location;
 
     /**
-     * @ORM\OneToOne(targetEntity=Wander::class, mappedBy="featuredImage", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Wander::class, mappedBy="featuredImage", cascade={"persist"})
      */
     private $featuringWander;
 
