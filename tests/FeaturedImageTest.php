@@ -45,7 +45,7 @@ class FeaturedImageTest extends KernelTestCase
         $this->assertTrue($wander->hasFeaturedImage(), "Wander should know that we've just set the featured image.");
     }
 
-    public function testSetFeaturedImage()
+    public function testSetFeaturedImageFromWanderSide()
     {
         $testImage1 = $this->entityManager
             ->getRepository(Image::class)
@@ -62,6 +62,25 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->refresh($testImage1);
         $this->assertNotNull($testImage1->getFeaturingWander(), "Related Image not updated");
     }
+
+    public function testSetFeaturedImageFromImageSide()
+    {
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+
+        $wander = $this->entityManager
+            ->getRepository(Wander::class)
+            ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
+
+        $testImage1->setFeaturingWander($wander);
+
+        $this->assertNotNull($wander->getFeaturedImage(), "Wander I just set the featured image for should have a featured image(!)");
+        $this->entityManager->flush();
+        $this->entityManager->refresh($testImage1);
+        $this->assertNotNull($testImage1->getFeaturingWander(), "Related Image not updated");
+    }
+
 
     public function testDeleteFeaturedImage()
     {
@@ -118,5 +137,39 @@ class FeaturedImageTest extends KernelTestCase
         $this->assertNotNull($testImage1, "Featured Image should remain even if featuring Wander is deleted.");
         $this->assertNull($testImage1->getFeaturingWander(), "Deleted featuring Wander reference should be cleared from featured Image.");
     }
+
+    public function testSetAsFeaturedImage()
+    {
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+
+        $wander = $this->entityManager
+            ->getRepository(Wander::class)
+            ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
+
+        $testImage1->setWander($wander);
+        $this->entityManager->flush();
+
+        $this->entityManager->refresh($testImage1);
+        $this->entityManager->refresh($wander);
+
+        $testImage1->setAsFeaturedImage();
+
+        $this->assertNotNull($testImage1->getFeaturingWander(), 'Image should now have a featuring wander.');
+        $this->assertNotNull($wander->getFeaturedImage(), "Wander should be updated with featured image.");
+
+    }
+
+    public function testSetAsFeaturedImageWhenNoWanderAssociated()
+    {
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+
+        $this->expectException(\Exception::class);
+        $testImage1->setAsFeaturedImage();
+    }
+
 }
 

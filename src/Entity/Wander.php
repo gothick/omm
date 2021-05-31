@@ -467,7 +467,7 @@ class Wander
     private $geoJson;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="featuringWander", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
      */
     private $featuredImage;
 
@@ -522,13 +522,18 @@ class Wander
         return $this->featuredImage;
     }
 
-    public function hasFeaturedImage(): bool
-    {
-        return $this->featuredImage !== null;
-    }
-
     public function setFeaturedImage(?Image $featuredImage): self
     {
+        // unset the owning side of the relation if necessary
+        if ($featuredImage === null && $this->featuredImage !== null) {
+            $this->featuredImage->setFeaturingWander(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($featuredImage !== null && $featuredImage->getFeaturingWander() !== $this) {
+            $featuredImage->setFeaturingWander($this);
+        }
+
         $this->featuredImage = $featuredImage;
 
         return $this;
