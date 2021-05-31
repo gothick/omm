@@ -231,6 +231,14 @@ class Image implements TaggableInterface
         return $this->title;
     }
 
+    public function getTitleOrId(): string
+    {
+        if ($this->title !== null && $this->title != "") {
+            return $this->title;
+        }
+        return (string) "Image " . $this->id;
+    }
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
