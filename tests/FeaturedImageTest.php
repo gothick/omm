@@ -170,5 +170,36 @@ class FeaturedImageTest extends KernelTestCase
         $testImage1->setAsFeaturedImage();
     }
 
+    public function testChangeFeaturedImageFromWanderSide()
+    {
+        $testImage1 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 1']);
+
+        $wander = $this->entityManager
+            ->getRepository(Wander::class)
+            ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
+
+        $wander->setFeaturedImage($testImage1);
+        $this->entityManager->flush();
+        $this->entityManager->refresh($wander);
+        $this->entityManager->refresh($testImage1);
+
+        $this->assertSame($wander->getFeaturedImage(), $testImage1, "Wander doesn't have the correct initial featured image associated");
+        $this->assertSame($testImage1->getFeaturingWander(), $wander, "Initial Image doesn't have the correct Wander associated");
+
+        $testImage2 = $this->entityManager
+            ->getRepository(Image::class)
+            ->findOneBy(['title' => 'Test Image 2']);
+
+        $wander->setFeaturedImage($testImage2);
+        $this->entityManager->flush();
+
+        $this->entityManager->refresh($wander);
+        $this->entityManager->refresh($testImage2);
+
+        $this->assertSame($wander->getFeaturedImage(), $testImage2, "Wander doesn't have the correct new featured image associated");
+        $this->assertSame($testImage2->getFeaturingWander(), $wander, "New Image doesn't have the correct Wander associated");
+    }
 }
 
