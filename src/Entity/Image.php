@@ -594,6 +594,9 @@ class Image implements TaggableInterface
         if (isset($this->capturedAt)) {
             $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
         }
+        if (isset($this->rating)) {
+            $result .= ' ' . str_repeat('★', $this->rating);
+        }
         return $result;
     }
 }
