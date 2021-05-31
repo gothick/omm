@@ -24,7 +24,7 @@ class TwoImageFixtures extends Fixture implements FixtureGroupInterface
     {
         $fs = new Filesystem();
         $finder = new Finder();
-        foreach($finder->in(__DIR__ . '/image/two')->name('/\.jpg$/i') as $source) {
+        foreach ($finder->in(__DIR__ . '/image/two')->name('/\.jpg$/i') as $source) {
 
             $image = new Image();
 

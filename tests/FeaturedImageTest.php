@@ -78,7 +78,6 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->flush();
         $this->entityManager->refresh($wander);
         $this->assertNotNull($wander->getFeaturedImage(), "Wander I just set the featured image for should have a featured image");
-
     }
 
 
@@ -157,7 +156,6 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->flush();
         $this->entityManager->refresh($wander);
         $this->assertNotNull($wander->getFeaturedImage(), "Wander should be updated with featured image.");
-
     }
 
     public function testSetAsFeaturedImageWhenNoWanderAssociated()
@@ -202,4 +200,3 @@ class FeaturedImageTest extends KernelTestCase
         $this->assertSame($testImage2->getFeaturingWander(), $wander, "New Image doesn't have the correct Wander associated");
     }
 }
-
