@@ -74,11 +74,11 @@ class FeaturedImageTest extends KernelTestCase
             ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
 
         $testImage1->setFeaturingWander($wander);
-
-        $this->assertNotNull($wander->getFeaturedImage(), "Wander I just set the featured image for should have a featured image(!)");
+        $this->assertNotNull($testImage1->getFeaturingWander(), "Image I just set the featuring wander for should have a featuring wander(!)");
         $this->entityManager->flush();
-        $this->entityManager->refresh($testImage1);
-        $this->assertNotNull($testImage1->getFeaturingWander(), "Related Image not updated");
+        $this->entityManager->refresh($wander);
+        $this->assertNotNull($wander->getFeaturedImage(), "Wander I just set the featured image for should have a featured image");
+
     }
 
 
