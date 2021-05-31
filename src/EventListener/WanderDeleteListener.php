@@ -21,6 +21,20 @@ class WanderDeleteListener
         $this->gpxService = $gpxService;
     }
 
+    public function preRemove(
+            Wander $wander,
+            /** @scrutinizer ignore-unused */ LifecycleEventArgs $event
+        ): void
+    {
+        // If we're about to delete a wander, we want to remove it as a featuring
+        // wander from the related Image first, otherwise we'll break referential
+        // integrity.
+        $image = $wander->getFeaturedImage();
+        if ($image !== null) {
+            $image->setFeaturingWander(null);
+        }
+    }
+
     public function postRemove(
             Wander $wander,
             /** @scrutinizer ignore-unused */ LifecycleEventArgs $event
