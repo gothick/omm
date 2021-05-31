@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
@@ -16,10 +15,16 @@
 	<!-- Should be the *real* path to exiftool on the test environment -->
 	<env name="TEST_EXIFTOOL_PATH" value="/usr/bin/exiftool" />
     </php>
+    <groups>
+      <exclude>
+	    <!-- skip over Twig's weird legacy tests -->
+	    <group>legacy</group>
+      </exclude>
+    </groups>
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+          <directory>tests</directory>
         </testsuite>
     </testsuites>
 
@@ -34,6 +39,8 @@
     </listeners>
     <logging>
         <log type="coverage-html" target="coverage" />
+        <!-- I'd rather just look at the HTML occasionally.
         <log type="coverage-text" target="php://stdout" />
+        -->
     </logging>
 </phpunit>
