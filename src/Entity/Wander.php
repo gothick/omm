@@ -530,7 +530,7 @@ class Wander
     public function setFeaturedImage(?Image $featuredImage): self
     {
         // unset the owning side of the relation if necessary
-        if ($featuredImage === null && $this->featuredImage !== null) {
+        if ($this->featuredImage !== null) {
             $this->featuredImage->setFeaturingWander(null);
         }
 
