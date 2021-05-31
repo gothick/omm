@@ -586,5 +586,15 @@ class Image implements TaggableInterface
         }
         $this->setFeaturingWander($wander);
     }
+
+    // Used when building drop-down list of Images to choose as selection on Wander edit screen
+    public function __toString():string
+    {
+        $result = $this->title ?? (string) $this->id;
+        if (isset($this->capturedAt)) {
+            $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
+        }
+        return $result;
+    }
 }
 
