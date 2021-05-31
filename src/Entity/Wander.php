@@ -467,7 +467,7 @@ class Wander
     private $geoJson;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="featuringWander", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Image::class, inversedBy="featuringWander", cascade={"persist"})
      */
     private $featuredImage;
 

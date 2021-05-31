@@ -109,12 +109,14 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->remove($wander);
         $this->entityManager->flush();
 
+        /*
         $testImage1 = $this->entityManager
             ->getRepository(Image::class)
             ->findOneBy(['title' => 'Test Image 1']);
+        */
+        $this->entityManager->refresh($testImage1);
         $this->assertNotNull($testImage1, "Featured Image should remain even if featuring Wander is deleted.");
-
-
+        $this->assertNull($testImage1->getFeaturingWander(), "Deleted featuring Wander reference should be cleared from featured Image.");
     }
 }
 
