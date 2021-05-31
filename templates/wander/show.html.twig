@@ -4,6 +4,23 @@
 {{ parent() }}
 {{ include('_leaflet_stylesheets.html.twig') }}
 {% endblock %}
+
+{% block twittercard %}
+    {% if settings.displayTwitterCards and wander.hasFeaturedImage %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta name="twitter:creator" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta property="og:url" content="{{ url('wanders_show', {'id': wander.id}) }}" />
+    <meta property="og:title" content="{{ wander.title | e('html_attr') }}" />
+    {% if wander.description %}
+        <meta property="og:description" content="{{ wander.description | markdown_to_plain_text | u.truncate(255, '...', false) | e('html_attr') }}" />
+    {% else %}
+        <meta property="og:description" content="An wander on {{ settings.siteTitle | e('html_attr') }}" />
+    {% endif %}
+    <meta property="og:image" content="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" />
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="row wander">
         <div class="col mx-3 headerstrip">
