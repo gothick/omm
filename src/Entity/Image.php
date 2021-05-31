@@ -577,5 +577,14 @@ class Image implements TaggableInterface
 
         return $this;
     }
+
+    public function setAsFeaturedImage(): void
+    {
+        $wander = $this->wander;
+        if ($wander === null) {
+            throw new \Exception("Can't call setAsFeaturedImage unless the Image is associated with a Wander.");
+        }
+        $this->setFeaturingWander($wander);
+    }
 }
 

@@ -97,16 +97,13 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager->refresh($testImage1);
         $this->assertNotNull($testImage1->getFeaturingWander(), "Related Image not updated");
 
-        // Really we're just testing that ImageDeleteListener successfully removes the
-        // featuring of this image in the featuring Wander, so referential integrity
-        // isn't violated when the Image row is deleted.
         $this->entityManager->remove($testImage1);
         $this->entityManager->flush();
-        $this->assertNull($wander->getFeaturedImage());
-
         $this->entityManager->refresh($wander);
         $this->assertNotNull($wander, "Featuring Wander should remain when featured image is deleted.");
-
+        // Really this is a bit belt-and-braces, as we'd have died on our arse when persisting if we hadn't
+        // removed the relationship first.
+        $this->assertNull($wander->getFeaturedImage(), "Featuring Wander shouldn't have a featured image if the image was deleted.");
     }
 
     public function testDeleteFeaturingWander()
@@ -157,6 +154,8 @@ class FeaturedImageTest extends KernelTestCase
         $testImage1->setAsFeaturedImage();
 
         $this->assertNotNull($testImage1->getFeaturingWander(), 'Image should now have a featuring wander.');
+        $this->entityManager->flush();
+        $this->entityManager->refresh($wander);
         $this->assertNotNull($wander->getFeaturedImage(), "Wander should be updated with featured image.");
 
     }
