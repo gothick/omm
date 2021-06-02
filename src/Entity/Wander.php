@@ -86,6 +86,7 @@ class Wander
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="wander", cascade={"persist"})
+     * @ORM\OrderBy({ "capturedAt" = "ASC", "id" = "ASC" })
      *
      * @Groups({"wander:list", "wander:item"})
      * @ApiSubresource
