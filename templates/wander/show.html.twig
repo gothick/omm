@@ -43,7 +43,7 @@
                 <div class="col-12 col-md-8 px-4 pt-4 pb-4">
                     {{ wander.description | stripmosttags | markdown }}
                 </div>
-                <div class="d-none d-md-block col-md-4 pt-4 ">
+                <div class="d-none d-md-block col-md-4 pt-4 pb-4 px-4">
                     {% if wander.featuredImage %}
                     <a href="{{ path('image_show', {'id': wander.featuredImage.id}) }}">
                         <img
