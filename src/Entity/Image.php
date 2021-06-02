@@ -231,6 +231,14 @@ class Image implements TaggableInterface
         return $this->title;
     }
 
+    public function getTitleOrId(): string
+    {
+        if ($this->title !== null && $this->title != "") {
+            return $this->title;
+        }
+        return (string) "Image " . $this->id;
+    }
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -406,7 +414,8 @@ class Image implements TaggableInterface
     /**
      * @ORM\PostLoad
      */
-    public function postLoad(): void {
+    public function postLoad(): void
+    {
         // Bodge to workaround behaviour of BeelabTagBundle, which updates
         // tags on persist, but only from the text tags. So if you don't
         // get/set the tags text, when you persist your entity all its
@@ -444,6 +453,11 @@ class Image implements TaggableInterface
     {
         $this->wander = $wander;
         return $this;
+    }
+
+    public function hasWander(): bool
+    {
+        return ($this->wander !== null);
     }
 
     public function getRating(): ?int
@@ -491,6 +505,10 @@ class Image implements TaggableInterface
      */
     private $location;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Wander::class, inversedBy="featuredImage", cascade={"persist"})
+     */
+    private $featuringWander;
 
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
@@ -554,6 +572,40 @@ class Image implements TaggableInterface
         $this->location = $location;
 
         return $this;
+    }
+
+    public function getFeaturingWander(): ?Wander
+    {
+        return $this->featuringWander;
+    }
+
+    public function setFeaturingWander(?Wander $featuringWander): self
+    {
+        $this->featuringWander = $featuringWander;
+
+        return $this;
+    }
+
+    public function setAsFeaturedImage(): void
+    {
+        $wander = $this->wander;
+        if ($wander === null) {
+            throw new \Exception("Can't call setAsFeaturedImage unless the Image is associated with a Wander.");
+        }
+        $this->setFeaturingWander($wander);
+    }
+
+    // Used when building drop-down list of Images to choose as selection on Wander edit screen
+    public function __toString(): string
+    {
+        $result = $this->title ?? (string) $this->id;
+        if (isset($this->capturedAt)) {
+            $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
+        }
+        if (isset($this->rating)) {
+            $result .= ' ' . str_repeat('★', $this->rating);
+        }
+        return $result;
     }
 }
 

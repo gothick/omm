@@ -4,6 +4,23 @@
 {{ parent() }}
 {{ include('_leaflet_stylesheets.html.twig') }}
 {% endblock %}
+
+{% block twittercard %}
+    {% if settings.displayTwitterCards and wander.hasFeaturedImage %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta name="twitter:creator" content="@{{ settings.twitterHandle | e('html_attr') }}" />
+    <meta property="og:url" content="{{ url('wanders_show', {'id': wander.id}) }}" />
+    <meta property="og:title" content="{{ wander.title | e('html_attr') }}" />
+    {% if wander.description %}
+        <meta property="og:description" content="{{ wander.description | markdown_to_plain_text | u.truncate(255, '...', false) | e('html_attr') }}" />
+    {% else %}
+        <meta property="og:description" content="An wander on {{ settings.siteTitle | e('html_attr') }}" />
+    {% endif %}
+    <meta property="og:image" content="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" />
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="row wander">
         <div class="col mx-3 headerstrip">
@@ -22,9 +39,22 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="row description pt-4 pb-2">
-                <div class="col">
+            <div class="row no-gutters description">
+                <div class="col-12 col-md-8 px-4 pt-4 pb-4">
                     {{ wander.description | stripmosttags | markdown }}
+                </div>
+                <div class="d-none d-md-block col-md-4 pt-4 ">
+                    {% if wander.featuredImage %}
+                    <a href="{{ path('image_show', {'id': wander.featuredImage.id}) }}">
+                        <img
+                            class="img-fluid"
+                            src="{{ vich_uploader_asset(wander.featuredImage) }}"
+                            title="{{ wander.featuredImage.description }}"
+                            srcset="{{ wander.featuredImage | srcset }}"
+                            sizes="50vw "
+                        />
+                    </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="row details mt-2">

@@ -20,7 +20,13 @@
         <uri>https://gothick.org.uk</uri>
       </author>
       <content type="html">
-        <![CDATA[{{ wander.description |striptags|markdown }}]]>
+        <![CDATA[
+          {{ wander.description |striptags|markdown }}
+          {% if wander.hasFeaturedImage %}
+            <br />
+            <img src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" alt="{{ wander.featuredImage.titleOrId }}" />
+          {% endif %}
+        ]]>
       </content>
     </entry>
   {% endfor %}

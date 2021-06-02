@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Image;
 use App\Entity\Wander;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,12 +26,21 @@ class WanderType extends AbstractType
                 'attr' => ['rows' => 10]
             ]);
         if ('standard' === $options['type']) {
+            /** @var Wander */
+            $wander = $builder->getData();
             $builder
                 ->add('startTime', DateTimeType::class)
                 ->add('endTime', DateTimeType::class)
-                ->add('gpxFilename', TextType::class, ['label' => 'GPX Filename', 'disabled' => true]);
+                ->add('gpxFilename', TextType::class, ['label' => 'GPX Filename', 'disabled' => true])
+                ->add('featuredImage', EntityType::class, [
+                    'required' => false,
+                    'class' => Image::class,
+                    'choices' => $wander->getImages(),
+                    'multiple' => false,
+                ]);
+
         } elseif ('new' === $options['type']) {
-            // Our form for new Wanders includes a GPX file upload. We don't 
+            // Our form for new Wanders includes a GPX file upload. We don't
             // let anything else change that.
             $builder
                 ->add('gpxFilename', FileType::class, [

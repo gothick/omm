@@ -32,6 +32,29 @@
                 <td>{{ wander.images.count }}</td>
             </tr>
             <tr>
+                <th>Featured Image</th>
+                <td>
+                    {% if wander.featuredImage %}
+
+                        <a class="d-block mb-0 h-100" href="{{ path('admin_image_show', {'id': wander.featuredImage.id}) }}">
+                            <img
+                                class="img-fluid img-thumbnail"
+                                src="{{ vich_uploader_asset(wander.featuredImage) }}"
+                                title="{{ wander.featuredImage.description }}"
+                                srcset="{{ wander.featuredImage | srcset }}"
+                                sizes="(min-width: 1200px) 262.5px,
+                                    (min-width: 992px) 25vw,
+                                    (min-width: 768px) 33.3333vw,
+                                    50vw "
+                            />
+                        </a>
+                        <div class="mx-2 image-details">{{ wander.featuredImage.title }}</div>
+                    {% else %}
+                        - None -
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>StartTime</th>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('Y-m-d H:i:s T') : '' }}</td>
             </tr>

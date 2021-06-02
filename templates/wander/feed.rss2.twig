@@ -18,7 +18,13 @@
         <author>gothick@gothick.org.uk (Matt Gibson)</author>
         <guid>{{ url('wanders_show', { 'id': wander.id }) }}</guid>
         <description>
-          <![CDATA[{{ wander.description |striptags|markdown }}]]>
+          <![CDATA[
+            {{ wander.description |striptags|markdown }}
+            {% if wander.hasFeaturedImage %}
+              <br />
+              <img src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" alt="{{ wander.featuredImage.titleOrId }}" />
+            {% endif %}
+          ]]>
         </description>
       </item>
     {% endfor %}

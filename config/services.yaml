@@ -102,7 +102,7 @@ services:
 
     App\EventListener\WanderDeleteListener:
         tags:
-            - { name: 'doctrine.orm.entity_listener' }
+            - { name: 'doctrine.orm.entity_listener', entity: 'App\Entity\Wander', lazy: true }
 
     App\EventListener\ImageCalculatedFieldSetterListener:
         tags:

@@ -1,0 +1,10 @@
+framework:
+    messenger:
+        transports:
+            # If we just use a sync queue for test, it might avoid
+            # a clash between the creation of the messenger_messages
+            # table and our use of transactions around our tests to
+            # keep the database tidy.
+            async:
+                dsn: 'sync://' # psych!
+

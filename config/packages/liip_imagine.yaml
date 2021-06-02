@@ -25,7 +25,7 @@ liip_imagine:
             filters:
                 scale:
                     dim: [600, 600]
-        open_graph_image:
+        open_graph_image: # Also used for RSS/Atom feed
             quality: 75
             filters:
                 relative_resize:
