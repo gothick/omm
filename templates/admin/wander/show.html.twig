@@ -129,6 +129,14 @@
                     srcset="{{ image | srcset }}"
                 />
             </a>
+            <div class="mx-2 image-details">{{ image.title }}</div>
+            <div class="mx-2 image-details description"><small>
+            {% if image.description %}
+                <a href="{{ path('image_show', {'id': image.id}) }}">{{ image.description | markdown_to_plain_text | u.truncate(69, '...', false) }}</a>
+            {% endif %}
+            </small></div>
+
+            <div class="mx-2 rating">{{ image.rating | star_rating }}</div>
             {% endif %}
         </div>
         {% endfor %}
