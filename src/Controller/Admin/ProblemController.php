@@ -78,6 +78,7 @@ class ProblemController extends AbstractController
             ->orHaving('no_auto_tags > 0')
             ->orHaving('no_featured_image > 0')
             ->orderBy('weighted_problem_score', 'desc')
+            ->addOrderBy('w.startTime', 'desc')
             ->getQuery()
             ->getResult();
 
