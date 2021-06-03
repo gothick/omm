@@ -65,7 +65,7 @@ class ProblemController extends AbstractController
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
                 "(2 * SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
                 "(5 * SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
-                "(1 * SUM(CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END)) + " .
+                "(1 * CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END) + " .
                 "(0.01 * SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) + " .
                 "(0.001 * SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END)) AS weighted_problem_score")
             ->addGroupBy('w')
