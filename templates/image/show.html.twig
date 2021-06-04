@@ -17,7 +17,6 @@
     <meta property="og:image" content="{{ vich_uploader_asset(image) | imagine_filter('open_graph_image') }}" />
     {% endif %}
 {% endblock %}
-
 {% block body %}
     <div class="row image">
         <div class="col mx-3 headerstrip">
@@ -76,11 +75,12 @@
     </div>
     <div class="row">
         <div class="col">
-            {#
-                TODO Add an alt text property so we can be more accessible
-                TODO What happens if the alt text has quotes in it?
-            #}
-            <img alt="{{ image.title | e('html_attr') }}" class="img-fluid w-100"
+            <img alt="
+                {{- image.titleOrId | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') -}}
+                {% if image.description %}
+                    {{- image.description | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') -}}
+                {% endif %}"
+                class="img-fluid w-100"
                 src="{{ vich_uploader_asset(image, 'imageFile') }}"
                 srcset="{{ image | srcset }}"
                 sizes="(min-width: 1200px) 1140px,

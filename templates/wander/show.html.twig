@@ -49,7 +49,12 @@
                         <img
                             class="img-fluid"
                             src="{{ vich_uploader_asset(wander.featuredImage) }}"
-                            title="{{ wander.featuredImage.description }}"
+                            alt="
+                                {{ wander.featuredImage.titleOrId | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
+                                {% if wander.featuredImage.description %}
+                                    {{ wander.featuredImage.description | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
+                                {% endif %}
+                                "
                             srcset="{{ wander.featuredImage | srcset }}"
                             sizes="50vw "
                         />

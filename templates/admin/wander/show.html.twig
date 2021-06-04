@@ -35,12 +35,20 @@
                 <th>Featured Image</th>
                 <td>
                     {% if wander.featuredImage %}
-
                         <a class="d-block mb-0 h-100" href="{{ path('admin_image_show', {'id': wander.featuredImage.id}) }}">
                             <img
                                 class="img-fluid img-thumbnail"
                                 src="{{ vich_uploader_asset(wander.featuredImage) }}"
-                                title="{{ wander.featuredImage.description }}"
+                                alt="
+                                    {{ wander.featuredImage.title | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
+                                    {% if wander.featuredImage.description %}
+                                        {{ wander.featuredImage.description | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
+                                    {% endif %}
+                                    "
+                                title="{{- wander.featuredImage.title | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') -}}
+                                            {% if wander.featuredImage.description %}
+                                                {{- wander.featuredImage.description | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') -}}
+                                            {% endif %}"
                                 srcset="{{ wander.featuredImage | srcset }}"
                                 sizes="(min-width: 1200px) 262.5px,
                                     (min-width: 992px) 25vw,
