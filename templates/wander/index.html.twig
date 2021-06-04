@@ -14,46 +14,46 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <table class="table sortable">
-                <thead>
-                    <tr>
-                        <th {% if pagination.isSorted('w.title') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Wander', 'w.title') }}</th>
-                        <th {% if pagination.isSorted('w.startTime') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Date', 'w.startTime') }}</th>
-                        <th width="150px" {% if pagination.isSorted('imageCount') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Pictures', 'imageCount') }}</th>
-                        <th {% if pagination.isSorted('w.description') %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Description', 'w.description') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for results in pagination %}
-                    {% set wander = results.wander %}
-                    {# imageCount is done through a wander-level left-join and count for efficiency, so it's in the results, not the wander #}
-                    {% set imageCount = results.imageCount %}
-                    <tr>
-                        <td><img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;<a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></td>
-                        <td class="text-nowrap">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</td>
-                        <td>{% if imageCount > 0 %}
-                                {{ imageCount }}
-                            {% else %}
-                                To be uploaded
-                            {% endif %}
-                        </td>
-                        <td>{{ wander.description | markdown_to_plain_text | u.truncate(100, '...', false) }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7">no records found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+    {% for results in pagination %}
+        {% set wander = results.wander %}
+        {% set imageCount = results.imageCount %}
+        <div class="row no-gutters wander-list mt-2">
+            <div class="col-2 d-none d-md-block">
+                {% if wander.hasFeaturedImage %}
+                <img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-10 px-4 pt-4">
+                <h3 class="title"><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></h3>
+                <div class="row metadata">
+                    <div class="col">
+                        <strong>{{ wander.startTime | date("j F Y, H:i") }} to {{ wander.endTime | date("H:i") }}</strong>
+                    </div>
+                    <div class="col d-none d-md-block">
+                        Sector:&nbsp;<img alt="{{ wander.sector | e('html_attr') }}" class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;{{ wander.sector }}
+                    </div>
+                    <div class="col d-none d-md-block">
+                        {{ imageCount }} images
+                    </div>
+                </div>
+                <div class="row metadata">
+                    <div class="col">
+                        Distance: {{ (wander.distance / 1000.0) | number_format(2) ~ 'km' }}
+                    </div>
+                    <div class="col  d-none d-md-block">
+                        Duration: {{ wander.duration | duration_to_hms }}
+                    </div>
+                    <div class="col  d-none d-md-block">
+                        Total Elevation Gain: {{ wander.cumulativeElevationGain | number_format(0) ~ 'm' }}
+                    </div>
+                </div>
+                <div class="description pb-2 pt-2">
+                    {{ wander.description | markdown_to_plain_text | u.truncate(300, '...', false) }}
+                </div>
+            </div>
         </div>
-    </div>
+    {% endfor %}
     <div class="row justify-content-md-center">
         <div class="col">
             <div class="navigation my-4">

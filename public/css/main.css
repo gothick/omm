@@ -126,3 +126,17 @@ img.sector {
 .error p {
     font-size: 1.2rem;
 }
+
+.row.wander-list {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-color: rgb(253, 245, 251);
+    /* border: 1px solid rgb(255, 202, 122); */
+}
+
+.wander-list .metadata {
+    font-size: 0.8rem;
+}
+
+.wander-list h3 {
+    font-size: 1.2rem;
+}
