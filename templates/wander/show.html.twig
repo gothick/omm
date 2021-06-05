@@ -94,12 +94,13 @@
                 <img
                     class="img-fluid img-thumbnail"
                     src="{{ vich_uploader_asset(image) }}"
-                    title="{{ image.description }}"
+                    title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
+                    alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
                     srcset="{{ image | srcset }}"
                     sizes="(min-width: 1200px) 262.5px,
                         (min-width: 992px) 25vw,
                         (min-width: 768px) 33.3333vw,
-                        50vw "
+                        50vw"
                 />
             </a>
             <div class="mx-2 image-details">{{ image.title }}</div>
