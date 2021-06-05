@@ -22,7 +22,9 @@
             <div class="row no-gutters wander mt-2">
                 <div class="col-2 d-none d-md-block">
                     {% if wander.hasFeaturedImage %}
-                    <img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />
+                    <div>
+                        <img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />
+                    </div>
                     {% endif %}
                 </div>
                 <div class="col px-4 pt-4">
