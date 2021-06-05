@@ -52,9 +52,9 @@ class WanderControllerTest Extends WebTestCase
         $crawler = $this->client->request('GET', '/wanders');
         $this->assertResponseIsSuccessful();
         // Should be in date order, most recent first
-        $this->assertSelectorTextContains('table tbody tr:nth-child(1) td:nth-child(1)', 'Test Wander Title for 01-APR-21.GPX');
-        $this->assertSelectorTextContains('table tbody tr:nth-child(2) td:nth-child(1)', 'Test Wander Title for 01-FEB-21.GPX');
-        $this->assertSelectorTextContains('table tbody tr:nth-child(3) td:nth-child(1)', 'Test Wander Title for 01-DEC-20.GPX');
+        $this->assertSelectorTextContains('div.wander:nth-child(1) h3 a', 'Test Wander Title for 01-APR-21.GPX', 'April wander missing from index page or in wrong order');
+        $this->assertSelectorTextContains('div.wander:nth-child(2) h3 a', 'Test Wander Title for 01-FEB-21.GPX', 'February wander missing from index page or in wrong order');
+        $this->assertSelectorTextContains('div.wander:nth-child(3) h3 a', 'Test Wander Title for 01-DEC-20.GPX', 'December wander missing from index page or in wrong order');
         // Shouldn't be *more* than three!
         $this->assertSelectorNotExists('table tbody tr:nth-child(4)');
 

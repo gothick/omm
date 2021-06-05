@@ -14,11 +14,11 @@
             </div>
         </div>
     </div>
-
+    <div class="wander-list">
     {% for results in pagination %}
         {% set wander = results.wander %}
         {% set imageCount = results.imageCount %}
-        <div class="row no-gutters wander-list mt-2">
+        <div class="row no-gutters wander mt-2">
             <div class="col-2 d-none d-md-block">
                 {% if wander.hasFeaturedImage %}
                 <img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />
@@ -54,6 +54,7 @@
             </div>
         </div>
     {% endfor %}
+    </div>
     <div class="row justify-content-md-center">
         <div class="col">
             <div class="navigation my-4">
