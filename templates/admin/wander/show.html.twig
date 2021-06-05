@@ -131,10 +131,16 @@
             {% if image.id is defined %}
             <a href="{{ path('admin_image_show', {'id': image.id}) }}">
                 <img
-                    class="img-fluid"
+                    class="img-fluid img-thumbnail"
                     src="{{ vich_uploader_asset(image) }}"
-                    alt="{{ image.title }}"  {# TODO: What happens if this title has double quotes? #}
+                    title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
+                    alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
                     srcset="{{ image | srcset }}"
+                    sizes="(min-width: 1200px) 360px,
+                        (min-width: 992px) 300px,
+                        (min-width: 768px) 220px,
+                        (min-width: 576px) 160px,
+                        100vw"
                 />
             </a>
             <div class="mx-2 image-details">{{ image.title }}</div>
