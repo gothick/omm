@@ -23,7 +23,7 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container-xl d-flex h-100 flex-column px-0">
+        {% block container %}<div class="container-xl d-flex h-100 flex-column px-0">{% endblock %}
             <div class="row">
                 <div class="col-sm">
                     {{ include('_nav.html.twig') }}

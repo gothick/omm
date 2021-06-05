@@ -4,6 +4,7 @@
 {{ parent() }}
 {{ include('_leaflet_stylesheets.html.twig') }}
 {% endblock %}
+{% block container %}<div class="container-xl px-0">{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col mx-3 headerstrip">
@@ -20,7 +21,7 @@
             {% set wander = results.wander %}
             {% set imageCount = results.imageCount %}
             <div class="row no-gutters wander mt-2">
-                <div class="col-2 d-none d-md-block">{% if wander.hasFeaturedImage %}<img class="w-100 h-auto" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />{% endif %}</div>
+                <div class="col-2 d-none d-md-block">{% if wander.hasFeaturedImage %}<img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />{% endif %}</div>
                 <div class="col px-4 pt-4">
                     <h3 class="title"><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></h3>
                     <div class="row metadata">
