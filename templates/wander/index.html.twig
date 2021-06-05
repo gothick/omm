@@ -25,7 +25,7 @@
                     <img class="img-fluid" src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('square_thumb_300') }}" alt="{{ wander.featuredImage.titleOrId  | markdown_to_plain_text | e('html_attr') }}" />
                     {% endif %}
                 </div>
-                <div class="col-12 col-md-10 px-4 pt-4">
+                <div class="col px-4 pt-4">
                     <h3 class="title"><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.title }}</a></h3>
                     <div class="row metadata">
                         <div class="col">
