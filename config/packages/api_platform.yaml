@@ -9,3 +9,15 @@ api_platform:
     formats:
         jsonld: ['application/ld+json']
         html: ['text/html']
+    defaults:
+        cache_headers:
+            etag: true
+
+            # Default value for the response max age.
+            max_age: 3600
+
+            # Default value for the response shared (proxy) max age.
+            shared_max_age: 3600
+
+            # Default values of the "Vary" HTTP header.
+            vary: ['Accept']
