@@ -86,19 +86,18 @@ class GpxService
 
     /**
      * Update centroid and related angle from "home base" to the centroid,
-     * using geoPHP. geoPHP is somewhat overkill and annoyingly old-school
-     * (e.g. in the global namespace) but it's powerful and we may end
-     * up using it elsewhere.
+     * though now we're using our own library the definition of "centroid"
+     * is currently "the average of the latitude and longitude values",
+     * which is close enough for rock & roll.
      */
     private function updateCentroid(string $gpxxml, Wander $wander): void
     {
-        // Centroid, updated using geoPHP
-        $gpx = \geoPHP::load($gpxxml, 'gpx'); // It's horrible old code, in the global namespace
-        $centroid = $gpx->getCentroid();
-        $wander->setCentroid([$centroid->y(), $centroid->x()]);
+        $polyline = Polyline::fromGpxData($gpxxml);
+        $centroid = $polyline->getCentroid();
+        $wander->setCentroid([$centroid->getLat(), $centroid->getLng()]);
         $angle = $this->compass((
-            $centroid->x() - $this->homebaseCoords[1]),
-            ($centroid->y() - $this->homebaseCoords[0])
+            $centroid->getLng() - $this->homebaseCoords[1]),
+            ($centroid->getLat() - $this->homebaseCoords[0])
         );
         $wander->setAngleFromHome($angle);
     }
@@ -122,16 +121,6 @@ class GpxService
         $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
         $formatter = new PolylineGeoJsonFormatter();
         return $formatter->format($simplifiedPolyline);
-    }
-
-    public function getWanderGeoJson(Wander $wander): string
-    {
-        $gpxPath = $this->getFullGpxFilePathFromWander($wander);
-        $gpxData = file_get_contents($gpxPath);
-        if ($gpxData === false) {
-            throw new Exception("Couldn't read GPX data from $gpxPath");
-        }
-        return $this->gpxToGeoJson($gpxData);
     }
 
     // TODO: This is updating more than the stats now. Change the name to
