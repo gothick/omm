@@ -4,6 +4,9 @@ namespace App\Service;
 
 use App\Entity\Wander;
 use Exception;
+use Gothick\Geotools\Polyline;
+use Gothick\Geotools\PolylineGeoJsonFormatter;
+use Gothick\Geotools\PolylineRdpSimplifier;
 use phpGPX\phpGPX;
 use Psr\Log\LoggerInterface;
 
@@ -17,13 +20,16 @@ class GpxService
     private $logger;
     /** @var array */
     private $homebaseCoords;
+    /** @var int */
+    private $wanderSimplifierEpsilonMetres;
 
-    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords)
+    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords, int $wanderSimplifierEpsilonMetres)
     {
         $this->phpGpx = new phpGPX();
         $this->gpxDirectory = $gpxDirectory;
         $this->logger = $logger;
         $this->homebaseCoords = $homebaseCoords;
+        $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
     }
 
     /**
@@ -109,10 +115,13 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
-    public function gpxToGeoJson(string $gpx): string
+    public function gpxToGeoJson(string $gpx, float $epsilon): string
     {
-        $geometry = \geoPHP::load($gpx, 'gpx');
-        return $geometry->out('json');
+        $polyline = Polyline::fromGpxData($gpx);
+        $simplifier = new PolylineRdpSimplifier($epsilon);
+        $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
+        $formatter = new PolylineGeoJsonFormatter();
+        return $formatter->format($simplifiedPolyline);
     }
 
     public function getWanderGeoJson(Wander $wander): string
@@ -134,7 +143,7 @@ class GpxService
         {
             // Basic stats, updated using phpGpx
             $gpxxml = $this->getGpxStringFromFilename($filename);
-            $wander->setGeoJson($this->gpxToGeoJson($gpxxml));
+            $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);
         }
