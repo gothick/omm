@@ -4,6 +4,9 @@ namespace App\Service;
 
 use App\Entity\Wander;
 use Exception;
+use Gothick\Geotools\Polyline;
+use Gothick\Geotools\PolylineGeoJsonFormatter;
+use Gothick\Geotools\PolylineRdpSimplifier;
 use phpGPX\phpGPX;
 use Psr\Log\LoggerInterface;
 
@@ -17,13 +20,16 @@ class GpxService
     private $logger;
     /** @var array */
     private $homebaseCoords;
+    /** @var int */
+    private $wanderSimplifierEpsilonMetres;
 
-    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords)
+    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords, int $wanderSimplifierEpsilonMetres)
     {
         $this->phpGpx = new phpGPX();
         $this->gpxDirectory = $gpxDirectory;
         $this->logger = $logger;
         $this->homebaseCoords = $homebaseCoords;
+        $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
     }
 
     /**
@@ -80,19 +86,18 @@ class GpxService
 
     /**
      * Update centroid and related angle from "home base" to the centroid,
-     * using geoPHP. geoPHP is somewhat overkill and annoyingly old-school
-     * (e.g. in the global namespace) but it's powerful and we may end
-     * up using it elsewhere.
+     * though now we're using our own library the definition of "centroid"
+     * is currently "the average of the latitude and longitude values",
+     * which is close enough for rock & roll.
      */
     private function updateCentroid(string $gpxxml, Wander $wander): void
     {
-        // Centroid, updated using geoPHP
-        $gpx = \geoPHP::load($gpxxml, 'gpx'); // It's horrible old code, in the global namespace
-        $centroid = $gpx->getCentroid();
-        $wander->setCentroid([$centroid->y(), $centroid->x()]);
+        $polyline = Polyline::fromGpxData($gpxxml);
+        $centroid = $polyline->getCentroid();
+        $wander->setCentroid([$centroid->getLat(), $centroid->getLng()]);
         $angle = $this->compass((
-            $centroid->x() - $this->homebaseCoords[1]),
-            ($centroid->y() - $this->homebaseCoords[0])
+            $centroid->getLng() - $this->homebaseCoords[1]),
+            ($centroid->getLat() - $this->homebaseCoords[0])
         );
         $wander->setAngleFromHome($angle);
     }
@@ -109,20 +114,13 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
-    public function gpxToGeoJson(string $gpx): string
+    public function gpxToGeoJson(string $gpx, float $epsilon): string
     {
-        $geometry = \geoPHP::load($gpx, 'gpx');
-        return $geometry->out('json');
-    }
-
-    public function getWanderGeoJson(Wander $wander): string
-    {
-        $gpxPath = $this->getFullGpxFilePathFromWander($wander);
-        $gpxData = file_get_contents($gpxPath);
-        if ($gpxData === false) {
-            throw new Exception("Couldn't read GPX data from $gpxPath");
-        }
-        return $this->gpxToGeoJson($gpxData);
+        $polyline = Polyline::fromGpxData($gpx);
+        $simplifier = new PolylineRdpSimplifier($epsilon);
+        $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
+        $formatter = new PolylineGeoJsonFormatter();
+        return $formatter->format($simplifiedPolyline);
     }
 
     // TODO: This is updating more than the stats now. Change the name to
@@ -134,7 +132,7 @@ class GpxService
         {
             // Basic stats, updated using phpGpx
             $gpxxml = $this->getGpxStringFromFilename($filename);
-            $wander->setGeoJson($this->gpxToGeoJson($gpxxml));
+            $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);
         }

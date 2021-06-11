@@ -20,6 +20,8 @@ parameters:
     google.api_key: '%env(GOOGLE_API_KEY)%'
     google.project_id: '%env(GOOGLE_PROJECT_ID)%'
     google.service_account_file: '%kernel.project_dir%/%env(GOOGLE_SERVICE_ACCOUNT_FILE)%'
+    env(WANDER_SIMPLIFIER_EPSILON_METRES): 3 # Number of metres resolution to use for Ramer Douglas Peuker polyline simplification for geoJSON wander output
+    wander_simplifier_epsilon_metres: '%env(int:WANDER_SIMPLIFIER_EPSILON_METRES)%'
 
 services:
     # default configuration for services in *this* file
@@ -39,6 +41,7 @@ services:
             $wanderPersister: '@fos_elastica.object_persister.wander'
             $imaggaApiKey: '%env(IMAGGA_API_KEY)%'
             $imaggaApiSecret: '%env(IMAGGA_API_SECRET)%'
+            $wanderSimplifierEpsilonMetres: '%wander_simplifier_epsilon_metres%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

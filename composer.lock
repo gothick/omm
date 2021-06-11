@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64268a5ba840b2d1551610c2b9dd9b0b",
+    "content-hash": "b49a649169d264940d64190c396bb101",
     "packages": [
         {
             "name": "alexandret/doctrine2-spatial",
@@ -2737,6 +2737,51 @@
             "time": "2021-05-13T02:14:44+00:00"
         },
         {
+            "name": "gothick/geotools",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gothick/geotools.git",
+                "reference": "18f2a571d1bc4aad61a2bc46bc72c09c3d678d6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gothick/geotools/zipball/18f2a571d1bc4aad61a2bc46bc72c09c3d678d6a",
+                "reference": "18f2a571d1bc4aad61a2bc46bc72c09c3d678d6a",
+                "shasum": ""
+            },
+            "require": {
+                "jordanbrauer/unit-converter": "dev-master",
+                "php": ">=7.4",
+                "rafaelfragoso/haversini-formula": "^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gothick\\Geotools\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Gibson",
+                    "email": "gothick@gothick.org.uk"
+                }
+            ],
+            "description": "A few small tools related to GPX and geoJSON for use with One Mile Matt.",
+            "support": {
+                "source": "https://github.com/gothick/geotools/tree/master",
+                "issues": "https://github.com/gothick/geotools/issues"
+            },
+            "time": "2021-06-11T17:01:01+00:00"
+        },
+        {
             "name": "grpc/grpc",
             "version": "1.36.0",
             "source": {
@@ -3122,6 +3167,57 @@
                 "yaml"
             ],
             "time": "2021-03-07T19:20:09+00:00"
+        },
+        {
+            "name": "jordanbrauer/unit-converter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jordanbrauer/unit-converter.git",
+                "reference": "f3b93842c9252faebb3d3cb7780118786e676add"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jordanbrauer/unit-converter/zipball/f3b93842c9252faebb3d3cb7780118786e676add",
+                "reference": "f3b93842c9252faebb3d3cb7780118786e676add",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-intl": "*",
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.13",
+                "marcocesarato/php-conventional-changelog": "^1.9",
+                "nunomaduro/phpinsights": "^1.14",
+                "pestphp/pest": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "symfony/var-dumper": "^3.3"
+            },
+            "default-branch": true,
+            "type": "component",
+            "autoload": {
+                "psr-4": {
+                    "UnitConverter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jordanbrauer",
+                    "email": "18744334+jordanbrauer@users.noreply.github.com"
+                }
+            ],
+            "description": "Convert standard units from one to another with this easy to use, lightweight package",
+            "support": {
+                "issues": "https://github.com/jordanbrauer/unit-converter/issues",
+                "source": "https://github.com/jordanbrauer/unit-converter/tree/master"
+            },
+            "time": "2021-04-30T02:51:30+00:00"
         },
         {
             "name": "knplabs/knp-components",
@@ -4111,42 +4207,6 @@
             "time": "2021-05-11T23:39:16+00:00"
         },
         {
-            "name": "phayes/geophp",
-            "version": "1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phayes/geoPHP.git",
-                "reference": "015404e85b602e0df1f91441f8db0f9e98f7e567"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phayes/geoPHP/zipball/015404e85b602e0df1f91441f8db0f9e98f7e567",
-                "reference": "015404e85b602e0df1f91441f8db0f9e98f7e567",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "geoPHP.inc"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2 or New-BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Patrick Hayes"
-                }
-            ],
-            "description": "GeoPHP is a open-source native PHP library for doing geometry operations. It is written entirely in PHP and can therefore run on shared hosts. It can read and write a wide variety of formats: WKT (including EWKT), WKB (including EWKB), GeoJSON, KML, GPX, GeoRSS). It works with all Simple-Feature geometries (Point, LineString, Polygon, GeometryCollection etc.) and can be used to get centroids, bounding-boxes, area, and a wide variety of other useful information.",
-            "homepage": "https://github.com/phayes/geoPHP",
-            "time": "2014-12-02T06:11:22+00:00"
-        },
-        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
@@ -4625,6 +4685,57 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "rafaelfragoso/haversini-formula",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orafaelfragoso/php-haversine-formula.git",
+                "reference": "122ef2efdad2cab49aa066b4b00d4d0994924db6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orafaelfragoso/php-haversine-formula/zipball/122ef2efdad2cab49aa066b4b00d4d0994924db6",
+                "reference": "122ef2efdad2cab49aa066b4b00d4d0994924db6",
+                "shasum": ""
+            },
+            "require": {
+                "jordanbrauer/unit-converter": "dev-master",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^6.1",
+                "phpunit/phpunit": "~7.0",
+                "symfony/var-dumper": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Haversini\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Fragoso",
+                    "email": "rafaelfragosom@gmail.com"
+                },
+                {
+                    "name": "Leonardo do Carmo",
+                    "email": "leonardo.docarmo@hotmail.com"
+                }
+            ],
+            "description": "This PHP class can replace the Google Distance Matrix to calculate the distance between two points using latitude and longitude. It will prevent you to do massive requests to Google servers and enhance your service performance.",
+            "homepage": "https://github.com/rafaelfragosom/php-haversine-formula",
+            "support": {
+                "issues": "https://github.com/orafaelfragoso/php-haversine-formula/issues",
+                "source": "https://github.com/orafaelfragoso/php-haversine-formula/tree/2.0.0"
+            },
+            "time": "2019-10-06T19:34:51+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12397,6 +12508,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/elastica-bundle": 20,
+        "gothick/geotools": 20,
+        "jordanbrauer/unit-converter": 20,
         "sibyx/phpgpx": 5,
         "deployer/deployer": 10,
         "liip/test-fixtures-bundle": 15
@@ -12409,5 +12522,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
