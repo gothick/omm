@@ -90,6 +90,7 @@ class Wander
      *
      * @Groups({"wander:list", "wander:item"})
      * @ApiSubresource
+     * @ApiProperty(attributes={"fetchEager": true})
      */
     private $images;
 
@@ -469,6 +470,9 @@ class Wander
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
+     * @Groups({"wander:list", "wander:item"})
+     * @ApiSubresource
+     * @ApiProperty(attributes={"fetchEager": true})
      */
     private $featuredImage;
 
