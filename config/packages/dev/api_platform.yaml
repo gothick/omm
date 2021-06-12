@@ -1,0 +1,4 @@
+# No caching on dev, please
+api_platform:
+    defaults:
+        cache_headers:
