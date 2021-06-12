@@ -1,0 +1,4 @@
+doctrine:
+    dbal:
+        # Enables collecting backtraces when profiling is enabled
+        profiling_collect_backtrace: true
