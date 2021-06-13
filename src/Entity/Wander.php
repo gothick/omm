@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass=WanderRepository::class)
+ * @ORM\Cache("NONSTRICT_READ_WRITE")
  *
  * @Table(indexes={@Index(name="ix_wander_start_time", columns={"start_time"})})
  *

@@ -16,6 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
 use App\Service\UploadHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\OrderBy;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -96,7 +97,8 @@ class WanderController extends AbstractController
     public function new(
             Request $request,
             GpxService $gpxService,
-            UploadHelper $uploadHelper
+            UploadHelper $uploadHelper,
+            EntityManagerInterface $entityManager
         ): Response
     {
         $wander = new Wander();
@@ -117,9 +119,13 @@ class WanderController extends AbstractController
             $wander = $form->getData();
             $gpxService->updateWanderFromGpx($wander);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($wander);
-            $entityManager->flush();
+            $objectManager = $this->getDoctrine()->getManager();
+            $objectManager->persist($wander);
+            $objectManager->flush();
+            $cache = $entityManager->getCache();
+            if ($cache) {
+                $cache->evictEntityRegion('App\Entity\Wander');
+            }
             return $this->redirectToRoute('admin_wanders_show', ['id' => $wander->getId()]);
         }
 
@@ -141,13 +147,18 @@ class WanderController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Wander $wander): Response
+    public function edit(Request $request, Wander $wander, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(WanderType::class, $wander);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $cache = $entityManager->getCache();
+            if ($cache) {
+                $cache->evictEntityRegion('App\Entity\Wander');
+            }
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.

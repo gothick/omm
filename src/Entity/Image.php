@@ -34,6 +34,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @ApiFilter(ExistsFilter::class, properties={"latlng"})
  *
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @ORM\Cache("NONSTRICT_READ_WRITE")
  *
  * @ORM\EntityListeners({
  *     ImageCalculatedFieldSetterListener::class,
