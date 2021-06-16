@@ -22,14 +22,17 @@ class GpxService
     private $homebaseCoords;
     /** @var int */
     private $wanderSimplifierEpsilonMetres;
+    /** @var int */
+    private $wanderGeoJsonOutputPrecision;
 
-    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords, int $wanderSimplifierEpsilonMetres)
+    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords, int $wanderSimplifierEpsilonMetres, int $wanderGeoJsonOutputPrecision)
     {
         $this->phpGpx = new phpGPX();
         $this->gpxDirectory = $gpxDirectory;
         $this->logger = $logger;
         $this->homebaseCoords = $homebaseCoords;
         $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
+        $this->wanderGeoJsonOutputPrecision = $wanderGeoJsonOutputPrecision;
     }
 
     /**
@@ -114,12 +117,12 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
-    public function gpxToGeoJson(string $gpx, float $epsilon): string
+    public function gpxToGeoJson(string $gpx, float $epsilon, int $precision): string
     {
         $polyline = Polyline::fromGpxData($gpx);
         $simplifier = new PolylineRdpSimplifier($epsilon);
         $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
-        $formatter = new PolylineGeoJsonFormatter();
+        $formatter = new PolylineGeoJsonFormatter($precision);
         return $formatter->format($simplifiedPolyline);
     }
 
@@ -132,7 +135,7 @@ class GpxService
         {
             // Basic stats, updated using phpGpx
             $gpxxml = $this->getGpxStringFromFilename($filename);
-            $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres));
+            $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres, $this->wanderGeoJsonOutputPrecision));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);
         }
