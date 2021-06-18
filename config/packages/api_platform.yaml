@@ -22,5 +22,5 @@ api_platform:
             # Default values of the "Vary" HTTP header.
             vary: ['Accept']
 
-        pagination_enabled: false
-        # pagination_items_per_page: 5 # Default is 30
+        pagination_enabled: true
+        # pagination_items_per_page: 20
