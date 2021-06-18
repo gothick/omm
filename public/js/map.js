@@ -135,7 +135,7 @@ function addWanders(url, map)
     map.fireEvent('dataloading'); // Triggers loading spinner
     // TODO: We should probably use some kind of Hydra client. This"ll do for now.
     $.getJSON(url, function(data) {
-        var nextPage = data["hydra:view"]["hydra:next"];
+        var nextPage = (data["hydra:view"] || {})["hydra:next"];
         var isLastPage = (typeof nextPage) == 'undefined';
         var last = data["hydra:member"].length - 1;
         $.each(data["hydra:member"], function(key, wander) {
