@@ -73,6 +73,14 @@
                 </td>
             </tr>
             <tr>
+                <th>Auto Text Tags</th>
+                <td>
+                    {% for tag in image.textTags %}
+                    <span class="keyword texttag">{{ tag }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
                 <th>Dimensions</th>
                 <td>{{ image.dimensions|join('x') }}</td>
             </tr>

@@ -510,6 +510,11 @@ class Image implements TaggableInterface
      */
     private $featuringWander;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $textTags = [];
+
     public function setImageUri($imageUri) {
         $this->imageUri = $imageUri;
     }
@@ -606,6 +611,26 @@ class Image implements TaggableInterface
             $result .= ' ' . str_repeat('★', $this->rating);
         }
         return $result;
+    }
+
+    public function getTextTags(): ?array
+    {
+        return $this->textTags;
+    }
+
+    public function getTextTagsCount(): int {
+        if (is_array($this->textTags)) {
+            return count($this->textTags);
+        }
+        return 0;
+    }
+
+
+    public function setTextTags(?array $textTags): self
+    {
+        $this->textTags = $textTags;
+
+        return $this;
     }
 }
 
