@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Google\Cloud\Vision\V1\Feature;
 use Google\Cloud\Vision\V1\Feature\Type;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
+use Psr\Log\LoggerInterface;
 
 class GoogleImageTaggingService implements ImageTaggingServiceInterface
 {
@@ -16,32 +17,41 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
     /** @var ImageAnnotatorClient */
     private $client;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         string $projectId,
         string $serviceAccountFile,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
     )
     {
-        //dd(file_get_contents($serviceAccountFile));
         $this->client = new ImageAnnotatorClient([
             'projectId' => $projectId,
             'credentials' => $serviceAccountFile
         ]);
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     public function tagImage(Image $image, bool $overwriteExisting = false): bool
     {
-        if ($overwriteExisting === false && $image->getAutoTagsCount() > 0) {
+        if ($overwriteExisting === false && ($image->getAutoTagsCount() > 0 || $image->getTextTagsCount() > 0)) {
             return false;
         }
 
-        $feature = new Feature();
-        $feature->setType(Type::LABEL_DETECTION);
-        $feature->setMaxResults(15);
+        $labelDetection = new Feature();
+        $labelDetection->setType(Type::LABEL_DETECTION);
+        $labelDetection->setMaxResults(15);
+
+        $textDetection = new Feature();
+        $textDetection->setType(Type::TEXT_DETECTION);
+        $textDetection->setMaxResults(100);
+
         $result = $this->client->annotateImage(
             $this->getImageToSend($image),
-            [$feature]
+            [$labelDetection, $textDetection]
         );
 
         $tags = [];
@@ -49,6 +59,13 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
             $tags[] = $annotation->getDescription();
         }
         $image->setAutoTags($tags);
+
+        $tags = [];
+        foreach ($result->getTextAnnotations() as $annotation) {
+            $tags[] = $annotation->getDescription();
+        }
+        $image->setTextTags($tags);
+
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
         return true;

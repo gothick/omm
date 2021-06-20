@@ -92,3 +92,8 @@ div.bargraph div.bar.critical {
 .image span.keyword.autotag {
     background-color: rgb(152, 225, 253);
 }
+
+.image span.keyword.texttag {
+    white-space: normal;
+    background-color: rgb(247, 201, 203);
+}
