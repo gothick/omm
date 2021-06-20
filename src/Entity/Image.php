@@ -555,7 +555,8 @@ class Image implements TaggableInterface
 
         return $this;
     }
-    public function getAutoTagsCount(): int {
+    public function getAutoTagsCount(): int
+    {
         if (is_array($this->auto_tags)) {
             return count($this->auto_tags);
         }
@@ -618,7 +619,8 @@ class Image implements TaggableInterface
         return $this->textTags;
     }
 
-    public function getTextTagsCount(): int {
+    public function getTextTagsCount(): int
+    {
         if (is_array($this->textTags)) {
             return count($this->textTags);
         }
