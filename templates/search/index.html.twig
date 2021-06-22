@@ -97,8 +97,15 @@
                             {% endif %}
                             {% if imagehit.highlight['images.auto_tags'] is defined %}
                                 <hr />
-                                <small>Matching (experimental) machine-learning auto-tag: </small>
+                                <small>Matching (experimental) auto-tags: </small>
                                 {% for taghighlight in imagehit.highlight['images.auto_tags'] %}
+                                    <small class="keyword">{{ taghighlight | raw }}</small>&nbsp;
+                                {% endfor %}
+                            {% endif %}
+                            {% if imagehit.highlight['images.textTags'] is defined %}
+                                <hr />
+                                <small>Matching (experimental) text recognition tags: </small>
+                                {% for taghighlight in imagehit.highlight['images.textTags'] %}
                                     <small class="keyword">{{ taghighlight | raw }}</small>&nbsp;
                                 {% endfor %}
                             {% endif %}
