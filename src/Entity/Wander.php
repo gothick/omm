@@ -88,7 +88,7 @@ class Wander
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="wander", cascade={"persist"})
      * @ORM\OrderBy({ "capturedAt" = "ASC", "id" = "ASC" })
      *
-     * @Groups({"wander:list", "wander:item"})
+     * @Groups({"wander:item"})
      * @ApiSubresource
      * @ ApiProperty(attributes={"fetchEager": true})
      */
@@ -470,7 +470,7 @@ class Wander
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
-     * @Groups({"wander:list", "wander:item"})
+     * @Groups({"wander:item"})
      * @ApiSubresource
      * @ ApiProperty(attributes={"fetchEager": true})
      */
