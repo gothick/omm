@@ -495,6 +495,7 @@ class Image implements TaggableInterface
      */
     private $imageShowUri;
 
+    // TODO: This should be called $autoTags for consistency
     /**
      * @ORM\Column(type="array", nullable=true)
      */

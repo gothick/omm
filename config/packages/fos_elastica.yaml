@@ -40,6 +40,9 @@ fos_elastica:
                             auto_tags:
                                 type: keyword
                                 normalizer: keyword_normalizer
+                            textTags:
+                                type: keyword
+                                normalizer: keyword_normalizer
                             image_id:
                                 property_path: id
             settings:
