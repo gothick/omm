@@ -14,6 +14,9 @@ set('repository', 'git@github.com:gothick/omm.git');
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true);
 
+// The default of ten was a bit much.
+set('keep_releases', 5);
+
 // Shared files/dirs between deploys
 add('shared_files', [
     'google-cloud-service-account.json'
