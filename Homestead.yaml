@@ -13,6 +13,7 @@ sites:
     -
         map: omm.gothick.org.uk.local
         to: /home/vagrant/code/public
+        php: "7.4"
 databases:
     - homestead
 features:

@@ -53,4 +53,11 @@ sudo echo "client_max_body_size 20M;" > /etc/nginx/conf.d/nginx.conf
 sudo systemctl reload nginx
 
 # More elbow-room for Composer
-echo "memory_limit = 4096M" > /etc/php/7.4/cli/conf.d/30-matt-increase-memory.ini
+# sudo echo "memory_limit = 4096M" > /etc/php/7.4/mods-available/30-matt-increase-memory.ini
+sudo bash -c 'echo "memory_limit = 4096M" > /etc/php/7.4/mods-available/increase_php_cli_memory.ini'
+sudo phpenmod -v 7.4 -s cli increase_php_cli_memory
+
+# Let's have the command-line back to 7.4, too; Doctrine migrations were failing with 8
+# https://laracasts.com/discuss/channels/servers/vagranthomestead-setting-up-multiple-php-versions
+# https://github.com/doctrine/DoctrineMigrationsBundle/issues/393
+sudo ln -sf /usr/bin/php7.4 /usr/bin/php
