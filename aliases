@@ -63,6 +63,18 @@ function php74() {
     sudo update-alternatives --set phpize /usr/bin/phpize7.4
 }
 
+function php80() {
+    sudo update-alternatives --set php /usr/bin/php8.0
+    sudo update-alternatives --set php-config /usr/bin/php-config8.0
+    sudo update-alternatives --set phpize /usr/bin/phpize8.0
+}
+
+function php81() {
+    sudo update-alternatives --set php /usr/bin/php8.1
+    sudo update-alternatives --set php-config /usr/bin/php-config8.1
+    sudo update-alternatives --set phpize /usr/bin/phpize8.1
+}
+
 function serve-apache() {
     if [[ "$1" && "$2" ]]
     then
@@ -263,8 +275,8 @@ function xphp() {
     if ! $XDEBUG_ENABLED; then xon; fi
 
     php \
-        -dxdebug.remote_host=192.168.10.1 \
-        -dxdebug.remote_autostart=1 \
+        -dxdebug.client_host=192.168.10.1 \
+        -dxdebug.start_with_request=yes \
         "$@"
 
     if ! $XDEBUG_ENABLED; then xoff; fi
