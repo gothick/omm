@@ -2,6 +2,9 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
+    # New authenticator-based system from Symfony 5.3 onwards
+    enable_authenticator_manager: true
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -18,10 +21,8 @@ security:
         # need to, given that I'm the only actual User...
         api:
             pattern: ^/api
-            anonymous: true
             stateless: true
         main:
-            anonymous: true
             lazy: true
             provider: app_user_provider
             form_login:
