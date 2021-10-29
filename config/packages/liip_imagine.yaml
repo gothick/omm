@@ -89,3 +89,7 @@ liip_imagine:
                     - '%kernel.project_dir%/../../shared/public'
                     - '%kernel.project_dir%/public'
                 allow_unresolvable_data_roots: true
+
+    # Overried default legacy mode to avoid some deprecation warnings.
+    twig:
+        mode:   lazy
