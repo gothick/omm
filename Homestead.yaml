@@ -1,4 +1,6 @@
-ip: 192.168.10.63
+networks:
+    - type: "private_network"
+      ip: "192.168.56.23"
 memory: 4096
 cpus: 4
 provider: virtualbox
