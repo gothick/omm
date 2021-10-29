@@ -32,17 +32,17 @@ class SettingsControllerTest Extends WebTestCase
         $this->adminUser = $userRepository->findOneByUsername('admin');
     }
 
-    public function testNotLoggedIn(): void
-    {
-        $crawler = $this->client->request('GET', '/admin/settings/');
-        $this->assertResponseRedirects('http://localhost/login');
-    }
-
     public function testLoggedIn(): void
     {
         $this->client->loginUser($this->adminUser);
         $crawler = $this->client->request('GET', '/admin/settings/');
         $this->assertResponseIsSuccessful();
+    }
+
+    public function testNotLoggedIn(): void
+    {
+        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->assertResponseRedirects('http://localhost/login');
     }
 
     public function testClickEdit(): void
