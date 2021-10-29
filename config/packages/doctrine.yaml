@@ -39,9 +39,6 @@ doctrine:
             string_functions:
         #       st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText
 
-        metadata_cache_driver:
-            type: pool
-            pool: doctrine.system_cache_pool
         query_cache_driver:
             type: pool
             pool: doctrine.system_cache_pool
