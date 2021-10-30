@@ -61,3 +61,10 @@ sudo phpenmod -v 7.4 -s cli increase_php_cli_memory
 # https://laracasts.com/discuss/channels/servers/vagranthomestead-setting-up-multiple-php-versions
 # https://github.com/doctrine/DoctrineMigrationsBundle/issues/393
 sudo ln -sf /usr/bin/php7.4 /usr/bin/php
+
+# And enable the xdebug extension on the cli for phpunit coverage
+sudo tee /etc/php/7.4/mods-available/enable_debug_coverage.ini > /dev/null <<EOT
+zend_extension=xdebug.so                                                                                                           
+xdebug.mode=coverage
+EOT
+sudo phpenmod -v 7.4 -s cli enable_debug_coverage
