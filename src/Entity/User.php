@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -40,11 +41,19 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
+     * @deprecated since Symfony 5.3
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUserIdentifier(): string
     {
         return (string) $this->username;
     }

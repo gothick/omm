@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/user", name="user_")
@@ -33,10 +33,11 @@ class UserController extends AbstractController
      */
     public function changePassword(
         Request $request,
-        UserPasswordEncoderInterface $encoder,
+        UserPasswordHasherInterface $encoder,
         EntityManagerInterface $entityManager
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var \App\Entity\User | null */
         $user = $this->getUser();
         if ($user === null) {
             throw new \Exception("Coudn't get user even though I seem to be authenticated");
@@ -51,7 +52,7 @@ class UserController extends AbstractController
             $info = $form->getData();
             $plainPassword = $info['plainPassword'];
             // TODO: Password strength validation?
-            $password = $encoder->encodePassword($user, $plainPassword);
+            $password = $encoder->hashPassword($user, $plainPassword);
             $user->setPassword($password);
             $entityManager->flush();
 
