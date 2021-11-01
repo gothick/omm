@@ -68,3 +68,10 @@ zend_extension=xdebug.so
 xdebug.mode=coverage
 EOT
 sudo phpenmod -v 7.4 -s cli enable_debug_coverage
+
+# Increase elasticsearch service load timeout
+sudo tee /etc/systemd/system/elasticsearch.service.d/startup-timeout.conf > /dev/null <<EOT
+[Service]
+TimeoutStartSec=180
+EOT
+sudo systemctl daemon-reload
