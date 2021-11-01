@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94aaf59f1529a7f96f52e6988d165c5e",
+    "content-hash": "31caee56f2932e7854dcacfc4d3255a0",
     "packages": [
         {
             "name": "alexandret/doctrine2-spatial",
@@ -3843,6 +3843,65 @@
                 "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.0"
             },
             "time": "2021-10-28T10:11:26+00:00"
+        },
+        {
+            "name": "mekras/php-speller",
+            "version": "2.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mekras/php-speller.git",
+                "reference": "85841c966ffc0f315833694271f051282d4a0129"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mekras/php-speller/zipball/85841c966ffc0f315833694271f051282d4a0129",
+                "reference": "85841c966ffc0f315833694271f051282d4a0129",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-iconv": "*",
+                "ext-libxml": "*",
+                "php": ">=7.1",
+                "symfony/process": "^4.4 || ^5.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^8.5",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mekras\\Speller\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Михаил Красильников",
+                    "email": "m.krasilnikov@yandex.ru"
+                },
+                {
+                    "name": "Andreas Frömer",
+                    "email": "blubb0r05+github@gmail.com"
+                }
+            ],
+            "description": "PHP spell check library",
+            "keywords": [
+                "aspell",
+                "hunspell",
+                "ispell",
+                "spelling"
+            ],
+            "support": {
+                "issues": "https://github.com/mekras/php-speller/issues",
+                "source": "https://github.com/mekras/php-speller/tree/2.1.4"
+            },
+            "time": "2021-03-15T10:40:48+00:00"
         },
         {
             "name": "michelf/php-markdown",
