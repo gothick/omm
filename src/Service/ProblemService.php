@@ -6,7 +6,9 @@ use App\Entity\Problem;
 use App\Repository\ImageRepository;
 use App\Repository\ProblemRepository;
 use App\Repository\WanderRepository;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Handler\Proxy;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -30,13 +32,17 @@ class ProblemService
     /** @var EntityManagerInterface */
     private $entityManager;
 
+    /** @var SpellingService */
+    private $spellingService;
+
     public function __construct(
         problemRepository $problemRepository,
         WanderRepository $wanderRepository,
         ImageRepository $imageRepository,
         RouterInterface $router,
         MarkdownService $markdownService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SpellingService $spellingService
         )
     {
         $this->problemRepository = $problemRepository;
@@ -45,6 +51,7 @@ class ProblemService
         $this->router = $router;
         $this->markdownService = $markdownService;
         $this->entityManager = $entityManager;
+        $this->spellingService = $spellingService;
     }
 
     public function createProblemReport(): void
@@ -74,7 +81,10 @@ class ProblemService
 
         // Wanders first...
         foreach($wanders as $wander) {
-            $links  = $this->markdownService->findLinks($wander->getDescription());
+            $description = $wander->getDescription();
+
+            // Broken links
+            $links  = $this->markdownService->findLinks($description);
             foreach ($links as $link) {
                 if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
                     if (!array_key_exists($link['uri'], $validUris)) {
@@ -85,10 +95,25 @@ class ProblemService
                     }
                 }
             }
+
+            // Spell check recent wanders
+            $date = $wander->getStartTime();
+            if ($date !== null && Carbon::now()->subWeeks(1)->lessThan($date)) {
+                $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
+                if (count($misspelledWords) > 0) {
+                    $problem = new Problem();
+                    $problem->setDescription('Wander ' . $wander->getId() . ' has potential spelling mistakes: ' . implode(", ", $misspelledWords));
+                    $problem->setUri($this->router->generate('wanders_show', [ 'id' => $wander->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+                    $this->entityManager->persist($problem);
+                }
+            }
         }
         $this->entityManager->flush();
         // ...then Images:
         foreach($images as $image) {
+            $description = $image->getDescription();
+
+            // Broken links
             $links = $this->markdownService->findLinks($image->getDescription());
             foreach ($links as $link) {
                 if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
@@ -98,6 +123,18 @@ class ProblemService
                         $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
                         $this->entityManager->persist($problem);
                     }
+                }
+            }
+
+            // Spell check
+            $date = $image->getCapturedAt();
+            if ($date !== null && Carbon::now()->subWeeks(1)->lessThan($date)) {
+                $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
+                if (count($misspelledWords) > 0) {
+                    $problem = new Problem();
+                    $problem->setDescription('Image ' . $image->getId() . ' has potential spelling mistakes: ' . implode(", ", $misspelledWords));
+                    $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+                    $this->entityManager->persist($problem);
                 }
             }
         }
