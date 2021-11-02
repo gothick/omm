@@ -10,7 +10,13 @@
         <div class="col mx-3 headerstrip">
             <div class="row">
                 <div class="col">
-                    <h2>All Wanders</h2>
+                    <h2>All Wanders
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        &nbsp;<a href="{{ path('admin_wanders_new') }}">
+                        <i style="color: #b130c7;" class="far fa-plus-square"></i>
+                        </a>
+                        {% endif %}
+                    </h2>
                 </div>
             </div>
         </div>
@@ -64,6 +70,9 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-{# The Knp Paginator uses Font Awesome for its sorting icons in the header #}
+{#
+    The Knp Paginator uses Font Awesome for its sorting icons in the header, and I'm now
+    also using it for the + new wander button when logged in as an admin on this page.
+#}
 <script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
 {% endblock %}
