@@ -20,6 +20,8 @@ databases:
     - homestead
 features:
     -
+        mysql: true
+    -
         mariadb: false
     -
         ohmyzsh: true
@@ -27,3 +29,12 @@ features:
         webdriver: false
 name: omm-gothick-org-uk
 hostname: omm-gothick-org-uk
+ports:
+    - send: 8000
+      to: 80
+    - send: 44300
+      to: 443
+    - send: 2222
+      to: 22
+    - send: 33060
+      to: 3306
