@@ -1,0 +1,5 @@
+api_platform:
+    # I'd rather reduce the attack surface. Plus I don't want anyone crawling it.
+    enable_entrypoint: false
+    enable_docs: true
+
