@@ -98,7 +98,7 @@ class ProblemService
 
             // Spell check recent wanders
             $date = $wander->getStartTime();
-            if ($date !== null && Carbon::now()->subWeeks(1)->lessThan($date)) {
+            if ($date !== null && Carbon::now()->subWeeks(2)->lessThan($date)) {
                 $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
                 if (count($misspelledWords) > 0) {
                     $problem = new Problem();
@@ -128,7 +128,7 @@ class ProblemService
 
             // Spell check
             $date = $image->getCapturedAt();
-            if ($date !== null && Carbon::now()->subWeeks(1)->lessThan($date)) {
+            if ($date !== null && Carbon::now()->subWeeks(2)->lessThan($date)) {
                 $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
                 if (count($misspelledWords) > 0) {
                     $problem = new Problem();
