@@ -12282,16 +12282,16 @@
         },
         {
             "name": "laravel/homestead",
-            "version": "v12.7.1",
+            "version": "v12.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/homestead.git",
-                "reference": "be8db431ed7a12bb9791fd6957b072b45934fc3c"
+                "reference": "9cbb84c1e423b0370cbe13c53cb2b1dafef40892"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/be8db431ed7a12bb9791fd6957b072b45934fc3c",
-                "reference": "be8db431ed7a12bb9791fd6957b072b45934fc3c",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/9cbb84c1e423b0370cbe13c53cb2b1dafef40892",
+                "reference": "9cbb84c1e423b0370cbe13c53cb2b1dafef40892",
                 "shasum": ""
             },
             "require": {
@@ -12330,9 +12330,9 @@
             "description": "A virtual machine for web artisans.",
             "support": {
                 "issues": "https://github.com/laravel/homestead/issues",
-                "source": "https://github.com/laravel/homestead/tree/v12.7.1"
+                "source": "https://github.com/laravel/homestead/tree/v12.8.0"
             },
-            "time": "2021-10-15T22:08:26+00:00"
+            "time": "2021-11-07T00:33:03+00:00"
         },
         {
             "name": "liip/test-fixtures-bundle",
