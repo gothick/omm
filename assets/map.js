@@ -12,7 +12,7 @@ var satelliteMap;
 
 var base = L.latLng($("#mapid").data("homebaseLat"), $("#mapid").data("homebaseLng"));
 
-function setUpMap(options)
+export function setUpMap(options)
 {
     var mapboxAccessToken = $("#mapid").data("mapboxAccessToken");
     var locusRadius = 1609.34; // 1 mile
@@ -177,7 +177,7 @@ function addWanders(url, map)
     });
 }
 
-function addAllWanders(map)
+export function addAllWanders(map)
 {
     addWanders("/api/wanders", map);
 }
