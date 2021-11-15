@@ -3,7 +3,7 @@
 {% block title %}{{ settings.siteTitle }}: {{ settings.siteSubtitle }}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    {{ include('_leaflet_stylesheets.html.twig') }}
+    {# {{ include('_leaflet_stylesheets.html.twig') }} #}
     {{ encore_entry_link_tags('map') }}
     {{ encore_entry_link_tags('homepage') }}
 {% endblock %}
@@ -48,7 +48,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {{ include('_leaflet_javascripts.html.twig') }}
+    {# {{ include('_leaflet_javascripts.html.twig') }} #}
     {{ encore_entry_script_tags('map') }}
     {{ encore_entry_script_tags('homepage') }}
 

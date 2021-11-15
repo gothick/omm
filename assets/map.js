@@ -5,10 +5,19 @@
 /* global L */ /* For ESLint */
 
 const $ = require('jquery');
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-loading/src/Control.Loading.css';
+import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
+import './styles/Leaflet.Photo.css';
+
+require('leaflet');
+require('leaflet.locatecontrol');
+require('leaflet-loading');
+require('leaflet.markercluster');
+require('./Leaflet.Photo');
 
 var streetMap;
 var satelliteMap;
-
 
 var base = L.latLng($("#mapid").data("homebaseLat"), $("#mapid").data("homebaseLng"));
 
