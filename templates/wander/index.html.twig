@@ -6,8 +6,8 @@
 {% endblock %}
 {% block container %}<div class="container-xl px-0">{% endblock %}
 {% block body %}
-    <div class="row">
-        <div class="col mx-3 headerstrip">
+    <div class="row mx-0">
+        <div class="col headerstrip">
             <div class="row">
                 <div class="col">
                     <h2>All Wanders
@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="row wander-list">
+    <div class="row wander-list mx-0">
         <div class="col">
         {% for results in pagination %}
             {% set wander = results.wander %}
