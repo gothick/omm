@@ -191,7 +191,7 @@ export function addAllWanders(map)
     addWanders("/api/wanders", map);
 }
 
-function addWander(map, wanderId, addImages)
+export function addWander(map, wanderId, addImages)
 {
     $.getJSON("/api/wanders/" + wanderId, function(wander) {
         var geoJsonFeature = {

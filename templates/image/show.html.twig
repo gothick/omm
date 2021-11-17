@@ -29,7 +29,7 @@
                 <div class="col-8 text-center">
                     <h2>{{ image.title ?? image.name }}</h2>
                 </div>
-                <div class="col-2 text-right">
+                <div class="col-2 text-end">
                     {% if next %}
                     <a class="align-middle" id="navigateNext" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
                     {% endif %}
@@ -128,5 +128,4 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="/js/keyboard_nav.js"></script>
 {% endblock %}
