@@ -2,7 +2,6 @@
 {% block title %}Wander: {{ wander.title }}{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
-{{ encore_entry_link_tags('map') }}
 {{ encore_entry_link_tags('wanderpage') }}
 {% endblock %}
 
@@ -147,6 +146,5 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-    {{ encore_entry_script_tags('map') }}
     {{ encore_entry_script_tags('wanderpage') }}
 {% endblock %}

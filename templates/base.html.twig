@@ -17,9 +17,7 @@
         <meta name="theme-color" content="#ffffff">
         <title>{% block title %}{{ settings.siteTitle }}—{{ settings.siteSubtitle }}{% endblock %}</title>
         {% block stylesheets %}
-        {# Webpack Encore stuff #}
         {{ encore_entry_link_tags('app') }}
-        {# End Webpack Encore stuff #}
         {% block twittercard %}{% endblock %}
         {% endblock %}
     </head>
@@ -33,9 +31,7 @@
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
-        {# Webpack Encore stuff #}
         {{ encore_entry_script_tags('app') }}
-        {# End Webpack Encore stuff #}
         {% endblock %}
     </body>
 </html>

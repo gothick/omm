@@ -1,9 +1,5 @@
 {% extends 'base.html.twig' %}
 {% block title %}Wanders{% endblock %}
-{% block stylesheets %}
-{{ parent() }}
-{{ include('_leaflet_stylesheets.html.twig') }}
-{% endblock %}
 {% block container %}<div class="container-xl px-0">{% endblock %}
 {% block body %}
     <div class="row mx-0">
@@ -65,12 +61,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-{{ parent() }}
-{#
-    The Knp Paginator uses Font Awesome for its sorting icons in the header, and I'm now
-    also using it for the + new wander button when logged in as an admin on this page.
-#}
-<script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
 {% endblock %}
