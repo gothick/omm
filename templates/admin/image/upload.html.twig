@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.css" integrity="sha512-CmjeEOiBCtxpzzfuT2remy8NP++fmHRxR3LnsdQhVXzA3QqRMaJ3heF9zOB+c1lCWSwZkzSOWfTn1CdqgkW3EQ==" crossorigin="anonymous" />
+    {{ encore_entry_link_tags('adminimageupload') }}
 {% endblock %}
 {% block body %}
     <h1>Upload Images</h1>
@@ -30,6 +30,10 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
+    {{ encore_entry_script_tags('adminimageupload') }}
+{% endblock %}
+{#
+{{ parent() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js" integrity="sha512-9WciDs0XP20sojTJ9E7mChDXy6pcO0qHpwbEJID1YVavz2H6QBz5eLoDD8lseZOb2yGT8xDNIV7HIe1ZbuiDWg==" crossorigin="anonymous"></script>
 <script>
     $(function() {
@@ -44,5 +48,5 @@
         bar.width(percentage + '%');
     });
 </script>
+#}
 {# {% include '_fileinput.html.twig' %} #}
-{% endblock %}
