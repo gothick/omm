@@ -2,9 +2,6 @@ language: php
 php:
   - '7.4.1'
 
-node_js:
-  - 17
-
 before_script:
   # DATABASE_URL=mysql://homestead:secret@127.0.0.1:3306/omm_test?serverVersion=5.7
   # - mysql -u root -e 'CREATE DATABASE omm_test;'
@@ -24,6 +21,7 @@ before_install:
   - curl https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.12.1-amd64.deb -o elasticsearch.deb
   - sudo dpkg -i --force-confnew elasticsearch.deb
   - sudo chown -R elasticsearch:elasticsearch /etc/default/elasticsearch
+  - nvm install node
   - sudo service elasticsearch restart
   # Elasticsearch can take a while to start
   - sleep 10
