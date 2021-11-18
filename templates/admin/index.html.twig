@@ -1,17 +1,13 @@
 {% extends 'admin/base.html.twig' %}
-
 {% block title %}One Mile Matt Admin Backend{% endblock %}
-
 {% block body %}
 <div class="dashboard">
     <div class="row">
         <div class="col">
             {% for message in app.flashes('notice') %}
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         </div>
