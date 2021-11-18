@@ -2,6 +2,9 @@ language: php
 php:
   - '7.4.1'
 
+node_js:
+  - 17
+
 before_script:
   # DATABASE_URL=mysql://homestead:secret@127.0.0.1:3306/omm_test?serverVersion=5.7
   # - mysql -u root -e 'CREATE DATABASE omm_test;'
@@ -11,6 +14,8 @@ before_script:
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:create --env=test
   - php bin/console doctrine:fixtures:load -n --env=test
+  - npm install -g yarn
+  - yarn run build
 
 before_install:
   - sudo apt-get update
@@ -35,4 +40,3 @@ notifications:
 
 services:
   - mysql
-  
