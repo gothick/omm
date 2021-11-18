@@ -3,7 +3,7 @@
 {% block title %}Image Cluster Experiment{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
-{{ include('_leaflet_stylesheets.html.twig') }}
+{{ encore_entry_link_tags('imageclusterpage') }}
 {% endblock %}
 
 {% block body %}
@@ -14,39 +14,5 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-    {{ include('_leaflet_javascripts.html.twig') }}
-    <script src="/js/map.js"></script>
-    <script>
-        $(function() {
-            var map = setUpMap({
-                scrollWheelZoom: false
-            });
-
-            map.fireEvent('dataloading');
-            $.getJSON("/api/images?exists[latlng]=true", function(data) {
-                var photos = [];
-                $.each(data['hydra:member'], function(key, image) {
-                    photos.push({
-                        lat: image.latlng[0],
-                        lng: image.latlng[1],
-                        url: image.mediumImageUri,
-                        caption: image.title || '',
-                        thumbnail: image.markerImageUri,
-                        imageShowUri: image.imageShowUri,
-                        imageEntityAdminUri: image.imageEntityAdminUri,
-                        // TODO?
-                        video: null
-                    });
-                });
-                addPhotos(map, photos);
-            })
-            .always(function() {
-                map.fireEvent("dataload");
-            });
-
-            {#
-            //addWander(map, {{ wander.id }}, true);
-            #}
-        });
-    </script>
+    {{ encore_entry_script_tags('imageclusterpage') }}
 {% endblock %}

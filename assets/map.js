@@ -100,8 +100,8 @@ var currentlySelected = null;
 
  var photoLayer = null;
 
- function addPhotos(map, photos)
- {
+export function addPhotos(map, photos)
+    {
     if (photoLayer) {
         map.removeLayer(photoLayer);
     }
