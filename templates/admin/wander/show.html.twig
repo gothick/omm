@@ -3,7 +3,7 @@
 {% block title %}Wander{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
-{{ include('_leaflet_stylesheets.html.twig') }}
+{{ encore_entry_link_tags('wanderpage') }}
 {% endblock %}
 {% block body %}
     <h1>Wander</h1>
@@ -120,7 +120,7 @@
 
     <hr/>
     <h2 class="mt-2">Map</h2>
-    <div id="mapid" style="height: 500px" {{ include('_mapattributes.html.twig') }} ></div>
+    <div id="mapid" style="height: 500px" data-wander-id="{{ wander.id }}" {{ include('_mapattributes.html.twig') }} ></div>
     <hr/>
     <h2 class="mt-2">Wander Images</h2>
     {{ include('admin/wander/_delete_images_form.html.twig') }}
@@ -160,14 +160,5 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-    {{ include('_leaflet_javascripts.html.twig') }}
-    <script src="/js/map.js"></script>
-    <script>
-        $(function() {
-            var map = setUpMap({
-                scrollWheelZoom: false
-            });
-            addWander(map, {{ wander.id }}, true);
-        });
-    </script>
+    {{ encore_entry_script_tags('wanderpage') }}
 {% endblock %}
