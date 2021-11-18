@@ -6,7 +6,7 @@
         {% block siteTitle %}<span class="font-weight-bold site-title"><a href="{{ path('home') }}">{{ settings.siteTitle }}</a></span>{% endblock %}
     </div>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav mr-auto">
+        <div class="navbar-nav me-auto">
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') == 'home' %} active {% endif %}" href="{{ path('home') }}">Home</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'wanders' %} active {% endif %}" href="{{ path('wanders_index') }}">Wanders</a>
             <a class="nav-item nav-link {% if app.request.attributes.get('_route') starts with 'search' %} active {% endif %}" href="{{ path('search_index') }}">Search</a>
