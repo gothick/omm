@@ -4,6 +4,7 @@ namespace Deployer;
 require 'recipe/symfony.php';
 
 require 'contrib/cachetool.php';
+require 'contrib/webpack_encore.php';
 
 // Project name
 set('application', 'omm.gothick.org.uk');
@@ -40,6 +41,8 @@ add('writable_dirs', []);
 host('ssh.gothick.org.uk')
     ->set('labels', ['stage' => 'prod'])
     ->setRemoteUser('omm')
+    ->set('webpack_encore/env', 'production')
+    ->set('webpack_encore/package_manager', 'yarn')
     ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
     ->set('console_options', '-vvv')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');
@@ -47,6 +50,8 @@ host('ssh.gothick.org.uk')
 host('omm.gothick.org.uk.localhost')
     ->set('labels', ['stage' => 'staging'])
     ->setRemoteUser('omm')
+    ->set('webpack_encore/env', 'production')
+    ->set('webpack_encore/package_manager', 'yarn')
     ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
     ->set('console_options', '-vvv')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');
@@ -91,3 +96,8 @@ after('cachetool:clear:opcache', 'deploy:stop-workers');
 // Migrate database before symlink new release.
 
 before('deploy:symlink', 'database:migrate');
+
+// Webpack Encore
+after('deploy:update_code', 'yarn:install');
+after('deploy:update_code', 'webpack_encore:build');
+
