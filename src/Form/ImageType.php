@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -60,7 +61,9 @@ class ImageType extends AbstractType
                     'label' => 'Tags'
                 ]
             )
-            ->add('capturedAt')
+            ->add('capturedAt', DateTimeType::class, [
+                'widget' => 'single_text'
+            ])
         ;
         // Transform latitude, longitude string to/from array
         $builder->get('latlng')
