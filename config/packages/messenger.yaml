@@ -14,6 +14,7 @@ framework:
                     multiplier: 2
                 options:
                     redeliver_timeout: 300
+                    auto_setup: false
             failed: '%env(MESSENGER_TRANSPORT_FAILED_DSN)%'
             # sync: 'sync://'
 
