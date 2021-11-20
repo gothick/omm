@@ -1,0 +1,7 @@
+monolog:
+    handlers:
+        main:
+            type: stream
+            include_stacktraces: true
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
