@@ -64,6 +64,7 @@ export function setUpMap(options)
         maxBounds: base.toBounds(locusRadius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
         layers: [streetMap, circle],
         loadingControl: true, // https://github.com/ebrelsford/Leaflet.loading
+        tap: false, // https://github.com/domoritz/leaflet-locatecontrol#safari-does-not-work-with-leaflet-171
     });
 
     var map = L.map("mapid", options)
