@@ -98,20 +98,21 @@
                     alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
                     srcset="{{ image | srcset }}"
                     {# TODO Recalculate sizes after finalising Masonry layout, or adjust Masonry to fit #}
-                    {# sizes="(min-width: 1200px) 262.5px,
-                        (min-width: 992px) 25vw,
-                        (min-width: 768px) 33.3333vw,
-                        50vw" #}
+                    sizes="(min-width: 1400px) 432px,
+                        (min-width: 1200px) 564px,
+                        (min-width: 768px) 50vw,
+                        100vw"
                 />
             </a>
             <div class="metadata">
-                <div class="mx-2 image-details"><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title }}</a></div>
-                <div class="mx-2 image-details description"><small>
-                {% if image.description %}
-                    <a href="{{ path('image_show', {'id': image.id}) }}">{{ image.description | markdown_to_plain_text | u.truncate(69, '...', false) }}</a>
-                {% endif %}
-                </small></div>
                 <div class="mx-2 rating">{{ image.rating | star_rating }}</div>
+                <div class="mx-2 image-details"><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title }}</a></div>
+                <div class="mx-2 image-details description">
+                {% if image.description %}
+                    <small><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.description | markdown_to_plain_text | u.truncate(39, '...', false) }}</a></small>
+                {% endif %}
+                </div>
+
 
             </div>
         </div>

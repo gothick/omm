@@ -6,9 +6,9 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import './styles/app.css';
 
 // start the Stimulus application
 // TODO: This is confusing and has fuck all to do with actual Bootstrap so I

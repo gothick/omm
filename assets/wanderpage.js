@@ -16,7 +16,8 @@ $(function() {
 
     imagesLoaded('.gallery', function() {
         var msnry = new Masonry( '.gallery', {
-            itemSelector: '.grid-item'
+            itemSelector: '.grid-item',
+            gutter: 12
         });
     });
 });

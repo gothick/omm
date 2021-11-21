@@ -141,42 +141,67 @@ img.sector {
     font-size: 1.2rem;
 }
 
+.gallery {
+    margin-top: 12px;
+}
+
 .gallery .rating {
-    font-size: x-small;
-    color: gold;
+    font-size: small;
+    color: rgb(255, 166, 0);
+    float: right;
 }
 
 .gallery .grid-item {
-    width: 50%;
+    width: 100%;
+    margin-bottom: 12px;
 }
 
 .grid-item .metadata {
+    padding: 5px;
     position: absolute;
     width: 100%;
-    padding: 5px;
     bottom: 0px;
-    background-color: rgba(1, 1, 1, 0.25);
+    background-color: rgba(255 , 255, 255, 0.8);
+}
+
+.grid-item .metadata a:link,
+.grid-item .metadata a:visited,
+.grid-item .metadata a:hover
+.grid-item .metadata a:active {
+    color: #333;
+}
+
+.grid-item .metadata .description a:link,
+.grid-item .metadata .description a:visited,
+.grid-item .metadata .description a:hover
+.grid-item .metadata .description a:active {
+    text-decoration: none;
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {  }
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {  }
+@media (min-width: 768px) {
+    .gallery .grid-item {
+        width: calc(50% - 6px); /* 12px gutter in Masonry) */
+    }
+}
 
 /* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {  }
+@media (min-width: 992px) {
+}
 
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
     .gallery .grid-item {
-        width: 380px;
+        width: 564px;
     }
  }
 
 /* XX-Large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {
     .gallery .grid-item {
-        width: 440px;
+        width: 432px;
     }
  }
