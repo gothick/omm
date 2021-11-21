@@ -62,7 +62,8 @@ class ImageType extends AbstractType
                 ]
             )
             ->add('capturedAt', DateTimeType::class, [
-                'widget' => 'single_text'
+                'widget' => 'choice'
+
             ])
         ;
         // Transform latitude, longitude string to/from array

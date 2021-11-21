@@ -29,12 +29,8 @@ class WanderType extends AbstractType
             /** @var Wander */
             $wander = $builder->getData();
             $builder
-                ->add('startTime', DateTimeType::class, [
-                    'widget' => 'single_text'
-                ])
-                ->add('endTime', DateTimeType::class, [
-                    'widget' => 'single_text'
-                ])
+                ->add('startTime', DateTimeType::class)
+                ->add('endTime', DateTimeType::class)
                 ->add('gpxFilename', TextType::class, ['label' => 'GPX Filename', 'disabled' => true])
                 ->add('featuredImage', EntityType::class, [
                     'required' => false,
