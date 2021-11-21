@@ -39,7 +39,7 @@ add('writable_dirs', []);
 // TODO: Try to set the shell to bash, or see if updated versions of deployer
 // start working with zsh again. I'm on a beta at the moment because Symfony 5
 host('ssh.gothick.org.uk')
-    ->set('labels', ['stage' => 'prod'])
+    ->set('labels', ['stage' => 'production'])
     ->setRemoteUser('omm')
     ->set('webpack_encore/env', 'production')
     ->set('webpack_encore/package_manager', 'yarn')
