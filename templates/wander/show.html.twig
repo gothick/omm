@@ -56,7 +56,8 @@
                                 {% endif %}
                                 "
                             srcset="{{ wander.featuredImage | srcset }}"
-                            sizes="50vw "
+                            {# This is a rough guess #}
+                            sizes="(min-width: 1400px) 392px, 25vw"
                         />
                     </a>
                     {% endif %}
@@ -97,7 +98,6 @@
                     title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
                     alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
                     srcset="{{ image | srcset }}"
-                    {# TODO Recalculate sizes after finalising Masonry layout, or adjust Masonry to fit #}
                     sizes="(min-width: 1400px) 432px,
                         (min-width: 1200px) 564px,
                         (min-width: 768px) 50vw,
