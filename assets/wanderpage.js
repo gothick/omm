@@ -5,6 +5,7 @@ import { setUpMap } from './map.js';
 import { addWander } from './map.js';
 
 const Masonry = require('masonry-layout');
+const imagesLoaded = require('imagesloaded');
 
 
 $(function() {
@@ -13,8 +14,10 @@ $(function() {
     });
     addWander(map, $('#mapid').data('wanderId'), true);
 
-    var msnry = new Masonry( '.gallery', {
-        itemSelector: '.grid-item'
+    imagesLoaded('.gallery', function() {
+        var msnry = new Masonry( '.gallery', {
+            itemSelector: '.grid-item'
+        });
     });
 });
 

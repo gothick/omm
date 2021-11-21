@@ -147,7 +147,15 @@ img.sector {
 }
 
 .gallery .grid-item {
-        width: 50%;
+    width: 50%;
+}
+
+.grid-item .metadata {
+    position: absolute;
+    width: 100%;
+    padding: 5px;
+    bottom: 0px;
+    background-color: rgba(1, 1, 1, 0.25);
 }
 
 /* Small devices (landscape phones, 576px and up) */
