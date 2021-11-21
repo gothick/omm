@@ -77,11 +77,6 @@ table.sortable thead th {
     white-space: nowrap;
 }
 
-.gallery .rating {
-    font-size: x-small;
-    color: gold;
-}
-
 img.sector {
     height: 16px;
     vertical-align: text-bottom;
@@ -145,3 +140,72 @@ img.sector {
 .wander-list h3 {
     font-size: 1.2rem;
 }
+
+.gallery {
+    margin-top: 12px;
+}
+
+.gallery .rating {
+    font-size: small;
+    color: rgb(255, 166, 0);
+    float: right;
+}
+
+.gallery .grid-item {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.grid-item .metadata {
+    padding: 5px;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    background-color: rgba(255 , 255, 255, 0.8);
+}
+
+.grid-item .metadata a:link,
+.grid-item .metadata a:visited,
+.grid-item .metadata a:hover,
+.grid-item .metadata a:active {
+    color: #333;
+}
+
+.grid-item .metadata .description a:link,
+.grid-item .metadata .description a:visited,
+.grid-item .metadata .description a:hover,
+.grid-item .metadata .description a:active {
+    text-decoration: none;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+/*
+@media (min-width: 576px) {  }
+*/
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .gallery .grid-item {
+        width: calc(50% - 6px); /* 12px gutter in Masonry) */
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+/*
+@media (min-width: 992px) {
+}
+*/
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .gallery .grid-item {
+        width: 564px;
+    }
+ }
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .gallery .grid-item {
+        width: 432px;
+    }
+ }
