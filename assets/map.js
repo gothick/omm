@@ -59,6 +59,8 @@ export function setUpMap(options)
     });
 
     // Because Object.assign isn't supported in older browsers
+    // TODO You can go back to Object.assign now you've started using Babel in
+    // Webpack. It'll translate for you.
     // https://stackoverflow.com/a/41455739/300836
     $.extend(options, {
         maxBounds: base.toBounds(locusRadius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away

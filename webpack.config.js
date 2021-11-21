@@ -65,6 +65,9 @@ Encore
     // enables Sass/SCSS support
     //.enableSassLoader()
 
+    // https://symfonycasts.com/screencast/webpack-encore/postcss-browsers
+    .enablePostCssLoader()
+
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 

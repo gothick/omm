@@ -1,4 +1,9 @@
 {
+    "browserslist": [
+        "last 2 versions",
+        "not dead",
+        "> 0.2%"
+    ],
     "devDependencies": {
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.0.0",
@@ -18,12 +23,14 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
         "@popperjs/core": "^2.10.2",
+        "autoprefixer": "^10.4.0",
         "bootstrap": "^5.1.3",
         "dropzone": "^6.0.0-beta.1",
         "jquery": "^3.6.0",
         "leaflet": "^1.7.1",
         "leaflet-loading": "^0.1.24",
         "leaflet.locatecontrol": "^0.74.1",
-        "leaflet.markercluster": "^1.5.3"
+        "leaflet.markercluster": "^1.5.3",
+        "postcss-loader": "^6.0.0"
     }
 }
