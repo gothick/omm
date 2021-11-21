@@ -4,13 +4,24 @@
 /** global: L */
 /* global L */ /* For ESLint */
 
+const $ = require('jquery');
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-loading/src/Control.Loading.css';
+import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
+import './styles/Leaflet.Photo.css';
+
+require('leaflet');
+require('leaflet.locatecontrol');
+require('leaflet-loading');
+require('leaflet.markercluster');
+require('./Leaflet.Photo');
+
 var streetMap;
 var satelliteMap;
 
-
 var base = L.latLng($("#mapid").data("homebaseLat"), $("#mapid").data("homebaseLng"));
 
-function setUpMap(options)
+export function setUpMap(options)
 {
     var mapboxAccessToken = $("#mapid").data("mapboxAccessToken");
     var locusRadius = 1609.34; // 1 mile
@@ -48,11 +59,14 @@ function setUpMap(options)
     });
 
     // Because Object.assign isn't supported in older browsers
+    // TODO You can go back to Object.assign now you've started using Babel in
+    // Webpack. It'll translate for you.
     // https://stackoverflow.com/a/41455739/300836
     $.extend(options, {
         maxBounds: base.toBounds(locusRadius * 5), // Give a bit of wiggle room around the circle, but don"t let the user drift too far away
         layers: [streetMap, circle],
         loadingControl: true, // https://github.com/ebrelsford/Leaflet.loading
+        tap: false, // https://github.com/domoritz/leaflet-locatecontrol#safari-does-not-work-with-leaflet-171
     });
 
     var map = L.map("mapid", options)
@@ -89,8 +103,8 @@ var currentlySelected = null;
 
  var photoLayer = null;
 
- function addPhotos(map, photos)
- {
+export function addPhotos(map, photos)
+    {
     if (photoLayer) {
         map.removeLayer(photoLayer);
     }
@@ -175,12 +189,12 @@ function addWanders(url, map)
     });
 }
 
-function addAllWanders(map)
+export function addAllWanders(map)
 {
     addWanders("/api/wanders", map);
 }
 
-function addWander(map, wanderId, addImages)
+export function addWander(map, wanderId, addImages)
 {
     $.getJSON("/api/wanders/" + wanderId, function(wander) {
         var geoJsonFeature = {

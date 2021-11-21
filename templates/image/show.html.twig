@@ -18,8 +18,8 @@
     {% endif %}
 {% endblock %}
 {% block body %}
-    <div class="row image">
-        <div class="col mx-3 headerstrip">
+    <div class="row image mx-0">
+        <div class="col headerstrip">
             <div class="row title">
                 <div class="col-2">
                     {% if prev %}
@@ -29,7 +29,7 @@
                 <div class="col-8 text-center">
                     <h2>{{ image.title ?? image.name }}</h2>
                 </div>
-                <div class="col-2 text-right">
+                <div class="col-2 text-end">
                     {% if next %}
                     <a class="align-middle" id="navigateNext" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
                     {% endif %}
@@ -88,8 +88,8 @@
                  />
         </div>
     </div>
-    <div class="row image">
-        <div class="col pt-3 mx-3 footerstrip">
+    <div class="row image mx-0">
+        <div class="col pt-3 footerstrip">
             <p><b>Tags:</b>
                 {% for tag in image.tags %}
                     <span class="keyword">{{ tag }}</span>
@@ -107,8 +107,8 @@
             </p>
         </div>
     </div>
-    <div class="row comments">
-        <div class="col pt-3 mx-3">
+    <div class="row comments mx-0">
+        <div class="col pt-3">
             <div id="disqus_thread"></div>
             <script>
                 var disqus_config = function () {
@@ -125,8 +125,4 @@
             <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script src="/js/keyboard_nav.js"></script>
 {% endblock %}

@@ -2,12 +2,14 @@
 {% block htmlClass %}homepage{% endblock %}
 {% block title %}{{ settings.siteTitle }}: {{ settings.siteSubtitle }}{% endblock %}
 {% block stylesheets %}
-{{ parent() }}
-{{ include('_leaflet_stylesheets.html.twig') }}
+    {{ parent() }}
+    {# {{ include('_leaflet_stylesheets.html.twig') }} #}
+    {{ encore_entry_link_tags('map') }}
+    {{ encore_entry_link_tags('homepage') }}
 {% endblock %}
 {% block body %}
-    <div class="row ">
-        <div class="col mx-3 headerstrip stats d-none d-md-block">
+    <div class="row mx-0">
+        <div class="col headerstrip stats d-none d-md-block">
             <div class="row">
                 <div class="col">
                     Total Wanders: {{ wanderStats.totalCount }}<br/>
@@ -45,14 +47,9 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-{{ parent() }}
-    {{ include('_leaflet_javascripts.html.twig') }}
-    <script src="/js/map.js"></script>
-    <script>
-        $(function() {
-            var map = setUpMap({});
-            //addAllWanders(map);
-            addAllWanders(map);
-        });
-    </script>
+    {{ parent() }}
+    {# {{ include('_leaflet_javascripts.html.twig') }} #}
+    {{ encore_entry_script_tags('map') }}
+    {{ encore_entry_script_tags('homepage') }}
+
 {% endblock %}

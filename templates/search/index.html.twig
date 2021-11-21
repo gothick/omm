@@ -1,14 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Search{% endblock %}
-{% block stylesheets %}
-{{ parent() }}
-{# TODO: Do we need leaflet here? #}
-{{ include('_leaflet_stylesheets.html.twig') }}
-{% endblock %}
 {% block body %}
-    <div class="row">
-        <div class="col mx-3 headerstrip">
+    <div class="row mx-0">
+        <div class="col headerstrip">
             <div class="row">
                 <div class="col">
                     <h2>Search</h2>
@@ -16,11 +11,11 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col mx-2 mt-4">
+    <div class="row px-4 mt-4">
+        <div class="col">
             {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <input type="submit" value="Search"/>
+                {{ form_widget(form.query) }}
+                <input class="mt-2" type="submit" value="Search"/>
             {{ form_end(form) }}
         </div>
     </div>
@@ -143,9 +138,4 @@
         </div>
     {% endif %}
 
-{% endblock %}
-{% block javascripts %}
-{{ parent() }}
-{# The Knp Paginator uses Font Awesome for its sorting icons in the header #}
-<script src="https://kit.fontawesome.com/4f3422de26.js" crossorigin="anonymous"></script>
 {% endblock %}

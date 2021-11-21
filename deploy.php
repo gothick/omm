@@ -4,6 +4,7 @@ namespace Deployer;
 require 'recipe/symfony.php';
 
 require 'contrib/cachetool.php';
+require 'contrib/webpack_encore.php';
 
 // Project name
 set('application', 'omm.gothick.org.uk');
@@ -22,7 +23,7 @@ add('shared_files', [
     'google-cloud-service-account.json'
 ]);
 add('shared_dirs', [
-    'var/cache',
+    // 'var/cache',
     'public/uploads/gpx',
     'public/uploads/images',
     'public/uploads/incoming',
@@ -33,20 +34,28 @@ add('shared_dirs', [
 // Writable dirs by web server
 add('writable_dirs', []);
 
-// Saves me typing it out every time
-set('default_stage', 'production');
-
-
 // Hosts
 
 // TODO: Try to set the shell to bash, or see if updated versions of deployer
 // start working with zsh again. I'm on a beta at the moment because Symfony 5
 host('ssh.gothick.org.uk')
-    ->set('stage', 'production')
+    ->set('labels', ['stage' => 'prod'])
     ->setRemoteUser('omm')
+    ->set('webpack_encore/env', 'production')
+    ->set('webpack_encore/package_manager', 'yarn')
     ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
     ->set('console_options', '-vvv')
     ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');
+
+host('omm.gothick.org.uk.localhost')
+    ->set('labels', ['stage' => 'staging'])
+    ->setRemoteUser('omm')
+    ->set('webpack_encore/env', 'production')
+    ->set('webpack_encore/package_manager', 'yarn')
+    ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-omm.sock --tmp-dir=/tmp')
+    ->set('console_options', '-vvv')
+    ->set('deploy_path', '/var/www/sites/gothick.org.uk/{{application}}');
+
 
 // Tasks
 
@@ -54,13 +63,17 @@ task('build', function () {
     run('cd {{release_path}} && build');
 });
 
-desc('Stop any existing messenger consumers; Supervisor will restart them.');
 task('deploy:stop-workers', function () {
-    run('{{bin/console}} messenger:stop-workers {{console_options}}');
-});
+    // Hack alert: https://stackoverflow.com/a/63652279/300836
+    // We've just move the previous release out of the way, but it's
+    // the previous release's cache that has the details of the
+    // workers we need to kill.
+    if (has('previous_release')) {
+        run('{{bin/php}} {{previous_release}}/bin/console messenger:stop-workers');
+    }
+})->desc('Stop any existing messenger consumers; Supervisor will restart them.');
 
 // Testing
-
 task('pwd', function () {
     $result = run('pwd');
     writeln("Current dir: $result");
@@ -87,3 +100,8 @@ after('cachetool:clear:opcache', 'deploy:stop-workers');
 // Migrate database before symlink new release.
 
 before('deploy:symlink', 'database:migrate');
+
+// Webpack Encore
+after('deploy:update_code', 'yarn:install');
+after('deploy:update_code', 'webpack_encore:build');
+

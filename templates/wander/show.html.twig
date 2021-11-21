@@ -2,7 +2,7 @@
 {% block title %}Wander: {{ wander.title }}{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
-{{ include('_leaflet_stylesheets.html.twig') }}
+{{ encore_entry_link_tags('wanderpage') }}
 {% endblock %}
 
 {% block twittercard %}
@@ -22,8 +22,8 @@
 {% endblock %}
 {% block container %}<div class="container-xl px-0">{% endblock %}
 {% block body %}
-    <div class="row wander">
-        <div class="col mx-3 headerstrip">
+    <div class="row wander mx-0">
+        <div class="col headerstrip">
             <div class="row title">
                 <div class="col-2">
                     {% if prev %}
@@ -33,7 +33,7 @@
                 <div class="col-8 text-center">
                     <h2>{{ wander.title }}</h2>
                 </div>
-                <div class="col-2 text-right">
+                <div class="col-2 text-end">
                     {% if next %}
                     <a class="align-middle" id="navigateNext" href="{{ path('wanders_show', { 'id': next.id }) }}">Next&rarr;</a>
                     {% endif %}
@@ -85,7 +85,7 @@
     </div>
     {# TODO: Move this hardcoded style into the CSS. It's a 80% viewport height
        with a fallback of a hardcoded pixel value for older browsers #}
-    <div id="mapid" style="height: 500px; height: 70vh;" {{ include('_mapattributes.html.twig') }} ></div>
+    <div id="mapid" data-wander-id="{{ wander.id }}" style="height: 500px; height: 70vh;" {{ include('_mapattributes.html.twig') }} ></div>
     <div class="row mt-3 align-items-center gallery">
         {% for image in image_pagination %}
         <div class="col-lg-3 col-md-4 col-6 gallery-image-wrapper">
@@ -146,15 +146,5 @@
 {% endblock %}
 {% block javascripts %}
 {{ parent() }}
-    <script src="/js/keyboard_nav.js"></script>
-    {{ include('_leaflet_javascripts.html.twig') }}
-    <script src="/js/map.js"></script>
-    <script>
-        $(function() {
-            var map = setUpMap({
-                scrollWheelZoom: false
-            });
-            addWander(map, {{ wander.id }}, true);
-        });
-    </script>
+    {{ encore_entry_script_tags('wanderpage') }}
 {% endblock %}
