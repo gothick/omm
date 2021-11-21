@@ -8,7 +8,7 @@
                 <div class="col">
                     <h2>All Wanders
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        &nbsp;<a href="{{ path('admin_wanders_new') }}"><i style="color: #b130c7;" class="far fa-plus-square"></i></a>
+                        &nbsp;<a style="color: #b130c7; font-size: 1.4em; text-decoration: none;" href="{{ path('admin_wanders_new') }}" ><strong>+</strong></a>
                         {% endif %}
                     </h2>
                 </div>

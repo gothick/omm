@@ -10,7 +10,8 @@ knp_paginator:
         default_limit: 10               # items per page
     template:
         # pagination: '@KnpPaginator/Pagination/sliding.html.twig'     # sliding pagination controls template
-        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+
+        pagination: '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig'
         # sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
-        sortable: '@KnpPaginator/Pagination/twitter_bootstrap_v4_font_awesome_sortable_link.html.twig'
-        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+        sortable: '@KnpPaginator/Pagination/bootstrap_v5_fa_sortable_link.html.twig'
+        filtration: '@KnpPaginator/Pagination/bootstrap_v5_filtration.html.twig'  # filters template

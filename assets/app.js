@@ -7,7 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import 'bootstrap/dist/css/bootstrap.css';
-import '@fortawesome/fontawesome-free/css/all.css';
+// import '@fortawesome/fontawesome-free/css/all.css';
 import './styles/app.css';
 
 // start the Stimulus application
@@ -17,7 +17,9 @@ import './styles/app.css';
 
 const $ = require('jquery');
 require('bootstrap');
-require('@fortawesome/fontawesome-free/js/fontawesome.js');
+
+// We don't need this in the front-end.
+// require('@fortawesome/fontawesome-free/js/fontawesome.js');
 
 // This would pull in all the fontawesome icons *as svg*, which is an alternative
 // to the CSS ones. I was mistakenly pulling it in *as well*.
