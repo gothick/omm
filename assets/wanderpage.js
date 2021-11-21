@@ -19,9 +19,13 @@ $(function() {
         gutter: 12
     });
 
-    // layout Masonry after each image loads
+    // layout Masonry after each image loads, and also keep it
+    // as well-hidden as possible until then by hiding its
+    // metadata div
+    $('.grid-item .metadata').hide();
     imagesLoaded(document.querySelector('.gallery'))
-        .on('progress', function() {
+        .on('progress', function(instance, image) {
+            $(image.img).closest('.grid-item').find('.metadata').show();
             msnry.layout();
         });
 });
