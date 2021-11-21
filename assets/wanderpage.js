@@ -14,11 +14,15 @@ $(function() {
     });
     addWander(map, $('#mapid').data('wanderId'), true);
 
-    imagesLoaded('.gallery', function() {
-        var msnry = new Masonry( '.gallery', {
-            itemSelector: '.grid-item',
-            gutter: 12
-        });
+    var msnry = new Masonry( '.gallery', {
+        itemSelector: '.grid-item',
+        gutter: 12
     });
+
+    // layout Masonry after each image loads
+    imagesLoaded(document.querySelector('.gallery'))
+        .on('progress', function() {
+            msnry.layout();
+        });
 });
 
