@@ -77,11 +77,6 @@ table.sortable thead th {
     white-space: nowrap;
 }
 
-.gallery .rating {
-    font-size: x-small;
-    color: gold;
-}
-
 img.sector {
     height: 16px;
     vertical-align: text-bottom;
@@ -145,3 +140,35 @@ img.sector {
 .wander-list h3 {
     font-size: 1.2rem;
 }
+
+.gallery .rating {
+    font-size: x-small;
+    color: gold;
+}
+
+.gallery .grid-item {
+        width: 50%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {  }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {  }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {  }
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .gallery .grid-item {
+        width: 380px;
+    }
+ }
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .gallery .grid-item {
+        width: 440px;
+    }
+ }
