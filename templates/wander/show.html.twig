@@ -93,7 +93,7 @@
                 <img
                     {# class="img-fluid img-thumbnail" #}
                     class="img-fluid"
-                    src="{{ vich_uploader_asset(image) }}"
+                    src="{{ vich_uploader_asset(image) | imagine_filter('srcset_720') }}" {# Quick bodge for now. We don't want the full-size one loading here, and that's happening with Masonry. For some reason. #}
                     title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
                     alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
                     srcset="{{ image | srcset }}"
