@@ -164,18 +164,18 @@ img.sector {
     background-color: rgba(255 , 255, 255, 0.8);
 }
 
-.grid-item .metadata a:link,
-.grid-item .metadata a:visited,
-.grid-item .metadata a:hover
-.grid-item .metadata a:active {
-    color: #333;
-}
-
 .grid-item .metadata .description a:link,
 .grid-item .metadata .description a:visited,
-.grid-item .metadata .description a:hover
+.grid-item .metadata .description a:hover,
 .grid-item .metadata .description a:active {
     text-decoration: none;
+}
+
+.grid-item .metadata a:link,
+.grid-item .metadata a:visited,
+.grid-item .metadata a:hover,
+.grid-item .metadata a:active {
+    color: #333;
 }
 
 /* Small devices (landscape phones, 576px and up) */
