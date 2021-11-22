@@ -187,6 +187,7 @@ img.sector {
 @media (min-width: 768px) {
     .gallery .grid-item {
         width: calc(50% - 6px); /* 12px gutter in Masonry) */
+        box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
     }
 }
 
