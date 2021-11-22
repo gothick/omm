@@ -8,6 +8,10 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import 'bootstrap/dist/css/bootstrap.css';
 // import '@fortawesome/fontawesome-free/css/all.css';
+// Still need Font Awesome for the Locate leaflet pin icon. TODO: Really slim this down
+// for the front-end.
+import '@fortawesome/fontawesome-free/css/solid.css';
+import '@fortawesome/fontawesome-free/css/fontawesome.css';
 import './styles/app.css';
 
 // start the Stimulus application
