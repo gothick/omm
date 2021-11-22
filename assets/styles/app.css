@@ -23,8 +23,11 @@ html.homepage,
 }
 
 .headerstrip {
-    padding-top: 12px;
     background-color: #ddf;
+}
+
+.headerstrip h2 {
+    margin-bottom: 0px;
 }
 
 .footerstrip {
@@ -147,6 +150,20 @@ img.sector {
     background-color: #F0F1FF;
 }
 
+.nav-prev-next {
+    font-size: larger;
+}
+
+.nav-prev-next .arrow {
+    font-size: 2em;
+}
+
+.nav-prev-next a.arrow:link,
+.nav-prev-next a.arrow:visited,
+.nav-prev-next a.arrow:hover,
+.nav-prev-next a.arrow:active {
+    text-decoration: none;
+}
 .navbar-brand .site-title a {
     color: #803d48;
     text-decoration: inherit;
@@ -220,6 +237,9 @@ img.sector {
     .gallery .grid-item {
         width: calc(50% - 6px); /* 12px gutter in Masonry) */
         box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
+    }
+    .nav-prev-next .arrow {
+        font-size: larger;
     }
 }
 

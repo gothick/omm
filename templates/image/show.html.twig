@@ -20,18 +20,20 @@
 {% block body %}
     <div class="row image mx-0">
         <div class="col headerstrip">
-            <div class="row title">
-                <div class="col-2">
+            <div class="row title d-flex align-items-center my-3">
+                <div class="col-2 nav-prev-next" >
                     {% if prev %}
-                    <a class="align-middle" id="navigatePrev" href="{{ path('image_show', { 'id': prev.id }) }}">&larr;Previous</a>
+                    <a class="arrow align-middle" id="navigatePrev" href="{{ path('image_show', { 'id': prev.id }) }}">&larr;</a>&nbsp;<a class="d-none d-md-inline text align-middle" href="{{ path('image_show', { 'id': prev.id }) }}">Previous</a>
                     {% endif %}
                 </div>
                 <div class="col-8 text-center">
-                    <h2>{{ image.title ?? image.name }}</h2>
+                    <div>
+                        <h2>{{ image.title ?? image.name }}</h2>
+                    </div>
                 </div>
-                <div class="col-2 text-end">
+                <div class="col-2 text-end nav-prev-next">
                     {% if next %}
-                    <a class="align-middle" id="navigateNext" href="{{ path('image_show', { 'id': next.id }) }}">Next&rarr;</a>
+                    <a class="d-none d-md-inline text align-middle" href="{{ path('image_show', { 'id': next.id }) }}">Next</a>&nbsp;<a class="arrow align-middle" id="navigateNext" href="{{ path('image_show', { 'id': next.id }) }}">&rarr;</a>
                     {% endif %}
                 </div>
             </div>
