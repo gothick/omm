@@ -20,31 +20,30 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col mx-2 mt-4">
-            <p class="search resultcount">
-                {% if pagination %}
-                    {{ pagination.getTotalItemCount }} results
-                {% endif %}
-            </p>
+    <div class="row px-2 my-2">
+        <div class="col mt-4 search resultcount">
+            {% if pagination %}
+                {{ pagination.getTotalItemCount }} wanders with matches:
+            {% endif %}
         </div>
     </div>
 
     {% if pagination %}
         {% for hybrid_result in pagination %}
-        <div class="row search results mb-4">
+        <div class="row mx-0 search wander result mb-4">
             <div class="col mx-2">
                 {% set wander = hybrid_result.transformed %}
-                <div class="row wander">
+                <div class="row wander header">
                     <div class="col">
-                        <hr/>
-                        <h4><a href="{{ path('wanders_show', {'id': wander.id}) }}">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}:
+                        <a href="{{ path('wanders_show', {'id': wander.id}) }}"><h4>
                         {# We set a no_match_size on the query so we should always get the title returned if there's nothing to highlight #}
                         {{ hybrid_result.result.hit.highlight.title[0] | striptags('<mark>') | raw }}
-                        </a></h4></div>
+                        </a></h4>
+                        <p class="wander-date">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</p>
+                        </div>
                 </div>
                 {% for highlight in hybrid_result.result.hit.highlight.description %}
-                    <div class="row mx-2 wander description highlights">
+                    <div class="row wander description highlights">
                         <div class="col">
                         <small>{{ highlight | striptags('<mark>') | raw }}</small>
                         </div>
@@ -59,7 +58,7 @@
                             <div class="col">Matching Images</div>
                         </div>
                     {% endif %}
-                    <div class="row mx-2 mt-2 image title highlights">
+                    <div class="row mx-2 mt-2 search image result title highlights">
                         {% set image = wander.images[imagehit._nested['offset']] %}
 
                         <div class="col-2">

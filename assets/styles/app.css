@@ -83,9 +83,40 @@ img.sector {
 }
 
 /* Search page */
-.search.results mark {
+.search.result {
+    box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
+}
+
+.search.result.wander {
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.search.result.image {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    background-color: #F2F2C9;
+}
+
+.search.result mark {
     background-color: rgb(255, 255, 158);
     color: black;
+}
+
+.search.result.wander,
+.search.result.wander .row.description {
+    background-color: #C9E1F2;
+}
+
+
+.search.result.wander .row.description {
+    margin-bottom: 1rem;
+
+}
+
+.search.result.wander .wander-date {
+    font-size: small;
 }
 
 .image span.keyword {
@@ -109,6 +140,7 @@ img.sector {
     white-space: normal;
     background-color: rgb(247, 201, 203);
 }
+
 
 .image .row.description,
 .wander .row.description {
