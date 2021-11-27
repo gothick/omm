@@ -10,9 +10,11 @@
 // import '@fortawesome/fontawesome-free/css/all.css';
 // Still need Font Awesome for the Locate leaflet pin icon. TODO: Really slim this down
 // for the front-end.
+import './styles/app.scss';
+
 import '@fortawesome/fontawesome-free/css/solid.css';
 import '@fortawesome/fontawesome-free/css/fontawesome.css';
-import './styles/app.scss';
+import "@fontsource/outfit";
 
 // start the Stimulus application
 // TODO: This is confusing and has fuck all to do with actual Bootstrap so I
