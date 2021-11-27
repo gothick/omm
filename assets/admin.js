@@ -1,5 +1,4 @@
-import './styles/admin.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import './styles/admin.scss';
 import '@fortawesome/fontawesome-free/css/solid.css';
 import '@fortawesome/fontawesome-free/css/fontawesome.css';
 

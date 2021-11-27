@@ -1,3 +1,6 @@
+@import "custom"; /* For overriding bootstrap variables */
+@import "~bootstrap/scss/bootstrap";
+
 .dashboard .headline,
 .dashboard .details {
     background-color: grey;
