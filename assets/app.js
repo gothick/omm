@@ -24,13 +24,6 @@ import "@fontsource/archivo";
 const $ = require('jquery');
 require('bootstrap');
 
-// We don't need this in the front-end.
-// require('@fortawesome/fontawesome-free/js/fontawesome.js');
-
-// This would pull in all the fontawesome icons *as svg*, which is an alternative
-// to the CSS ones. I was mistakenly pulling it in *as well*.
-// require('@fortawesome/fontawesome-free/js/all');
-
 $(function() {
     if ($('#navigatePrev').length || $('#navigateNext').length)
     window.addEventListener("keydown", function (event) {
