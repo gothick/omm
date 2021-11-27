@@ -1,6 +1,14 @@
 @import "custom"; /* For overriding bootstrap variables */
 @import "~bootstrap/scss/bootstrap";
 
+h1, h2, h3, h4, h5, h6, .navbar a {
+    font-family: Archivo, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.navbar a {
+    font-size: 1.4rem;
+}
+
 .dashboard .headline,
 .dashboard .details {
     background-color: grey;

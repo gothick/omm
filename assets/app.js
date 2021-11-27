@@ -14,7 +14,7 @@ import './styles/app.scss';
 
 import '@fortawesome/fontawesome-free/css/solid.css';
 import '@fortawesome/fontawesome-free/css/fontawesome.css';
-import "@fontsource/outfit";
+import "@fontsource/archivo";
 
 // start the Stimulus application
 // TODO: This is confusing and has fuck all to do with actual Bootstrap so I
