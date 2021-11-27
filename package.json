@@ -22,7 +22,9 @@
     },
     "dependencies": {
         "@fontsource/archivo": "^4.5.1",
-        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@fortawesome/fontawesome-svg-core": "^1.2.36",
+        "@fortawesome/free-regular-svg-icons": "^5.15.4",
+        "@fortawesome/free-solid-svg-icons": "^5.15.4",
         "@popperjs/core": "^2.10.2",
         "autoprefixer": "^10.4.0",
         "bootstrap": "^5.1.3",
