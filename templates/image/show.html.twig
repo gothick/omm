@@ -20,6 +20,13 @@
 {% block body %}
     <div class="row image mx-0">
         <div class="col headerstrip">
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="row adminstrip">
+                    <div class="col">
+                        <a href="{{ path('admin_image_edit', {'id': image.id}) }}">Edit</a>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row title d-flex align-items-center my-3">
                 <div class="col-2 nav-prev-next" >
                     {% if prev %}
@@ -66,13 +73,6 @@
                     </p>
                 </div>
             </div>
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="row adminlinks my-2">
-                <div class="col text-right">
-                    <a class="btn btn-primary" href="{{ path('admin_image_edit', {'id': image.id}) }}">Edit</a>
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
     <div class="row">

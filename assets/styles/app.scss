@@ -5,8 +5,12 @@
     box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar a {
+@mixin display-font-stack {
     font-family: Archivo, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+h1, h2, h3, h4, h5, h6, .navbar a {
+    @include display-font-stack();
 }
 
 .navbar a {
@@ -45,6 +49,34 @@ html.homepage,
     margin-bottom: 0px;
 }
 
+.adminstrip {
+    background-color: #D45200;
+    padding: 12px 0px 16px;
+    // background-color: #D48900;
+    a {
+        @include display-font-stack();
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.3);
+        height: 18px;
+        border-radius: 18px;
+        padding: 6px 12px;
+        margin: 6px;
+        background-color: #c27e00;
+        border: 1px solid #865700;
+        font-size: small;
+
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+            color:  #FFFB17;
+            text-decoration: none;
+        }
+        &:hover {
+            background-color: #cc8500;
+        }
+    }
+}
+
 .footerstrip {
     background-color: #ddf;
 }
@@ -53,6 +85,10 @@ html.homepage,
     padding-top: 4px;
     padding-bottom: 4px;
     font-size: 10px;
+}
+
+.details {
+    font-size: small;
 }
 
 /* Blockquote from https://codepen.io/cliftwalker/pen/XJaEXY */

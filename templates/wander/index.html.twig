@@ -4,13 +4,16 @@
 {% block body %}
     <div class="row mx-0">
         <div class="col headerstrip">
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="row adminstrip">
+                    <div class="col">
+                        <a href="{{ path('admin_wanders_new') }}">Add New Wander</a>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row">
                 <div class="col my-3">
-                    <h2>All Wanders
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        &nbsp;<a style="color: #b130c7; font-size: 1.4em; text-decoration: none;" href="{{ path('admin_wanders_new') }}" ><i class="fas fa-plus add-wander-button"></i></a>
-                        {% endif %}
-                    </h2>
+                    <h2>All Wanders</h2>
                 </div>
             </div>
         </div>

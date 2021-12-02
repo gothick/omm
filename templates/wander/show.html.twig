@@ -24,6 +24,13 @@
 {% block body %}
     <div class="row wander mx-0">
         <div class="col headerstrip">
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="row adminstrip">
+                    <div class="col">
+                        <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Edit</a>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row title d-flex align-items-center my-3">
                 <div class="col-2 nav-prev-next">
                     {% if prev %}
@@ -63,7 +70,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="row details mt-2">
+            <div class="row details my-2">
                 <div class="col">
                     {{ wander.startTime | date("D j F Y, H:i") }} to {{ wander.endTime | date("H:i") }}<br/>
                     Sector:&nbsp;<img class="sector" src="{{ wander | sectorimgurl }}" />&nbsp;{{ wander.sector }}<br/>
@@ -75,13 +82,6 @@
                     Total Elevation Gain: {{ wander.cumulativeElevationGain | number_format(0) ~ 'm' }}
                 </div>
             </div>
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <div class="row adminlinks my-2">
-                <div class="col text-right">
-                    <a class="btn btn-primary" href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Edit</a>
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
     {# TODO: Move this hardcoded style into the CSS. It's a 80% viewport height

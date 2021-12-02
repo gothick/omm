@@ -2,11 +2,23 @@
 {% block title %}About{% endblock %}
 
 {% block body %}
-<div class="row mx-0">
-    <div class="col">
-        <div class="mt-2">
-            {{ settings.siteAbout |striptags|markdown }}
+    <div class="row mx-0">
+        <div class="col headerstrip">
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="row adminstrip">
+                    <div class="col">
+                        <a href="{{ path('admin_settings_index') }}">Edit</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
-</div>
+
+    <div class="row mx-0">
+        <div class="col">
+            <div class="mt-2">
+                {{ settings.siteAbout |striptags|markdown }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
