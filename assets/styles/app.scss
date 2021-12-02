@@ -1,6 +1,10 @@
 @import "custom"; /* For overriding bootstrap variables */
 @import "~bootstrap/scss/bootstrap";
 
+@mixin gallery-shadow {
+    box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
+}
+
 h1, h2, h3, h4, h5, h6, .navbar a {
     font-family: Archivo, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
@@ -205,6 +209,10 @@ img.sector {
     font-size: 1.2rem;
 }
 
+.featured-image {
+    @include gallery-shadow();
+}
+
 .gallery {
     margin-top: 12px;
 }
@@ -251,7 +259,7 @@ img.sector {
 @media (min-width: 768px) {
     .gallery .grid-item {
         width: calc(50% - 6px); /* 12px gutter in Masonry) */
-        box-shadow: rgba(0, 0, 0, 0.35) 1.95px 1.95px 3.6px;
+        @include gallery-shadow();
     }
     .nav-prev-next .arrow {
         font-size: larger;

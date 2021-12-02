@@ -47,7 +47,7 @@
                     {% if wander.featuredImage %}
                     <a href="{{ path('image_show', {'id': wander.featuredImage.id}) }}">
                         <img
-                            class="img-fluid"
+                            class="img-fluid featured-image wanderpage"
                             src="{{ vich_uploader_asset(wander.featuredImage) }}"
                             alt="
                                 {{ wander.featuredImage.titleOrId | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
