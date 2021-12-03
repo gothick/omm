@@ -7,7 +7,7 @@
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <div class="row adminstrip">
                     <div class="col">
-                        <a href="{{ path('admin_settings_index') }}">Edit</a>
+                        <a href="{{ path('admin_settings_edit') }}">Edit</a>
                     </div>
                 </div>
             {% endif %}
