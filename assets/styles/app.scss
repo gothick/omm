@@ -247,6 +247,8 @@ img.sector {
 
 .featured-image {
     @include gallery-shadow();
+    width: 100%;
+    margin-bottom: .5rem;
 }
 
 .gallery {
@@ -299,6 +301,11 @@ img.sector {
     }
     .nav-prev-next .arrow {
         font-size: larger;
+    }
+    .featured-image {
+        @include gallery-shadow();
+        width: 420px;
+        margin-left: .5rem;
     }
 }
 

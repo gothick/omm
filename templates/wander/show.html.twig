@@ -47,14 +47,11 @@
                 </div>
             </div>
             <div class="row no-gutters description">
-                <div class="col-12 col-md-8 px-4 pt-4 pb-4">
-                    {{ wander.description | stripmosttags | markdown }}
-                </div>
-                <div class="d-none d-md-block col-md-4 pt-4 pb-4 px-4">
+                <div class="col my-2">
                     {% if wander.featuredImage %}
                     <a href="{{ path('image_show', {'id': wander.featuredImage.id}) }}">
                         <img
-                            class="img-fluid featured-image wanderpage"
+                            class="img-fluid featured-image wanderpage float-end"
                             src="{{ vich_uploader_asset(wander.featuredImage) }}"
                             alt="
                                 {{ wander.featuredImage.titleOrId | markdown_to_plain_text | u.truncate(150, '...') | e('html_attr') }}
@@ -64,10 +61,13 @@
                                 "
                             srcset="{{ wander.featuredImage | srcset }}"
                             {# This is a rough guess #}
-                            sizes="(min-width: 1400px) 392px, 25vw"
+                            sizes="(min-width: 1400px) 420px, 100vw"
                         />
                     </a>
                     {% endif %}
+                    <div class="description">
+                    {{ wander.description | stripmosttags | markdown }}
+                    </div>
                 </div>
             </div>
             <div class="row details my-2">
