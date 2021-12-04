@@ -303,7 +303,6 @@ img.sector {
         font-size: larger;
     }
     .featured-image {
-        @include gallery-shadow();
         width: 420px;
         margin-left: .5rem;
     }
