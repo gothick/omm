@@ -1,4 +1,4 @@
-# linter:
+linter:
 # # https://help.sider.review/getting-started/custom-configuration
 
 #   # https://help.sider.review/tools/php/code-sniffer
@@ -20,16 +20,16 @@
 #       - Custom_PHPMD_Rule.php
 #       - custom/phpmd/rules/**/*.php
 
-#   # https://help.sider.review/tools/javascript/eslint
-#   eslint:
-#     dir: frontend/app
-#     config: .my_eslintrc
-#     ext: ".js,.jsx,.es6"
-#     ignore-path: .my_eslintignore
-#     no-ignore: true
-#     ignore-pattern: "/src/vendor/*"
-#     global: "require,exports:true"
-#     quiet: true
+  # https://help.sider.review/tools/javascript/eslint
+  eslint:
+    dir: assets
+    config: .eslintrc.js
+    ext: ".js,.jsx,.es6"
+    # ignore-path: .my_eslintignore
+    # no-ignore: true
+    # ignore-pattern: "/src/vendor/*"
+    # global: "require,exports:true"
+    # quiet: true
 
 #   # https://help.sider.review/tools/css/stylelint
 #   stylelint:
