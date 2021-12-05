@@ -22,7 +22,7 @@ linter:
 
   # https://help.sider.review/tools/javascript/eslint
   eslint:
-    dir: assets
+    target: assets
     config: .eslintrc.js
     ext: ".js,.jsx,.es6"
     # ignore-path: .my_eslintignore
