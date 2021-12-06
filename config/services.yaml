@@ -20,8 +20,8 @@ parameters:
     google.api_key: '%env(GOOGLE_API_KEY)%'
     google.project_id: '%env(GOOGLE_PROJECT_ID)%'
     google.service_account_file: '%kernel.project_dir%/%env(GOOGLE_SERVICE_ACCOUNT_FILE)%'
-    env(WANDER_SIMPLIFIER_EPSILON_METRES): 3 # Number of metres resolution to use for Ramer Douglas Peuker polyline simplification for geoJSON wander output
-    env(WANDER_GEOJSON_OUTPUT_PRECISION): 7 # Number of decimal places to output geoJSON latitude and longitude
+    env(WANDER_SIMPLIFIER_EPSILON_METRES): '3' # Number of metres resolution to use for Ramer Douglas Peuker polyline simplification for geoJSON wander output
+    env(WANDER_GEOJSON_OUTPUT_PRECISION): '7' # Number of decimal places to output geoJSON latitude and longitude
     wander.simplifier_epsilon_metres: '%env(int:WANDER_SIMPLIFIER_EPSILON_METRES)%'
     wander.geojson_output_precision: '%env(int:WANDER_GEOJSON_OUTPUT_PRECISION)%'
 
