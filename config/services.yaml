@@ -25,6 +25,12 @@ parameters:
     wander.simplifier_epsilon_metres: '%env(int:WANDER_SIMPLIFIER_EPSILON_METRES)%'
     wander.geojson_output_precision: '%env(int:WANDER_GEOJSON_OUTPUT_PRECISION)%'
 
+    amazon.s3.key: '%env(resolve:AMAZON_S3_KEY)%'
+    amazon.s3.secret: '%env(resolve:AMAZON_S3_SECRET)%'
+    amazon.s3.bucket: '%env(resolve:AMAZON_S3_BUCKET)%'
+    amazon.s3.region: '%env(resolve:AMAZON_S3_REGION)%'
+    amazon.s3.version: '%env(resolve:AMAZON_S3_VERSION)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -90,6 +90,24 @@ liip_imagine:
                     - '%kernel.project_dir%/public'
                 allow_unresolvable_data_roots: true
 
-    # Overried default legacy mode to avoid some deprecation warnings.
+    resolvers:
+        aws_s3_resolver:
+            aws_s3:
+                client_config:
+                    credentials:
+                        key:    "%amazon.s3.key%"
+                        secret: "%amazon.s3.secret%"
+                    region: "%amazon.s3.region%"
+                    version: "%amazon.s3.version%"
+                bucket: "%amazon.s3.bucket%"
+                get_options:
+                    Scheme: https
+                put_options:
+                    CacheControl: "max-age=86400"
+
+    cache: aws_s3_resolver
+
+    # Override default legacy mode to avoid some deprecation warnings.
     twig:
         mode:   lazy
+
