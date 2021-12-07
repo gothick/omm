@@ -13,12 +13,12 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '5.7'
 
-        # https://doctrine2-spatial.readthedocs.io/en/latest/Configuration.html
+        # https://github.com/longitude-one/doctrine-spatial
         types:
-            polygon: CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
-            # point: CrEOF\Spatial\DBAL\Types\Geography\PointType
-            point: CrEOF\Spatial\DBAL\Types\Geometry\PointType
-            geometry: CrEOF\Spatial\DBAL\Types\GeometryType
+            polygon: LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
+            # point: LongitudeOne\Spatial\DBAL\Types\Geography\PointType
+            point: LongitudeOne\Spatial\DBAL\Types\Geometry\PointType
+            geometry: LongitudeOne\Spatial\DBAL\Types\GeometryType
 
     orm:
         auto_generate_proxy_classes: true
@@ -32,12 +32,12 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
-        # https://doctrine2-spatial.readthedocs.io/en/latest/Configuration.html
+        # https://github.com/longitude-one/doctrine-spatial
         dql:
             numeric_functions:
-                st_contains: CrEOF\Spatial\ORM\Query\AST\Functions\Standard\StContains
+                st_contains: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StContains
             string_functions:
-        #       st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText
+        #       st_geomfromtext: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText
 
         query_cache_driver:
             type: pool
