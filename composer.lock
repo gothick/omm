@@ -4,79 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be40814b3f4eec2b8c0341696f6cfd3c",
+    "content-hash": "eaa7682b6397da63c56b81b200f5a946",
     "packages": [
-        {
-            "name": "alexandret/doctrine2-spatial",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Alexandre-T/doctrine2-spatial.git",
-                "reference": "84bc0aad3a169b05b9561f8fdf1c417d7ccd3c5d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Alexandre-T/doctrine2-spatial/zipball/84bc0aad3a169b05b9561f8fdf1c417d7ccd3c5d",
-                "reference": "84bc0aad3a169b05b9561f8fdf1c417d7ccd3c5d",
-                "shasum": ""
-            },
-            "require": {
-                "creof/geo-parser": "~2.0",
-                "creof/wkb-parser": "~2.0",
-                "creof/wkt-parser": "~2.0",
-                "doctrine/orm": "^2.7.0",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "php-coveralls/php-coveralls": "~1.0",
-                "phpmd/phpmd": "@stable",
-                "phpunit/phpcov": "*",
-                "phpunit/phpunit": "*",
-                "squizlabs/php_codesniffer": "3.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CrEOF\\Spatial": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Derek Lambert",
-                    "email": "dlambert@dereklambert.com"
-                },
-                {
-                    "name": "Alexandre Tranchant",
-                    "email": "alexandre.tranchant@gmail.com"
-                }
-            ],
-            "description": "Doctrine2 multi-platform support for spatial types and functions",
-            "keywords": [
-                "database",
-                "dbal",
-                "geography",
-                "geometry",
-                "gis",
-                "mysql",
-                "opengis",
-                "orm",
-                "postgis",
-                "postgresql",
-                "spatial"
-            ],
-            "support": {
-                "source": "https://github.com/Alexandre-T/doctrine2-spatial/tree/2.0.0"
-            },
-            "abandoned": true,
-            "time": "2020-04-01T11:14:04+00:00"
-        },
         {
             "name": "api-platform/core",
             "version": "v2.6.6",
@@ -3839,6 +3768,82 @@
                 "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.2"
             },
             "time": "2021-11-11T12:21:07+00:00"
+        },
+        {
+            "name": "longitude-one/doctrine-spatial",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/longitude-one/doctrine-spatial.git",
+                "reference": "d88eb92cea891123559a4884df7e460e43d448f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/longitude-one/doctrine-spatial/zipball/d88eb92cea891123559a4884df7e460e43d448f1",
+                "reference": "d88eb92cea891123559a4884df7e460e43d448f1",
+                "shasum": ""
+            },
+            "require": {
+                "creof/geo-parser": "~2.2",
+                "creof/wkb-parser": "~2.3",
+                "creof/wkt-parser": "~2.2",
+                "doctrine/orm": "^2.8.0",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.4|^8.0"
+            },
+            "replace": {
+                "creof/doctrine2-spatial": "*"
+            },
+            "require-dev": {
+                "cache/array-adapter": "^1.1",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "php-coveralls/php-coveralls": "^2.4",
+                "phpmd/phpmd": "^2.10",
+                "phpunit/phpcov": "^8.2",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LongitudeOne\\Spatial": "lib/",
+                    "LongitudeOne\\Spatial\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Derek Lambert",
+                    "email": "dlambert@dereklambert.com"
+                },
+                {
+                    "name": "Alexandre Tranchant",
+                    "email": "alexandre.tranchant@gmail.com"
+                }
+            ],
+            "description": "Doctrine2 multi-platform support for spatial types and functions",
+            "keywords": [
+                "database",
+                "dbal",
+                "geography",
+                "geometry",
+                "gis",
+                "mysql",
+                "opengis",
+                "orm",
+                "postgis",
+                "postgresql",
+                "spatial"
+            ],
+            "support": {
+                "issues": "https://github.com/longitude-one/doctrine-spatial/issues",
+                "source": "https://github.com/longitude-one/doctrine-spatial/tree/3.0.0"
+            },
+            "time": "2021-07-18T09:01:04+00:00"
         },
         {
             "name": "mekras/php-speller",

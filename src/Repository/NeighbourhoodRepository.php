@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Neighbourhood;
-use CrEOF\Spatial\PHP\Types\Geometry\Point;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Point;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Neighbourhood;
-use CrEOF\Spatial\PHP\Types\Geometry\Polygon;
+use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
