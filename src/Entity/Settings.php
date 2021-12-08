@@ -37,6 +37,11 @@ class Settings
      */
     private $twitterHandle;
 
+    /**
+     * @ORM\Column(type="string", length=1024, nullable=true)
+     */
+    private $gravatarEmail;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Settings
     public function setTwitterHandle(?string $twitterHandle): self
     {
         $this->twitterHandle = $twitterHandle;
+
+        return $this;
+    }
+
+    public function getGravatarEmail(): ?string
+    {
+        return $this->gravatarEmail;
+    }
+
+    public function setGravatarEmail(?string $gravatarEmail): self
+    {
+        $this->gravatarEmail = $gravatarEmail;
 
         return $this;
     }

@@ -56,4 +56,9 @@ class SettingsService
     {
         return $this->settings->getTwitterHandle() ?? "";
     }
+
+    public function getGravatarEmail(): string
+    {
+        return $this->settings->getGravatarEmail() ?? "";
+    }
 }
