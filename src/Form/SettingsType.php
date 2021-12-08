@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Settings;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,6 +24,10 @@ class SettingsType extends AbstractType
             ])
             ->add('twitterHandle', TextType::class, [
                 'label' => 'Twitter Handle for Twitter Cards (without "@")',
+                'required' => false
+            ])
+            ->add('gravatarEmail', TextType::class, [
+                'label' => 'Gravatar Email Address for avatar on About page',
                 'required' => false
             ])
             ->add('siteAbout', TextareaType::class, [
