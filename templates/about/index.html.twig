@@ -15,10 +15,14 @@
     </div>
 
     <div class="row mx-0">
-        <div class="col">
+        <div class="col settings d-flex">
             <div class="mt-2">
                 {{ settings.siteAbout |striptags|markdown }}
             </div>
+            {% if settings.hasGravatar %}
+                <img class="gravatar ms-auto py-2 ps-4 d-none d-md-block" width="400" height="400" src="{{ settings.gravatarImageUrl(400) }}" alt="User Avatar" />
+            {% endif %}
+
         </div>
     </div>
 {% endblock %}

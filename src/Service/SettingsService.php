@@ -61,4 +61,26 @@ class SettingsService
     {
         return $this->settings->getGravatarEmail() ?? "";
     }
+
+    public function getGravatarImageUrl(int $size = 200): ?string
+    {
+        if (!is_int($size)) {
+            return null;
+        }
+        if ($size < 0 || $size > 2000) {
+            $size = 200;
+        }
+        $email = $this->settings->getGravatarEmail();
+        if (!$email) {
+            return null;
+        }
+        $hash = md5(trim(strtolower($email)));
+        // TODO: This is hardcoded to 200px. Make it configurable.
+        return "https://www.gravatar.com/avatar/$hash?s=$size";
+    }
+
+    public function getHasGravatar(): bool
+    {
+        return $this->settings->getGravatarEmail() != null;
+    }
 }
