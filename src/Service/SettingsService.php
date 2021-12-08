@@ -64,9 +64,6 @@ class SettingsService
 
     public function getGravatarImageUrl(int $size = 200): ?string
     {
-        if (!is_int($size)) {
-            return null;
-        }
         if ($size < 0 || $size > 2000) {
             $size = 200;
         }
@@ -81,6 +78,6 @@ class SettingsService
 
     public function getHasGravatar(): bool
     {
-        return $this->settings->getGravatarEmail() != null;
+        return !empty($this->settings->getGravatarEmail());
     }
 }
