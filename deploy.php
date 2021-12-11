@@ -22,7 +22,15 @@ set('keep_releases', 5);
 // as the latest only works with php 8.
 // https://github.com/deployphp/deployer/issues/2344
 // https://gordalina.github.io/cachetool/
-set('bin/cachetool', 'cachetool-7.0.0.phar');
+// https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55
+// https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar
+set('bin/cachetool', function () {
+    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
+        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar");
+    }
+    return '{{release_or_current_path}}/cachetool.phar';
+});
+
 
 // Shared files/dirs between deploys
 add('shared_files', [
