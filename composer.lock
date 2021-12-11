@@ -12009,16 +12009,16 @@
         },
         {
             "name": "deployer/deployer",
-            "version": "v7.0.0-rc.1",
+            "version": "v7.0.0-rc.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "0389f738a149c6cf73866ca1b3e707702eadcc62"
+                "reference": "cafe007465c8bf48eee0acc43959e8ed04ff6074"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/0389f738a149c6cf73866ca1b3e707702eadcc62",
-                "reference": "0389f738a149c6cf73866ca1b3e707702eadcc62",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/cafe007465c8bf48eee0acc43959e8ed04ff6074",
+                "reference": "cafe007465c8bf48eee0acc43959e8ed04ff6074",
                 "shasum": ""
             },
             "require": {
@@ -12076,7 +12076,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-07T21:38:03+00:00"
+            "time": "2021-11-21T22:14:58+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
