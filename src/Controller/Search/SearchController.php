@@ -67,6 +67,11 @@ class SearchController extends AbstractController
             $nested->setQuery($nmm);
 
             $innerHits = new InnerHits();
+            // We want more than the default three inner hits, as there may be several related
+            // images on a particular wander, but we don't want to bump things up too high otherwise
+            // an overly-broad search will bring back way too many images even with pagination of
+            // the outer results.
+            $innerHits->setSize(10);
             $innerHits->setHighlight(['fields' => [
                 'images.title' => [
                     'number_of_fragments' => 0,
