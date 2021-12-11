@@ -18,6 +18,12 @@ set('git_tty', true);
 // The default of ten was a bit much.
 set('keep_releases', 5);
 
+// Cachetool needs to be a lower version than default,
+// as the latest only works with php 8.
+// https://github.com/deployphp/deployer/issues/2344
+// https://gordalina.github.io/cachetool/
+set('bin/cachetool', 'cachetool-7.0.0.phar');
+
 // Shared files/dirs between deploys
 add('shared_files', [
     'google-cloud-service-account.json'
