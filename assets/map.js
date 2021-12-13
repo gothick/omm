@@ -14,6 +14,7 @@ require('leaflet');
 require('leaflet.locatecontrol');
 require('leaflet-loading');
 require('leaflet.markercluster');
+require('polyline-encoded'); // Adds support for Google polyline encoding https://www.npmjs.com/package/polyline-encoded
 require('./Leaflet.Photo');
 
 var streetMap;
@@ -154,17 +155,12 @@ function addWanders(url, map)
         var last = data["hydra:member"].length - 1;
         $.each(data["hydra:member"], function(key, wander) {
             var isLastWander = isLastPage && (last === key);
-            var geoJsonFeature = {
-                "type": "Feature",
-                "geometry":  $.parseJSON(wander.geoJson)
-            };
-            var geoJsonTrack = L.geoJSON(
-                geoJsonFeature,
-                {
-                    style: isLastWander ? selectedWanderStyle() : unselectedWanderStyle(),
-                    wanderId: wander.id
-                })
-                .bindPopup(function(layer) {
+            var wanderLine = L.Polyline.fromEncoded(wander.googlePolyline, {
+                wanderId: wander.id
+            });
+
+            wanderLine.setStyle(isLastWander ? selectedWanderStyle() : unselectedWanderStyle());
+            wanderLine.bindPopup(function(layer) {
                     currentlySelected.setStyle(unselectedWanderStyle());
                     layer.setStyle(selectedWanderStyle());
                     layer.bringToFront();
@@ -174,11 +170,10 @@ function addWanders(url, map)
                     var template = "<a href='{contentUrl}'>{title}</a>";
                     return L.Util.template(template, wander);
                 });
-
             if (isLastWander) {
-                currentlySelected = geoJsonTrack;
+                currentlySelected = wanderLine;
             }
-            geoJsonTrack.addTo(map);
+            wanderLine.addTo(map);
         });
 
         // Recurse through all the pages in the pagination we got back.
@@ -197,15 +192,15 @@ export function addAllWanders(map)
 export function addWander(map, wanderId, addImages)
 {
     $.getJSON("/api/wanders/" + wanderId, function(wander) {
-        var geoJsonFeature = {
-            "type": "Feature",
-            "geometry": $.parseJSON(wander.geoJson)
-        };
-        L.geoJSON(geoJsonFeature)
+        var wanderLine = L.Polyline.fromEncoded(wander.googlePolyline, {
+            wanderId: wander.id
+        });
+        wanderLine
             .bindPopup(function(/* layer */) {
                 return wander.title;
             })
             .addTo(map);
+        map.fitBounds(wanderLine.getBounds());
         // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
         if (addImages) {
             addWanderImages(map, wanderId);

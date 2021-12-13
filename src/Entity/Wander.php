@@ -463,7 +463,9 @@ class Wander
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"wander:list", "wander:item"})
+     * NB: We're not using this at the moment (we've replaced it with the much more compact
+     * Google polyline encoding of $googlePolyline) but we might want to again later, so I'm
+     * not removing it from the entity for now.
      *
      */
     private $geoJson;
@@ -478,6 +480,9 @@ class Wander
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"wander:list", "wander:item"})
+     *
      */
     private $googlePolyline;
 
