@@ -6,6 +6,7 @@ use App\Entity\Wander;
 use Exception;
 use Gothick\Geotools\Polyline;
 use Gothick\Geotools\PolylineGeoJsonFormatter;
+use Gothick\Geotools\PolylineGoogleEncodedFormatter;
 use Gothick\Geotools\PolylineRdpSimplifier;
 use phpGPX\phpGPX;
 use Psr\Log\LoggerInterface;
@@ -126,16 +127,23 @@ class GpxService
         return $formatter->format($simplifiedPolyline);
     }
 
-    // TODO: This is updating more than the stats now. Change the name to
-    // reflect that.
+    public function gpxToGooglePolyline(string $gpx, float $epsilon): string
+    {
+        $polyline = Polyline::fromGpxData($gpx);
+        $simplifier = new PolylineRdpSimplifier($epsilon);
+        $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
+        $formatter = new PolylineGoogleEncodedFormatter();
+        return $formatter->format($simplifiedPolyline);
+    }
+
     public function updateWanderFromGpx(Wander $wander): void
     {
         $filename = $wander->getGpxFilename();
         if (isset($filename))
         {
-            // Basic stats, updated using phpGpx
             $gpxxml = $this->getGpxStringFromFilename($filename);
             $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres, $this->wanderGeoJsonOutputPrecision));
+            $wander->setGooglePolyline($this->gpxToGooglePolyline($gpxxml, $this->wanderSimplifierEpsilonMetres));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);
         }

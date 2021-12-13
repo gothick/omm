@@ -476,6 +476,11 @@ class Wander
      */
     private $featuredImage;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $googlePolyline;
+
     public function getSector(): ?string
     {
         if ($this->angleFromHome !== null) {
@@ -545,6 +550,18 @@ class Wander
         }
 
         $this->featuredImage = $featuredImage;
+
+        return $this;
+    }
+
+    public function getGooglePolyline(): ?string
+    {
+        return $this->googlePolyline;
+    }
+
+    public function setGooglePolyline(?string $googlePolyline): self
+    {
+        $this->googlePolyline = $googlePolyline;
 
         return $this;
     }
