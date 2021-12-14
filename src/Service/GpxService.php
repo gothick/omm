@@ -118,7 +118,7 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
-    public function gpxToGeoJson(string $gpx, float $epsilon, int $precision): string
+    public function gpxToGeoJson(string $gpx, float $epsilon = 3, int $precision = 7): string
     {
         $polyline = Polyline::fromGpxData($gpx);
         $simplifier = new PolylineRdpSimplifier($epsilon);
@@ -127,7 +127,7 @@ class GpxService
         return $formatter->format($simplifiedPolyline);
     }
 
-    public function gpxToGooglePolyline(string $gpx, float $epsilon): string
+    public function gpxToGooglePolyline(string $gpx, float $epsilon = 3): string
     {
         $polyline = Polyline::fromGpxData($gpx);
         $simplifier = new PolylineRdpSimplifier($epsilon);
