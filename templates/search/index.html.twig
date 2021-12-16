@@ -89,10 +89,10 @@
                                     <small class="keyword">{{ taghighlight | raw }}</small>&nbsp;
                                 {% endfor %}
                             {% endif %}
-                            {% if imagehit.highlight['images.auto_tags'] is defined %}
+                            {% if imagehit.highlight['images.autoTags'] is defined %}
                                 <hr />
                                 <small>Matching (experimental) auto-tags: </small>
-                                {% for taghighlight in imagehit.highlight['images.auto_tags'] %}
+                                {% for taghighlight in imagehit.highlight['images.autoTags'] %}
                                     <small class="keyword">{{ taghighlight | raw }}</small>&nbsp;
                                 {% endfor %}
                             {% endif %}

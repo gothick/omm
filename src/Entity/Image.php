@@ -495,11 +495,11 @@ class Image implements TaggableInterface
      */
     private $imageShowUri;
 
-    // TODO: This should be called $autoTags for consistency
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var ?string[]
      */
-    private $auto_tags = [];
+    private $autoTags = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -545,21 +545,27 @@ class Image implements TaggableInterface
         return $this->imageShowUri;
     }
 
+    /**
+     * @return ?string[]
+     */
     public function getAutoTags(): ?array
     {
-        return $this->auto_tags;
+        return $this->autoTags;
     }
 
-    public function setAutoTags(?array $auto_tags): self
+    /**
+     * @param ?string[] $autoTags
+     */
+    public function setAutoTags(?array $autoTags): self
     {
-        $this->auto_tags = $auto_tags;
+        $this->autoTags = $autoTags;
 
         return $this;
     }
     public function getAutoTagsCount(): int
     {
-        if (is_array($this->auto_tags)) {
-            return count($this->auto_tags);
+        if (is_array($this->autoTags)) {
+            return count($this->autoTags);
         }
         return 0;
     }
