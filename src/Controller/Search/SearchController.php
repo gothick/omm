@@ -59,7 +59,7 @@ class SearchController extends AbstractController
                 'images.title',
                 'images.description',
                 'images.tags',
-                'images.auto_tags',
+                'images.autoTags',
                 'images.textTags']);
 
             $nested = new Nested();
@@ -88,7 +88,7 @@ class SearchController extends AbstractController
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
                 ],
-                'images.auto_tags' => [
+                'images.autoTags' => [
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
                 ],

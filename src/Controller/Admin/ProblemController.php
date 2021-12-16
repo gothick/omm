@@ -52,14 +52,15 @@ class ProblemController extends AbstractController
             // array, but it's good enough for a problem admin page for now.
             //->addSelect("SUM(CASE WHEN i.keywords IS NULL OR i.keywords = 'a:0:{}' THEN 1 ELSE 0 END) AS no_keywords")
             ->addSelect("SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END) AS no_tags")
-            ->addSelect("SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END) AS no_auto_tags")
+            ->addSelect("SUM(CASE WHEN i.autoTags IS NULL OR i.autoTags = 'a:0:{}' THEN 1 ELSE 0 END) AS no_auto_tags")
             ->addSelect("CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END AS no_featured_image")
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) AS total_problems_excl_auto")
+                "(SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) AS total_problems_excl_auto"
+                )
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
@@ -67,7 +68,8 @@ class ProblemController extends AbstractController
                 "(5 * SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
                 "(1 * CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END) + " .
                 "(0.01 * SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) + " .
-                "(0.001 * SUM(CASE WHEN i.auto_tags IS NULL OR i.auto_tags = 'a:0:{}' THEN 1 ELSE 0 END)) AS weighted_problem_score")
+                "(0.001 * SUM(CASE WHEN i.autoTags IS NULL OR i.autoTags = 'a:0:{}' THEN 1 ELSE 0 END)) AS weighted_problem_score"
+                )
             ->addGroupBy('w')
             ->addGroupBy('fi')
             ->having('no_title > 0')

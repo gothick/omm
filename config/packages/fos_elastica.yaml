@@ -37,7 +37,7 @@ fos_elastica:
                                 type: keyword
                                 normalizer: keyword_normalizer
                                 boost: 3
-                            auto_tags:
+                            autoTags:
                                 type: keyword
                                 normalizer: keyword_normalizer
                             textTags:
