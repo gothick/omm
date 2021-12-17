@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tag - {{ tag }}{% endblock %}
+{% block body %}
+    <div class="row mx-0">
+        <div class="col headerstrip">
+            <div class="row my-3">
+                <div class="col">
+                    <h2>Tagged: {{ tag | lower }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row px-2 mb-2">
+        <div class="col mt-2 search resultcount">
+            {% if pagination %}
+                {{ pagination.getTotalItemCount }} wanders with images tagged "{{ tag | lower }}"
+                {% if search_type == 'tags' %}
+                    (searching only hand-created tags.)
+                {% elseif search_type == 'auto_tags' %}
+                    (searching only tags created by automatic image recognition.)
+                {% elseif search_type == 'text_tags' %}
+                    (searching only tags created by automatic text recognition.)
+                {% else %}
+                    (searching all tag types.)
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% if pagination %}
+        {% for hybrid_result in pagination %}
+        <div class="row mx-0 search wander result mb-4">
+            <div class="col mx-2">
+                {% set wander = hybrid_result.transformed %}
+
+                <div class="row wander header">
+                    <div class="col">
+                        <a href="{{ path('wanders_show', {'id': wander.id}) }}"><h4>
+                        {{ wander.title }}
+                        </a></h4>
+                        <p class="wander-date">{{ wander.startTime ? wander.startTime|date('d M Y') : '' }}</p>
+                    </div>
+                </div>
+                <div class="row wander description highlights">
+                    <div class="col">
+                    <small>{{ wander.description | stripmosttags | markdown }}</small>
+                    </div>
+                </div>
+
+                {% for imagehit in hybrid_result.result.hit.inner_hits.images.hits.hits %}
+                    {% if loop.first %}
+                        <div class="row mx-2 mt-2 image title highlights">
+                            <div class="col">Matching Images</div>
+                        </div>
+                    {% endif %}
+                    <div class="row mx-2 mt-2 search image result title highlights">
+                        {% set image = wander.images[imagehit._nested['offset']] %}
+
+                        <div class="col-2">
+                            <a href="{{ path('image_show', {'id': image.id}) }}">
+                                <img class="w-100" src="{{ vich_uploader_asset(image) | imagine_filter('square_thumb_200') }}" />
+                            </a>
+                        </div>
+
+                        <div class="col-2">
+                            <a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title ?? image.name }}</a>
+                            <div class="rating">{{ image.rating | star_rating }}</div>
+                        </div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col">
+                                    {{ image.description | stripmosttags | markdown }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col footerstrip pt-2 me-2">
+                                    <p><b>Tags:</b>
+                                        {% for each_tag in image.tags %}
+                                            <span class="keyword {% if tag | lower == each_tag | lower %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                        {% endfor %}
+                                    </p>
+                                    <p><b>Auto-Tags:</b>
+                                        {% for each_tag in image.autoTags %}
+                                            <span class="keyword {% if tag | lower == each_tag | lower %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                        {% endfor %}
+                                    </p>
+                                    <p><b>Text Recognition Tags:</b>
+                                        {% for each_tag in image.textTags %}
+                                        <span class="keyword {% if tag | lower == each_tag | lower  %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <div class="navigation my-4">
+                    {{ knp_pagination_render(pagination, null, {}, { 'align': 'center' }) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
