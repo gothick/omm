@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @import "custom"; /* For overriding bootstrap variables */
 @import "~bootstrap/scss/bootstrap";
 
@@ -164,10 +166,17 @@ img.sector {
     font-size: small;
 }
 
-.image span.keyword {
+$hover-darken: -15%;
+$handtag-color: #cfc;
+$handtag-hover-color: color.scale($handtag-color, $lightness: $hover-darken);
+$autotag-color: rgb(152, 225, 253);
+$autotag-hover-color: color.scale($autotag-color, $lightness: $hover-darken);
+$texttag-color: rgb(247, 201, 203);
+$texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
+
+.keyword {
     display: inline-block;
     font-size: 0.8em;
-    background-color: #cfc;
     padding: 2px 4px;
     border-style: solid;
     border-width: 1px;
@@ -175,17 +184,34 @@ img.sector {
     border-radius: 10px;
     margin-bottom: 3px;
     white-space: nowrap;
-}
+    &.handtag {
+        background-color: $handtag-color;
+        &:hover {
+            background-color: $handtag-hover-color;
+        }
+    }
+    &.autotag {
+        background-color: $autotag-color;
+        &:hover {
+            background-color: $autotag-hover-color;
+        }
+    }
+    &.texttag {
+        background-color: $texttag-color;
+        &:hover {
+            background-color: $texttag-hover-color;
+        }
+        white-space: normal;
+    }
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+        text-decoration: none;
+        color: #3e3e3e;
+    }
 
-.image span.keyword.autotag {
-    background-color: rgb(152, 225, 253);
 }
-
-.image span.keyword.texttag {
-    white-space: normal;
-    background-color: rgb(247, 201, 203);
-}
-
 
 .image .row.description,
 .wander .row.description {

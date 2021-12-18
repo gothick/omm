@@ -94,17 +94,17 @@
         <div class="col pt-3 footerstrip">
             <p><b>Tags:</b>
                 {% for tag in image.tags %}
-                    <span class="keyword">{{ tag }}</span>
+                <a class="keyword handtag" href="{{ path('tag', { 'tag': tag }) }}">{{ tag }}</a>
                 {% endfor %}
             </p>
-            <p><b>Experimental Machine-Learning Auto-Tags:</b>
+            <p><b>Auto-Tags:</b>
                 {% for tag in image.autoTags %}
-                <span class="keyword autotag">{{ tag }}</span>
+                <a class="keyword autotag" href="{{ path('tag', { 'tag': tag }) }}">{{ tag }}</a>
                 {% endfor %}
             </p>
-            <p><b>Experimental Machine-Learning Text Recognition Tags:</b>
+            <p><b>Text Recognition Tags:</b>
                 {% for tag in image.textTags %}
-                <span class="keyword texttag">{{ tag }}</span>
+                <a class="keyword texttag" href="{{ path('tag', { 'tag': tag }) }}">{{ tag }}</a>
                 {% endfor %}
             </p>
         </div>
