@@ -33,7 +33,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/clearStatsCache", name="clear_stats_cache")
      */
-    public function clearStatsCache(Request $request, TagAwareCacheInterface $cache)
+    public function clearStatsCache(Request $request, TagAwareCacheInterface $cache): Response
     {
         if ($this->isCsrfTokenValid('admin_clear_stats_cache', $request->request->get('_token'))) {
             $cache->invalidateTags(['stats']);
