@@ -1,15 +1,33 @@
 {% extends 'admin/base.html.twig' %}
 {% block title %}One Mile Matt Admin Backend{% endblock %}
 {% block body %}
+
 <div class="dashboard">
     <div class="row">
         <div class="col">
             {% for message in app.flashes('notice') %}
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-info-circle"></i> {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="details">
+                <h2>Utilities</h2>
+                <form action="{{ path('admin_clear_stats_cache') }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('admin_clear_stats_cache') }}">
+                    <button class="btn btn-info" type="submit" name="submit" value="submit" class="btn-link">Clear Stats Cache</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -136,23 +154,70 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-2 d-none d-md-block">
+            <div class="headline">
+                <div class="name">Monthly Stats</div>
+            </div>
+        </div>
         <div class="col">
             <div class="details">
-                <h2>Current Experiments</h2>
-                <ul>
-                    <li><a href="{{ path('admin_image_cluster') }}">All Images Clustering Experiment</a></li>
-                </ul>
+                <table cellpadding="4">
+                    <tr>
+                        <th>Month</th>
+                        <th>Number of Wanders</th>
+                        <th>Number of Images</th>
+                        <th>Total Walking Distance</th>
+                        <th>Total Walking Duration</th>
+                    </tr>
+                    {% for month in wanderStats.monthlyStats | reverse %}
+                    <tr>
+                        <td>{{ month.periodLabel }}</td>
+                        <td class="text-center">{{ month.numberOfWanders }}</td>
+                        <td class="text-center">{{ month.numberOfImages }}</td>
+                        <td class="text-center">{{ (month.totalDistance / 1000.0) | number_format(2) ~ 'km' }}</td>
+                        <td class="text-start">{{ month.totalDurationForHumans }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2 d-none d-md-block">
+            <div class="headline">
+                <div class="name">Yearly Stats</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="details">
+                <table cellpadding="4">
+                    <tr>
+                        <th>Year</th>
+                        <th>Number of Wanders</th>
+                        <th>Number of Images</th>
+                        <th>Total Walking Distance</th>
+                        <th>Total Walking Duration</th>
+                    </tr>
+                    {% for year in wanderStats.yearlyStats | reverse %}
+                    <tr>
+                        <td>{{ year.periodLabel }}</td>
+                        <td class="text-center">{{ year.numberOfWanders }}</td>
+                        <td class="text-center">{{ year.numberOfImages }}</td>
+                        <td class="text-center">{{ (year.totalDistance / 1000.0) | number_format(2) ~ 'km' }}</td>
+                        <td class="text-start">{{ year.totalDurationForHumans }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="details">
-                <h2>Utilities</h2>
-                <form action="{{ path('admin_clear_stats_cache') }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token('admin_clear_stats_cache') }}">
-                    <button class="btn btn-info" type="submit" name="submit" value="submit" class="btn-link">Clear Stats Cache</button>
-                </form>
+                <h2>Current Experiments</h2>
+                <ul>
+                    <li><a href="{{ path('admin_image_cluster') }}">All Images Clustering Experiment</a></li>
+                </ul>
             </div>
         </div>
     </div>
