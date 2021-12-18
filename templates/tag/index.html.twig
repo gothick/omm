@@ -76,17 +76,17 @@
                                 <div class="col footerstrip pt-2 me-2">
                                     <p><b>Tags:</b>
                                         {% for each_tag in image.tags %}
-                                            <span class="keyword {% if tag | lower == each_tag | lower %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                            <a class="keyword handtag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                     <p><b>Auto-Tags:</b>
                                         {% for each_tag in image.autoTags %}
-                                            <span class="keyword {% if tag | lower == each_tag | lower %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                            <a class="keyword autotag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                     <p><b>Text Recognition Tags:</b>
                                         {% for each_tag in image.textTags %}
-                                        <span class="keyword {% if tag | lower == each_tag | lower  %}fw-bold{% endif %}">{{ each_tag }}</span>
+                                            <a class="keyword texttag {% if tag | lower == each_tag | lower  %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                 </div>
