@@ -15,16 +15,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends AbstractController
 {
-    /** @var array<string, array<int, string>> $translateParam */
+    /** @var array<string, array<string, array<int, string>|string>> $translateParam */
     private static $translateParam = [
-        'any' => ['images.tags', 'images.autoTags', 'images.textTags'],
-        'tags' => ['images.tags'],
-        'auto_tags' => ['images.autoTags'],
-        'text_tags' => ['images.textTags'],
+        'any'       => [
+            'fields' => ['images.tags', 'images.autoTags', 'images.textTags'],
+            'description' => 'all tag types'
+        ],
+        'hand-tag'  => [
+            'fields' => ['images.tags'],
+            'description' => 'only hand-created tags'
+        ],
+        'auto-tag'  => [
+            'fields' => ['images.autoTags'],
+            'description' => 'only tags created by automatic image recognition'
+        ],
+        'text-tag'  => [
+            'fields' => ['images.textTags'],
+            'description' => 'only tags created by automatic text recognition'
+        ],
     ];
 
     /**
-     * @Route("/tag/{tag}/{type}", name="tag", methods={"GET"}, requirements={"type": "any|tags|auto_tags|text_tags"})
+     * @Route("/tag/{tag}/{type}", name="tag", methods={"GET"}, requirements={"type": "any|hand-tag|auto-tag|text-tag"})
      */
     public function index(
         string $tag,
@@ -33,7 +45,8 @@ class TagController extends AbstractController
         PaginatorInterface $paginator,
         string $type = "any"
     ): Response {
-        $fields = self::$translateParam[$type];
+        $fields = self::$translateParam[$type]['fields'];
+        $searchDescription = self::$translateParam[$type]['description'];
 
         $nmm = new MultiMatch();
         $nmm->setQuery($tag);
@@ -66,7 +79,7 @@ class TagController extends AbstractController
             // TODO: Take this back out; we'll only need to pass the pagination in the long run. I'm debugging.
             'results' => $results,
             'pagination' => $pagination,
-            'search_type' => $type
+            'search_description' => $searchDescription
         ]);
     }
 }

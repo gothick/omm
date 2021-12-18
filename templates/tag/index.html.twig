@@ -15,15 +15,7 @@
         <div class="col mt-2 search resultcount">
             {% if pagination %}
                 {{ pagination.getTotalItemCount }} wanders with images tagged "{{ tag | lower }}"
-                {% if search_type == 'tags' %}
-                    (searching only hand-created tags.)
-                {% elseif search_type == 'auto_tags' %}
-                    (searching only tags created by automatic image recognition.)
-                {% elseif search_type == 'text_tags' %}
-                    (searching only tags created by automatic text recognition.)
-                {% else %}
-                    (searching all tag types.)
-                {% endif %}
+                (searching {{ search_description }}.)
             {% endif %}
         </div>
     </div>
