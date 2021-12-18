@@ -159,7 +159,7 @@ class StatsService
         $row = $result->fetchAssociative();
 
         if ($row === false) {
-            throw new \Exception("Got no results when finding duration stats.");
+            throw new Exception("Got no results when finding duration stats.");
         }
 
         $overallTimeStats = [
@@ -207,7 +207,7 @@ class StatsService
             if ($row === false) {
                 // It's entirely aggregated, so even if no rows match the WHERE there should always be a row
                 // returned.
-                throw new \Exception("Expected to get a row back from the database no matter what with this query.");
+                throw new Exception("Expected to get a row back from the database no matter what with this query.");
             }
             $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
