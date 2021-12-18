@@ -35,13 +35,18 @@ class AdminController extends AbstractController
      */
     public function clearStatsCache(Request $request, TagAwareCacheInterface $cache): Response
     {
-        if ($this->isCsrfTokenValid('admin_clear_stats_cache', $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('admin_clear_stats_cache', (string) $request->request->get('_token'))) {
             $cache->invalidateTags(['stats']);
             $this->addFlash(
                 'notice',
                 'Stats Cache Cleared.'
             );
-            return $this->redirectToRoute('admin_index');
+        } else {
+            $this->addFlash(
+                'error',
+                'Stats not cleared. Invalid Csrf token.'
+            );
         }
+        return $this->redirectToRoute('admin_index');
     }
 }
