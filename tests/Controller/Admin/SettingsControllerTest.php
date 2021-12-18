@@ -23,12 +23,12 @@ class SettingsControllerTest Extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
-        $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
+        $this->client = static::createClient(array(), array('HTTPS' => true));
+        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
             'App\DataFixtures\UserFixtures'
         ]);
-        $userRepository = static::$container->get(UserRepository::class);
+        $userRepository = static::getContainer()->get(UserRepository::class);
         $this->adminUser = $userRepository->findOneByUsername('admin');
     }
 
@@ -42,7 +42,7 @@ class SettingsControllerTest Extends WebTestCase
     public function testNotLoggedIn(): void
     {
         $crawler = $this->client->request('GET', '/admin/settings/');
-        $this->assertResponseRedirects('http://localhost/login');
+        $this->assertResponseRedirects('https://localhost/login');
     }
 
     public function testClickEdit(): void
