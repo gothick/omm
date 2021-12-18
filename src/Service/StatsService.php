@@ -86,13 +86,19 @@ class StatsService
             $wanderStats['longestWanderDistance'] = $this->wanderRepository->findLongest();
             $wanderStats['averageWanderDistance'] = $this->wanderRepository->findAverageDistance();
 
-            $wanderStats['monthlyStats'] = $this->getMonthlyStats(
+            $wanderStats['monthlyStats'] = $this->getPeriodicStats(
                 $overallTimeStats['firstWanderStartTime']->startOfMonth(),
-                $overallTimeStats['latestWanderStartTime']->startOfMonth()
+                $overallTimeStats['latestWanderStartTime']->startOfMonth(),
+                1,
+                'MMM YYYY'
             );
 
-
-
+            $wanderStats['yearlyStats'] = $this->getPeriodicStats(
+                $overallTimeStats['firstWanderStartTime']->startOfYear(),
+                $overallTimeStats['latestWanderStartTime']->startOfMonth(),
+                12,
+                'YYYY'
+            );
 
             // Specialist stuff
             $qb = $this->wanderRepository
@@ -168,10 +174,10 @@ class StatsService
     /**
      * @return array<int, array<string, mixed>>
      */
-    private function getMonthlyStats(Carbon $firstWanderMonth, Carbon $latestWanderMonth): array
+    private function getPeriodicStats(Carbon $startMonth, Carbon $endMonth, int $periodLengthMonths, string $periodLabelFormat): array
     {
-        // Stats per month. It would be most efficient to write some complicated SQL query that
-        // groups the lot together, including filling in months with missing data using some kind
+        // Stats per month or year. It would be most efficient to write some complicated SQL query
+        // that groups the lot together, including filling in months with missing data using some kind
         // of row generator or date dimension table, but frankly this is still fast enough,
         // especially as it's cached and invalidated quite sensibly.
         $sql = 'SELECT
@@ -189,13 +195,13 @@ class StatsService
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
 
-        $monthlyStats = [];
+        $periodicStats = [];
 
-        for ($currMonth = $firstWanderMonth; $currMonth <= $latestWanderMonth; $currMonth->addMonths(1)) {
-            $nextMonth = $currMonth->copy()->addMonths(1);
+        for ($rangeStartMonth = $startMonth->copy(); $rangeStartMonth <= $endMonth; $rangeStartMonth->addMonths($periodLengthMonths)) {
+            $rangeEndMonth = $rangeStartMonth->copy()->addMonths($periodLengthMonths);
             $result = $stmt->executeQuery([
-                'start' => $currMonth,
-                'end' => $nextMonth
+                'start' => $rangeStartMonth,
+                'end' => $rangeEndMonth
             ]);
             $row = $result->fetchAssociative();
             if ($row === false) {
@@ -204,11 +210,12 @@ class StatsService
                 throw new \Exception("Expected to get a row back from the database no matter what with this query.");
             }
             $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
-            $monthlyStats[] = [
-                'firstOfMonthDate' => $currMonth,
-                'monthLabel' => $currMonth->isoFormat('MMM YYYY'),
-                'year' => $currMonth->year,
-                'month' => $currMonth->month,
+            $periodicStats[] = [
+                'periodStartDate' => $rangeStartMonth,
+                'periodEndDate' => $rangeEndMonth,
+                'periodLabel' => $rangeStartMonth->isoFormat($periodLabelFormat),
+                'starYear' => $rangeStartMonth->year,
+                'startMonth' => $rangeStartMonth->month,
                 'numberOfWanders' => (int) $row['number_of_wanders'],
                 'totalDistance' => (float) $row['total_distance_metres'],
                 'numberOfImages' => (int) $row['number_of_images'],
@@ -217,6 +224,6 @@ class StatsService
                 'averageDurationInterval' => CarbonInterval::seconds($row['average_duration_seconds'])->cascade(),
             ];
         }
-        return $monthlyStats;
+        return $periodicStats;
     }
 }
