@@ -36,10 +36,10 @@ class SearchController extends AbstractController
         PaginatorInterface $paginator): Response
     {
         // $finder = $this->container->get('fos_elastica.finder.app');
-
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
+        $queryString = "";
 
-        $form = $this->createFormBuilder(null, ['method' => 'GET' ])
+        $form = $this->createFormBuilder(null, ['method' => 'GET'])
             ->add('query', SearchType::class, ['label' => false])
             ->getForm();
 
@@ -47,11 +47,11 @@ class SearchController extends AbstractController
         $pagination = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
+            $queryString = $data['query'];
             // Nested query to find all wanders with images that match
             // the text.
             $nmm = new MultiMatch();
-            $nmm->setQuery($data['query']);
+            $nmm->setQuery($queryString);
             // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
             // you might be able to just not setFields and it'll default to * and might catch everything
             // anyway.
@@ -83,19 +83,10 @@ class SearchController extends AbstractController
                     'no_match_size' => 1024,
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']
-                ],
-                'images.tags' => [
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'images.autoTags' => [
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'images.textTags' => [
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
                 ]
+                // We don't need to highlight tag hits, as they're Elasticsearch keywords and will
+                // only be found by an exact match on the search term. We highlight them more simply
+                // just by looking at which ones match $queryString in the twig template.
             ]]);
             $nested->setInnerHits($innerHits);
 
@@ -136,6 +127,7 @@ class SearchController extends AbstractController
             );
         }
         return $this->render('search/index.html.twig', [
+            'query_string' => $queryString,
             'form' => $form->createView(),
             'pagination' => $pagination
         ]);
