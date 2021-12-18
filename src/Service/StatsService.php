@@ -57,7 +57,7 @@ class StatsService
                 ->addSelect('COUNT(i.title) as countWithTitle')
                 ->addSelect('COUNT(i.description) as countWithDescription')
                 ->getQuery()
-                ->getOneOrNullResult();
+                ->getSingleResult();
             return $imageStats;
         });
         return $stats;
@@ -129,7 +129,7 @@ class StatsService
             ->addSelect('COALESCE(SUM(w.distance), 0) as totalDistance')
             ->addSelect('COALESCE(SUM(w.cumulativeElevationGain), 0) as totalCumulativeElevationGain')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getSingleResult();
 
         $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
         return $wanderStats;
