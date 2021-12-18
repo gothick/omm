@@ -15,15 +15,7 @@
         <div class="col mt-2 search resultcount">
             {% if pagination %}
                 {{ pagination.getTotalItemCount }} wanders with images tagged "{{ tag | lower }}"
-                {% if search_type == 'tags' %}
-                    (searching only hand-created tags.)
-                {% elseif search_type == 'auto_tags' %}
-                    (searching only tags created by automatic image recognition.)
-                {% elseif search_type == 'text_tags' %}
-                    (searching only tags created by automatic text recognition.)
-                {% else %}
-                    (searching all tag types.)
-                {% endif %}
+                (searching {{ search_description }}.)
             {% endif %}
         </div>
     </div>
@@ -76,17 +68,17 @@
                                 <div class="col footerstrip pt-2 me-2">
                                     <p><b>Tags:</b>
                                         {% for each_tag in image.tags %}
-                                            <a class="keyword handtag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
+                                            <a class="keyword handtag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag | lower }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                     <p><b>Auto-Tags:</b>
                                         {% for each_tag in image.autoTags %}
-                                            <a class="keyword autotag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
+                                            <a class="keyword autotag {% if tag | lower == each_tag | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag | lower }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                     <p><b>Text Recognition Tags:</b>
                                         {% for each_tag in image.textTags %}
-                                            <a class="keyword texttag {% if tag | lower == each_tag | lower  %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag }) }}">{{ each_tag }}</a>
+                                            <a class="keyword texttag {% if tag | lower == each_tag | lower  %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': each_tag | lower }) }}">{{ each_tag }}</a>
                                         {% endfor %}
                                     </p>
                                 </div>
