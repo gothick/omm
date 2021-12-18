@@ -18,8 +18,8 @@ class HomeControllerTest Extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient();
-        $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
+        $this->client = static::createClient(array(), array('HTTPS' => true));
+        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains this wander:
         // GPX: 01-APR-21 125735.GPX
