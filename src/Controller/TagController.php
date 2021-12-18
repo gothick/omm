@@ -28,12 +28,11 @@ class TagController extends AbstractController
      */
     public function index(
         string $tag,
-        string $type = "any",
         Request $request,
         PaginatedFinderInterface $wanderFinder,
-        PaginatorInterface $paginator
-        ): Response
-    {
+        PaginatorInterface $paginator,
+        string $type = "any"
+    ): Response {
         $fields = self::$translateParam[$type];
 
         $nmm = new MultiMatch();
@@ -54,7 +53,6 @@ class TagController extends AbstractController
         // the outer results.
         $innerHits->setSize(10);
         $nested->setInnerHits($innerHits);
-
 
         $results = $wanderFinder->createHybridPaginatorAdapter($nested);
         $pagination = $paginator->paginate(
