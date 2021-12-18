@@ -24,7 +24,7 @@
 {% block body %}
     <div class="row wander mx-0">
         <div class="col headerstrip">
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <div class="row adminstrip">
                     <div class="col">
                         <a href="{{ path('admin_wanders_edit', {'id': wander.id}) }}">Edit</a>
