@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistics{% endblock %}
+{% block containerclass %}stats{% endblock %}
+{% block body %}
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline wanders">
+            <div class="name">Wanders</div>
+            <div class="value">{{ wanderStats.totalCount }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="details text wanders">
+            <table>
+                <tr>
+                    <th>Total Wander Count:</th><td>{{ wanderStats.totalCount }}</td>
+                </tr>
+                {% if wanderStats.hasWanders %}
+                <tr>
+                    <th>Total Distance:</th>
+                    <td>
+                        {{ (wanderStats.totalDistance / 1000.0) | number_format(2) ~ 'km' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Average Distance per Wander:</th>
+                    <td>
+                        {% if wanderStats.hasWanders %}
+                        {{ ((wanderStats.totalDistance/wanderStats.totalCount)/1000.0)| number_format(2) ~ 'km' }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Duration:</th>
+                    <td>
+                        {{ wanderStats.totalDurationForHumans }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Cumulative Elevation Gain:</th>
+                    <td>
+                        {{ wanderStats.totalCumulativeElevationGain | number_format(2) ~ 'm' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Longest Wander:</th>
+                    <td>
+                        <a href="{{ path('wanders_show', {'id': wanderStats.longestWanderDistance.id }) }}">Wander {{ wanderStats.longestWanderDistance.id }}</a>: {{ (wanderStats.longestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Shortest Wander:</th>
+                    <td>
+                        <a href="{{ path('wanders_show', {'id': wanderStats.shortestWanderDistance.id }) }}">Wander {{ wanderStats.shortestWanderDistance.id }}</a>: {{ (wanderStats.shortestWanderDistance.distance / 1000.0) | number_format(2) ~ 'km' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Average Wander Length:</th>
+                    <td>
+                        {{ (wanderStats.averageWanderDistance / 1000.0) | number_format(2) ~ 'km' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Average Wander Duration:</th>
+                    <td>
+                        {{ wanderStats.averageDurationForHumans }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>With Title:</th>
+                    <td>
+                        {{ wanderStats.countWithTitle }} ({{ (wanderStats.countWithTitle / wanderStats.totalCount * 100.0) |number_format(2) }}%)
+                    </td>
+                </tr>
+                <tr>
+                    <th>With Description:</th>
+                    <td>
+                        {{ wanderStats.countWithDescription }} ({{ (wanderStats.countWithDescription / wanderStats.totalCount * 100.0) |number_format(2) }}%)
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline wanders">
+            <div class="name">By Month</div>
+        </div>
+    </div>
+    <div class="col">
+        {{ render_chart(monthlyWanderChart, {'class': 'details graph monthly'}) }}
+    </div>
+</div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline wanders">
+            <div class="name">By Year</div>
+        </div>
+    </div>
+    <div class="col">
+        {{ render_chart(yearlyWanderChart, {'class': 'details graph yearly'}) }}
+    </div>
+</div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline images">
+            <div class="name">Photos</div>
+            <div class="value">{{ imageStats.totalCount }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="details text images">
+            {% if imageStats.totalCount > 0 %} {# Avoid division by zero #}
+            <table>
+                <tr>
+                    <th>Total Image Count:</th><td>{{ imageStats.totalCount }}</td>
+                </tr>
+                <tr>
+                    <th>With Co-Ordinates:</th>
+                    <td>
+                        {{ imageStats.countWithCoords }} ({{ (imageStats.countWithCoords / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                    </td>
+                </tr>
+                <tr>
+                    <th>With Title:</th>
+                    <td>
+                        {{ imageStats.countWithTitle }} ({{ (imageStats.countWithTitle / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                    </td>
+                </tr>
+                <tr>
+                    <th>With Description:</th>
+                    <td>
+                        {{ imageStats.countWithDescription }} ({{ (imageStats.countWithDescription / imageStats.totalCount * 100.0) |number_format(2) }}%)
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline images">
+            <div class="name">By Month</div>
+        </div>
+    </div>
+    <div class="col">
+        {{ render_chart(monthlyImagesChart, {'class': 'details graph monthly'}) }}
+    </div>
+</div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline images">
+            <div class="name">By Year</div>
+        </div>
+    </div>
+    <div class="col">
+        {{ render_chart(yearlyImagesChart, {'class': 'details graph yearly'}) }}
+    </div>
+</div>
+
+{% endblock %}
