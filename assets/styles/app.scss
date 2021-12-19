@@ -307,20 +307,9 @@ $texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
 
 /* Stats Dashboard */
 
-/* Color Theme Swatches in Hex */
-// https://www.behance.net/gallery/132016363/Shakuntala?tracking_source=curated_galleries_list
-// .Fashion-1-hex { color: #A6246C; }
-// .Fashion-2-hex { color: #252140; }
-// .Fashion-3-hex { color: #0367A6; }
-// .Fashion-4-hex { color: #05C7F2; }
-// .Fashion-5-hex { color: #A61B0F; }
-
-$stats-color-wander: #A6246C;
-$stats-color-image: #0367A6;
-$stats-color-monthly: #252140;
-$stats-color-yearly: #A61B0F;
-
-
+// Starting point: https://www.behance.net/gallery/132016363/Shakuntala?tracking_source=curated_galleries_list
+$stats-color-wander: #2491B3;
+$stats-color-image: #BF5439;
 
 .stats {
     .headline,
@@ -346,16 +335,6 @@ $stats-color-yearly: #A61B0F;
     .headline.images,
     .details.text.images {
         background-color: $stats-color-image;
-    }
-
-    .headline.monthly,
-    .details.text.monthly {
-        background-color: $stats-color-monthly;
-    }
-
-    .headline.yearly,
-    .details.text.yearly {
-        background-color: $stats-color-yearly;
     }
 
     .stats-row {

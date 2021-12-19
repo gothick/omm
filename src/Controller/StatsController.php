@@ -21,8 +21,10 @@ class StatsController extends AbstractController
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
 
-        $wanderNumberColour = '#A6246C';
-        $imagesNumberColour = '#0367A6';
+        $wanderNumberColour = '#2491B3';
+        $wanderDistanceColour = '#ffb266';
+
+        $imagesNumberColour = '#BF5439';
 
         $monthlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
         $monthlyWanderChart->setData([
@@ -37,7 +39,7 @@ class StatsController extends AbstractController
                 ],
                 [
                     'label' => 'Distance Walked (km)',
-                    'backgroundColor' => '#ffb266',// '#66ffff',
+                    'backgroundColor' => $wanderDistanceColour,
                     'borderColor' => 'black',
                     'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['monthlyStats']),
                 ]
@@ -57,7 +59,7 @@ class StatsController extends AbstractController
                 ],
                 [
                     'label' => 'Distance Walked (km)',
-                    'backgroundColor' => '#ffb266', // '#66ffff',
+                    'backgroundColor' => $wanderDistanceColour,
                     'borderColor' => 'black',
                     'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['yearlyStats']),
                 ]
