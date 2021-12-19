@@ -49,8 +49,7 @@ class AdminController extends AbstractController
     private function buildPeriodicChart(
         array $periodicStats,
         ChartBuilderInterface $chartBuilder
-    ): Chart
-    {
+    ): Chart {
         $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
         $chart->setData([
             'labels' => array_map(fn($dp): string => $dp['periodLabel'], $periodicStats),
