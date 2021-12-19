@@ -305,6 +305,99 @@ $texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
     text-decoration: none;
 }
 
+/* Stats Dashboard */
+
+/* Color Theme Swatches in Hex */
+// https://www.behance.net/gallery/132016363/Shakuntala?tracking_source=curated_galleries_list
+// .Fashion-1-hex { color: #A6246C; }
+// .Fashion-2-hex { color: #252140; }
+// .Fashion-3-hex { color: #0367A6; }
+// .Fashion-4-hex { color: #05C7F2; }
+// .Fashion-5-hex { color: #A61B0F; }
+
+$stats-color-wander: #A6246C;
+$stats-color-image: #0367A6;
+$stats-color-monthly: #252140;
+$stats-color-yearly: #A61B0F;
+
+
+
+.stats {
+    .headline,
+    .details.text {
+        background-color: grey;
+        color: white;
+        border-radius: 1em;
+        padding: 16px 0;
+    }
+
+    .headline.wanders,
+    .details.text.wanders {
+        background-color: $stats-color-wander;
+    }
+
+    table {
+        font-size: 1.2em;
+        td {
+            padding-left: 8px;
+        }
+    }
+
+    .headline.images,
+    .details.text.images {
+        background-color: $stats-color-image;
+    }
+
+    .headline.monthly,
+    .details.text.monthly {
+        background-color: $stats-color-monthly;
+    }
+
+    .headline.yearly,
+    .details.text.yearly {
+        background-color: $stats-color-yearly;
+    }
+
+    .stats-row {
+        margin-top: 30px;
+    }
+
+    .headline {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .details.text {
+        padding: 16px 16px;
+    }
+
+    .details a:link,
+    .details a:visited,
+    .details a:hover,
+    .details a:active {
+        color: white;
+        text-decoration: underline;
+    }
+
+    .details dl dt {
+        display: inline-block;
+    }
+
+    .details dl dd {
+        display: inline-block;
+    }
+
+    .headline .name {
+        text-transform: uppercase;
+    }
+
+    .headline .value {
+        font-size: 54px;
+        line-height: 64px;
+    }
+}
+
 /* Small devices (landscape phones, 576px and up) */
 /*
 @media (min-width: 576px) {  }
