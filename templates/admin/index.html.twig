@@ -159,27 +159,7 @@
             </div>
         </div>
         <div class="col">
-            {{ render_chart(chart) }}
-            <div class="details">
-                <table cellpadding="4">
-                    <tr>
-                        <th>Month</th>
-                        <th>Number of Wanders</th>
-                        <th>Number of Images</th>
-                        <th>Total Walking Distance</th>
-                        <th>Total Walking Duration</th>
-                    </tr>
-                    {% for month in wanderStats.monthlyStats | reverse %}
-                    <tr>
-                        <td>{{ month.periodLabel }}</td>
-                        <td class="text-center">{{ month.numberOfWanders }}</td>
-                        <td class="text-center">{{ month.numberOfImages }}</td>
-                        <td class="text-center">{{ (month.totalDistance / 1000.0) | number_format(2) ~ 'km' }}</td>
-                        <td class="text-start">{{ month.totalDurationForHumans }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+            {{ render_chart(monthlyChart) }}
         </div>
     </div>
     <div class="row">
@@ -189,26 +169,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="details">
-                <table cellpadding="4">
-                    <tr>
-                        <th>Year</th>
-                        <th>Number of Wanders</th>
-                        <th>Number of Images</th>
-                        <th>Total Walking Distance</th>
-                        <th>Total Walking Duration</th>
-                    </tr>
-                    {% for year in wanderStats.yearlyStats | reverse %}
-                    <tr>
-                        <td>{{ year.periodLabel }}</td>
-                        <td class="text-center">{{ year.numberOfWanders }}</td>
-                        <td class="text-center">{{ year.numberOfImages }}</td>
-                        <td class="text-center">{{ (year.totalDistance / 1000.0) | number_format(2) ~ 'km' }}</td>
-                        <td class="text-start">{{ year.totalDurationForHumans }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+            {{ render_chart(yearlyChart) }}
         </div>
     </div>
     <div class="row">

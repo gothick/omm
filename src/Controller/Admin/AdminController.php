@@ -28,33 +28,55 @@ class AdminController extends AbstractController
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
 
-        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
-        $chart->setData([
-            'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            'datasets' => [
-                [
-                    'label' => 'My First dataset',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
-                    'borderColor' => 'rgb(255, 99, 132)',
-                    'data' => [0, 10, 5, 2, 20, 30, 45],
-                ],
-            ],
-        ]);
-
-        $chart->setOptions([
-            'scales' => [
-                'y' => [
-                   'suggestedMin' => 0,
-                   'suggestedMax' => 100,
-                ],
-            ],
-        ]);
+        $monthlyChart = $this->buildPeriodicChart($wanderStats['monthlyStats'], $chartBuilder);
+        $yearlyChart = $this->buildPeriodicChart($wanderStats['yearlyStats'], $chartBuilder);
 
         return $this->render('admin/index.html.twig', [
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
-            'chart' => $chart
+            'monthlyChart' => $monthlyChart,
+            'yearlyChart' => $yearlyChart
         ]);
+    }
+
+    /**
+     * Builds the data for a periodic Chartjs stats chart, e.g. wanders/distance/etc per month or year.
+     *
+     * @return Chart
+     * @param array<string, mixed> $periodicStats
+     * @param ChartBuilderInterface $chartBuilder
+     */
+    private function buildPeriodicChart(
+        array $periodicStats,
+        ChartBuilderInterface $chartBuilder
+    ): Chart
+    {
+        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $chart->setData([
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $periodicStats),
+            'datasets' => [
+                // TODO: These colours should be defined in CSS. Add class somehow?
+                [
+                    'label' => 'Number of Wanders',
+                    'backgroundColor' => '#ff66b2',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $periodicStats),
+                ],
+                [
+                    'label' => 'Distance Walked (km)',
+                    'backgroundColor' => '#66ffff',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $periodicStats),
+                ],
+                [
+                    'label' => 'Photos Taken',
+                    'backgroundColor' => '#ffb266',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $periodicStats),
+                ]
+            ]
+        ]);
+        return $chart;
     }
 
     /**
