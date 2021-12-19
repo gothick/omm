@@ -26,10 +26,12 @@ class AdminController extends AbstractController
     ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
+        $imageLocationStats = $statsService->getImageLocationStats();
 
         return $this->render('admin/index.html.twig', [
             'imageStats' => $imageStats,
-            'wanderStats' => $wanderStats
+            'wanderStats' => $wanderStats,
+            'imageLocationStats' => $imageLocationStats
         ]);
     }
 

@@ -161,5 +161,16 @@
         {{ render_chart(yearlyImagesChart, {'class': 'details graph yearly'}) }}
     </div>
 </div>
+<div class="row stats-row">
+    <div class="col-2 d-none d-md-block">
+        <div class="headline locations">
+            <div class="name">Image Locations</div>
+        </div>
+    </div>
+    <div class="col">
+        {{ render_chart(locationsChart, {'class': 'details graph locations'}) }}
+    </div>
+</div>
+
 
 {% endblock %}
