@@ -11,6 +11,9 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class StatsController extends AbstractController
 {
+    const WANDER_NUMBER_COLOUR = '#2491B3';
+    const WANDER_DISTANCE_COLOUR = '#ffb266';
+    const IMAGES_NUMBER_COLOUR = '#BF5439';
     /**
      * @Route("/stats", name="stats_index")
      */
@@ -21,93 +24,44 @@ class StatsController extends AbstractController
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
 
-        $wanderNumberColour = '#2491B3';
-        $wanderDistanceColour = '#ffb266';
-
-        $imagesNumberColour = '#BF5439';
-
-        $barBorderRadius = 5;
-
-        $monthlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $monthlyWanderChart->setData([
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['monthlyStats']),
-            'datasets' => [
-                // TODO: These colours should be defined in CSS. Add class somehow?
+        $wanderDataSeries =
+            [
                 [
                     'label' => 'Number of Wanders',
-                    'backgroundColor' => $wanderNumberColour,
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['monthlyStats']),
-
+                    'colour' => self::WANDER_NUMBER_COLOUR,
+                    'extractFunction' => fn($dp): int => $dp['numberOfWanders'],
                 ],
                 [
                     'label' => 'Distance Walked (km)',
-                    'backgroundColor' => $wanderDistanceColour,
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['monthlyStats']),
+                    'colour' => self::WANDER_DISTANCE_COLOUR,
+                    'extractFunction' => fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2)
                 ]
-            ]
-        ]);
+            ];
 
-        $yearlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $yearlyWanderChart->setData([
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['yearlyStats']),
-            'datasets' => [
-                // TODO: These colours should be defined in CSS. Add class somehow?
-                [
-                    'label' => 'Number of Wanders',
-                    'backgroundColor' => $wanderNumberColour,
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['yearlyStats']),
-                ],
-                [
-                    'label' => 'Distance Walked (km)',
-                    'backgroundColor' => $wanderDistanceColour,
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['yearlyStats']),
-                ]
-            ]
-        ]);
+        $monthlyWanderChart = $chartBuilder
+            ->createChart(Chart::TYPE_BAR)
+            ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $wanderDataSeries));
 
-        $monthlyImagesChart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $monthlyImagesChart->setData([
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['monthlyStats']),
-            'datasets' => [
-                // TODO: These colours should be defined in CSS. Add class somehow?
+        $yearlyWanderChart = $chartBuilder
+            ->createChart(Chart::TYPE_BAR)
+            ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $wanderDataSeries));
+
+        $imageDataSeries =
+            [
                 [
                     'label' => 'Photos Taken',
-                    'backgroundColor' => $imagesNumberColour, // '#ffb266',
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['monthlyStats']),
+                    'colour' => self::IMAGES_NUMBER_COLOUR,
+                    'extractFunction' => fn($dp): int => $dp['numberOfImages'],
                 ]
-            ]
-        ]);
+            ];
 
-        $yearlyImagesChart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $yearlyImagesChart->setData([
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['yearlyStats']),
-            'datasets' => [
-                // TODO: These colours should be defined in CSS. Add class somehow?
-                [
-                    'label' => 'Photos Taken',
-                    'backgroundColor' => $imagesNumberColour, // '#ffb266',
-                    'borderColor' => 'black',
-                    'borderWidth' => 1,
-                    'borderRadius' => $barBorderRadius,
-                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['yearlyStats']),
-                ]
-            ]
-        ]);
+        $monthlyImagesChart = $chartBuilder
+            ->createChart(Chart::TYPE_BAR)
+            ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $imageDataSeries));
+
+        $yearlyImagesChart = $chartBuilder
+            ->createChart(Chart::TYPE_BAR)
+            ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $imageDataSeries));
 
         return $this->render('stats/index.html.twig', [
             'controller_name' => 'StatsController', // TODO: Remove this boilerplate
@@ -118,5 +72,30 @@ class StatsController extends AbstractController
             'monthlyImagesChart' => $monthlyImagesChart,
             'yearlyImagesChart' => $yearlyImagesChart
         ]);
+    }
+
+    /**
+     * @param array<string, mixed> $sourceStats
+     * @param array<int, array<string, mixed>> $seriesDefinitions
+     * @return array<string, mixed>
+     */
+    private function generatePeriodicChartData(
+        array $sourceStats,
+        array $seriesDefinitions
+    ): array {
+        $data = [
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $sourceStats)
+        ];
+        foreach ($seriesDefinitions as $series) {
+            $data['datasets'][] = [
+                'label' => $series['label'],
+                'backgroundColor' => $series['colour'],
+                'borderColor' => 'black',
+                'borderWidth' => 1,
+                'borderRadius' => 5,
+                'data' => array_map($series['extractFunction'], $sourceStats)
+            ];
+        }
+        return $data;
     }
 }
