@@ -115,7 +115,11 @@ after('cachetool:clear:opcache', 'deploy:stop-workers');
 
 before('deploy:symlink', 'database:migrate');
 
-// Webpack Encore
-after('deploy:update_code', 'yarn:install');
-after('deploy:update_code', 'webpack_encore:build');
-
+// Yarn and Webpack Encore. Note that Yarn has to install _after_
+// Composer, as some of the Symfony JS stuff introduces a Yarn
+// dependency on a file in a Composer vendor directory. (it's for
+// Charts.js:
+//         "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets",
+// )
+after('deploy:vendors', 'yarn:install');
+after('yarn:install', 'webpack_encore:build');
