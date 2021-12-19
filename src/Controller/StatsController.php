@@ -17,59 +17,89 @@ class StatsController extends AbstractController
     public function index(
         StatsService $statsService,
         ChartBuilderInterface $chartBuilder
-    ): Response
-    {
+    ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
 
-        $monthlyChart = $this->buildPeriodicChart($wanderStats['monthlyStats'], $chartBuilder);
-        $yearlyChart = $this->buildPeriodicChart($wanderStats['yearlyStats'], $chartBuilder);
+        $wanderNumberColour = '#A6246C';
+        $imagesNumberColour = '#0367A6';
+
+        $monthlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $monthlyWanderChart->setData([
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['monthlyStats']),
+            'datasets' => [
+                // TODO: These colours should be defined in CSS. Add class somehow?
+                [
+                    'label' => 'Number of Wanders',
+                    'backgroundColor' => $wanderNumberColour,
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['monthlyStats']),
+                ],
+                [
+                    'label' => 'Distance Walked (km)',
+                    'backgroundColor' => '#ffb266',// '#66ffff',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['monthlyStats']),
+                ]
+            ]
+        ]);
+
+        $yearlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $yearlyWanderChart->setData([
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['yearlyStats']),
+            'datasets' => [
+                // TODO: These colours should be defined in CSS. Add class somehow?
+                [
+                    'label' => 'Number of Wanders',
+                    'backgroundColor' => $wanderNumberColour,
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['yearlyStats']),
+                ],
+                [
+                    'label' => 'Distance Walked (km)',
+                    'backgroundColor' => '#ffb266', // '#66ffff',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['yearlyStats']),
+                ]
+            ]
+        ]);
+
+        $monthlyImagesChart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $monthlyImagesChart->setData([
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['monthlyStats']),
+            'datasets' => [
+                // TODO: These colours should be defined in CSS. Add class somehow?
+                [
+                    'label' => 'Photos Taken',
+                    'backgroundColor' => $imagesNumberColour, // '#ffb266',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['monthlyStats']),
+                ]
+            ]
+        ]);
+
+        $yearlyImagesChart = $chartBuilder->createChart(Chart::TYPE_BAR);
+        $yearlyImagesChart->setData([
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['yearlyStats']),
+            'datasets' => [
+                // TODO: These colours should be defined in CSS. Add class somehow?
+                [
+                    'label' => 'Photos Taken',
+                    'backgroundColor' => $imagesNumberColour, // '#ffb266',
+                    'borderColor' => 'black',
+                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['yearlyStats']),
+                ]
+            ]
+        ]);
 
         return $this->render('stats/index.html.twig', [
             'controller_name' => 'StatsController', // TODO: Remove this boilerplate
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
-            'monthlyChart' => $monthlyChart,
-            'yearlyChart' => $yearlyChart
+            'monthlyWanderChart' => $monthlyWanderChart,
+            'yearlyWanderChart' => $yearlyWanderChart,
+            'monthlyImagesChart' => $monthlyImagesChart,
+            'yearlyImagesChart' => $yearlyImagesChart
         ]);
-    }
-    /**
-     * Builds the data for a periodic Chartjs stats chart, e.g. wanders/distance/etc per month or year.
-     *
-     * @return Chart
-     * @param array<string, mixed> $periodicStats
-     * @param ChartBuilderInterface $chartBuilder
-     */
-    private function buildPeriodicChart(
-        array $periodicStats,
-        ChartBuilderInterface $chartBuilder
-    ): Chart {
-        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
-        $chart->setData([
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $periodicStats),
-            'datasets' => [
-                // TODO: These colours should be defined in CSS. Add class somehow?
-                [
-                    'label' => 'Number of Wanders',
-                    'backgroundColor' => '#ff66b2',
-                    'borderColor' => 'black',
-                    'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $periodicStats),
-                ],
-                [
-                    'label' => 'Distance Walked (km)',
-                    'backgroundColor' => '#66ffff',
-                    'borderColor' => 'black',
-                    'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $periodicStats),
-                ],
-                [
-                    'label' => 'Photos Taken',
-                    'backgroundColor' => '#ffb266',
-                    'borderColor' => 'black',
-                    'data' => array_map(fn($dp): int => $dp['numberOfImages'], $periodicStats),
-                ]
-            ]
-        ]);
-        return $chart;
     }
 }
-
