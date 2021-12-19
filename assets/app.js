@@ -29,9 +29,6 @@ $(function() {
             case "Left": // IE/Edge specific value
             case "ArrowLeft":
                 url = $("#navigatePrev").attr('href');
-                if (url) {
-                    window.location.href = url;
-                }
             break;
             case "Right": // IE/Edge specific value
             case "ArrowRight":
