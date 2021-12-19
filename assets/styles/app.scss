@@ -310,6 +310,7 @@ $texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
 // Starting point: https://www.behance.net/gallery/132016363/Shakuntala?tracking_source=curated_galleries_list
 $stats-color-wander: #2491B3;
 $stats-color-image: #BF5439;
+$stats-color-location: #8d20b3;
 
 .stats {
     .headline,
@@ -328,6 +329,11 @@ $stats-color-image: #BF5439;
     .headline.images,
     .details.text.images {
         background-color: $stats-color-image;
+    }
+
+    .headline.locations,
+    .details.text.locations {
+        background-color: $stats-color-location;
     }
 
     .headline,

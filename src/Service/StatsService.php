@@ -66,6 +66,26 @@ class StatsService
     /**
      * @return array<mixed>
      */
+    public function getImageLocationStats(): array
+    {
+        return $this->cache->get('image_location_stats', function (ItemInterface $item) {
+            $item->tag('stats');
+            $stats = $this->imageRepository
+                ->createQueryBuilder('i')
+                ->select('i.location')
+                ->addSelect('COUNT(i) AS locationCount')
+                ->groupBy('i.location')
+                ->Where('i.location IS NOT NULL')
+                ->OrderBy('i.location')
+                ->getQuery()
+                ->getResult();
+            return array_column($stats, 'locationCount', 'location');
+        });
+    }
+
+    /**
+     * @return array<mixed>
+     */
     public function getWanderStats(): array
     {
         $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {

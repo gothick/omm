@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\StatsService;
+use Colors\RandomColor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +24,7 @@ class StatsController extends AbstractController
     ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
+        $imageLocationStats = $statsService->getImageLocationStats();
 
         $wanderDataSeries =
             [
@@ -63,14 +65,40 @@ class StatsController extends AbstractController
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $imageDataSeries));
 
+        $locationsChart = $chartBuilder
+            ->createChart(Chart::TYPE_BAR)
+            ->setOptions([
+                'indexAxis' => 'y',
+                'plugins' => [
+                    'legend' => [
+                        'display' => false
+                    ]
+                ]
+            ])
+            ->setData([
+                'labels' => array_keys($imageLocationStats),
+                'datasets' => [
+                    [
+                        'label' => 'Number of Photos',
+                        'backgroundColor' => RandomColor::many(count($imageLocationStats)),
+                        'borderColor' => 'black',
+                        'borderWidth' => 1,
+                        'borderRadius' => 5,
+                        'data' => array_values($imageLocationStats)
+                    ]
+                ]
+            ]);
+
         return $this->render('stats/index.html.twig', [
             'controller_name' => 'StatsController', // TODO: Remove this boilerplate
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
+            'imageLocationStats' => $imageLocationStats,
             'monthlyWanderChart' => $monthlyWanderChart,
             'yearlyWanderChart' => $yearlyWanderChart,
             'monthlyImagesChart' => $monthlyImagesChart,
-            'yearlyImagesChart' => $yearlyImagesChart
+            'yearlyImagesChart' => $yearlyImagesChart,
+            'locationsChart' => $locationsChart
         ]);
     }
 
