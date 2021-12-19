@@ -1,8 +1,8 @@
 import './styles/admin.scss';
-
 import "./fontawesome";
 import "@fontsource/archivo";
 
-const $ = require('jquery');
+// start the Stimulus application
+import './bootstrap';
 
 require('bootstrap');

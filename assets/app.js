@@ -13,9 +13,7 @@ import "./fontawesome";
 import "@fontsource/archivo";
 
 // start the Stimulus application
-// TODO: This is confusing and has fuck all to do with actual Bootstrap so I
-// should probably remove it.
-// import './bootstrap';
+import './bootstrap';
 
 const $ = require('jquery');
 require('bootstrap');
