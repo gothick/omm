@@ -325,16 +325,14 @@ $stats-color-image: #BF5439;
         background-color: $stats-color-wander;
     }
 
-    table {
-        font-size: 1.2em;
-        td {
-            padding-left: 8px;
-        }
-    }
-
     .headline.images,
     .details.text.images {
         background-color: $stats-color-image;
+    }
+
+    .headline,
+    .details.text {
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
     }
 
     .stats-row {
@@ -349,6 +347,13 @@ $stats-color-image: #BF5439;
 
     .details.text {
         padding: 16px 16px;
+    }
+
+    table {
+        font-size: 1.2em;
+        td {
+            padding-left: 8px;
+        }
     }
 
     .details a:link,

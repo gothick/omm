@@ -26,6 +26,8 @@ class StatsController extends AbstractController
 
         $imagesNumberColour = '#BF5439';
 
+        $barBorderRadius = 5;
+
         $monthlyWanderChart = $chartBuilder->createChart(Chart::TYPE_BAR);
         $monthlyWanderChart->setData([
             'labels' => array_map(fn($dp): string => $dp['periodLabel'], $wanderStats['monthlyStats']),
@@ -35,12 +37,17 @@ class StatsController extends AbstractController
                     'label' => 'Number of Wanders',
                     'backgroundColor' => $wanderNumberColour,
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['monthlyStats']),
+
                 ],
                 [
                     'label' => 'Distance Walked (km)',
                     'backgroundColor' => $wanderDistanceColour,
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['monthlyStats']),
                 ]
             ]
@@ -55,12 +62,16 @@ class StatsController extends AbstractController
                     'label' => 'Number of Wanders',
                     'backgroundColor' => $wanderNumberColour,
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): int => $dp['numberOfWanders'], $wanderStats['yearlyStats']),
                 ],
                 [
                     'label' => 'Distance Walked (km)',
                     'backgroundColor' => $wanderDistanceColour,
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2), $wanderStats['yearlyStats']),
                 ]
             ]
@@ -75,6 +86,8 @@ class StatsController extends AbstractController
                     'label' => 'Photos Taken',
                     'backgroundColor' => $imagesNumberColour, // '#ffb266',
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['monthlyStats']),
                 ]
             ]
@@ -89,6 +102,8 @@ class StatsController extends AbstractController
                     'label' => 'Photos Taken',
                     'backgroundColor' => $imagesNumberColour, // '#ffb266',
                     'borderColor' => 'black',
+                    'borderWidth' => 1,
+                    'borderRadius' => $barBorderRadius,
                     'data' => array_map(fn($dp): int => $dp['numberOfImages'], $wanderStats['yearlyStats']),
                 ]
             ]
