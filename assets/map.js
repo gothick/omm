@@ -167,7 +167,7 @@ function addWanders(url, map) {
         currentlySelected = layer;
         addWanderImages(map, layer.options.wanderId);
         // Popup
-        const template = "<a href='{contentUrl}'>{title}</a>";
+        const template = `<a href='${_routeWandersShow}{id}'>{title}</a>`;
         return L.Util.template(template, wander);
       });
       if (isLastWander) {

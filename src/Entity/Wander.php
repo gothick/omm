@@ -128,14 +128,6 @@ class Wander
     private $cumulativeElevationGain;
 
     /**
-     * @var string|null
-     *
-     * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({"wander:list", "wander:item"})
-     */
-    public $contentUrl;
-
-    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $centroid = [];
