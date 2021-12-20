@@ -83,16 +83,6 @@ html.homepage,
     background-color: #ddf;
 }
 
-.stats {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    font-size: 10px;
-}
-
-.details {
-    font-size: small;
-}
-
 blockquote {
     overflow: hidden;
     background: #f9f9f9;
@@ -305,6 +295,18 @@ $texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
     text-decoration: none;
 }
 
+/* Stats bar at top of homepage */
+
+.headerstrip.stats {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 10px;
+
+    .details {
+        font-size: small;
+    }
+}
+
 /* Stats Dashboard */
 
 // Starting point: https://www.behance.net/gallery/132016363/Shakuntala?tracking_source=curated_galleries_list
@@ -385,6 +387,10 @@ $stats-color-location: #8d20b3;
     .headline .value {
         font-size: 54px;
         line-height: 64px;
+    }
+
+    .graph.locations {
+        margin-bottom: 30px;
     }
 }
 
