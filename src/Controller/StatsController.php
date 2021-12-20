@@ -68,6 +68,7 @@ class StatsController extends AbstractController
         $locationsChart = $chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setOptions([
+                'maintainAspectRatio' => false,
                 'indexAxis' => 'y',
                 'plugins' => [
                     'legend' => [

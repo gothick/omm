@@ -165,9 +165,10 @@
     <div class="col-2 d-none d-md-block">
         <div class="headline locations">
             <div class="name">Photo Locations</div>
+            <div class="value">{{ imageLocationStats | length }}</div>
         </div>
     </div>
-    <div class="col">
+    <div class="col" style="height: {{ (imageLocationStats | length) * 30 }}px;">
         {{ render_chart(locationsChart, {'class': 'details graph locations'}) }}
     </div>
 </div>
