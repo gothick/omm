@@ -33,7 +33,7 @@ use Doctrine\ORM\Mapping\Index;
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
- *  order={"endTime"="ASC"}
+ *  order={"startTime"="ASC"}
  * )
  * @ORM\HasLifecycleCallbacks()
  *
