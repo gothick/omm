@@ -16,7 +16,6 @@ use App\EventListener\WanderUploadListener;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Doctrine\Common\Collections\Criteria;
-
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 
@@ -458,7 +457,7 @@ class Wander
         13 => 'NW',
         14 => 'NW',
         15 => 'N'
-      ];
+    ];
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})

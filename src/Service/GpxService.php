@@ -86,7 +86,7 @@ class GpxService
                 $wander->setMinAltitude($stats->minAltitude);
                 $wander->setCumulativeElevationGain($stats->cumulativeElevationGain);
             }
-            catch(Exception $e) {
+            catch (Exception $e) {
                 //$this->logger->debug("Couldn't set extended GPX property on wander: " . $e->getMessage());
                 throw new Exception("Couldn't set standard GPX stats properties on wander.", 0, $e);
             }
@@ -117,10 +117,12 @@ class GpxService
     public function compass(float $x, float $y): float
     {
         // https://www.php.net/manual/en/function.atan2.php#88119
-        if($x==0 AND $y==0){ return 0; } // ...or return 360
+        if ($x == 0 AND $y == 0) {
+            return 0;
+        }
         return ($x < 0)
-            ? rad2deg(atan2($x,$y)) + 360
-            : rad2deg(atan2($x,$y));
+            ? rad2deg(atan2($x, $y)) + 360
+            : rad2deg(atan2($x, $y));
     }
 
     public function gpxToGooglePolyline(string $gpx, float $epsilon = 3): string
