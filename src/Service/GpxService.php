@@ -5,10 +5,10 @@ namespace App\Service;
 use App\Entity\Wander;
 use Exception;
 use Gothick\Geotools\Polyline;
-use Gothick\Geotools\PolylineGeoJsonFormatter;
 use Gothick\Geotools\PolylineGoogleEncodedFormatter;
 use Gothick\Geotools\PolylineRdpSimplifier;
 use phpGPX\phpGPX;
+use phpGPX\Models\Stats;
 use Psr\Log\LoggerInterface;
 
 class GpxService
@@ -19,21 +19,25 @@ class GpxService
     private $gpxDirectory;
     /** @var LoggerInterface */
     private $logger;
-    /** @var array */
+    /** @var array<float> */
     private $homebaseCoords;
     /** @var int */
     private $wanderSimplifierEpsilonMetres;
-    /** @var int */
-    private $wanderGeoJsonOutputPrecision;
 
-    public function __construct(string $gpxDirectory, LoggerInterface $logger, array $homebaseCoords, int $wanderSimplifierEpsilonMetres, int $wanderGeoJsonOutputPrecision)
-    {
+    /**
+     * @param array<float> $homebaseCoords
+     */
+    public function __construct(
+        string $gpxDirectory,
+        LoggerInterface $logger,
+        array $homebaseCoords,
+        int $wanderSimplifierEpsilonMetres
+    ) {
         $this->phpGpx = new phpGPX();
         $this->gpxDirectory = $gpxDirectory;
         $this->logger = $logger;
         $this->homebaseCoords = $homebaseCoords;
         $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
-        $this->wanderGeoJsonOutputPrecision = $wanderGeoJsonOutputPrecision;
     }
 
     /**
@@ -69,6 +73,7 @@ class GpxService
         // we've done that often, if ever.
         foreach ($gpx->tracks as $track)
         {
+            /** @var Stats $stats */
             $stats = $track->stats;
             // These are the only essentials
             $wander->setStartTime($stats->startedAt);
@@ -118,15 +123,6 @@ class GpxService
             : rad2deg(atan2($x,$y));
     }
 
-    public function gpxToGeoJson(string $gpx, float $epsilon = 3, int $precision = 7): string
-    {
-        $polyline = Polyline::fromGpxData($gpx);
-        $simplifier = new PolylineRdpSimplifier($epsilon);
-        $simplifiedPolyline = $simplifier->ramerDouglasPeucker($polyline);
-        $formatter = new PolylineGeoJsonFormatter($precision);
-        return $formatter->format($simplifiedPolyline);
-    }
-
     public function gpxToGooglePolyline(string $gpx, float $epsilon = 3): string
     {
         $polyline = Polyline::fromGpxData($gpx);
@@ -142,7 +138,6 @@ class GpxService
         if (isset($filename))
         {
             $gpxxml = $this->getGpxStringFromFilename($filename);
-            $wander->setGeoJson($this->gpxToGeoJson($gpxxml, $this->wanderSimplifierEpsilonMetres, $this->wanderGeoJsonOutputPrecision));
             $wander->setGooglePolyline($this->gpxToGooglePolyline($gpxxml, $this->wanderSimplifierEpsilonMetres));
             $this->updateGeneralStats($gpxxml, $wander);
             $this->updateCentroid($gpxxml, $wander);

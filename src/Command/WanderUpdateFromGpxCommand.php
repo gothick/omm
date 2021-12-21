@@ -36,8 +36,8 @@ class WanderUpdateFromGpxCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Updates Wander data (including GeoJSON) with GPX information on all wanders.')
-            ->setHelp('Updates GPX data on all wanders. Overwrites all existing data.');
+            ->setDescription('Updates Wander data (including Google Polyline cache) with GPX information on all wanders.')
+            ->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -21,8 +21,11 @@ use App\EventListener\SearchIndexer;
 use Beelab\TagBundle\Tag\TaggableInterface;
 use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Index;
 
 /**
+ *
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="image:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="image:item"}}},

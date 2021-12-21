@@ -16,7 +16,7 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        # Making the API firewall stateless allows API-platform to cache wander geoJSON
+        # Making the API firewall stateless allows API-platform to cache wander
         # responses even if I'm logged in. I can always refresh my cache manually if I
         # need to, given that I'm the only actual User...
         api:
