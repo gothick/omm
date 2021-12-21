@@ -461,20 +461,10 @@ class Wander
       ];
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * NB: We're not using this at the moment (we've replaced it with the much more compact
-     * Google polyline encoding of $googlePolyline) but we might want to again later, so I'm
-     * not removing it from the entity for now.
-     *
-     */
-    private $geoJson;
-
-    /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
      * @Groups({"wander:item"})
      * @ApiSubresource
-     * @ ApiProperty(attributes={"fetchEager": true})
+     * @ApiProperty(attributes={"fetchEager": true})
      */
     private $featuredImage;
 
@@ -518,18 +508,6 @@ class Wander
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
         return $result;
-    }
-
-    public function getGeoJson(): ?string
-    {
-        return $this->geoJson;
-    }
-
-    public function setGeoJson(?string $geoJson): self
-    {
-        $this->geoJson = $geoJson;
-
-        return $this;
     }
 
     public function getFeaturedImage(): ?Image

@@ -22,5 +22,9 @@ api_platform:
             # Default values of the "Vary" HTTP header.
             vary: ['Accept']
 
-        pagination_enabled: true
-        # pagination_items_per_page: 20
+        # Now that we've massively slimmed down our wander response, it's much quicker
+        # just to get it all at once. Using Google polylines rather than overly-accurate
+        # geoJson we now get all Wanders back faster than we got back a single page
+        # before, and there's less overhead doing it in one request.
+        pagination_enabled: false
+        #pagination_items_per_page: 60

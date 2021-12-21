@@ -26,8 +26,6 @@ use Doctrine\ORM\Mapping\Index;
 
 /**
  *
- * @Table(indexes={@Index(name="ix_featuring_wander", columns={"featuring_wander_id"})})
- *
  * @ApiResource(
  *  collectionOperations={"get"={"normalization_context"={"groups"="image:list"}}},
  *  itemOperations={"get"={"normalization_context"={"groups"="image:item"}}},
