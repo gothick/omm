@@ -131,7 +131,6 @@ class StatsService
 
             return $wanderStats;
         });
-
         return $stats;
     }
 
@@ -205,6 +204,12 @@ class StatsService
                     COALESCE(SUM(w.distance), 0) AS total_distance_metres,
                     COALESCE(SUM(w.distance), 0) / 1000.0 AS total_distance_km,
                     COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE i.wander_id = w.id)), 0) AS number_of_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE (rating IS NULL or rating = 0) AND i.wander_id = w.id)), 0) AS rating_0_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE rating = 1 AND i.wander_id = w.id)), 0) AS rating_1_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE rating = 2 AND i.wander_id = w.id)), 0) AS rating_2_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE rating = 3 AND i.wander_id = w.id)), 0) AS rating_3_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE rating = 4 AND i.wander_id = w.id)), 0) AS rating_4_images,
+                    COALESCE(SUM((SELECT COUNT(*) FROM image i WHERE rating = 5 AND i.wander_id = w.id)), 0) AS rating_5_images,
                     COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(w.end_time, w.start_time))), 0) AS total_duration_seconds,
                     COALESCE(AVG(TIME_TO_SEC(TIMEDIFF(w.end_time, w.start_time))), 0) AS average_duration_seconds
                 FROM
@@ -239,6 +244,14 @@ class StatsService
                 'numberOfWanders' => (int) $row['number_of_wanders'],
                 'totalDistance' => (float) $row['total_distance_metres'],
                 'numberOfImages' => (int) $row['number_of_images'],
+                'numberOfImagesByRating' => [
+                    0 => (int) $row['rating_0_images'],
+                    1 => (int) $row['rating_1_images'],
+                    2 => (int) $row['rating_2_images'],
+                    3 => (int) $row['rating_3_images'],
+                    4 => (int) $row['rating_4_images'],
+                    5 => (int) $row['rating_5_images'],
+                ],
                 'totalDurationInterval' => $duration,
                 'totalDurationForHumans' => $duration->forHumans(['short' => true, 'options' => 0]),
                 'averageDurationInterval' => CarbonInterval::seconds($row['average_duration_seconds'])->cascade(),
