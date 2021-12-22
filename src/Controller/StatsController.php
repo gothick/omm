@@ -16,7 +16,14 @@ class StatsController extends AbstractController
     const WANDER_DISTANCE_COLOUR = '#ffb266';
     const IMAGES_NUMBER_COLOUR = '#BF5439';
     const IMAGES_COLOUR_STACK = [
-        'black', '#3F0B1B', '#7A1631', '#CF423C', '#FC7D49', '#BF5439'
+        // Generated from a couple of our base colours using
+        // Aquarelo https://setapp.com/apps/aquarelo
+        '#000000', // 0 star  -- shouldn't really be any of these, as that means "unrated"
+        '#5f191c', // 1 star
+        '#863f2e', // 2 star
+        '#ae6540', // 3 star
+        '#d68b52', // 4 star
+        '#feb165'  // 5 star
     ];
 
     /**
