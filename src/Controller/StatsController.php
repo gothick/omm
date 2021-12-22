@@ -15,6 +15,10 @@ class StatsController extends AbstractController
     const WANDER_NUMBER_COLOUR = '#2491B3';
     const WANDER_DISTANCE_COLOUR = '#ffb266';
     const IMAGES_NUMBER_COLOUR = '#BF5439';
+    const IMAGES_COLOUR_STACK = [
+        'black', '#3F0B1B', '#7A1631', '#CF423C', '#FC7D49', '#BF5439'
+    ];
+
     /**
      * @Route("/stats", name="stats_index")
      */
@@ -48,22 +52,42 @@ class StatsController extends AbstractController
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $wanderDataSeries));
 
-        $imageDataSeries =
-            [
-                [
-                    'label' => 'Photos Taken',
-                    'colour' => self::IMAGES_NUMBER_COLOUR,
-                    'extractFunction' => fn($dp): int => $dp['numberOfImages'],
-                ]
+        $imageDataSeries = [];
+        for ($rating = 0; $rating <= 5; $rating++) {
+            $imageDataSeries[] = [
+                'label' => "Photos (Rated: $rating stars)",
+                'colour' => self::IMAGES_COLOUR_STACK[$rating],
+                'extractFunction' => fn($dp): int => $dp['numberOfImagesByRating'][$rating],
             ];
+        }
 
         $monthlyImagesChart = $chartBuilder
             ->createChart(Chart::TYPE_BAR)
-            ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $imageDataSeries));
+            ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $imageDataSeries))
+            ->setOptions([
+                'scales' => [
+                    'x' => [
+                        'stacked' => true
+                    ],
+                    'y' => [
+                        'stacked' => true
+                    ]
+                ]
+            ]);
 
         $yearlyImagesChart = $chartBuilder
             ->createChart(Chart::TYPE_BAR)
-            ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $imageDataSeries));
+            ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $imageDataSeries))
+            ->setOptions([
+                'scales' => [
+                    'x' => [
+                        'stacked' => true
+                    ],
+                    'y' => [
+                        'stacked' => true
+                    ]
+                ]
+            ]);
 
         $locationsChart = $chartBuilder
             ->createChart(Chart::TYPE_BAR)
