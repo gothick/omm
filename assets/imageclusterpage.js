@@ -9,9 +9,9 @@ $(function() {
     });
 
     map.fireEvent('dataloading');
-    $.getJSON("/api/images?exists[latlng]=true", function(data) {
+    $.getJSON("/api/images", function(images) {
         var photos = [];
-        $.each(data['hydra:member'], function(key, image) {
+        for (var image of images) {
             photos.push({
                 lat: image.latlng[0],
                 lng: image.latlng[1],
@@ -19,15 +19,14 @@ $(function() {
                 caption: image.title || '',
                 thumbnail: image.markerImageUri,
                 imageShowUri: image.imageShowUri,
-                imageEntityAdminUri: image.imageEntityAdminUri,
+                // imageEntityAdminUri: image.imageEntityAdminUri,
                 // TODO?
                 video: null
             });
-        });
+        };
         addPhotos(map, photos);
     })
     .always(function() {
         map.fireEvent("dataload");
     });
-
 });

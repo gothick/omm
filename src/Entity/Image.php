@@ -2,9 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\EventListener\ImageCalculatedFieldSetterListener;
 use App\EventListener\WanderUploadListener;
 use App\Repository\ImageRepository;
@@ -25,16 +22,6 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 
 /**
- *
- * @ApiResource(
- *  collectionOperations={"get"={"normalization_context"={"groups"="image:list"}}},
- *  itemOperations={"get"={"normalization_context"={"groups"="image:item"}}},
- *  order={"capturedAt"="ASC"},
- *  paginationEnabled=false
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={"wanders": "exact"})
- * @ApiFilter(ExistsFilter::class, properties={"latlng"})
  *
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  *
@@ -58,7 +45,7 @@ class Image implements TaggableInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $id;
 
@@ -75,56 +62,56 @@ class Image implements TaggableInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $name; // For Vich, not for us. We use Title.
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $sizeInBytes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $originalName;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $dimensions = [];
 
     /**
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      *
      * @var \DateTimeInterface|null
      */
@@ -145,7 +132,7 @@ class Image implements TaggableInterface
      *   )
      * })
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      *
      */
     private $latlng = [];
@@ -159,13 +146,13 @@ class Image implements TaggableInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $capturedAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $rating;
 
@@ -479,22 +466,22 @@ class Image implements TaggableInterface
     /* Computed (set up by Doctrine postLoad listener) */
 
     /**
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item"})
      */
     private $imageUri;
 
     /**
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $markerImageUri;
 
     /**
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $mediumImageUri;
 
     /**
-     * @Groups({"image:list", "image:item"})
+     * @Groups({"wander:item", "image:list"})
      */
     private $imageShowUri;
 

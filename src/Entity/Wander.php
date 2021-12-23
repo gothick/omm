@@ -29,11 +29,6 @@ use Doctrine\ORM\Mapping\Index;
  *  WanderUploadListener::class, App\EventListener\WanderDeleteListener::class
  * })
  *
- * @ApiResource(
- *  collectionOperations={"get"={"normalization_context"={"groups"="wander:list"}}},
- *  itemOperations={"get"={"normalization_context"={"groups"="wander:item"}}},
- *  order={"startTime"="ASC"}
- * )
  * @ORM\HasLifecycleCallbacks()
  *
  */
@@ -88,8 +83,6 @@ class Wander
      * @ORM\OrderBy({ "capturedAt" = "ASC", "id" = "ASC" })
      *
      * @Groups({"wander:item"})
-     * @ApiSubresource
-     * @ ApiProperty(attributes={"fetchEager": true})
      */
     private $images;
 
@@ -129,7 +122,6 @@ class Wander
     /**
      * @var string|null
      *
-     * @ApiProperty(iri="http://schema.org/contentUrl")
      * @Groups({"wander:list", "wander:item"})
      */
     public $contentUrl;
@@ -462,8 +454,6 @@ class Wander
     /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
      * @Groups({"wander:item"})
-     * @ApiSubresource
-     * @ApiProperty(attributes={"fetchEager": true})
      */
     private $featuredImage;
 

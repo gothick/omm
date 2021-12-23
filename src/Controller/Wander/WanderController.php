@@ -12,12 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class WanderController extends AbstractController
 {
     /**
-     * @Route("/wanders", name="wanders_index", methods={"GET"})
+     * @Route(
+     *  "/wanders.{_format}",
+     *  name="wanders_index",
+     *  methods={"GET"},
+     *  format="html",
+     *  requirements={
+     *   "_format": "html"
+     *  },
+     *  condition="'application/json' not in request.getAcceptableContentTypes()"
+     * )
      */
     public function index(
         Request $request,
@@ -35,6 +45,40 @@ class WanderController extends AbstractController
 
         return $this->render('wander/index.html.twig', [
             'pagination' => $pagination
+        ]);
+    }
+
+    /**
+     * @Route(
+     *  "/wanders/{id}",
+     *  name="wanders_show",
+     *  methods={"GET"},
+     *  condition="'application/json' not in request.getAcceptableContentTypes()"
+     * )
+     */
+    public function show(
+        Request $request,
+        Wander $wander,
+        WanderRepository $wanderRepository,
+        ImageRepository $imageRepository,
+        PaginatorInterface $paginator): Response
+    {
+        $prev = $wanderRepository->findPrev($wander);
+        $next = $wanderRepository->findNext($wander);
+
+        $paginatorQuery = $imageRepository->getPaginatorQuery($wander);
+
+        $pagination = $paginator->paginate(
+            $paginatorQuery,
+            $request->query->getInt('page', 1),
+            20, // Per page
+        );
+
+        return $this->render('wander/show.html.twig', [
+            'wander' => $wander,
+            'image_pagination' => $pagination,
+            'prev' => $prev,
+            'next' => $next
         ]);
     }
 
@@ -63,35 +107,6 @@ class WanderController extends AbstractController
 
         return $this->render('wander/feed.' . $format . '.twig', [
             'wanders' => $wanders
-        ]);
-    }
-
-    /**
-     * @Route("/wanders/{id}", name="wanders_show", methods={"GET"})
-     */
-    public function show(
-        Request $request,
-        Wander $wander,
-        WanderRepository $wanderRepository,
-        ImageRepository $imageRepository,
-        PaginatorInterface $paginator): Response
-    {
-        $prev = $wanderRepository->findPrev($wander);
-        $next = $wanderRepository->findNext($wander);
-
-        $paginatorQuery = $imageRepository->getPaginatorQuery($wander);
-
-        $pagination = $paginator->paginate(
-            $paginatorQuery,
-            $request->query->getInt('page', 1),
-            20, // Per page
-        );
-
-        return $this->render('wander/show.html.twig', [
-            'wander' => $wander,
-            'image_pagination' => $pagination,
-            'prev' => $prev,
-            'next' => $next
         ]);
     }
 }
