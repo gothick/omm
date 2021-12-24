@@ -29,6 +29,8 @@ if ('prod' === $kernel->getEnvironment() ||
     'staging' === $kernel->getEnvironment())
 {
     $kernel = new CacheKernel($kernel);
+    // https://symfony.com/doc/current/reference/configuration/framework.html#http-method-override
+    Request::enableHttpMethodParameterOverride();
 }
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
