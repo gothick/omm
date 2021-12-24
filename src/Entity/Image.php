@@ -537,7 +537,7 @@ class Image implements TaggableInterface
     /**
      * @return ?string[]
      */
-    public function getAutoTags(): ?array
+    public function getAutoTags(): array
     {
         return $this->autoTags;
     }

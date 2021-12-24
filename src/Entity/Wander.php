@@ -392,7 +392,7 @@ class Wander
     /**
      * @return array<float>
      */
-    public function getCentroid(): ?array
+    public function getCentroid(): array
     {
         return $this->centroid;
     }

@@ -7,7 +7,7 @@ use Twig\TwigFilter;
 
 class SrcsetExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('srcset', [SrcsetRuntime::class, 'srcset'])

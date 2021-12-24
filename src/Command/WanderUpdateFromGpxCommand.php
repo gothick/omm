@@ -39,7 +39,7 @@ class WanderUpdateFromGpxCommand extends Command
             ->setDescription('Updates Wander data (including Google Polyline cache) with GPX information on all wanders.')
             ->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to update all wanders based on their GPX track? ', false);

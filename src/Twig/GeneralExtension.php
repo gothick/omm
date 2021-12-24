@@ -7,7 +7,7 @@ use Twig\TwigFilter;
 
 class GeneralExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             // Times

@@ -40,7 +40,7 @@ class UpdateImagesFromExifCommand extends Command
             ->setHelp('Updates image properties based on their EXIF information, for all images. Overwrites existing data, except for related wanders.')
             ->addOption('update-wanders', null, InputOption::VALUE_NONE, 'Find related wanders by matching times, and add relationships.');
     }
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $updateWanders = $input->getOption('update-wanders');
 
