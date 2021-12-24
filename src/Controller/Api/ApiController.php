@@ -41,8 +41,7 @@ class ApiController extends AbstractController
     public function wanderIndex(
         WanderRepository $wanderRepository,
         RouterInterface $router
-        ): Response
-    {
+    ): Response {
         $wanders = $wanderRepository
             ->standardQueryBuilder()
             ->orderBy('w.startTime', 'asc')
@@ -142,8 +141,7 @@ class ApiController extends AbstractController
      */
     public function imagesIndex(
         ImageRepository $imageRepository
-    ): Response
-    {
+    ): Response {
         $results = $imageRepository
             ->standardQueryBuilder()
             ->where('i.latlng IS NOT NULL')
