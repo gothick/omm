@@ -64,10 +64,13 @@ sudo ln -sf /usr/bin/php7.4 /usr/bin/php
 
 # And enable the xdebug extension on the cli for phpunit coverage
 sudo tee /etc/php/7.4/mods-available/enable_debug_coverage.ini > /dev/null <<EOT
-zend_extension=xdebug.so                                                                                                           
+zend_extension=xdebug.so
 xdebug.mode=coverage
 EOT
 sudo phpenmod -v 7.4 -s cli enable_debug_coverage
+
+# APCu is handy
+sudo apt-get -y install php-apcu
 
 # Increase elasticsearch service load timeout
 sudo tee /etc/systemd/system/elasticsearch.service.d/startup-timeout.conf > /dev/null <<EOT
