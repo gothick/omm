@@ -1,4 +1,4 @@
-import { setUpMap, addPhotos } from './map.js';
+import { setUpMap, addPhotos } from './map';
 
 const $ = require('jquery');
 
@@ -10,19 +10,16 @@ $(() => {
   map.fireEvent('dataloading');
   $.getJSON('/api/images', (images) => {
     const photos = [];
-    for (const image of images) {
+    images.map((image) => {
       photos.push({
         lat: image.latlng[0],
         lng: image.latlng[1],
         url: image.mediumImageUri,
         caption: image.title || '',
         thumbnail: image.markerImageUri,
-        imageShowUri: image.imageShowUri,
-        // imageEntityAdminUri: image.imageEntityAdminUri,
-        // TODO?
-        video: null,
+        imageShowUri: image.imageShowUri
       });
-    }
+    });
     addPhotos(map, photos);
   })
     .always(() => {
