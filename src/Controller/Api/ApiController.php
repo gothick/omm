@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
 /**
  * @Route("/api/", name="api_")
@@ -30,6 +31,11 @@ class ApiController extends AbstractController
      *  methods={"GET"},
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
+     * )
+     * @Cache(
+     *  public="true",
+     *  smaxage="3600",
+     *  maxage="3600"
      * )
      */
     public function wanderIndex(
@@ -58,7 +64,7 @@ class ApiController extends AbstractController
             );
         };
 
-        $response = $this->json(
+        return $this->json(
             $wanders,
             Response::HTTP_OK,
             [],
@@ -69,13 +75,6 @@ class ApiController extends AbstractController
                 ],
             ]
         );
-
-        $response
-            ->setPublic()
-            ->setSharedMaxAge(3600)
-            ->setMaxAge(3600);
-
-        return $response;
     }
 
     /**
@@ -85,6 +84,11 @@ class ApiController extends AbstractController
      *  methods={"GET"},
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
+     * )
+     * @Cache(
+     *  public="true",
+     *  smaxage="3600",
+     *  maxage="3600"
      * )
      */
     public function wandersShow(
@@ -106,7 +110,7 @@ class ApiController extends AbstractController
             );
         };
 
-        $response = $this->json(
+        return $this->json(
             $wander,
             Response::HTTP_OK,
             [],
@@ -117,13 +121,6 @@ class ApiController extends AbstractController
                 ],
             ]
         );
-
-        $response
-            ->setPublic()
-            ->setSharedMaxAge(3600)
-            ->setMaxAge(3600);
-
-        return $response;
     }
 
     /**
@@ -137,6 +134,11 @@ class ApiController extends AbstractController
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
      * )
+     * @Cache(
+     *  public="true",
+     *  smaxage="3600",
+     *  maxage="43200"
+     * )
      */
     public function imagesIndex(
         ImageRepository $imageRepository
@@ -148,7 +150,7 @@ class ApiController extends AbstractController
             ->getQuery()
             ->execute();
 
-        $response = $this->json(
+        return $this->json(
             $results,
             Response::HTTP_OK,
             [],
@@ -156,14 +158,5 @@ class ApiController extends AbstractController
                 'groups' => 'image:list',
             ]
         );
-
-        $response
-            ->setPublic()
-            ->setSharedMaxAge(3600)
-            // It's only an experiment, and it's slow to calculate, especially as it's nearly
-            // a megabyte response on the live site. Keep it in shared cache for a *long* time.
-            ->setMaxAge(43200);
-
-        return $response;
     }
 }
