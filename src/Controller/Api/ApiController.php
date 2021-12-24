@@ -33,9 +33,7 @@ class ApiController extends AbstractController
      * )
      */
     public function wanderIndex(
-        Request $request,
         WanderRepository $wanderRepository,
-        PaginatorInterface $paginator,
         RouterInterface $router
         ): Response
     {
@@ -47,7 +45,13 @@ class ApiController extends AbstractController
 
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = []) use ($router) {
+        $contentUrlCallback = function (
+            /** @scrutinizer ignore-unused */ $innerObject,
+            $outerObject,
+            /** @scrutinizer ignore-unused */ string $attributeName,
+            /** @scrutinizer ignore-unused */ string $format = null,
+            /** @scrutinizer ignore-unused */ array $context = []
+        ) use ($router) {
             return $router->generate(
                 'wanders_show',
                 ['id' => $outerObject->getId()]
@@ -84,13 +88,18 @@ class ApiController extends AbstractController
      * )
      */
     public function wandersShow(
-        Request $request,
         Wander $wander,
         RouterInterface $router
     ): Response {
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function ($innerObject, $outerObject, string $attributeName, string $format = null, array $context = []) use ($router) {
+        $contentUrlCallback = function (
+            /** @scrutinizer ignore-unused */ $innerObject,
+            $outerObject,
+            /** @scrutinizer ignore-unused */ string $attributeName,
+            /** @scrutinizer ignore-unused */ string $format = null,
+            /** @scrutinizer ignore-unused */ array $context = []
+        ) use ($router) {
             return $router->generate(
                 'wanders_show',
                 ['id' => $outerObject->getId()]

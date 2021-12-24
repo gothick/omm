@@ -13,7 +13,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EventListener\SearchIndexer;
 use Beelab\TagBundle\Tag\TaggableInterface;
 use Beelab\TagBundle\Tag\TagInterface;

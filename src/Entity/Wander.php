@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\WanderRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
