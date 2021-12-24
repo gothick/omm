@@ -5,8 +5,10 @@ framework:
     # enable this? What does it do?
     #csrf_protection: true
 
-    # So our image/delete method works on staging/production. I think maybe Apache is
-    # translating the DELETE into a POST?
+    # NB: This is what we use for dev, but for staging and production we also
+    # call enableHttpMethodParameterOverride() in the reverse proxy creation
+    # in index.php as described here:
+    # https://symfony.com/doc/current/reference/configuration/framework.html#configuration-framework-http_method_override
     http_method_override: true
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
