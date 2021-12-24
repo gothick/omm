@@ -24,9 +24,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -71,7 +68,6 @@ class ImageController extends AbstractController
      */
     public function upload(
             Request $request,
-            SerializerInterface $serializer,
             string $imagesDirectory,
             DiskStatsService $diskStatsService,
             ManagerRegistry $managerRegistry
