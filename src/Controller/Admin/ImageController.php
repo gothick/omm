@@ -10,6 +10,7 @@ use App\Repository\ImageRepository;
 use App\Service\DiskStatsService;
 use App\Service\LocationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -59,7 +60,7 @@ class ImageController extends AbstractController
     /**
      * @Route("/cluster", name="cluster", methods={"GET"})
      */
-    public function cluster()
+    public function cluster(): Response
     {
         return $this->render('admin/image/cluster.html.twig', [
         ]);
@@ -72,12 +73,13 @@ class ImageController extends AbstractController
             Request $request,
             SerializerInterface $serializer,
             string $imagesDirectory,
-            DiskStatsService $diskStatsService
+            DiskStatsService $diskStatsService,
+            ManagerRegistry $managerRegistry
         ): Response
     {
         if ($request->isMethod('POST')) {
 
-            $token = $request->request->get('token');
+            $token = (string) $request->request->get('token');
             if (!$this->isCsrfTokenValid('image_upload', $token)) {
                 return $this->json([ 'error' => 'Invalid CSRF token'], 401);
             }
@@ -89,16 +91,23 @@ class ImageController extends AbstractController
 
             $image = new Image();
             $image->setImageFile($file);
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $managerRegistry->getManager();
             $entityManager->persist($image);
             $entityManager->flush();
 
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
-            // file we just uploaded*, thanks to the IGNORED_ATTRIBUTES. Because we set up the
-            // image URIs in a postPersist event listener, this also contains everything you'd
-            // need to build an image in HTML.
-            return new JsonResponse($serializer->serialize($image, 'jsonld', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['imageFile']]), 201,[], true);
+            // file we just uploaded*, thanks to the wander:item grouping limiting the returned
+            // fields. Because we set up the image URIs in a postPersist event listener, this
+            //  also contains everything you'd need to build an image in HTML.
+            return $this->json(
+                $image,
+                Response::HTTP_OK,
+                [],
+                [
+                    'groups' => 'wander:item',
+                ]
+            );
         }
 
         // Normal GET request.
@@ -122,13 +131,16 @@ class ImageController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Image $image): Response
+    public function edit(
+        Request $request,
+        Image $image,
+        ManagerRegistry $managerRegistry
+    ): Response
     {
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            //dd($form);
+            $managerRegistry->getManager()->flush();
             return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
         }
 
@@ -141,10 +153,13 @@ class ImageController extends AbstractController
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Image $image): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+    public function delete(
+        Request $request,
+        Image $image,
+        ManagerRegistry $managerRegistry
+    ): Response {
+        if ($this->isCsrfTokenValid('delete'.$image->getId(), (string) $request->request->get('_token'))) {
+            $entityManager = $managerRegistry->getManager();
             $entityManager->remove($image);
             $entityManager->flush();
         }
@@ -157,7 +172,7 @@ class ImageController extends AbstractController
      */
     public function setLocation(Request $request, Image $image, LocationService $locationService, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('set_location'.$image->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('set_location'.$image->getId(), (string) $request->request->get('_token'))) {
             $neighbourhood  = $locationService->getLocationName($image->getLatitude(), $image->getLongitude());
             if ($neighbourhood !== null) {
                 $image->setLocation($neighbourhood);
@@ -174,7 +189,7 @@ class ImageController extends AbstractController
      */
     public function setAutoTags(Request $request, Image $image, MessageBusInterface $messageBus): Response
     {
-        if ($this->isCsrfTokenValid('set_auto_tags'.$image->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('set_auto_tags'.$image->getId(), (string) $request->request->get('_token'))) {
             $imageId = $image->getId();
             if ($imageId === null) {
                 throw new InvalidParameterException('No image id in setAutoTags');
