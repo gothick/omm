@@ -1,9 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    # TODO: I was pretty damn sure we had csrf protection working fine. Do we need to
-    # enable this? What does it do?
-    #csrf_protection: true
+    csrf_protection: true
 
     # NB: This is what we use for dev, but for staging and production we also
     # call enableHttpMethodParameterOverride() in the reverse proxy creation

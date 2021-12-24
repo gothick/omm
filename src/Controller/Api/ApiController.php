@@ -16,11 +16,41 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
+// NB: All /api routes are configured to be stateless in the security.yml
+// firewall config. You could also make them stateless using an annotation:
+// https://symfony.com/doc/current/routing.html#stateless-routes
+
 /**
  * @Route("/api/", name="api_")
  */
 class ApiController extends AbstractController
 {
+    /** @var bool */
+    var $shouldSetCacheFields;
+
+    public function __construct(string $kernelEnvironment)
+    {
+        // TODO: I used to control the caching with annotations (https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/cache.html)
+        // but I couldn't find any way of making them environment sensitive, and I didn't want
+        // caching in the dev environment. Is there a better way? api-platform did it automatically;
+        // maybe you could have a look in their code...
+        $this->shouldSetCacheFields = $kernelEnvironment === 'dev' ? false : true;
+    }
+
+    private function addCacheHeaders(
+        Response $r,
+        int $maxAge = 3600,
+        int $sharedMaxAge = 3600
+    ): Response
+    {
+        if ($this->shouldSetCacheFields) {
+            $r->setMaxAge($maxAge)
+                ->setSharedMaxAge($sharedMaxAge)
+                ->setPublic();
+        }
+        return $r;
+    }
+
     /**
      *
      * API: Wander list. Returns a basic list of wanders.
@@ -31,11 +61,6 @@ class ApiController extends AbstractController
      *  methods={"GET"},
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
-     * )
-     * @Cache(
-     *  public="true",
-     *  smaxage="3600",
-     *  maxage="3600"
      * )
      */
     public function wanderIndex(
@@ -63,7 +88,7 @@ class ApiController extends AbstractController
             );
         };
 
-        return $this->json(
+        $response = $this->json(
             $wanders,
             Response::HTTP_OK,
             [],
@@ -74,6 +99,7 @@ class ApiController extends AbstractController
                 ],
             ]
         );
+        return $this->addCacheHeaders($response);
     }
 
     /**
@@ -83,11 +109,6 @@ class ApiController extends AbstractController
      *  methods={"GET"},
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
-     * )
-     * @Cache(
-     *  public="true",
-     *  smaxage="3600",
-     *  maxage="3600"
      * )
      */
     public function wandersShow(
@@ -109,7 +130,7 @@ class ApiController extends AbstractController
             );
         };
 
-        return $this->json(
+        $response = $this->json(
             $wander,
             Response::HTTP_OK,
             [],
@@ -120,6 +141,7 @@ class ApiController extends AbstractController
                 ],
             ]
         );
+        return $this->addCacheHeaders($response);
     }
 
     /**
@@ -133,11 +155,6 @@ class ApiController extends AbstractController
      *  format="json",
      *  condition="'application/json' in request.getAcceptableContentTypes()"
      * )
-     * @Cache(
-     *  public="true",
-     *  smaxage="3600",
-     *  maxage="43200"
-     * )
      */
     public function imagesIndex(
         ImageRepository $imageRepository
@@ -148,7 +165,7 @@ class ApiController extends AbstractController
             ->getQuery()
             ->execute();
 
-        return $this->json(
+        $response = $this->json(
             $results,
             Response::HTTP_OK,
             [],
@@ -156,5 +173,6 @@ class ApiController extends AbstractController
                 'groups' => 'image:list',
             ]
         );
+        return $this->addCacheHeaders($response, 43201, 4600);
     }
 }

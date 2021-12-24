@@ -45,6 +45,7 @@ services:
             $imaggaApiSecret: '%env(IMAGGA_API_SECRET)%'
             $wanderSimplifierEpsilonMetres: '%wander.simplifier_epsilon_metres%'
             $wanderGeoJsonOutputPrecision: '%wander.geojson_output_precision%'
+            $kernelEnvironment: '%kernel.environment%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
