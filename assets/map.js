@@ -10,6 +10,7 @@ import 'leaflet.locatecontrol/dist/L.Control.Locate.css';
 import './styles/Leaflet.Photo.css';
 
 const $ = require('jquery');
+const escape = require('escape-html');
 
 require('leaflet');
 require('leaflet.locatecontrol');
@@ -114,7 +115,7 @@ export function addPhotos(map, photos) {
 
   photoLayer = L.photo.cluster().on('click', (evt) => {
     const { photo } = evt.layer;
-    const template = "<a href='{imageShowUri}'><img src='{url}' width='300' /></a><p>{caption}</p>";
+    const template = `<a href='{imageShowUri}'><img src='{url}' width='300' /></a><p>${escape(photo.caption)}</p>`;
     // TODO: Video
     evt.layer.bindPopup(L.Util.template(template, photo), {
       className: 'leaflet-popup-photo',
@@ -161,7 +162,7 @@ function addWanders(url, map) {
           addWanderImages(map, w.images);
         });
         // Popup
-        const template = "<a href='{contentUrl}'>{title}</a>";
+        const template = `<a href='{contentUrl}'>${escape(wander.title)}</a>`;
         return L.Util.template(template, wander);
       });
       wanderLine.addTo(map);
