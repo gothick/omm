@@ -11,5 +11,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    // Can override the AirBNB rules here, e.g.:
+    //    "no-restricted-syntax": 0,
   },
 };

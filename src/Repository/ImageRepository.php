@@ -7,6 +7,7 @@ use App\Entity\Wander;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Paginator;
 
@@ -21,6 +22,11 @@ class ImageRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Image::class);
+    }
+
+    public function standardQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('i');
     }
 
     public function findBetweenDates(DateTime $from, DateTime $to)

@@ -16,9 +16,8 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        # Making the API firewall stateless allows API-platform to cache wander
-        # responses even if I'm logged in. I can always refresh my cache manually if I
-        # need to, given that I'm the only actual User...
+        # Making the API firewall stateless makes for easier caching;
+        # our entire API is public and doesn't need a login anyway.
         api:
             pattern: ^/api
             stateless: true

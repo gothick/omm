@@ -125,63 +125,55 @@ export function addPhotos(map, photos) {
   photoLayer.add(photos).addTo(map);
 }
 
-function addWanderImages(map, wanderId) {
+function addWanderImages(map, images) {
   const photos = [];
-
-  // Our API allows us to grab only those photos with co-ordinates set
-  $.getJSON(`/api/wanders/${wanderId}/images?exists[latlng]=true`, (images) => {
-    $.each(images['hydra:member'], (key, image) => {
-      photos.push({
-        lat: image.latlng[0],
-        lng: image.latlng[1],
-        url: image.mediumImageUri,
-        caption: image.title || '',
-        thumbnail: image.markerImageUri,
-        imageShowUri: image.imageShowUri,
-        // TODO?
-        video: null,
-      });
+  images.filter((i) => i.latlng.length > 0).forEach((image) => {
+    photos.push({
+      lat: image.latlng[0],
+      lng: image.latlng[1],
+      url: image.mediumImageUri,
+      caption: image.title || '',
+      thumbnail: image.markerImageUri,
+      imageShowUri: image.imageShowUri,
+      // TODO?
+      video: null,
     });
-    addPhotos(map, photos);
   });
+  addPhotos(map, photos);
 }
 
 function addWanders(url, map) {
   map.fireEvent('dataloading'); // Triggers loading spinner
-  // TODO: We should probably use some kind of Hydra client. This"ll do for now.
+
   $.getJSON(url, (data) => {
-    const nextPage = (data['hydra:view'] || {})['hydra:next'];
-    const isLastPage = (typeof nextPage) === 'undefined';
-    const last = data['hydra:member'].length - 1;
-    $.each(data['hydra:member'], (key, wander) => {
-      const isLastWander = isLastPage && (last === key);
+    $.each(data, (key, wander) => {
       const wanderLine = L.Polyline.fromEncoded(wander.googlePolyline, {
         wanderId: wander.id,
       });
 
-      wanderLine.setStyle(isLastWander ? selectedWanderStyle() : unselectedWanderStyle());
+      wanderLine.setStyle(unselectedWanderStyle());
       wanderLine.bindPopup((layer) => {
         currentlySelected.setStyle(unselectedWanderStyle());
         layer.setStyle(selectedWanderStyle());
         layer.bringToFront();
         currentlySelected = layer;
-        addWanderImages(map, layer.options.wanderId);
+        $.getJSON(`/api/wanders/${layer.options.wanderId}`, (w) => {
+          addWanderImages(map, w.images);
+        });
         // Popup
         const template = "<a href='{contentUrl}'>{title}</a>";
         return L.Util.template(template, wander);
       });
-      if (isLastWander) {
-        currentlySelected = wanderLine;
-      }
       wanderLine.addTo(map);
+      currentlySelected = wanderLine;
     });
-
-    // Recurse through all the pages in the pagination we got back.
-    map.fireEvent('dataload');
-    if (!isLastPage) {
-      addWanders(nextPage, map);
-    }
-  });
+  })
+    .done(() => {
+      currentlySelected.setStyle(selectedWanderStyle());
+    })
+    .always(() => {
+      map.fireEvent('dataload');
+    });
 }
 
 export function addAllWanders(map) {
@@ -199,7 +191,7 @@ export function addWander(map, wanderId, addImages) {
     map.fitBounds(wanderLine.getBounds());
     // Based on the example at https://github.com/turban/Leaflet.Photo/blob/gh-pages/examples/picasa.html
     if (addImages) {
-      addWanderImages(map, wanderId);
+      addWanderImages(map, wander.images);
     }
   });
 }
