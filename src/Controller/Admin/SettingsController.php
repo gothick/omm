@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Form\SettingsType;
 use App\Repository\SettingsRepository;
 use App\Service\SettingsService;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,15 +30,18 @@ class SettingsController extends AbstractController
     /**
      * @Route("/edit", name="edit")
      */
-    public function edit(Request $request, SettingsService $settingsService): Response
-    {
+    public function edit(
+        Request $request,
+        SettingsService $settingsService,
+        ManagerRegistry $managerRegistry
+    ): Response {
         $settings = $settingsService->getSettings();
 
         $form = $this->createForm(SettingsType::class, $settings);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $managerRegistry->getManager()->flush();
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.

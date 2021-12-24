@@ -23,7 +23,7 @@ class WanderRepository extends ServiceEntityRepository
         parent::__construct($registry, Wander::class);
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         return $this->findBy(array(), array('startTime' => 'DESC'));
     }
@@ -57,7 +57,8 @@ class WanderRepository extends ServiceEntityRepository
      * @param string $entityAlias
      * @return QueryBuilder
      */
-    public function createSearchQueryBuilder(string $entityAlias): QueryBuilder {
+    public function createSearchQueryBuilder(string $entityAlias): QueryBuilder
+    {
         $qb = $this->createQueryBuilder($entityAlias);
         $qb->select($entityAlias, 'i')
             ->leftJoin($entityAlias.'.images', 'i');

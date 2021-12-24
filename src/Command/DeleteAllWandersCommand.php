@@ -34,7 +34,7 @@ class DeleteAllWandersCommand extends Command
             ->setHelp('Deletes all Wander entities and their associated uploaded files.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to delete ALL wanders? ', false);
