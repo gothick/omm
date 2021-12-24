@@ -10,14 +10,14 @@ $(() => {
   map.fireEvent('dataloading');
   $.getJSON('/api/images', (images) => {
     const photos = [];
-    images.map((image) => {
+    images.forEach((image) => {
       photos.push({
         lat: image.latlng[0],
         lng: image.latlng[1],
         url: image.mediumImageUri,
         caption: image.title || '',
         thumbnail: image.markerImageUri,
-        imageShowUri: image.imageShowUri
+        imageShowUri: image.imageShowUri,
       });
     });
     addPhotos(map, photos);
