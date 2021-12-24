@@ -126,10 +126,8 @@ export function addPhotos(map, photos) {
 }
 
 function addWanderImages(map, images) {
-
   const photos = [];
-
-  for (var image of images.filter(i => i.latlng.length > 0)) {
+  images.filter((i) => i.latlng.length > 0).forEach((image) => {
     photos.push({
       lat: image.latlng[0],
       lng: image.latlng[1],
@@ -140,9 +138,8 @@ function addWanderImages(map, images) {
       // TODO?
       video: null,
     });
-  };
+  });
   addPhotos(map, photos);
-
 }
 
 function addWanders(url, map) {
@@ -160,8 +157,8 @@ function addWanders(url, map) {
         layer.setStyle(selectedWanderStyle());
         layer.bringToFront();
         currentlySelected = layer;
-        $.getJSON(`/api/wanders/${layer.options.wanderId}`, (wander) => {
-          addWanderImages(map, wander.images);
+        $.getJSON(`/api/wanders/${layer.options.wanderId}`, (w) => {
+          addWanderImages(map, w.images);
         });
         // Popup
         const template = "<a href='{contentUrl}'>{title}</a>";
@@ -170,15 +167,13 @@ function addWanders(url, map) {
       wanderLine.addTo(map);
       currentlySelected = wanderLine;
     });
-
   })
-  .done(function() {
-    currentlySelected.setStyle(selectedWanderStyle());
-  })
-  .always(function() {
-    map.fireEvent('dataload');
-  });
-
+    .done(() => {
+      currentlySelected.setStyle(selectedWanderStyle());
+    })
+    .always(() => {
+      map.fireEvent('dataload');
+    });
 }
 
 export function addAllWanders(map) {
