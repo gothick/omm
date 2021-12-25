@@ -88,15 +88,18 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getPaginatorQuery(Wander $wander): Query
+    public function getPaginatorQueryBuilder(?Wander $wander = null): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('i');
-        return $qb
-            ->andWhere('i.wander = :wander')
-            ->setParameter('wander', $wander)
+        $qb = $this->createQueryBuilder('i')
             ->addOrderBy('i.capturedAt')
-            ->addOrderBy('i.id') // tie-breaker
-            ->getQuery();
+            ->addOrderBy('i.id'); // tie-breaker
+        if ($wander !== null) {
+            $qb
+                ->andWhere('i.wander = :wander')
+                ->setParameter('wander', $wander);
+        }
+
+        return $qb;
     }
 
     public function findNext(Image $image)

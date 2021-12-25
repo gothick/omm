@@ -1,0 +1,32 @@
+<div class="gallery">
+{% for image in image_pagination %}
+    <div class="grid-item">
+        <a href="{{ path('image_show', {'id': image.id}) }}">
+            <img
+                {# class="img-fluid img-thumbnail" #}
+                class="img-fluid"
+                {# TODO: This srcset_720 is a quick bodge for now. We don't want the full-size one loading here, and that's happening with Masonry. For some reason. #}
+                src="{{ vich_uploader_asset(image) | imagine_filter('srcset_720') }}"
+                title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
+                alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
+            />
+        </a>
+        <div class="metadata">
+            <div class="mx-2 rating">{{ image.rating | star_rating }}</div>
+            <div class="mx-2 image-details"><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title }}</a></div>
+            <div class="mx-2 image-details description">
+            {% if image.description %}
+                <small><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.description | markdown_to_plain_text | u.truncate(39, '...', false) }}</a></small>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<div class="row pb-4">
+    <div class="col">
+        <div class="navigation my-4">
+            {{ knp_pagination_render(image_pagination, null, {}, { 'align': 'center' }) }}
+        </div>
+    </div>
+</div>

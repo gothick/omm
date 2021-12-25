@@ -271,6 +271,7 @@ $texttag-hover-color: color.scale($texttag-color, $lightness: $hover-darken);
 .gallery .grid-item {
     width: 100%;
     margin-bottom: 12px;
+    position: relative;
 }
 
 .grid-item .metadata {

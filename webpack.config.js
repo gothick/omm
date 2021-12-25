@@ -27,7 +27,7 @@ Encore
     .addEntry('homepage', './assets/homepage.js')
     .addEntry('wanderpage', './assets/wanderpage.js')
     .addEntry('imageclusterpage', './assets/imageclusterpage.js')
-
+    .addEntry('imageindexpage', './assets/imageindexpage.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
