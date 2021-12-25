@@ -87,46 +87,7 @@
     {# TODO: Move this hardcoded style into the CSS. It's a 80% viewport height
        with a fallback of a hardcoded pixel value for older browsers #}
     <div id="mapid" data-wander-id="{{ wander.id }}" style="height: 500px; height: 70vh;" {{ include('_mapattributes.html.twig') }} ></div>
-    <div class="gallery">
-    {% for image in image_pagination %}
-        <div class="grid-item">
-            <a href="{{ path('image_show', {'id': image.id}) }}">
-                <img
-                    {# class="img-fluid img-thumbnail" #}
-                    class="img-fluid"
-                    src="{{ vich_uploader_asset(image) | imagine_filter('srcset_720') }}" {# Quick bodge for now. We don't want the full-size one loading here, and that's happening with Masonry. For some reason. #}
-                    title="{{ image.titleOrId | markdown_to_plain_text | trim | e('html_attr') }}"
-                    alt="{{ image.description | markdown_to_plain_text | trim | u.truncate(150, '...') | e('html_attr') }}"
-                    {# Masonry wasn't playing nicely with srcset https://github.com/desandro/imagesloaded/issues/175
-                    srcset="{{ image | srcset }}"
-                    sizes="(min-width: 1400px) 432px,
-                        (min-width: 1200px) 564px,
-                        (min-width: 768px) 50vw,
-                        100vw"
-                    #}
-                />
-            </a>
-            <div class="metadata">
-                <div class="mx-2 rating">{{ image.rating | star_rating }}</div>
-                <div class="mx-2 image-details"><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.title }}</a></div>
-                <div class="mx-2 image-details description">
-                {% if image.description %}
-                    <small><a href="{{ path('image_show', {'id': image.id}) }}">{{ image.description | markdown_to_plain_text | u.truncate(39, '...', false) }}</a></small>
-                {% endif %}
-                </div>
-
-
-            </div>
-        </div>
-    {% endfor %}
-    </div>
-    <div class="row pb-4">
-        <div class="col">
-            <div class="navigation my-4">
-                {{ knp_pagination_render(image_pagination, null, {}, { 'align': 'center' }) }}
-            </div>
-        </div>
-    </div>
+    {{ include('/partials/_gallery.html.twig') }}
     <div class="row comments">
         <div class="col pt-3 mx-3">
             <div id="disqus_thread"></div>

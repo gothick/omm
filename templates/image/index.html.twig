@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{# TODO: Better title? #}
+{% block title %}Images{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+{{ encore_entry_link_tags('imageindexpage') }}
+{% endblock %}
+{% block body %}
+{{ include('/partials/_gallery.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    {{ encore_entry_script_tags('imageindexpage') }}
+{% endblock %}
