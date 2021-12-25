@@ -236,9 +236,10 @@ class StatsService
             }
             $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
-                'periodStartDate' => $rangeStartMonth,
-                'periodEndDate' => $rangeEndMonth,
+                'periodStartDate' => $rangeStartMonth->copy(),
+                'periodEndDate' => $rangeEndMonth->copy(),
                 'periodLabel' => $rangeStartMonth->isoFormat($periodLabelFormat),
+                'periodLengthMonths' => $periodLengthMonths,
                 'starYear' => $rangeStartMonth->year,
                 'startMonth' => $rangeStartMonth->month,
                 'numberOfWanders' => (int) $row['number_of_wanders'],

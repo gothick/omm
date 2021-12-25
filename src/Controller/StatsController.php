@@ -144,7 +144,9 @@ class StatsController extends AbstractController
         array $seriesDefinitions
     ): array {
         $data = [
-            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $sourceStats)
+            'labels' => array_map(fn($dp): string => $dp['periodLabel'], $sourceStats),
+            'periodStartDates' => array_map(fn($dp): string => $dp['periodStartDate'], $sourceStats),
+            'periodEndDates' => array_map(fn($dp): string => $dp['periodEndDate'], $sourceStats),
         ];
         foreach ($seriesDefinitions as $series) {
             $data['datasets'][] = [
