@@ -148,7 +148,12 @@
         </div>
     </div>
     <div class="col">
-        {{ render_chart(monthlyImagesChart, {'class': 'details graph monthly'}) }}
+        {# TODO: Handle clicks in Stimulus controller  #}
+        {{ render_chart(monthlyImagesChart, {
+            'class': 'details graph monthly',
+            'data-controller': 'stats'
+        }) }}
+        }}
     </div>
 </div>
 <div class="row stats-row">
