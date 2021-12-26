@@ -24,6 +24,13 @@ class ImageFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('rating_comparison', ChoiceType::class, [
+                'choices'  => [
+                    '=' => 'eq',
+                    '<=' => 'lte',
+                    '>=' => 'gte',
+                ],
+            ])
             ->add('rating', ChoiceType::class, [
                 'choices'  => [
                     'Any' => null,

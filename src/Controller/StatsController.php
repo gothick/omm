@@ -7,6 +7,7 @@ use Colors\RandomColor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -31,7 +32,8 @@ class StatsController extends AbstractController
      */
     public function index(
         StatsService $statsService,
-        ChartBuilderInterface $chartBuilder
+        ChartBuilderInterface $chartBuilder,
+        UrlGeneratorInterface $router
     ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
@@ -109,6 +111,7 @@ class StatsController extends AbstractController
             ])
             ->setData([
                 'labels' => array_keys($imageLocationStats),
+                'urls' => array_map(fn($l):string => $router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
                 'datasets' => [
                     [
                         'label' => 'Number of Photos',
@@ -116,13 +119,12 @@ class StatsController extends AbstractController
                         'borderColor' => 'black',
                         'borderWidth' => 1,
                         'borderRadius' => 5,
-                        'data' => array_values($imageLocationStats)
+                        'data' => array_values($imageLocationStats),
                     ]
                 ]
             ]);
 
         return $this->render('stats/index.html.twig', [
-            'controller_name' => 'StatsController', // TODO: Remove this boilerplate
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
             'imageLocationStats' => $imageLocationStats,
@@ -155,7 +157,7 @@ class StatsController extends AbstractController
                 'borderColor' => 'black',
                 'borderWidth' => 1,
                 'borderRadius' => 5,
-                'data' => array_map($series['extractFunction'], $sourceStats)
+                'data' => array_map($series['extractFunction'], $sourceStats),
             ];
         }
         return $data;

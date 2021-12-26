@@ -17,12 +17,11 @@ export default class extends Controller {
     event.detail.chart.options.onClick = (mouseevent, activeElements, chart) => {
       if (activeElements.length > 0) {
         const element = activeElements[0];
-        const starRating = element.datasetIndex;
         const barNumber = element.index;
-        const monthStartDate = chart.data.periodStartDates[barNumber];
-        console.log(`Bar number: ${barNumber}; Star rating: ${starRating}; Month start: ${monthStartDate}`);
+        const image_index_url = chart.data.urls[barNumber];
+        console.log(`Url: ${image_index_url}`);
+        window.location.href = image_index_url;
       }
-
     };
   }
 }
