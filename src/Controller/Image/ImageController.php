@@ -37,7 +37,7 @@ class ImageController extends AbstractController
         ImageRepository $imageRepository,
         PaginatorInterface $paginator
     ): Response {
-        $qb = $imageRepository->getPaginatorQueryBuilder();
+        $qb = $imageRepository->getReversePaginatorQueryBuilder();
         // TODO: Add many interesting parameters, etc.
         $query = $qb->getQuery();
 
@@ -66,7 +66,7 @@ class ImageController extends AbstractController
         PaginatorInterface $paginator,
         int $rating
     ): Response {
-        $qb = $imageRepository->getPaginatorQueryBuilder();
+        $qb = $imageRepository->getReversePaginatorQueryBuilder();
         $qb
             ->andWhere('i.rating = :rating')
             ->setParameter('rating', $rating);

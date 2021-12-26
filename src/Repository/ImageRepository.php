@@ -98,7 +98,19 @@ class ImageRepository extends ServiceEntityRepository
                 ->andWhere('i.wander = :wander')
                 ->setParameter('wander', $wander);
         }
+        return $qb;
+    }
 
+    public function getReversePaginatorQueryBuilder(?Wander $wander = null): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->addOrderBy('i.capturedAt', 'desc')
+            ->addOrderBy('i.id', 'desc'); // tie-breaker
+        if ($wander !== null) {
+            $qb
+                ->andWhere('i.wander = :wander')
+                ->setParameter('wander', $wander);
+        }
         return $qb;
     }
 
