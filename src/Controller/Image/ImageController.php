@@ -3,6 +3,7 @@
 namespace App\Controller\Image;
 
 use App\Entity\Image;
+use App\Form\ImageFilterType;
 use App\Repository\ImageRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,18 +38,39 @@ class ImageController extends AbstractController
         ImageRepository $imageRepository,
         PaginatorInterface $paginator
     ): Response {
+
         $qb = $imageRepository->getReversePaginatorQueryBuilder();
-        // TODO: Add many interesting parameters, etc.
+
+        $filterForm = $this->createForm(
+            ImageFilterType::class,
+            null,
+            ['csrf_protection' => false]
+        );
+
+        $filterForm->handleRequest($request);
+
+        $page = $request->query->getInt('page', 1);
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $page = 1; // If we've changed the filter parameters, we're back to square (page) 1.
+
+            $data = $filterForm->getData();
+            if ($data['rating'] !== null) {
+                $qb->andWhere('i.rating = :rating')
+                    ->setParameter('rating', $data['rating']);
+            }
+        }
+
         $query = $qb->getQuery();
 
         $pagination = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1),
+            $page,
             20
         );
 
         return $this->render('image/index.html.twig', [
-            'image_pagination' => $pagination
+            'image_pagination' => $pagination,
+            'filter_form' => $filterForm->createView()
         ]);
     }
 
@@ -66,6 +88,7 @@ class ImageController extends AbstractController
         PaginatorInterface $paginator,
         int $rating
     ): Response {
+
         $qb = $imageRepository->getReversePaginatorQueryBuilder();
         $qb
             ->andWhere('i.rating = :rating')
@@ -80,7 +103,7 @@ class ImageController extends AbstractController
         );
 
         return $this->render('image/index.html.twig', [
-            'image_pagination' => $pagination
+            'image_pagination' => $pagination,
         ]);
     }
 }
