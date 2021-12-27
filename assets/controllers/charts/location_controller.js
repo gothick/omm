@@ -13,7 +13,7 @@ export default class extends Controller {
     // Each bar of our bargraph has an associated URL that links to the
     // image filtering system to show all the images that fit the same
     // criteria. Take us there on a click.
-    event.detail.chart.options.onClick = (mouseevent, activeElements, chart) => {
+    event.detail.chart.options.onClick = (_mouseevent, activeElements, chart) => {
       if (activeElements.length > 0) {
         const element = activeElements[0];
         const barNumber = element.index;
@@ -22,8 +22,8 @@ export default class extends Controller {
       }
     };
     // Make sure the bars seem clickable by giving a clicky pointer on hover
-    event.detail.chart.options.onHover = (mouseevent, activeElements) => {
-      event.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
+    event.detail.chart.options.onHover = (_mouseevent, activeElements, chart) => {
+      chart.canvas.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
     };
   }
 }
