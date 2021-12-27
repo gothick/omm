@@ -43,7 +43,7 @@ class ImageFilterData
     private $rating;
 
     /**
-     * @var ?string
+     * @var string
      *
      * @Assert\Regex(
      *  pattern = "/eq|lte|gte/"
@@ -131,17 +131,13 @@ class ImageFilterData
     {
         return $this->rating !== null;
     }
-    public function setRatingComparison(?string $ratingComparison): void
+    public function setRatingComparison(string $ratingComparison): void
     {
         $this->ratingComparison = $ratingComparison;
     }
-    public function getRatingComparison(): ?string
+    public function getRatingComparison(): string
     {
         return $this->ratingComparison;
-    }
-    public function hasRatingComparison(): bool
-    {
-        return $this->ratingComparison !== null;
     }
     public function setLocation(?string $location): void
     {

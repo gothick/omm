@@ -81,7 +81,34 @@ class ImageController extends AbstractController
 
         $qb = $imageRepository->getReversePaginatorQueryBuilder();
 
-        if ($filterData->hasRating() && $filterData->hasRatingComparison()) {
+        $this->filterQuery($filterData, $qb);
+
+        $query = $qb->getQuery();
+
+        $page = $request->query->getInt('page', 1);
+        $pagination = $paginator->paginate(
+            $query,
+            $page,
+            20
+        );
+
+        return $this->render('image/index.html.twig', [
+            'image_pagination' => $pagination,
+            'filter_form' => $filterForm->createView()
+        ]);
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getLocationChoices(ImageRepository $imageRepository)
+    {
+        return $imageRepository->getAllLocations();
+    }
+
+    private function filterQuery(ImageFilterData $filterData, QueryBuilder $qb): void
+    {
+        if ($filterData->hasRating()) {
             $this->filterQueryByRating(
                 $filterData->getRating(),
                 $filterData->getRatingComparison(),
@@ -108,27 +135,6 @@ class ImageController extends AbstractController
                 ->setParameter('location', $filterData->getLocation());
         }
 
-        $query = $qb->getQuery();
-
-        $page = $request->query->getInt('page', 1);
-        $pagination = $paginator->paginate(
-            $query,
-            $page,
-            20
-        );
-
-        return $this->render('image/index.html.twig', [
-            'image_pagination' => $pagination,
-            'filter_form' => $filterForm->createView()
-        ]);
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function getLocationChoices(ImageRepository $imageRepository)
-    {
-        return $imageRepository->getAllLocations();
     }
 
     private function filterQueryByRating(?int $rating, string $ratingComparison, QueryBuilder &$qb): QueryBuilder
