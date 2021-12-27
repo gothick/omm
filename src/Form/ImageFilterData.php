@@ -55,6 +55,15 @@ class ImageFilterData
     /** @var ?string */
     private $location;
 
+    public function __construct(
+        DateTimeInterface $startDate = null,
+        DateTimeInterface $endDate = null
+    ) {
+        $this->startDate = new CarbonImmutable($startDate);
+        $this->endDate = new CarbonImmutable($endDate);
+        $this->ratingComparison = 'eq';
+    }
+
     public function setStartDate(?DateTimeInterface $startDate): void
     {
         if ($startDate === null) {
@@ -63,9 +72,11 @@ class ImageFilterData
             $this->startDate = new CarbonImmutable($startDate);
         }
     }
-    public function setStartDateFromUrlParam(?string $startDate): void
+    public function overrideStartDateFromUrlParam(?string $startDate): void
     {
-        $this->startDate = $this->dateFromUrlParam($startDate);
+        if (!empty($startDate)) {
+            $this->startDate = $this->dateFromUrlParam($startDate);
+        }
     }
     public function getStartDate(): ?DateTimeInterface
     {
@@ -85,9 +96,11 @@ class ImageFilterData
         }
         $this->endDate = new CarbonImmutable($endDate);
     }
-    public function setEndDateFromUrlParam(?string $endDate): void
+    public function overrideEndDateFromUrlParam(?string $endDate): void
     {
-        $this->endDate = $this->dateFromUrlParam($endDate);
+        if (!empty($endDate)) {
+            $this->endDate = $this->dateFromUrlParam($endDate);
+        }
     }
     public function getEndDate(): ?DateTimeImmutable
     {
@@ -103,6 +116,12 @@ class ImageFilterData
     public function setRating(?int $rating): void
     {
         $this->rating = $rating;
+    }
+    public function overrideRatingFromUrlParam(?int $rating): void
+    {
+        if ($rating !== null && $rating >= 0 && $rating <= 5) {
+            $this->rating = $rating;
+        }
     }
     public function getRating(): ?int
     {
@@ -127,6 +146,12 @@ class ImageFilterData
     public function setLocation(?string $location): void
     {
         $this->location = $location === "" ? null : $location;
+    }
+    public function overrideLocationFromUrlParam(?string $location): void
+    {
+        if (!empty($location)) {
+            $this->location = $location;
+        }
     }
     public function getLocation(): ?string
     {

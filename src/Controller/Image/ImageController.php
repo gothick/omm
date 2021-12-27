@@ -50,29 +50,21 @@ class ImageController extends AbstractController
         PaginatorInterface $paginator
     ): Response {
         /** @var ImageFilterData $filterData */
-
-        // Sensible defaults
-        $filterData = new ImageFilterData();
-        $filterData->setStartDate($imageRepository->getEarliestImageCaptureDate());
-        $filterData->setEndDate($imageRepository->getLatestImageCaptureDate());
-        $filterData->setRatingComparison('eq');
-        $locationChoices = $this->getLocationChoices($imageRepository);
+        $filterData = new ImageFilterData(
+            $imageRepository->getEarliestImageCaptureDate(),
+            $imageRepository->getLatestImageCaptureDate(),
+        );
 
         // These are overrides that can be sent by links set up on our
         // charts on the Statistics page. If we get a location, star
         // rating or start & end dates via those, we override our defaults.
-        $filterData->setLocation((string) $request->query->get('location'));
-        if ($request->query->has('rating')) {
-            $filterData->setRating($request->query->getInt('rating'));
-        }
-        if ($request->query->has('periodStartDate')) {
-            $filterData->setStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
-        }
-        if ($request->query->has('periodEndDate')) {
-            $filterData->setEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
-        }
+        $filterData->overrideLocationFromUrlParam((string) $request->query->get('location'));
+        $filterData->overrideRatingFromUrlParam($request->query->getInt('rating', -1));
+        $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
+        $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
 
         // Filtering form for the top of the page
+        $locationChoices = $this->getLocationChoices($imageRepository);
         $filterForm = $this->createForm(
             ImageFilterType::class,
             $filterData,
