@@ -109,14 +109,14 @@ class StatsService
             $wanderStats['monthlyStats'] = $this->getPeriodicStats(
                 $overallTimeStats['firstWanderStartTime']->startOfMonth(),
                 $overallTimeStats['latestWanderStartTime']->startOfMonth(),
-                1,
+                'month',
                 'MMM YYYY'
             );
 
             $wanderStats['yearlyStats'] = $this->getPeriodicStats(
                 $overallTimeStats['firstWanderStartTime']->startOfYear(),
                 $overallTimeStats['latestWanderStartTime']->startOfMonth(),
-                12,
+                'year',
                 'YYYY'
             );
 
@@ -193,7 +193,7 @@ class StatsService
     /**
      * @return array<int, array<string, mixed>>
      */
-    private function getPeriodicStats(Carbon $startMonth, Carbon $endMonth, int $periodLengthMonths, string $periodLabelFormat): array
+    private function getPeriodicStats(Carbon $startMonth, Carbon $endMonth, string $periodType, string $periodLabelFormat): array
     {
         // Stats per month or year. It would be most efficient to write some complicated SQL query
         // that groups the lot together, including filling in months with missing data using some kind
@@ -222,6 +222,8 @@ class StatsService
 
         $periodicStats = [];
 
+        $periodLengthMonths = $periodType === 'year' ? 12 : 1;
+
         for ($rangeStartMonth = $startMonth->copy(); $rangeStartMonth <= $endMonth; $rangeStartMonth->addMonths($periodLengthMonths)) {
             $rangeEndMonth = $rangeStartMonth->copy()->addMonths($periodLengthMonths);
             $result = $stmt->executeQuery([
@@ -236,12 +238,10 @@ class StatsService
             }
             $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
-                'periodStartDate' => $rangeStartMonth->copy(),
-                'periodEndDate' => $rangeEndMonth->copy(),
+                'periodType' => $periodType,
+                'year' => $rangeStartMonth->year,
+                'month' => $rangeStartMonth->month,
                 'periodLabel' => $rangeStartMonth->isoFormat($periodLabelFormat),
-                'periodLengthMonths' => $periodLengthMonths,
-                'starYear' => $rangeStartMonth->year,
-                'startMonth' => $rangeStartMonth->month,
                 'numberOfWanders' => (int) $row['number_of_wanders'],
                 'totalDistance' => (float) $row['total_distance_metres'],
                 'numberOfImages' => (int) $row['number_of_images'],

@@ -27,13 +27,20 @@ class StatsController extends AbstractController
         '#fff466', // 5 star $yellowish: ;
     ];
 
+    /** @var UrlGeneratorInterface */
+    var $router;
+
+    public function __construct(UrlGeneratorInterface $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * @Route("/stats", name="stats_index")
      */
     public function index(
         StatsService $statsService,
-        ChartBuilderInterface $chartBuilder,
-        UrlGeneratorInterface $router
+        ChartBuilderInterface $chartBuilder
     ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
@@ -67,6 +74,7 @@ class StatsController extends AbstractController
                 'label' => "Photos (Rated: $rating stars)",
                 'colour' => self::IMAGES_COLOUR_STACK[$rating],
                 'extractFunction' => fn($dp): int => $dp['numberOfImagesByRating'][$rating],
+                'rating' => $rating
             ];
         }
 
@@ -111,7 +119,7 @@ class StatsController extends AbstractController
             ])
             ->setData([
                 'labels' => array_keys($imageLocationStats),
-                'urls' => array_map(fn($l):string => $router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
+                'urls' => array_map(fn($l):string => $this->router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
                 'datasets' => [
                     [
                         'label' => 'Number of Photos',
@@ -147,8 +155,6 @@ class StatsController extends AbstractController
     ): array {
         $data = [
             'labels' => array_map(fn($dp): string => $dp['periodLabel'], $sourceStats),
-            'periodStartDates' => array_map(fn($dp): string => $dp['periodStartDate'], $sourceStats),
-            'periodEndDates' => array_map(fn($dp): string => $dp['periodEndDate'], $sourceStats),
         ];
         foreach ($seriesDefinitions as $series) {
             $data['datasets'][] = [
@@ -159,6 +165,18 @@ class StatsController extends AbstractController
                 'borderRadius' => 5,
                 'data' => array_map($series['extractFunction'], $sourceStats),
             ];
+            if (array_key_exists('rating', $series)) {
+                $data['urls'][] = array_map(function($dp) use($series): string {
+                    $params = [
+                        'rating' => $series['rating'],
+                        'year' => $dp['year']
+                    ];
+                    if ($dp['periodType'] === 'month') {
+                        $params['month'] = $dp['month'];
+                    }
+                    return $this->router->generate('image_index', $params);
+                }, $sourceStats);
+            }
         }
         return $data;
     }
