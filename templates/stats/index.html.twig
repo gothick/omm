@@ -151,9 +151,8 @@
         {# TODO: Handle clicks in Stimulus controller  #}
         {{ render_chart(monthlyImagesChart, {
             'class': 'details graph monthly',
-            'data-controller': 'stats'
+            'data-controller': 'charts--image'
         }) }}
-        }}
     </div>
 </div>
 <div class="row stats-row">
@@ -163,7 +162,10 @@
         </div>
     </div>
     <div class="col">
-        {{ render_chart(yearlyImagesChart, {'class': 'details graph yearly'}) }}
+        {{ render_chart(yearlyImagesChart, {
+            'class': 'details graph yearly',
+            'data-controller': 'charts--image'
+        }) }}
     </div>
 </div>
 <div class="row stats-row">
@@ -174,7 +176,11 @@
         </div>
     </div>
     <div class="col" style="height: {{ (imageLocationStats | length) * 30 }}px;">
-        {{ render_chart(locationsChart, {'class': 'details graph locations'}) }}
+        {{ render_chart(locationsChart, {
+                'class': 'details graph locations',
+                'data-controller': 'charts--location'
+            })
+        }}
     </div>
 </div>
 

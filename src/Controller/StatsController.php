@@ -7,6 +7,7 @@ use Colors\RandomColor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
@@ -25,6 +26,14 @@ class StatsController extends AbstractController
         '#e4b84e', // 4 star anzac: ;
         '#fff466', // 5 star $yellowish: ;
     ];
+
+    /** @var UrlGeneratorInterface */
+    private $router;
+
+    public function __construct(UrlGeneratorInterface $router)
+    {
+        $this->router = $router;
+    }
 
     /**
      * @Route("/stats", name="stats_index")
@@ -65,6 +74,7 @@ class StatsController extends AbstractController
                 'label' => "Photos (Rated: $rating stars)",
                 'colour' => self::IMAGES_COLOUR_STACK[$rating],
                 'extractFunction' => fn($dp): int => $dp['numberOfImagesByRating'][$rating],
+                'rating' => $rating
             ];
         }
 
@@ -109,6 +119,7 @@ class StatsController extends AbstractController
             ])
             ->setData([
                 'labels' => array_keys($imageLocationStats),
+                'urls' => array_map(fn($l): string => $this->router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
                 'datasets' => [
                     [
                         'label' => 'Number of Photos',
@@ -116,13 +127,12 @@ class StatsController extends AbstractController
                         'borderColor' => 'black',
                         'borderWidth' => 1,
                         'borderRadius' => 5,
-                        'data' => array_values($imageLocationStats)
+                        'data' => array_values($imageLocationStats),
                     ]
                 ]
             ]);
 
         return $this->render('stats/index.html.twig', [
-            'controller_name' => 'StatsController', // TODO: Remove this boilerplate
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
             'imageLocationStats' => $imageLocationStats,
@@ -145,8 +155,6 @@ class StatsController extends AbstractController
     ): array {
         $data = [
             'labels' => array_map(fn($dp): string => $dp['periodLabel'], $sourceStats),
-            'periodStartDates' => array_map(fn($dp): string => $dp['periodStartDate'], $sourceStats),
-            'periodEndDates' => array_map(fn($dp): string => $dp['periodEndDate'], $sourceStats),
         ];
         foreach ($seriesDefinitions as $series) {
             $data['datasets'][] = [
@@ -155,8 +163,20 @@ class StatsController extends AbstractController
                 'borderColor' => 'black',
                 'borderWidth' => 1,
                 'borderRadius' => 5,
-                'data' => array_map($series['extractFunction'], $sourceStats)
+                'data' => array_map($series['extractFunction'], $sourceStats),
             ];
+            if (array_key_exists('rating', $series)) {
+                $data['urls'][] = array_map(function ($dp) use ($series): string {
+                    $params = [
+                        'rating' => $series['rating'],
+                        'year' => $dp['year']
+                    ];
+                    if ($dp['periodType'] === 'month') {
+                        $params['month'] = $dp['month'];
+                    }
+                    return $this->router->generate('image_index', $params);
+                }, $sourceStats);
+            }
         }
         return $data;
     }

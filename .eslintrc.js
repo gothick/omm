@@ -11,7 +11,12 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    // Can override the AirBNB rules here, e.g.:
-    //    "no-restricted-syntax": 0,
+    // Overriding AirBNB rules:
+    // The Stimulus convention seems to be dangling underscores, and I'm
+    // okay with that.
+    "no-underscore-dangle": 0,
+    // All the symfony/ux-chartjs examples do this all over the place,
+    // and I don't care much one way or the other.
+    "no-param-reassign": 0,
   },
 };
