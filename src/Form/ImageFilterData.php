@@ -43,7 +43,7 @@ class ImageFilterData
     private $rating;
 
     /**
-     * @var ?string
+     * @var string
      *
      * @Assert\Regex(
      *  pattern = "/eq|lte|gte/"
@@ -55,6 +55,15 @@ class ImageFilterData
     /** @var ?string */
     private $location;
 
+    public function __construct(
+        DateTimeInterface $startDate = null,
+        DateTimeInterface $endDate = null
+    ) {
+        $this->startDate = new CarbonImmutable($startDate);
+        $this->endDate = new CarbonImmutable($endDate);
+        $this->ratingComparison = 'eq';
+    }
+
     public function setStartDate(?DateTimeInterface $startDate): void
     {
         if ($startDate === null) {
@@ -63,9 +72,11 @@ class ImageFilterData
             $this->startDate = new CarbonImmutable($startDate);
         }
     }
-    public function setStartDateFromUrlParam(?string $startDate): void
+    public function overrideStartDateFromUrlParam(?string $startDate): void
     {
-        $this->startDate = $this->dateFromUrlParam($startDate);
+        if (!empty($startDate)) {
+            $this->startDate = $this->dateFromUrlParam($startDate);
+        }
     }
     public function getStartDate(): ?DateTimeInterface
     {
@@ -85,9 +96,11 @@ class ImageFilterData
         }
         $this->endDate = new CarbonImmutable($endDate);
     }
-    public function setEndDateFromUrlParam(?string $endDate): void
+    public function overrideEndDateFromUrlParam(?string $endDate): void
     {
-        $this->endDate = $this->dateFromUrlParam($endDate);
+        if (!empty($endDate)) {
+            $this->endDate = $this->dateFromUrlParam($endDate);
+        }
     }
     public function getEndDate(): ?DateTimeImmutable
     {
@@ -104,6 +117,12 @@ class ImageFilterData
     {
         $this->rating = $rating;
     }
+    public function overrideRatingFromUrlParam(?int $rating): void
+    {
+        if ($rating !== null && $rating >= 0 && $rating <= 5) {
+            $this->rating = $rating;
+        }
+    }
     public function getRating(): ?int
     {
         return $this->rating;
@@ -112,21 +131,23 @@ class ImageFilterData
     {
         return $this->rating !== null;
     }
-    public function setRatingComparison(?string $ratingComparison): void
+    public function setRatingComparison(string $ratingComparison): void
     {
         $this->ratingComparison = $ratingComparison;
     }
-    public function getRatingComparison(): ?string
+    public function getRatingComparison(): string
     {
         return $this->ratingComparison;
-    }
-    public function hasRatingComparison(): bool
-    {
-        return $this->ratingComparison !== null;
     }
     public function setLocation(?string $location): void
     {
         $this->location = $location === "" ? null : $location;
+    }
+    public function overrideLocationFromUrlParam(?string $location): void
+    {
+        if (!empty($location)) {
+            $this->location = $location;
+        }
     }
     public function getLocation(): ?string
     {
