@@ -432,6 +432,10 @@ class Image implements TaggableInterface
         return $this;
     }
 
+    public function hasCapturedAt(): bool
+    {
+        return $this->capturedAt !== null;
+    }
 
     public function getWander(): ?Wander
     {
