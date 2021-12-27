@@ -3,11 +3,15 @@
 namespace App\Controller\Image;
 
 use App\Entity\Image;
+use App\Form\ImageFilterData;
 use App\Form\ImageFilterType;
 use App\Repository\ImageRepository;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use DateTime;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,39 +38,82 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @Route("", name="index", methods={"GET"})
+     * @Route(
+     *  "",
+     *  name="index",
+     *  methods={"GET"},
+     * )
      */
     public function index(
         Request $request,
         ImageRepository $imageRepository,
         PaginatorInterface $paginator
     ): Response {
+        /** @var ImageFilterData $filterData */
 
-        $year = intval($request->query->get('year', 0));
-        if ($year < 1900 || $year > 5000) {
-            $year = null;
+        // Sensible defaults
+        $filterData = new ImageFilterData();
+        $filterData->setStartDate($imageRepository->getEarliestImageCaptureDate());
+        $filterData->setEndDate($imageRepository->getLatestImageCaptureDate());
+        $filterData->setRatingComparison('eq');
+        $locationChoices = $this->getLocationChoices($imageRepository);
+
+        // These are overrides that can be sent by links set up on our
+        // charts on the Statistics page. If we get a location, star
+        // rating or start & end dates via those, we override our defaults.
+        $filterData->setLocation((string) $request->query->get('location'));
+        if ($request->query->has('rating')) {
+            $filterData->setRating($request->query->getInt('rating'));
+        }
+        if ($request->query->has('periodStartDate')) {
+            $filterData->setStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
+        }
+        if ($request->query->has('periodEndDate')) {
+            $filterData->setEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
         }
 
-        $month = $request->query->getInt('month', 0);
-        if ($month < 1 || $month > 12) {
-            $month = null;
-        }
+        // Filtering form for the top of the page
+        $filterForm = $this->createForm(
+            ImageFilterType::class,
+            $filterData,
+            [
+                'locations' => array_combine($locationChoices, array_values($locationChoices)),
+                'csrf_protection' => false // We're just a GET request, and nothing bad happens no matter what you do.
+            ]
+        );
 
-        $rating = $request->query->getInt('rating', -1);
-        if ($rating === -1) {
-            $rating = null;
-        }
-
-        $ratingCompare = (string) $request->query->get('rating_compare', 'eq');
+        $filterForm->handleRequest($request);
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $filterData = $filterForm->getData();
+        };
 
         $qb = $imageRepository->getReversePaginatorQueryBuilder();
 
-        $this->filterQueryByYearAndMonth($year, $month, $qb);
-        $this->filterQueryByRating($rating, $ratingCompare, $qb);
+        if ($filterData->hasRating() && $filterData->hasRatingComparison()) {
+            $this->filterQueryByRating(
+                $filterData->getRating(),
+                $filterData->getRatingComparison(),
+                $qb
+            );
+        }
 
-        if ($request->query->has('location')) {
-            $qb->andWhere('i.location = :location')
-                ->setParameter('location', $request->query->get('location'));
+        if ($filterData->hasStartDate()) {
+            $qb
+                ->andWhere('i.capturedAt >= :startDate')
+                ->setParameter('startDate', $filterData->getStartDate());
+        }
+
+        if ($filterData->hasEndDate()) {
+            $endDate = (new CarbonImmutable($filterData->getEndDate()))->addDays(1);
+            $qb
+                ->andWhere('i.capturedAt < :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($filterData->hasLocation()) {
+            $qb
+                ->andWhere('i.location = :location')
+                ->setParameter('location', $filterData->getLocation());
         }
 
         $query = $qb->getQuery();
@@ -79,39 +126,23 @@ class ImageController extends AbstractController
         );
 
         return $this->render('image/index.html.twig', [
-            'image_pagination' => $pagination
+            'image_pagination' => $pagination,
+            'filter_form' => $filterForm->createView()
         ]);
     }
 
-    private function filterQueryByYearAndMonth(?int $year, ?int $month, QueryBuilder &$qb): QueryBuilder
+    /**
+     * @return array<string>
+     */
+    private function getLocationChoices(ImageRepository $imageRepository)
     {
-        // Our year parameter can be entirely missing, or "any", as well as an
-        // integer year.
-        if ($year !== null) { // Don't want to send any implausible years to MySQL
-            // We can optionally have a month to limit the date range
-            // even further.
-            if ($month === null) {
-                // Just the year
-                $startDate = Carbon::create($year, 1, 1);
-                $endDate = Carbon::create($year + 1, 1, 1);
-            } else {
-                // We're looking at a particular month of the year
-                /** @var Carbon $startDate */
-                $startDate = Carbon::create($year, $month, 1);
-                $endDate = $startDate->copy()->addMonths(1);
-            }
-            $qb->andWhere('i.capturedAt >= :startDate')
-                ->setParameter('startDate', $startDate)
-                ->andWhere('i.capturedAt < :endDate')
-                ->setParameter('endDate', $endDate);
-        }
-        return $qb;
+        return $imageRepository->getAllLocations();
     }
 
-    private function filterQueryByRating(?int $rating, string $ratingCompare, QueryBuilder &$qb): QueryBuilder
+    private function filterQueryByRating(?int $rating, string $ratingComparison, QueryBuilder &$qb): QueryBuilder
     {
         if ($rating !== null) {
-            switch ($ratingCompare) {
+            switch ($ratingComparison) {
                 case 'lte':
                     $qb->andWhere($qb->expr()->lte('i.rating', ':rating'));
                     break;

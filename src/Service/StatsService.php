@@ -6,6 +6,7 @@ use App\Entity\Wander;
 use App\Repository\ImageRepository;
 use App\Repository\WanderRepository;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Doctrine\ORM\EntityManager;
@@ -239,8 +240,10 @@ class StatsService
             $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
                 'periodType' => $periodType,
-                'year' => $rangeStartMonth->year,
-                'month' => $rangeStartMonth->month,
+                'periodStartDate' => new CarbonImmutable($rangeStartMonth),
+                'periodEndDate' => new CarbonImmutable($rangeEndMonth->copy()->addDays(-1)),
+                //'year' => $rangeStartMonth->year,
+                //'month' => $rangeStartMonth->month,
                 'periodLabel' => $rangeStartMonth->isoFormat($periodLabelFormat),
                 'numberOfWanders' => (int) $row['number_of_wanders'],
                 'totalDistance' => (float) $row['total_distance_metres'],

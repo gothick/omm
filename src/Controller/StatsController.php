@@ -169,11 +169,9 @@ class StatsController extends AbstractController
                 $data['urls'][] = array_map(function ($dp) use ($series): string {
                     $params = [
                         'rating' => $series['rating'],
-                        'year' => $dp['year']
+                        'periodStartDate' => $dp['periodStartDate'],
+                        'periodEndDate' => $dp['periodEndDate']
                     ];
-                    if ($dp['periodType'] === 'month') {
-                        $params['month'] = $dp['month'];
-                    }
                     return $this->router->generate('image_index', $params);
                 }, $sourceStats);
             }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Image;
 use App\Entity\Wander;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -77,6 +78,18 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getAllLocations(): array
+    {
+        // TODO: What happens when there aren't any images/locations?
+        $result = $this->createQueryBuilder('i')
+            ->select('i.location')
+            ->where('i.location IS NOT NULL')
+            ->groupBy('i.location')
+            ->orderBy('i.location')
+            ->getQuery()
+            ->getArrayResult();
+        return array_column($result, 'location');
+    }
 
     public function findFromIdOnwards(int $id)
     {
@@ -86,6 +99,56 @@ class ImageRepository extends ServiceEntityRepository
             ->orderBy('i.id')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Returns the earliest Image by capturedAt date. Ignores any
+     * images without capturedAt dates. Will return null only if
+     * there are no Images with capturedAt dates at all.
+     */
+    public function getEarliestImageOrNull(): ?Image
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.capturedAt')
+            ->orderBy('i.id') // might as well be deterministic
+            ->andWhere('i.capturedAt IS NOT NULL')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getEarliestImageCaptureDate(): ?DateTimeInterface
+    {
+        $image = $this->getEarliestImageOrNull();
+        if ($image === null) {
+            return null;
+        }
+        return $image->getCapturedAt();
+    }
+
+    /**
+     * Returns the most recent Image by capturedAt date. Ignores any
+     * images without capturedAt dates. Will return null only if
+     * there are no Images with capturedAt dates at all.
+     */
+    public function getLatestImageOrNull(): ?Image
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.capturedAt', 'desc')
+            ->orderBy('i.id', 'desc') // might as well be deterministic
+            ->andWhere('i.capturedAt IS NOT NULL')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getLatestImageCaptureDate(): ?DateTimeInterface
+    {
+        $image = $this->getLatestImageOrNull();
+        if ($image === null) {
+            return null;
+        }
+        return $image->getCapturedAt();
     }
 
     public function getPaginatorQueryBuilder(?Wander $wander = null): QueryBuilder

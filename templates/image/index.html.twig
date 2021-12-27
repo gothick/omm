@@ -6,14 +6,32 @@
 {{ encore_entry_link_tags('imageindexpage') }}
 {% endblock %}
 {% block body %}
-{#
+<h2 class="my-2">Images, filtered by:</h2>
 {{ form_start(filter_form) }}
-    {{ form_widget(filter_form) }}
+    {# {{ form_widget(filter_form) }} #}
+
+    <div class="row">
+        <div class="col">{{ form_row(filter_form.start_date) }}</div>
+    </div>
+    <div class="row">
+        <div class="col">{{ form_row(filter_form.end_date) }}</div>
+    </div>
+    <div class="row">
+        <div class="col">{{ form_row(filter_form.location) }}</div>
+    </div>
+    <div class="row">
+        <div class="col">{{ form_row(filter_form.rating_comparison) }}</div>
+        <div class="col">{{ form_row(filter_form.rating) }}</div>
+    </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button type="submit" class="btn btn-primary me">Submit</button>
     </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <p class="small mt-2"><a href="{{ path(app.request.attributes.get('_route')) }}">Reset</a></p>
+    </div>
+
 {{ form_end(filter_form) }}
-#}
+
 <div class="row px-2 my-2">
     <div class="col mt-4 images resultcount">
         {% if image_pagination %}
