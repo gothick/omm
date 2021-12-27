@@ -17,8 +17,8 @@ export default class extends Controller {
       if (activeElements.length > 0) {
         const element = activeElements[0];
         const barNumber = element.index;
-        const image_index_url = chart.data.urls[barNumber];
-        window.location.href = image_index_url;
+        const imageIndexUrl = chart.data.urls[barNumber];
+        window.location.href = imageIndexUrl;
       }
     };
     // Make sure the bars seem clickable by giving a clicky pointer on hover

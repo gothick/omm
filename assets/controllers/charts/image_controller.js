@@ -18,8 +18,8 @@ export default class extends Controller {
         const element = activeElements[0];
         const starRating = element.datasetIndex;
         const barNumber = element.index;
-        const image_index_url = chart.data.urls[starRating][barNumber];
-        window.location.href = image_index_url;
+        const imageIndexUrl = chart.data.urls[starRating][barNumber];
+        window.location.href = imageIndexUrl;
       }
     };
     // Make sure the bars seem clickable by giving a clicky pointer on hover
