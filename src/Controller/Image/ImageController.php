@@ -68,9 +68,10 @@ class ImageController extends AbstractController
 
     private function filterQueryByYearAndMonth(InputBag $params, QueryBuilder &$qb): QueryBuilder
     {
-        if ($params->has('year')) {
-            /** @var int $year */
-            $year = $params->getInt('year', (int) date("Y"));
+        // Our year parameter can be entirely missing, or "any", as well as an
+        // integer year.
+        $year = intval($params->get('year', -1));
+        if ($year > 1900 && $year < 5000) { // Don't want to send any implausible years to MySQL
             // We can optionally have a month to limit the date range
             // even further.
             $month = $params->getInt('month', 0);
