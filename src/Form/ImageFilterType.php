@@ -41,14 +41,6 @@ class ImageFilterType extends AbstractType
                     '★★★★★' => 5,
                 ],
             ])
-            ->setMethod('GET')
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        // $resolver->setDefaults([
-        //     'data_class' => Image::class,
-        // ]);
+            ->setMethod('GET');
     }
 }

@@ -28,7 +28,7 @@ class StatsController extends AbstractController
     ];
 
     /** @var UrlGeneratorInterface */
-    var $router;
+    private $router;
 
     public function __construct(UrlGeneratorInterface $router)
     {
@@ -119,7 +119,7 @@ class StatsController extends AbstractController
             ])
             ->setData([
                 'labels' => array_keys($imageLocationStats),
-                'urls' => array_map(fn($l):string => $this->router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
+                'urls' => array_map(fn($l): string => $this->router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
                 'datasets' => [
                     [
                         'label' => 'Number of Photos',
@@ -166,7 +166,7 @@ class StatsController extends AbstractController
                 'data' => array_map($series['extractFunction'], $sourceStats),
             ];
             if (array_key_exists('rating', $series)) {
-                $data['urls'][] = array_map(function($dp) use($series): string {
+                $data['urls'][] = array_map(function ($dp) use($series): string {
                     $params = [
                         'rating' => $series['rating'],
                         'year' => $dp['year']

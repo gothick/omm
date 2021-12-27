@@ -66,7 +66,8 @@ class ImageController extends AbstractController
         ]);
     }
 
-    private function filterQueryByYearAndMonth(InputBag $params, QueryBuilder &$qb): QueryBuilder {
+    private function filterQueryByYearAndMonth(InputBag $params, QueryBuilder &$qb): QueryBuilder
+    {
         if ($params->has('year')) {
             /** @var int $year */
             $year = $params->getInt('year', (int) date("Y"));
@@ -91,7 +92,8 @@ class ImageController extends AbstractController
         return $qb;
     }
 
-    private function filterQueryByRating(InputBag $params, QueryBuilder &$qb): QueryBuilder {
+    private function filterQueryByRating(InputBag $params, QueryBuilder &$qb): QueryBuilder
+    {
         $rating = $params->getInt('rating', -1);
         if ($rating >= 0 && $rating <= 5) {
             $ratingCompare = $params->get('rating_compare', 'eq');

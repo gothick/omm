@@ -71,8 +71,7 @@ class ImageController extends AbstractController
             string $imagesDirectory,
             DiskStatsService $diskStatsService,
             ManagerRegistry $managerRegistry
-        ): Response
-    {
+    ): Response {
         if ($request->isMethod('POST')) {
 
             $token = (string) $request->request->get('token');
@@ -131,8 +130,7 @@ class ImageController extends AbstractController
         Request $request,
         Image $image,
         ManagerRegistry $managerRegistry
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
