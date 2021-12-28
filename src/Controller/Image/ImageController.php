@@ -66,8 +66,7 @@ class ImageController extends AbstractController
             $filterData->overrideRatingFromUrlParam($request->query->getInt('rating', -1));
             $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
             $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             // Someone may be trying to fiddle with our URL parameters. Don't fail; the override
             // functions are sensible enough to ignore invalid inputs. But we should log.
             $logger->error(

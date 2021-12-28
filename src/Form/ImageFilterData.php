@@ -205,8 +205,7 @@ class ImageFilterData
                 // Improbable dates could cause problems if used in DB queries.
                 $result = null;
             }
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             // I don't care what happened personally; we'll just not bother
             // overriding our existing dates. However, whatever called us
             // might want to log this, as someone may be probing the app for
