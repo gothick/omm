@@ -7,6 +7,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ImageFilterData
@@ -185,6 +186,19 @@ class ImageFilterData
         if ($param === null || $param === "") {
             return null;
         }
-        return CarbonImmutable::parse($param);
+        // These inputs are as-yet unsanitised, so:
+        $result = null;
+        try {
+            $result = CarbonImmutable::parse($param);
+            if ($result->year < 1900 || $result->year > 9999) {
+                // Improbable dates could cause problems if used in DB queries.
+                $result = null;
+            }
+        }
+        catch(Exception $e) {
+            // I don't care what happened; we'll just not bother
+            // overriding our existing dates.
+        }
+        return $result;
     }
 }
