@@ -63,7 +63,7 @@ class ImageController extends AbstractController
         // rating or start & end dates via those, we override our defaults.
         try {
             $filterData->overrideLocationFromUrlParam((string) $request->query->get('location'));
-            $filterData->overrideRatingFromUrlParam($request->query->getInt('rating', -1));
+            $filterData->overrideRatingFromUrlParam((string) $request->query->get('rating'));
             $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
             $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
         } catch (Exception $e) {

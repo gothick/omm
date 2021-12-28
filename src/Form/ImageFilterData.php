@@ -11,6 +11,7 @@ use Exception;
 use Carbon\Exceptions\InvalidFormatException;
 use Doctrine\Common\Cache\Psr6\InvalidArgument;
 use InvalidArgumentException;
+use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ImageFilterData
@@ -124,12 +125,14 @@ class ImageFilterData
     /**
      * @throws InvalidArgumentException
      */
-    public function overrideRatingFromUrlParam(?int $rating): void
+    public function overrideRatingFromUrlParam(?string $rating): void
     {
-        if ($rating !== null && $rating >= 0 && $rating <= 5) {
-            $this->rating = $rating;
-        } else {
-            throw new InvalidArgumentException('Invalid rating override in URL parameter');
+        if (!empty($rating)) {
+            if (intval($rating) >= 0 && intval($rating) <= 5) {
+                $this->rating = intval($rating);
+            } else {
+                throw new InvalidArgumentException('Invalid rating override in URL parameter');
+            }
         }
     }
     public function getRating(): ?int
