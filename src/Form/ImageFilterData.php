@@ -8,6 +8,9 @@ use Carbon\CarbonInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
+use Carbon\Exceptions\InvalidFormatException;
+use Doctrine\Common\Cache\Psr6\InvalidArgument;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ImageFilterData
@@ -118,10 +121,15 @@ class ImageFilterData
     {
         $this->rating = $rating;
     }
+    /**
+     * @throws InvalidArgumentException
+     */
     public function overrideRatingFromUrlParam(?int $rating): void
     {
         if ($rating !== null && $rating >= 0 && $rating <= 5) {
             $this->rating = $rating;
+        } else {
+            throw new InvalidArgumentException('Invalid rating override in URL parameter');
         }
     }
     public function getRating(): ?int
@@ -181,6 +189,9 @@ class ImageFilterData
             'location' => $this->location === null ? '' : $this->location
         ];
     }
+    /**
+     * @throws InvalidArgumentException
+     */
     private function dateFromUrlParam(?string $param): ?CarbonImmutable
     {
         if ($param === null || $param === "") {
@@ -196,8 +207,11 @@ class ImageFilterData
             }
         }
         catch(Exception $e) {
-            // I don't care what happened; we'll just not bother
-            // overriding our existing dates.
+            // I don't care what happened personally; we'll just not bother
+            // overriding our existing dates. However, whatever called us
+            // might want to log this, as someone may be probing the app for
+            // insecure points.
+            throw new InvalidArgument('Invalid date URL parameter', 0, $e);
         }
         return $result;
     }

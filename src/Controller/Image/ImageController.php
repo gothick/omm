@@ -10,7 +10,9 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DateTime;
 use Doctrine\ORM\QueryBuilder;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -47,7 +49,8 @@ class ImageController extends AbstractController
     public function index(
         Request $request,
         ImageRepository $imageRepository,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        LoggerInterface $logger
     ): Response {
         /** @var ImageFilterData $filterData */
         $filterData = new ImageFilterData(
@@ -58,10 +61,22 @@ class ImageController extends AbstractController
         // These are overrides that can be sent by links set up on our
         // charts on the Statistics page. If we get a location, star
         // rating or start & end dates via those, we override our defaults.
-        $filterData->overrideLocationFromUrlParam((string) $request->query->get('location'));
-        $filterData->overrideRatingFromUrlParam($request->query->getInt('rating', -1));
-        $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
-        $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
+        try {
+            $filterData->overrideLocationFromUrlParam((string) $request->query->get('location'));
+            $filterData->overrideRatingFromUrlParam($request->query->getInt('rating', -1));
+            $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
+            $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));
+        }
+        catch (Exception $e) {
+            // Someone may be trying to fiddle with our URL parameters. Don't fail; the override
+            // functions are sensible enough to ignore invalid inputs. But we should log.
+            $logger->error(
+                'Image controller override parameters caused an exception to be thrown. Quietly ignoring them.',
+                [
+                    'exception_message' => $e->getMessage()
+                ]
+            );
+        }
 
         // Filtering form for the top of the page
         $locationChoices = $this->getLocationChoices($imageRepository);
