@@ -84,7 +84,10 @@ class ImageController extends AbstractController
             $filterData,
             [
                 'locations' => array_combine($locationChoices, array_values($locationChoices)),
-                'csrf_protection' => false // We're just a GET request, and nothing bad happens no matter what you do.
+                'csrf_protection' => false, // We're just a GET request, and nothing bad happens no matter what you do.
+                'attr' => [
+                    'data-controller' => 'imagefilter'
+                ]
             ]
         );
 
