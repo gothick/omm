@@ -39,7 +39,10 @@ class SearchController extends AbstractController
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
         $queryString = "";
 
-        $form = $this->createFormBuilder(null, ['method' => 'GET'])
+        $form = $this->createFormBuilder(null, [
+            'method' => 'GET',
+            'csrf_protection' => false //
+            ])
             ->add('query', SearchType::class, ['label' => false])
             ->getForm();
 
