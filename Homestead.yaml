@@ -30,11 +30,14 @@ features:
 name: omm-gothick-org-uk
 hostname: omm-gothick-org-uk
 ports:
-    - send: 8000
+# I've changed these from the Homestead defaults because they were
+# clashing with Symfony local web server, especially send: 8000
+# which is Symfony's default.
+    - send: 8198
       to: 80
-    - send: 44300
+    - send: 44303
       to: 443
-    - send: 2222
+    - send: 2244
       to: 22
     - send: 33060
       to: 3306
