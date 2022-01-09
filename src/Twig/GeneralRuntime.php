@@ -3,10 +3,13 @@
 namespace App\Twig;
 
 use App\Service\MarkdownService;
+use App\Service\TagSluggerService;
 use ByteUnits\Binary;
 use ByteUnits\Metric;
 use DateInterval;
 use DateTime;
+use Exception;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class GeneralRuntime implements RuntimeExtensionInterface
@@ -14,9 +17,13 @@ class GeneralRuntime implements RuntimeExtensionInterface
     /** @var MarkdownService */
     private $markdownService;
 
-    public function __construct(MarkdownService $markdownService)
+    /** @var TagSluggerService */
+    private $slugger;
+
+    public function __construct(MarkdownService $markdownService, TagSluggerService $slugger)
     {
         $this->markdownService = $markdownService;
+        $this->slugger = $slugger;
     }
 
     public function durationToHMS(?DateInterval $interval): string
@@ -54,5 +61,14 @@ class GeneralRuntime implements RuntimeExtensionInterface
             return '';
         }
         return strip_tags($in, '<sup><hr>');
+    }
+
+    /**
+     * For making our tags nice and safe, so that they can be used
+     * as route parameters to our Tag controller.
+     */
+    public function slugifyTag(?string $in): string
+    {
+        return $this->slugger->slug($in);
     }
 }

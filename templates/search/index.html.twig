@@ -86,17 +86,17 @@
 
                             <p class="tag mt-2"><span class="tagtitle">Tags:</span>
                                 {% for tag in image.tags %}
-                                <a class="keyword handtag {% if tag | lower == query_string | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | lower }) }}">{{ tag }}</a>
+                                <a class="keyword handtag {% if tag | slugify_tag == query_string %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | slugify_tag }) }}">{{ tag }}</a>
                                 {% endfor %}
                             </p>
                             <p class="tag"><span class="tagtitle">Auto-Tags:</span>
                                 {% for tag in image.autoTags %}
-                                <a class="keyword autotag {% if tag | lower == query_string | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | lower }) }}">{{ tag }}</a>
+                                <a class="keyword autotag {% if tag | slugify_tag == query_string | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | slugify_tag }) }}">{{ tag }}</a>
                                 {% endfor %}
                             </p>
                             <p  class="tag"><span class="tagtitle">Text Recognition Tags:</span>
                                 {% for tag in image.textTags %}
-                                <a class="keyword texttag {% if tag | lower == query_string | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | lower }) }}">{{ tag }}</a>
+                                <a class="keyword texttag {% if tag | slugify_tag == query_string | lower %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | slugify_tag }) }}">{{ tag }}</a>
                                 {% endfor %}
                             </p>
                         </div>

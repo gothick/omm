@@ -18,19 +18,19 @@ class TagController extends AbstractController
     /** @var array<string, array<string, array<int, string>|string>> $translateParam */
     private static $translateParam = [
         'any'       => [
-            'fields' => ['images.tags', 'images.autoTags', 'images.textTags'],
+            'fields' => ['images.slugifiedTags', 'images.slugifiedAutoTags', 'images.slugifiedTextTags'],
             'description' => 'all tag types'
         ],
         'hand-tag'  => [
-            'fields' => ['images.tags'],
+            'fields' => ['images.slugifiedTags'],
             'description' => 'only hand-created tags'
         ],
         'auto-tag'  => [
-            'fields' => ['images.autoTags'],
+            'fields' => ['images.slugifiedAutoTags'],
             'description' => 'only tags created by automatic image recognition'
         ],
         'text-tag'  => [
-            'fields' => ['images.textTags'],
+            'fields' => ['images.slugifiedTextTags'],
             'description' => 'only tags created by automatic text recognition'
         ],
     ];
