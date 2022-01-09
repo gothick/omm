@@ -24,7 +24,8 @@ class GeneralExtension extends AbstractExtension
 
             // Text
             new TwigFilter('markdown_to_plain_text', [GeneralRuntime::class, 'markdownToPlainText']),
-            new TwigFilter('stripmosttags', [GeneralRuntime::class, 'stripMostTags'])
+            new TwigFilter('stripmosttags', [GeneralRuntime::class, 'stripMostTags']),
+            new TwigFilter('slugify_tag', [GeneralRuntime::class, 'slugifyTag'])
         ];
     }
 }
