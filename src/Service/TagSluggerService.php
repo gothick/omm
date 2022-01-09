@@ -26,7 +26,7 @@ class TagSluggerService
         if ($in === null || $in === "") {
             return '-';
         }
-        $slugged = $this->slugger->slug($in);
+        $slugged = strtolower($this->slugger->slug($in));
         return $slugged == "" ? "-" : $slugged;
     }
 }
