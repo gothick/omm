@@ -43,6 +43,16 @@ fos_elastica:
                             textTags:
                                 type: keyword
                                 normalizer: keyword_normalizer
+                            slugifiedTags:
+                                type: keyword
+                                normalizer: keyword_normalizer
+                                boost: 3
+                            slugifiedAutoTags:
+                                type: keyword
+                                normalizer: keyword_normalizer
+                            slugifiedTextTags:
+                                type: keyword
+                                normalizer: keyword_normalizer
                             image_id:
                                 property_path: id
             settings:
