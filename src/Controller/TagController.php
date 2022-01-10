@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use Elastica\Query;
+use Elastica\Query\BoolQuery;
 use Elastica\Query\InnerHits;
 use Elastica\Query\MultiMatch;
 use Elastica\Query\Nested;
+use Elastica\Query\Term;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,24 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends AbstractController
 {
-    /** @var array<string, array<string, array<int, string>|string>> $translateParam */
+    /** @var array<string> $translateParam */
     private static $translateParam = [
-        'any'       => [
-            'fields' => ['images.slugifiedTags', 'images.slugifiedAutoTags', 'images.slugifiedTextTags'],
-            'description' => 'all tag types'
-        ],
-        'hand-tag'  => [
-            'fields' => ['images.slugifiedTags'],
-            'description' => 'only hand-created tags'
-        ],
-        'auto-tag'  => [
-            'fields' => ['images.slugifiedAutoTags'],
-            'description' => 'only tags created by automatic image recognition'
-        ],
-        'text-tag'  => [
-            'fields' => ['images.slugifiedTextTags'],
-            'description' => 'only tags created by automatic text recognition'
-        ],
+        'any'           => 'all tag types',
+        'hand-tag'      => 'only hand-created tags',
+        'auto-tag'      => 'only tags created by automatic image recognition',
+        'text-tag'      => 'only tags created by automatic text recognition'
     ];
 
     /**
@@ -45,19 +35,22 @@ class TagController extends AbstractController
         PaginatorInterface $paginator,
         string $type = "any"
     ): Response {
-        $fields = self::$translateParam[$type]['fields'];
-        $searchDescription = self::$translateParam[$type]['description'];
+        $boolQuery = new BoolQuery();
+        if ($type === 'hand-tag' || $type === 'any') {
+            $boolQuery->addShould(new Term(['images.slugifiedTags' => ['value' => $tag]]));
+        }
+        if ($type === 'auto-tag' || $type === 'any') {
+            $boolQuery->addShould(new Term(['images.slugifiedAutoTags' => ['value' => $tag]]));
+        }
+        if ($type === 'text-tag' || $type === 'any') {
+            $boolQuery->addShould(new Term(['images.slugifiedTextTags' => ['value' => $tag]]));
+        }
 
-        $nmm = new MultiMatch();
-        $nmm->setQuery($tag);
-        // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
-        // you might be able to just not setFields and it'll default to * and might catch everything
-        // anyway.
-        $nmm->setFields($fields);
+        $boolQuery->setMinimumShouldMatch(1);
 
         $nested = new Nested();
         $nested->setPath('images');
-        $nested->setQuery($nmm);
+        $nested->setQuery($boolQuery);
 
         $innerHits = new InnerHits();
         // We want more than the default three inner hits, as there may be several related
@@ -66,6 +59,8 @@ class TagController extends AbstractController
         // the outer results.
         $innerHits->setSize(10);
         $nested->setInnerHits($innerHits);
+
+        $searchDescription = self::$translateParam[$type];
 
         $results = $wanderFinder->createHybridPaginatorAdapter($nested);
         $pagination = $paginator->paginate(
