@@ -45,14 +45,16 @@ fos_elastica:
                                 normalizer: keyword_normalizer
                             slugifiedTags:
                                 type: keyword
-                                normalizer: keyword_normalizer
-                                boost: 3
+                                index: true
+                                property_path: false
                             slugifiedAutoTags:
                                 type: keyword
-                                normalizer: keyword_normalizer
+                                index: true
+                                property_path: false
                             slugifiedTextTags:
                                 type: keyword
-                                normalizer: keyword_normalizer
+                                index: true
+                                property_path: false
                             image_id:
                                 property_path: id
             settings:
