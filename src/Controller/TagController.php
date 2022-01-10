@@ -37,13 +37,13 @@ class TagController extends AbstractController
     ): Response {
         $boolQuery = new BoolQuery();
         if ($type === 'hand-tag' || $type === 'any') {
-            $boolQuery->addShould(new Term(['images.slugifiedTags' => ['value' => $tag]]));
+            $boolQuery->addShould(new Term(['images.slugifiedTags.keyword' => ['value' => $tag]]));
         }
         if ($type === 'auto-tag' || $type === 'any') {
-            $boolQuery->addShould(new Term(['images.slugifiedAutoTags' => ['value' => $tag]]));
+            $boolQuery->addShould(new Term(['images.slugifiedAutoTags.keyword' => ['value' => $tag]]));
         }
         if ($type === 'text-tag' || $type === 'any') {
-            $boolQuery->addShould(new Term(['images.slugifiedTextTags' => ['value' => $tag]]));
+            $boolQuery->addShould(new Term(['images.slugifiedTextTags.keyword' => ['value' => $tag]]));
         }
 
         $boolQuery->setMinimumShouldMatch(1);
