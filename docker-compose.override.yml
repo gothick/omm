@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  mailer:
+    image: schickling/mailcatcher
+    ports:
+      # Web interface
+      - "8852:1080"
+      # SMTP port; internal use only
+      - "1025"
+
+  # Moved this from doctrine/doctrine-bundle autoconfig because I wanted
+  # a host port, too.
+  database:
+    ports:
+      # Local port chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      - "9159:3306"
+
+###> doctrine/doctrine-bundle ###
+###< doctrine/doctrine-bundle ###

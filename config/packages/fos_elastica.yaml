@@ -1,7 +1,13 @@
 # Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
 fos_elastica:
     clients:
-        default: { url: '%env(ELASTICSEARCH_URL)%' }
+        default:
+            host: '%env(ELASTICSEARCH_HOST)%'
+            port: '%env(ELASTICSEARCH_PORT)%'
+            # Switched away from this as ELASTICSEARCH_URL winds up without
+            # a trailing slash with Symfony Docker autoconfig thingy, which
+            # doesn't work, giving a "malformed url" error.
+            #url: '%env(ELASTICSEARCH_URL)%'
     indexes:
         #app:
         #    finder: ~

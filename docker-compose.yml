@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  database:
+    container_name: database
+    image: mariadb # Because it's got less problematic Arm64 support
+#    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: app
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: ChangeMe
+    volumes:
+      - ./docker/data/mariadb:/var/lib/mysql:rw
+
+# Mostly nicked from https://medium.com/@TimvanBaarsen/how-to-run-an-elasticsearch-7-x-single-node-cluster-for-local-development-using-docker-compose-2b7ab73d8b82
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    # Local ports chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+    ports:
+      - 8856:9200
+      - 19205:9300
+
+volumes:
+  db-data:
