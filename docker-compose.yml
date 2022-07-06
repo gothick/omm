@@ -24,6 +24,10 @@ services:
     ports:
       - 8856:9200
       - 19205:9300
+    volumes:
+      - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
 
 volumes:
   db-data:
+  es-data:
+    driver: local
