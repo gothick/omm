@@ -12,6 +12,18 @@ services:
       MYSQL_PASSWORD: ChangeMe
     volumes:
       - ./docker/data/mariadb:/var/lib/mysql:rw
+  test-database:
+    container_name: test-database
+    image: mariadb # Because it's got less problematic Arm64 support
+#    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: omm_test
+      MYSQL_USER: omm_test
+      MYSQL_PASSWORD: omm_test
+    volumes:
+      - ./docker/data/test_mariadb:/var/lib/mysql:rw
+
 
 # Mostly nicked from https://medium.com/@TimvanBaarsen/how-to-run-an-elasticsearch-7-x-single-node-cluster-for-local-development-using-docker-compose-2b7ab73d8b82
   elasticsearch:
@@ -27,6 +39,7 @@ services:
     volumes:
       - ./docker/data/elasticsearch:/usr/share/elasticsearch/data
 
+# TODO: Is this doing anything at all? We've not referenced these named volumes, have we?
 volumes:
   db-data:
   es-data:

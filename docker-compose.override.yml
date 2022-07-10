@@ -15,6 +15,11 @@ services:
     ports:
       # Local port chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
       - "9159:3306"
+  test-database:
+    ports:
+      # Local port chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      - "43572:3306"
+
 
 ###> doctrine/doctrine-bundle ###
 ###< doctrine/doctrine-bundle ###
