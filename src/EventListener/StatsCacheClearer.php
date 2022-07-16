@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use App\Entity\Image;
 use App\Entity\Wander;
-use Deployer\Logger\Logger;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -24,7 +23,7 @@ class StatsCacheClearer implements EventSubscriber
             LoggerInterface $logger
         )
     {
-        $this->cache = $cache;    
+        $this->cache = $cache;
         $this->logger = $logger;
     }
 
@@ -49,7 +48,7 @@ class StatsCacheClearer implements EventSubscriber
     {
         $this->clearCache($args);
     }
-    
+
 
     // https://symfony.com/doc/current/doctrine/events.html#doctrine-lifecycle-listeners
     public function clearCache(LifecycleEventArgs $args): void
