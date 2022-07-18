@@ -2,11 +2,11 @@
 fos_elastica:
     clients:
         default:
+            # I used these briefly instead of ELASTICSEARCH_URL as that wasn't being
+            # set properly by the Symfony CLI tool. However, helpfully that was fixed
+            # the same day I reported it: https://github.com/symfony-cli/symfony-cli/issues/154
             #host: '%env(ELASTICSEARCH_HOST)%'
             #port: '%env(ELASTICSEARCH_PORT)%'
-            # Switched away from this as ELASTICSEARCH_URL winds up without
-            # a trailing slash with Symfony Docker autoconfig thingy, which
-            # doesn't work, giving a "malformed url" error.
             url: '%env(ELASTICSEARCH_URL)%'
     indexes:
         #app:
