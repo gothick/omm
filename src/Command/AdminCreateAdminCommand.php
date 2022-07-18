@@ -34,8 +34,7 @@ class AdminCreateAdminCommand extends Command
         UserRepository $userRepository,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
@@ -75,8 +74,7 @@ class AdminCreateAdminCommand extends Command
             $user->setRoles(['ROLE_ADMIN']);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $io->error("Error creating user: {$e->getMessage()}");
             return Command::FAILURE;
         }
