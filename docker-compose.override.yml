@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  mailer:
+    image: schickling/mailcatcher
+    ports:
+      # Web interface
+      - "8852:1080"
+      # SMTP port; internal use only
+      - "1025"
+
+
+  # Whichever database you want to end up configured in MYSQL_HOST and MYSQL_PORT
+  # env vars for the mysql command-line client run with "symfony run mysql", it
+  # should be *last* in this list, as it's the last configured port that ends up
+  # there. That's why the test database is first.
+  test-database:
+    ports:
+      # Local port chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      - "43572:3306"
+
+  # Moved this from doctrine/doctrine-bundle autoconfig because I wanted
+  # a host port, too.
+  database:
+    ports:
+      # Local port chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      - "9159:3306"
+
+
+###> doctrine/doctrine-bundle ###
+###< doctrine/doctrine-bundle ###

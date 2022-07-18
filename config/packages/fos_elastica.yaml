@@ -1,7 +1,13 @@
 # Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
 fos_elastica:
     clients:
-        default: { url: '%env(ELASTICSEARCH_URL)%' }
+        default:
+            # I used these briefly instead of ELASTICSEARCH_URL as that wasn't being
+            # set properly by the Symfony CLI tool. However, helpfully that was fixed
+            # the same day I reported it: https://github.com/symfony-cli/symfony-cli/issues/154
+            #host: '%env(ELASTICSEARCH_HOST)%'
+            #port: '%env(ELASTICSEARCH_PORT)%'
+            url: '%env(ELASTICSEARCH_URL)%'
     indexes:
         #app:
         #    finder: ~
