@@ -1,0 +1,3 @@
+parameters:
+    # https://symfony.com/doc/current/performance.html#dump-the-service-container-into-a-single-file
+    container.dumper.inline_factories: true
