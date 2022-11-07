@@ -36,8 +36,7 @@ class TagController extends AbstractController
         Request $request,
         PaginatedFinderInterface $wanderFinder,
         PaginatorInterface $paginator,
-        string $type = "any",
-        int $page = 1
+        string $type = "any"
     ): Response {
         $boolQuery = new BoolQuery();
         if ($type === 'hand-tag' || $type === 'any') {
@@ -68,7 +67,7 @@ class TagController extends AbstractController
 
         $results = $wanderFinder->createHybridPaginatorAdapter($nested);
 
-        $perPage = 10;  // TODO: Parameterise this results-per-page
+        $perPage = 10; // TODO: Parameterise this results-per-page
         $page = $request->query->getInt('page', 1);
 
         // Avoid Elastica limit caused by malicious probing "Result window is too large, from + size must be less than or equal to: [10000]"
