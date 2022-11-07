@@ -26,14 +26,18 @@ class TagController extends AbstractController
     ];
 
     /**
-     * @Route("/tag/{tag}/{type}", name="tag", methods={"GET"}, requirements={"type": "any|hand-tag|auto-tag|text-tag"})
+     * @Route("/tag/{tag}/{type}",
+     *  name="tag",
+     *  methods={"GET"},
+     *  requirements={"type": "any|hand-tag|auto-tag|text-tag", "page": "\d+"})
      */
     public function index(
         string $tag,
         Request $request,
         PaginatedFinderInterface $wanderFinder,
         PaginatorInterface $paginator,
-        string $type = "any"
+        string $type = "any",
+        int $page = 1
     ): Response {
         $boolQuery = new BoolQuery();
         if ($type === 'hand-tag' || $type === 'any') {
@@ -63,10 +67,19 @@ class TagController extends AbstractController
         $searchDescription = self::$translateParam[$type];
 
         $results = $wanderFinder->createHybridPaginatorAdapter($nested);
+
+        $perPage = 10;  // TODO: Parameterise this results-per-page
+        $page = $request->query->getInt('page', 1);
+
+        // Avoid Elastica limit caused by malicious probing "Result window is too large, from + size must be less than or equal to: [10000]"
+        if (($page * $perPage > 10000) || $page < 1) {
+            $page = 1;
+        }
+
         $pagination = $paginator->paginate(
             $results,
-            $request->query->getInt('page', 1),
-            10 // TODO: Parameterise this results-per-page
+            $page,
+            $perPage
         );
 
         return $this->render('tag/index.html.twig', [
