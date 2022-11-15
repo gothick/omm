@@ -24,6 +24,11 @@ services:
     volumes:
       - ./docker/data/mariadb:/var/lib/mysql:rw
 
+  beanstalkd:
+    container_name: beanstalkd
+    image: schickling/beanstalkd
+    ports:
+      - 11300:11300
 
 # Mostly nicked from https://medium.com/@TimvanBaarsen/how-to-run-an-elasticsearch-7-x-single-node-cluster-for-local-development-using-docker-compose-2b7ab73d8b82
   elasticsearch:
