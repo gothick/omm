@@ -30,7 +30,6 @@ serveup:
 servedown: ## Stop the webserver
 	@$(SYMFONY_BIN) server:stop
 
-
 ## —— Docker 🐳 ————————————————————————————————————————————————————————————————
 up:
 	$(DOCKER_COMP) up --detach
@@ -40,3 +39,7 @@ up:
 
 down:
 	$(DOCKER_COMP) down
+
+## -- Testing --
+test:
+	@$(SYMFONY_BIN) php -dxdebug.mode=coverage bin/phpunit
