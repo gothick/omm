@@ -3,6 +3,7 @@ DOCKER_COMP   = docker-compose
 SYMFONY_BIN   = symfony
 
 CONSOLE       = $(SYMFONY_BIN) console
+PHPUNIT = $(SYMFONY_BIN) php -dxdebug.mode=coverage bin/phpunit
 
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 sf: ## List all Symfony commands
@@ -42,4 +43,9 @@ down:
 
 ## -- Testing --
 test:
-	@$(SYMFONY_BIN) php -dxdebug.mode=coverage bin/phpunit
+	$(PHPUNIT)
+
+# We're going to be doing this a lot for a while...
+testtags:
+	$(PHPUNIT) --group tags
+
