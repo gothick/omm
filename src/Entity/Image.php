@@ -19,6 +19,7 @@ use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
+use DateTimeInterface;
 
 /**
  *
@@ -45,6 +46,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="integer")
      *
      * @Groups({"wander:item", "image:list"})
+     * @var int
      */
     private $id;
 
@@ -55,6 +57,7 @@ class Image implements TaggableInterface
      *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
      *
      * @Ignore()
+     * @var File|null
      */
     private $imageFile;
 
@@ -62,6 +65,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Groups({"wander:item", "image:list"})
+     * @var string|null
      */
     private $name; // For Vich, not for us. We use Title.
 
@@ -69,6 +73,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Groups({"wander:item", "image:list"})
+     * @var string|null
      */
     private $title;
 
@@ -76,6 +81,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"wander:item", "image:list"})
+     * @var string|null
      */
     private $description;
 
@@ -83,6 +89,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="integer", nullable=true)
      *
      * @Groups({"wander:item"})
+     * @var int|null
      */
     private $sizeInBytes;
 
@@ -90,6 +97,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Groups({"wander:item"})
+     * @var string|null
      */
     private $mimeType;
 
@@ -97,6 +105,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Groups({"wander:item"})
+     * @var string|null
      */
     private $originalName;
 
@@ -104,6 +113,7 @@ class Image implements TaggableInterface
      * @ORM\Column(type="simple_array", nullable=true)
      *
      * @Groups({"wander:item"})
+     * @var ?array<int>
      */
     private $dimensions = [];
 
@@ -132,12 +142,12 @@ class Image implements TaggableInterface
      * })
      *
      * @Groups({"wander:item", "image:list"})
-     *
+     * @var ?array<float>
      */
     private $latlng = [];
 
     /**
-     * @var Collection
+     * @var Collection<int, TagInterface>
      * @ORM\ManyToMany(targetEntity="Tag")
      */
     private $tags;
@@ -146,15 +156,16 @@ class Image implements TaggableInterface
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Groups({"wander:item"})
+     * @var DateTimeInterface
      */
     private $capturedAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"wander:item"})
+     * @var ?int
      */
     private $rating;
-
 
     // TODO: This @Ignore was here from when this was a many-to-many. Do we still
     // need it?
@@ -162,6 +173,7 @@ class Image implements TaggableInterface
      * @ORM\ManyToOne(targetEntity=Wander::class, inversedBy="images")
      *
      * @Ignore()
+     * @var ?Wander
      */
     private $wander;
 
@@ -283,11 +295,18 @@ class Image implements TaggableInterface
         return $this;
     }
 
+    /**
+     * @return ?array<int>
+     */
     public function getDimensions(): ?array
     {
         return $this->dimensions;
     }
 
+    /**
+     * @param ?array<int> $dimensions
+     *
+     */
     public function setDimensions(?array $dimensions): self
     {
         $this->dimensions = $dimensions;
@@ -326,6 +345,9 @@ class Image implements TaggableInterface
         return $this->latlng[1];
     }
 
+    /**
+     * @return ?array<float>
+     */
     public function getLatlng(): ?array
     {
         return $this->latlng;
@@ -336,6 +358,9 @@ class Image implements TaggableInterface
         return is_array($this->latlng) && count($this->latlng) == 2;
     }
 
+    /**
+     * @param ?array<int> $latlng
+     */
     public function setLatlng(?array $latlng): self
     {
         $this->latlng = $latlng;
@@ -366,7 +391,7 @@ class Image implements TaggableInterface
     }
 
     /**
-     * @return iterable<TagInterface>
+     * @return Collection<int, TagInterface>
      */
     public function getTags(): iterable
     {
@@ -374,7 +399,7 @@ class Image implements TaggableInterface
     }
 
     /**
-     * @param Collection<TagInterface> $tags
+     * @param Collection<int, TagInterface> $tags
      */
     public function setTags($tags): self
     {
@@ -470,46 +495,53 @@ class Image implements TaggableInterface
 
     /**
      * @Groups({"wander:item"})
+     * @var string
      */
     private $imageUri;
 
     /**
      * @Groups({"wander:item", "image:list"})
+     * @var string
      */
     private $markerImageUri;
 
     /**
      * @Groups({"wander:item", "image:list"})
+     * @var string
      */
     private $mediumImageUri;
 
     /**
      * @Groups({"wander:item", "image:list"})
+     * @var string
      */
     private $imageShowUri;
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @var ?string[]
+     * @var ?array<string>
      */
     private $autoTags = [];
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var ?string
      */
     private $location;
 
     /**
      * @ORM\OneToOne(targetEntity=Wander::class, inversedBy="featuredImage", cascade={"persist"})
+     * @var ?Wander
      */
     private $featuringWander;
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var array<string>
      */
     private $textTags = [];
 
-    public function setImageUri($imageUri) {
+    public function setImageUri(string $imageUri): void {
         $this->imageUri = $imageUri;
     }
 
@@ -517,21 +549,21 @@ class Image implements TaggableInterface
         return $this->imageUri;
     }
 
-    public function setMarkerImageUri($markerImageUri) {
+    public function setMarkerImageUri(string $markerImageUri): void {
         $this->markerImageUri = $markerImageUri;
     }
     public function getMarkerImageUri(): ?string {
         return $this->markerImageUri;
     }
 
-    public function setMediumImageUri($mediumImageUri) {
+    public function setMediumImageUri(string $mediumImageUri): void {
         $this->mediumImageUri = $mediumImageUri;
     }
     public function getMediumImageUri(): ?string {
         return $this->mediumImageUri;
     }
 
-    public function setImageShowUri($imageShowUri) {
+    public function setImageShowUri(string $imageShowUri): void {
         $this->imageShowUri = $imageShowUri;
     }
     public function getImageShowUri(): ?string {
@@ -539,9 +571,9 @@ class Image implements TaggableInterface
     }
 
     /**
-     * @return ?string[]
+     * @return ?array<string>
      */
-    public function getAutoTags(): array
+    public function getAutoTags(): ?array
     {
         return $this->autoTags;
     }
@@ -614,6 +646,9 @@ class Image implements TaggableInterface
         return $result;
     }
 
+    /**
+     * @return ?array<string>
+     */
     public function getTextTags(): ?array
     {
         return $this->textTags;
@@ -621,17 +656,16 @@ class Image implements TaggableInterface
 
     public function getTextTagsCount(): int
     {
-        if (is_array($this->textTags)) {
-            return count($this->textTags);
-        }
-        return 0;
+        return count($this->textTags);
     }
 
 
-    public function setTextTags(?array $textTags): self
+    /**
+     * @param array<string> $textTags
+     */
+    public function setTextTags(array $textTags): self
     {
         $this->textTags = $textTags;
-
         return $this;
     }
 }

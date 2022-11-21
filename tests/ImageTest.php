@@ -7,6 +7,7 @@ use App\Entity\Tag;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Beelab\TagBundle\Tag\TagInterface;
 
 class ImageTest extends TestCase
 {
@@ -51,10 +52,41 @@ class ImageTest extends TestCase
     /**
      * @group tags
      */
-    public function testGetTagNames(): void {
+    public function testGetTags(): void {
         $image = new Image();
-        $tags = $image->getTagNames();
-        $this->assertIsIterable($tags, "Reading image with no keywords should still produce an array, albeit empty");
-        $this->assertEmpty($tags, "Reading image with no keywords should result in an empty array");
+        /** @var iterable<TagInterface> */ $tags = $image->getTags();
+        $this->assertIsIterable($tags, "GetTags() should return an iterable even if no tags are present.");
+        $this->assertEmpty($tags, "GetTags() should return an empty iterable if no tags are present.");
+
+        $clint = new Tag(); /* The tag with no name */
+        $image->addTag($clint);
+        $tags = $image->getTags();
+        $this->assertIsIterable($tags, "GetTags() should return an iterable.");
+        $this->assertCount(1, $tags, "GetTags() should find one tags when we've added one tag.");
+        /** @var TagInterface */
+        $retrievedTag = $tags->current();
+        $this->assertNotNull($retrievedTag, "Retrieved tag should not be null.");
+        $this->assertNull($retrievedTag->getName(), "Tag with no name should have a null name.");
+
+        $floopy = new Tag();
+        $floopy->setName("floopy");
+        $image = new Image();
+        $image->addTag($floopy);
+        $tags = $image->getTags();
+        /** @var TagInterface */
+        $hopefullyFloopy = $tags->current();
+        $this->assertEquals("floopy", $hopefullyFloopy->getName(), "Unexpected tag name retrieved.");
+
+        $tagAlpha = new Tag();
+        $tagAlpha->setName("alpha");
+        $tagBeta = new Tag();
+        $tagBeta->setName("beta");
+        $image = new Image();
+        $image->addTag($tagAlpha);
+        $image->addTag($tagBeta);
+        $this->assertCount(2, $image->getTags(), "Expected two tags after setting two tags.");
+        $retrievedTags = $image->getTags();
+        $this->assertCount(1, $retrievedTags->filter(fn($tag) => $tag->getName() == 'alpha'), "Couldn't find alpha tag");
+        $this->assertCount(1, $retrievedTags->filter(fn($tag) => $tag->getName() == 'beta'), "Couldn't find beta tag");
     }
 }
