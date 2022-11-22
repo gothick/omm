@@ -8,9 +8,9 @@
             "type": "php",
             "request": "launch",
             "name": "Listen for XDebug",
-            "pathMappings": {
-              "/home/vagrant/code": "${workspaceFolder}",
-            },
+            // "pathMappings": {
+            //   "/home/vagrant/code": "${workspaceFolder}",
+            // },
             "port": 9003,
             "log": true,
         },
