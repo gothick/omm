@@ -519,7 +519,7 @@ class Image implements TaggableInterface
 
     /**
      * @ORM\Column(type="array", nullable=true)
-     * @var ?array<string>
+     * @var array<string>
      */
     private $autoTags = [];
 
@@ -571,7 +571,7 @@ class Image implements TaggableInterface
     }
 
     /**
-     * @return ?array<string>
+     * @return array<string>
      */
     public function getAutoTags(): ?array
     {
@@ -583,10 +583,12 @@ class Image implements TaggableInterface
      */
     public function setAutoTags(?array $autoTags): self
     {
-        $this->autoTags = $autoTags;
-
+        // TODO: I think we should probably just declare our parameter non-nullable,
+        // but I'm not going to try that just yet.
+        $this->autoTags = $autoTags === null ? [] : $autoTags;
         return $this;
     }
+
     public function getAutoTagsCount(): int
     {
         if (is_array($this->autoTags)) {

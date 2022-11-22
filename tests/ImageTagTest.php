@@ -215,4 +215,58 @@ class ImageTagTest extends TestCase
         $this->assertContains('two', $names, "Expected tag set via setTagsText() to come back from getTagNames()");
         $this->assertContains('three', $names, "Expected tag set via setTagsText() to come back from getTagNames()");
     }
+
+    /**
+     * AUTO TAGS
+     */
+
+    /**
+     * @group tags
+     */
+    public function testAutoTags(): void {
+        $image = new Image();
+        $this->assertIsArray($image->getAutoTags(), "Expected no auto tags still to be an array");
+        $this->assertEmpty($image->getAutoTags(), "Expected no auto tags to be an empty array");
+        $this->assertEquals(0, $image->getAutoTagsCount(), "Expected empty tags to have a zero count.");
+
+        $image->setAutoTags(null);
+        $this->assertIsArray($image->getAutoTags(), "Expected setting Auto Tags to null still to be an array");
+        $this->assertEmpty($image->getAutoTags(), "Expected setting Auto Tags to null to still be an empty array");
+
+        $image->setAutoTags([]);
+        $this->assertIsArray($image->getAutoTags(), "Expected setting Auto Tags to empty array to result in array");
+        $this->assertEmpty($image->getAutoTags(), "Expected setting Auto Tags to empty array to result in an empty array");
+
+        $image->setAutoTags(['foo', 'bar', 'baz']);
+        $this->assertEquals(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
+        $this->assertEquals(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
+        $image->setAutoTags(['foop']);
+        $this->assertCount(1, $image->getAutoTags(), "Resetting auto tags with a single tag should result in a tag count of one.");
+        $this->assertEquals(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
+    }
+
+    /**
+     * TEXT TAGS
+     */
+
+    /**
+     * @group tags
+     */
+    public function testTextTags(): void {
+        $image = new Image();
+        $this->assertIsArray($image->getTextTags(), "Expected no text tags still to be an array");
+        $this->assertEmpty($image->getTextTags(), "Expected no text tags to be an empty array");
+        $this->assertEquals(0, $image->getTextTagsCount(), "Expected empty text tags to have a zero count.");
+
+        $image->setTextTags([]);
+        $this->assertIsArray($image->getTextTags(), "Expected setting text Tags to empty array to result in array");
+        $this->assertEmpty($image->getTextTags(), "Expected setting text Tags to empty array to result in an empty array");
+
+        $image->setTextTags(['foo', 'bar', 'baz']);
+        $this->assertEquals(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
+        $this->assertEquals(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
+        $image->setTextTags(['foop']);
+        $this->assertCount(1, $image->getTextTags(), "Resetting text tags with a single tag should result in a tag count of one.");
+        $this->assertEquals(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
+    }
 }
