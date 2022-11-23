@@ -74,8 +74,16 @@ class ImageTagTest extends TestCase
         $image->addTag($tagBeta);
         $this->assertCount(2, $image->getTags(), "Expected two tags after setting two tags.");
         $retrievedTags = $image->getTags();
-        $this->assertCount(1, $retrievedTags->filter(fn($tag) => $tag->getName() === 'alpha'), "Couldn't find alpha tag");
-        $this->assertCount(1, $retrievedTags->filter(fn($tag) => $tag->getName() === 'beta'), "Couldn't find beta tag");
+        $this->assertCount(
+            1,
+            $retrievedTags->filter(fn($tag) => $tag->getName() === 'alpha'),
+            "Couldn't find alpha tag"
+        );
+        $this->assertCount(
+            1,
+            $retrievedTags->filter(fn($tag) => $tag->getName() === 'beta'),
+            "Couldn't find beta tag"
+        );
     }
     /**
      * @group tags
@@ -200,8 +208,6 @@ class ImageTagTest extends TestCase
         $this->assertEquals("", $image->getTagsText(), "Expected an empty string if no tags set");
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
-        // Just in case; we might need this later, but I think they'll come out in the order we put them in.
-        // $this->assertThat($tagsText, $this->logicalOr($this->equalTo('alpha, beta'), $this->equalTo('beta, alpha')), "Tags were not converted to expected tags text.");
         $this->assertEquals('alpha, beta', $image->getTagsText(), "Tags were not converted to expected tags text.");
         $image->addTag($this->gammaTag);
         $this->assertEquals('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
