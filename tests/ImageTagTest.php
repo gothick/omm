@@ -228,9 +228,9 @@ class ImageTagTest extends TestCase
         $names = $image->getTagNames();
         $this->assertIsArray($names, "Expected an array from getTagNames()");
         $this->assertCount(3, $names, "Set three tags via setTagsText, expected three names back from getTagNames()");
-        $this->assertContains('one', $names, "Expected tag set via setTagsText() to come back from getTagNames()");
-        $this->assertContains('two', $names, "Expected tag set via setTagsText() to come back from getTagNames()");
-        $this->assertContains('three', $names, "Expected tag set via setTagsText() to come back from getTagNames()");
+        $this->assertContains('one', $names, "Expected tag 'one' set via setTagsText() to come back from getTagNames()");
+        $this->assertContains('two', $names, "Expected tag 'two' set via setTagsText() to come back from getTagNames()");
+        $this->assertContains('three', $names, "Expected tag 'three' set via setTagsText() to come back from getTagNames()");
     }
 
     /**
