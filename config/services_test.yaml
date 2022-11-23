@@ -1,7 +1,17 @@
 services:
     # default configuration for services in *this* file
+
+    # Commented this out as it hid the existing _defaults in services.yaml and I
+    # wasn't doing anything different here.
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true
 
     App\Service\ImageTaggingServiceInterface: '@App\Service\DummyImageTaggingService'
+    
+    # Allows us to mock this otherwise-private service in our tests (I coudln't get
+    # the alleged special container that lets us access private services to work.)
+    # https://stackoverflow.com/a/69232942/300836
+    # https://github.com/symfony/symfony/issues/27741#issuecomment-400706008
+    test.App\Service\ImageService: '@App\Service\ImageService'

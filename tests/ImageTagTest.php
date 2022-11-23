@@ -5,12 +5,14 @@ namespace App\Tests;
 use App\Entity\Image;
 use App\Entity\Tag;
 use App\Repository\ImageRepository;
+use App\Service\ImageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Beelab\TagBundle\Tag\TagInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Translation\Util\ArrayConverter;
 
-class ImageTagTest extends TestCase
+class ImageTagTest extends KernelTestCase
 {
     /** @var TagInterface */
     private $alphaTag;
@@ -24,8 +26,16 @@ class ImageTagTest extends TestCase
     /** @var TagInterface */
     private $gammaTag;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     protected function setUp(): void
     {
+        $kernel = self::bootKernel();
+        $this->entityManager = $kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+
         $this->alphaTag = new Tag();
         $this->alphaTag->setName('alpha');
         $this->betaTag = new Tag();
@@ -291,5 +301,49 @@ class ImageTagTest extends TestCase
         $tags = $image->getTextTags();
         $this->assertCount(1, $tags, "Resetting text tags with a single tag should result in a tag count of one.");
         $this->assertEquals(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
+    }
+
+    /**
+     * Persistence testing for our manual tags that use Beelabs' tagging system, especially whether
+     * tags are kept unique in the database.
+     */
+
+    /**
+     * @group tags
+    */
+    public function testSaveTagsAvoidsDuplication(): void
+    {
+        // We mock the imageservice otherwise it tries to generate URLs etc. based
+        // on values we're not bothering to set on Image when persisting/loading:
+        $imageServiceMock = $this->getMockBuilder(ImageService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container = static::getContainer();
+        $container->set('test.App\Service\ImageService', $imageServiceMock);
+
+        $image1 = new Image();
+        $image1->setImageUri('https://justfortesting');
+        $image1->setTagsText("one,two,three");
+        $image2 = new Image();
+        $image2->setImageUri('https://justfortesting');
+        $image2->setTagsText("two,three,four");
+
+        // It doesn't actually matter if we persist these
+        // together or separately.
+        $this->entityManager->persist($image1);
+        $this->entityManager->flush();
+        $this->entityManager->refresh($image1);
+
+        $this->entityManager->persist($image2);
+        $this->entityManager->flush();
+        $this->entityManager->refresh($image2);
+
+        // The first tag of image2 should be "two"...
+        $image2tagTwo = $image2->getTags()->current();
+        $this->assertEquals($image2tagTwo->getName(), 'two', "Unexpected tag name found in image2");
+        // ...but it should also be the *same* tag as was used
+        // for "two" in image1, so the same database id should
+        // exist in image2's tags.
+        $this->assertTrue($image1->getTags()->exists(fn($k, $v) => $v->getId() === $image2tagTwo->getId()));
     }
 }
