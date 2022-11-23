@@ -541,7 +541,8 @@ class Image implements TaggableInterface
      */
     private $textTags = [];
 
-    public function setImageUri(string $imageUri): void {
+    public function setImageUri(string $imageUri): void
+    {
         $this->imageUri = $imageUri;
     }
 
@@ -549,24 +550,29 @@ class Image implements TaggableInterface
         return $this->imageUri;
     }
 
-    public function setMarkerImageUri(string $markerImageUri): void {
+    public function setMarkerImageUri(string $markerImageUri): void
+    {
         $this->markerImageUri = $markerImageUri;
     }
     public function getMarkerImageUri(): ?string {
         return $this->markerImageUri;
     }
 
-    public function setMediumImageUri(string $mediumImageUri): void {
+    public function setMediumImageUri(string $mediumImageUri): void
+    {
         $this->mediumImageUri = $mediumImageUri;
     }
-    public function getMediumImageUri(): ?string {
+    public function getMediumImageUri(): ?string
+    {
         return $this->mediumImageUri;
     }
 
-    public function setImageShowUri(string $imageShowUri): void {
+    public function setImageShowUri(string $imageShowUri): void
+    {
         $this->imageShowUri = $imageShowUri;
     }
-    public function getImageShowUri(): ?string {
+    public function getImageShowUri(): ?string
+    {
         return $this->imageShowUri;
     }
 

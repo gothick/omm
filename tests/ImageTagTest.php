@@ -39,7 +39,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testGetTags(): void {
+    public function testGetTags(): void
+    {
         $image = new Image();
         /** @var iterable<TagInterface> */ $tags = $image->getTags();
         $this->assertIsIterable($tags, "GetTags() should return an iterable even if no tags are present.");
@@ -79,7 +80,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testAddTag(): void {
+    public function testAddTag(): void
+    {
         $image = new Image();
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
@@ -98,7 +100,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testClearTags(): void {
+    public function testClearTags(): void
+    {
         $image = new Image();
         $this->assertCount(0, $image->getTags(), "We should start with no tags on a fresh image.");
         // Should do nothing, i.e. throw no exception
@@ -131,7 +134,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testHasTag(): void {
+    public function testHasTag(): void
+    {
         // I don't think hasTag is actually used anywhere, but better safe than sorry
         $image = new Image();
         $this->assertFalse($image->hasTag($this->alphaTag));
@@ -145,7 +149,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testSetTags(): void {
+    public function testSetTags(): void
+    {
         $image = new Image();
         $image->setTags(new ArrayCollection([]));
         $this->assertCount(0, $image->getTags());
@@ -162,7 +167,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testSetTagsText(): void {
+    public function testSetTagsText(): void
+    {
         // This is fairly minimal interface, but it's an important part of both how Beelab's tag
         // feature works and how it interacts with Symfony forms.
 
@@ -187,7 +193,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testGetTagsText(): void {
+    public function testGetTagsText(): void
+    {
         $image = new Image();
         $this->assertIsString($image->getTagsText(), "Expected a string result even if no tags are set.");
         $this->assertEquals("", $image->getTagsText(), "Expected an empty string if no tags set");
@@ -202,7 +209,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testGetTagNames(): void {
+    public function testGetTagNames(): void
+    {
         // GetTagNames is just used by Beelab's tagging system to read back anything set with
         // setTagsText, e.g. when setting form data back onto the Taggable entity.
         $image = new Image();
@@ -226,7 +234,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testAutoTags(): void {
+    public function testAutoTags(): void
+    {
         $image = new Image();
         $this->assertIsArray($image->getAutoTags(), "Expected no auto tags still to be an array");
         $this->assertEmpty($image->getAutoTags(), "Expected no auto tags to be an empty array");
@@ -257,7 +266,8 @@ class ImageTagTest extends TestCase
     /**
      * @group tags
      */
-    public function testTextTags(): void {
+    public function testTextTags(): void
+    {
         $image = new Image();
         $this->assertIsArray($image->getTextTags(), "Expected no text tags still to be an array");
         $this->assertEmpty($image->getTextTags(), "Expected no text tags to be an empty array");
