@@ -12,14 +12,17 @@ use Symfony\Component\Translation\Util\ArrayConverter;
 
 class ImageTagTest extends TestCase
 {
-    /** @var Tag */
+    /** @var TagInterface */
     private $alphaTag;
 
-    /** @var Tag */
+    /** @var TagInterface */
     private $betaTag;
 
-    /** @var Tag */
+    /** @var TagInterface */
     private $betaUppercaseTag;
+
+    /** @var TagInterface */
+    private $gammaTag;
 
     protected function setUp(): void
     {
@@ -241,7 +244,9 @@ class ImageTagTest extends TestCase
         $this->assertEquals(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
         $this->assertEquals(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
         $image->setAutoTags(['foop']);
-        $this->assertCount(1, $image->getAutoTags(), "Resetting auto tags with a single tag should result in a tag count of one.");
+        /** @var array<string> $tags */
+        $tags = $image->getAutoTags();
+        $this->assertCount(1, $tags, "Resetting auto tags with a single tag should result in a tag count of one.");
         $this->assertEquals(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
     }
 
@@ -266,7 +271,9 @@ class ImageTagTest extends TestCase
         $this->assertEquals(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
         $this->assertEquals(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
         $image->setTextTags(['foop']);
-        $this->assertCount(1, $image->getTextTags(), "Resetting text tags with a single tag should result in a tag count of one.");
+        /** @var array<string> $tags */
+        $tags = $image->getTextTags();
+        $this->assertCount(1, $tags, "Resetting text tags with a single tag should result in a tag count of one.");
         $this->assertEquals(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
     }
 }

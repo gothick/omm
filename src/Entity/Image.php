@@ -591,10 +591,7 @@ class Image implements TaggableInterface
 
     public function getAutoTagsCount(): int
     {
-        if (is_array($this->autoTags)) {
-            return count($this->autoTags);
-        }
-        return 0;
+        return count($this->autoTags);
     }
 
     public function getLocation(): ?string
