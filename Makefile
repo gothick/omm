@@ -42,7 +42,7 @@ upapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml up # --detach
 
 down:
-	$(DOCKER_COMP) down
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml down
 
 buildapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml build

@@ -15,9 +15,14 @@ COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
 COPY . /var/www
 
 WORKDIR /var/www
-RUN echo "APP_ENV=prod\nAPP_SECRET=$(echo $RANDOM | md5)" > .env.local
+COPY ./docker/wait-for-it.sh .
+RUN chmod +x entrypoint.sh
+RUN chmod +x wait-for-it.sh
+
+RUN echo "APP_ENV=docker\nAPP_SECRET=$(echo $RANDOM | md5)" > .env.local
 RUN composer install --prefer-dist --no-dev --no-interaction
 RUN mkdir -p /var/www/var \
   && chown -R www-data:www-data /var/www/var
 
-CMD ["apache2-foreground"]
+ENTRYPOINT ["/var/www/entrypoint.sh"]
+# CMD ["apache2-foreground"]
