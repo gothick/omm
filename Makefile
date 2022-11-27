@@ -38,8 +38,14 @@ up:
 #upm: ## Same, but with MySQL config
 #	$(DOCKER_COMP) -f docker-compose.mysql.yml -f docker-compose.mysql.override.yml up --detach
 
+upapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml up # --detach
+
 down:
 	$(DOCKER_COMP) down
+
+buildapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml build
 
 ## -- Testing --
 test:
