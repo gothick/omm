@@ -14,6 +14,7 @@ services:
       - KERNEL_CLASS='App\Kernel'
       - SECURE_SCHEME=http
       - MESSENGER_TRANSPORT_DSN=beanstalkd://localhost?tube_name=omm_docker
+      - ELASTICSEARCH_URL=http://elasticsearch:9200/
 
       # Pass through environment variables set up in .env.docker.secrets
       - DATABASE_URL

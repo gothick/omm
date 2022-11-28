@@ -29,7 +29,9 @@ COPY ./docker/wait-for-it.sh .
 RUN chmod +x entrypoint.sh
 RUN chmod +x wait-for-it.sh
 RUN mkdir -p /var/www/var \
-  	&& chown -R www-data:www-data /var/www/var
+  	&& chown -R www-data:www-data /var/www/var \
+    && mkdir -p /var/www/public/uploads \
+	&& chown -R www-data:www-data /var/www/public/uploads
 RUN composer install --prefer-dist --no-dev --no-interaction
 RUN yarn \
 	&& yarn run encore production
