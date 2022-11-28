@@ -8,7 +8,7 @@ ENV APP_ENV=docker
 RUN a2enmod rewrite
 
 RUN apt-get update \
-  	&& apt-get install -y libzip-dev git wget --no-install-recommends \
+  	&& apt-get install -y libzip-dev git wget exiftool --no-install-recommends \
   	&& apt-get clean \
 	&& curl -fsSL https://deb.nodesource.com/setup_19.x | bash - \
 	&& apt-get install -y nodejs \
