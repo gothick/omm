@@ -16,9 +16,7 @@ services:
       - MESSENGER_TRANSPORT_DSN=beanstalkd://localhost?tube_name=omm_docker
 
       # Pass through environment variables set up in .env.docker.secrets
-      - KERNEL_CLASS
       - DATABASE_URL
-      - SECURE_SCHEME
       - MESSENGER_TRANSPORT_DSN
       - APP_SECRET
       - MAPBOX_ACCESS_TOKEN

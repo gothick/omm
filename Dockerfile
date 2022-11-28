@@ -19,7 +19,7 @@ RUN apt-get update \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions
-RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl @composer-2;
+RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl gd @composer-2;
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
 COPY . /var/www
