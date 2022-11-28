@@ -1,0 +1,19 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # TODO: For now we'll test with the dev image tagging service. This uploads the image
+    # itself to Google rather than providing Google with a public URI to take a look at
+    # the image from the website itself. Later we'll figure out how to configure things
+    # so that if the website is publically-viewable we send Google the right public URI and
+    # take this back out.
+    App\Service\ImageTaggingServiceInterface: '@App\Service\DevGoogleImageTaggingService'
+
+    App\Service\DevGoogleImageTaggingService:
+        lazy: true
+        arguments:
+            $projectId: '%google.project_id%'
+            $serviceAccountFile: '%google.service_account_file%'
+

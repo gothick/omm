@@ -9,6 +9,9 @@ services:
       - "docker-database"
       - "beanstalkd"
       - "elasticsearch"
+    volumes:
+      - uploads:/var/www/public/uploads
+      - media:/var/www/public/media
     environment:
       - APP_ENV=docker
       - KERNEL_CLASS='App\Kernel'
@@ -31,5 +34,8 @@ services:
       - AMAZON_S3_REGION
       - AMAZON_S3_VERSION
 
+volumes:
+  uploads:
+  media:
 ###> doctrine/doctrine-bundle ###
 ###< doctrine/doctrine-bundle ###
