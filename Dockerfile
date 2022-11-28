@@ -22,17 +22,27 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl gd @composer-2;
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
-COPY . /var/www
 
 WORKDIR /var/www
+# We'll do the composer install in this layer, *then* copy everything
+# else in a later layer. That should make sure this layer gets cached
+# more effectively. https://dev.to/iacons/faster-docker-builds-with-composer-install-3opj
+COPY ./composer.json .
+COPY ./composer.lock .
+RUN composer install --prefer-dist --no-dev --no-interaction --no-autoloader --no-scripts
+
+COPY . /var/www
+
 COPY ./docker/wait-for-it.sh .
 RUN chmod +x entrypoint.sh
 RUN chmod +x wait-for-it.sh
 RUN mkdir -p /var/www/var \
   	&& chown -R www-data:www-data /var/www/var \
     && mkdir -p /var/www/public/uploads \
-	&& chown -R www-data:www-data /var/www/public/uploads
-RUN composer install --prefer-dist --no-dev --no-interaction
+	&& chown -R www-data:www-data /var/www/public/uploads \
+    && mkdir -p /var/www/public/uploads/images \
+	&& chown -R www-data:www-data /var/www/public/uploads/images
+RUN composer dump-autoload --optimize --no-interaction
 RUN yarn \
 	&& yarn run encore production
 ENTRYPOINT ["/var/www/entrypoint.sh"]
