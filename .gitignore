@@ -66,6 +66,7 @@ tramp
 /public/bundles/
 /var/
 /vendor/
+/.env.docker.secrets
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

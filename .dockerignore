@@ -20,6 +20,12 @@ docker/data/
 var/
 vendor/
 node_modules
+Makefile
 
-
+.env.local
+# We use these files when running with docker compose to provide the
+# enviroment to the container at runtime. .env.docker.secrets is never
+# committed.
+.env.docker
+.env.docker.secrets
 

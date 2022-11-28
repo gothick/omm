@@ -9,6 +9,29 @@ services:
       - "docker-database"
       - "beanstalkd"
       - "elasticsearch"
+    environment:
+      - APP_ENV=docker
+      - KERNEL_CLASS='App\Kernel'
+      - SECURE_SCHEME=http
+      - MESSENGER_TRANSPORT_DSN=beanstalkd://localhost?tube_name=omm_docker
+
+      # Pass through environment variables set up in .env.docker.secrets
+      - KERNEL_CLASS
+      - DATABASE_URL
+      - SECURE_SCHEME
+      - MESSENGER_TRANSPORT_DSN
+      - APP_SECRET
+      - MAPBOX_ACCESS_TOKEN
+      - IMAGGA_API_KEY
+      - IMAGGA_API_SECRET
+      - GOOGLE_API_KEY
+      - GOOGLE_PROJECT_ID
+      - GOOGLE_SERVICE_ACCOUNT_FILE
+      - AMAZON_S3_KEY
+      - AMAZON_S3_SECRET
+      - AMAZON_S3_BUCKET
+      - AMAZON_S3_REGION
+      - AMAZON_S3_VERSION
 
 ###> doctrine/doctrine-bundle ###
 ###< doctrine/doctrine-bundle ###
