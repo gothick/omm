@@ -18,6 +18,7 @@ services:
       - SECURE_SCHEME=http
       - MESSENGER_TRANSPORT_DSN=beanstalkd://beanstalkd?tube_name=omm_docker
       - ELASTICSEARCH_URL=http://elasticsearch:9200/
+      - HOST_FOR_COMMANDS=localhost
 
       # Pass through environment variables set up in .env.docker.secrets
       - DATABASE_URL

@@ -14,8 +14,9 @@ parameters:
     app.homebase_coords: [ '%env(float:HOME_BASE_LAT)%', '%env(float:HOME_BASE_LNG)%' ]
     # For command-line stuff that doesn't have a Request: https://symfony.com/doc/4.1/console/request_context.html
     env(HOST_FOR_COMMANDS): 'omm.gothick.org.uk'
+    env(SECURE_SCHEME): 'https'
     router.request_context.host: '%env(HOST_FOR_COMMANDS)%'
-    router.request_context.scheme: 'https'
+    router.request_context.scheme: '%env(SECURE_SCHEME)%'
     # Unused at the moment, but might be handy later.
     google.api_key: '%env(GOOGLE_API_KEY)%'
     google.project_id: '%env(GOOGLE_PROJECT_ID)%'
