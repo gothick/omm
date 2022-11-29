@@ -4,9 +4,14 @@ namespace App\Service;
 
 use App\Entity\Image;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Google\Cloud\Vision\V1\Feature;
 use Google\Cloud\Vision\V1\Feature\Type;
 use Google\Cloud\Vision\V1\ImageAnnotatorClient;
+use Google\Rpc\Status;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+
 use Psr\Log\LoggerInterface;
 
 class GoogleImageTaggingService implements ImageTaggingServiceInterface
@@ -17,13 +22,24 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
     /** @var ImageAnnotatorClient */
     private $client;
 
+    /** @var string imagesDirectory */
+
     /** @var LoggerInterface */
     private $logger;
+
+    // These sizes seem to work fine with Google's
+    // Vision service, and we don't want to waste
+    // bandwidth sending the whole original along.
+    private const MAX_WIDTH = 1024;
+    private const MAX_HEIGHT = 1024;
+
+    private $imagine;
 
     public function __construct(
         string $projectId,
         string $serviceAccountFile,
         EntityManagerInterface $entityManager,
+        string $imagesDirectory,
         LoggerInterface $logger
     )
     {
@@ -33,6 +49,8 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         ]);
         $this->entityManager = $entityManager;
         $this->logger = $logger;
+        $this->imagine = new Imagine();
+        $this->imagesDirectory = $imagesDirectory;
     }
 
     public function tagImage(Image $image, bool $overwriteExisting = false): bool
@@ -68,7 +86,31 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
 
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
+
+        // It's possible to get some results back, but still have an error
+        // reported. We should probaby pay it some attention...
+        /** @var Status|null $error */
+        $error = $result->getError();
+        if ($error !== null) {
+            throw new Exception("Error from Google Vision API: {$error->getMessage()}");
+        }
         return true;
+    }
+
+    public function resize(string $filename): string
+    {
+        list($iwidth, $iheight) = getimagesize($filename);
+        $ratio = $iwidth / $iheight;
+        $width = self::MAX_WIDTH;
+        $height = self::MAX_HEIGHT;
+        if ($width / $height > $ratio) {
+            $width = $height * $ratio;
+        } else {
+            $height = $width / $ratio;
+        }
+
+        $photo = $this->imagine->open($filename);
+        return $photo->resize(new Box($width, $height))->get('jpeg');
     }
 
     /**
@@ -81,7 +123,9 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
      */
     protected function getImageToSend(Image $image)
     {
-        // We just send back a reasonable-resolution public URL
-        return $image->getMediumImageUri();
+        // For now I'm going to assume we're using Vich file system storage. If we change
+        // that later I'll deal with it then, but this is much cleaner than anything else
+        // we could do for now.
+        return $this->resize($this->imagesDirectory . '/' . $image->getName());
     }
 }
