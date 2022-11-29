@@ -14,7 +14,7 @@ services:
       - media:/var/www/public/media
     environment:
       - APP_ENV=docker
-      - KERNEL_CLASS='App\Kernel'
+      - KERNEL_CLASS=App\Kernel
       - SECURE_SCHEME=http
       - MESSENGER_TRANSPORT_DSN=beanstalkd://beanstalkd?tube_name=omm_docker
       - ELASTICSEARCH_URL=http://elasticsearch:9200/
