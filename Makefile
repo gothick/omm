@@ -45,7 +45,7 @@ down:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml down
 
 buildapp:
-	$(DOCKER_COMP) --env-file ./.env.docker -f docker-compose.yml -f docker-compose.app.yml build
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml build
 
 ## -- Testing --
 test:
