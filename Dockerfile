@@ -1,14 +1,12 @@
 FROM php:7.4-apache
 
-# This is important during the build as e.g. clearing the cache
-# will try to clear out dev things we haven't built if it things
-# the environment is dev.
-ENV APP_ENV=docker
+ENV APP_ENV=dev
 
 RUN a2enmod rewrite
 
+# TODO: Remove less & emacs when you're done futzing around in the container environment
 RUN apt-get update \
-  	&& apt-get install -y libzip-dev git wget exiftool --no-install-recommends \
+  	&& apt-get install -y libzip-dev git wget exiftool less emacs-nox --no-install-recommends \
   	&& apt-get clean \
 	&& curl -fsSL https://deb.nodesource.com/setup_19.x | bash - \
 	&& apt-get install -y nodejs \
@@ -29,9 +27,12 @@ WORKDIR /var/www
 # more effectively. https://dev.to/iacons/faster-docker-builds-with-composer-install-3opj
 COPY ./composer.json .
 COPY ./composer.lock .
-RUN composer install --prefer-dist --no-dev --no-interaction --no-autoloader --no-scripts
+RUN composer install --prefer-dist --no-interaction --no-autoloader --no-scripts
 
-COPY . /var/www
+COPY . .
+# Docker phpunit has some specific needs, e.g. overriding the
+# database connection.
+COPY phpunit.xml.docker ./phpunit.xml
 
 COPY ./docker/wait-for-it.sh .
 RUN chmod +x entrypoint.sh
@@ -44,6 +45,8 @@ RUN mkdir -p /var/www/var \
 	&& chown -R www-data:www-data /var/www/public/uploads/images
 RUN composer dump-autoload --optimize --no-interaction
 RUN yarn \
-	&& yarn run encore production
+	&& yarn run encore dev
 ENTRYPOINT ["/var/www/entrypoint.sh"]
 # CMD ["apache2-foreground"]
+
+# TODO: Build a production layer too

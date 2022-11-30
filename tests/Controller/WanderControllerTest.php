@@ -19,7 +19,8 @@ class WanderControllerTest Extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient(array(), array('HTTPS' => true));
+        $use_https = getenv('SECURE_SCHEME') === 'https';
+        $this->client = static::createClient(array(), array('HTTPS' => $use_https));
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains three wanders:

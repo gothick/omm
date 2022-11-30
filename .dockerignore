@@ -29,3 +29,9 @@ Makefile
 .env.docker
 .env.docker.secrets
 
+# PHPunit configs for various dev environments that might be hanging
+# around in my local development environment. If we want a customised
+# one in Docker we should make a special one separately and copy it in
+# at build time.
+phpunit.xml.dev
+phpunit.xml

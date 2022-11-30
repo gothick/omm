@@ -23,7 +23,8 @@ class SettingsControllerTest Extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->client = static::createClient(array(), array('HTTPS' => true));
+        $use_https = getenv('SECURE_SCHEME') === 'https';
+        $this->client = static::createClient(array(), array('HTTPS' => $use_https));
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
             'App\DataFixtures\UserFixtures'
@@ -42,7 +43,7 @@ class SettingsControllerTest Extends WebTestCase
     public function testNotLoggedIn(): void
     {
         $crawler = $this->client->request('GET', '/admin/settings/');
-        $this->assertResponseRedirects('https://localhost/login');
+        $this->assertResponseRedirects(getenv('SECURE_SCHEME') . '://localhost/login');
     }
 
     public function testClickEdit(): void
