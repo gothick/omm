@@ -17,9 +17,14 @@ RUN apt-get update \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions
-RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl gd @composer-2;
+# TODO Perhaps remove opcache from this list when we add a production layer, and only
+# put it in there? Or wouldn't it matter? Depends on the setup, I suppose...
+RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl gd xdebug opcache @composer-2;
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
+# Not much different from the original $PHP_INI_DIR/php.ini-development; so far I've
+# just raised the memory limit so our phpunit coverage stuff runs successfully.
+COPY docker/php.ini-development "$PHP_INI_DIR/php.ini"
 
 WORKDIR /var/www
 # We'll do the composer install in this layer, *then* copy everything

@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  web:
+  app:
+    container_name: ommapp
     build: .
     ports:
         - 8192:80
@@ -12,6 +13,7 @@ services:
     volumes:
       - uploads:/var/www/public/uploads
       - media:/var/www/public/media
+      - ./docker/data/coverage:/var/www/coverage:rw
     environment:
       - KERNEL_CLASS=App\Kernel
       - SECURE_SCHEME=http
