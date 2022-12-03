@@ -24,10 +24,8 @@ coverage/
 Makefile
 
 .env.local
-# We use these files when running with docker compose to provide the
-# enviroment to the container at runtime. .env.docker.secrets is never
-# committed.
-.env.docker
+# We use our own docker/env.dev.docker instead of our usual .env.dev
+.env.dev
 .env.docker.secrets
 
 # PHPunit configs for various dev environments that might be hanging

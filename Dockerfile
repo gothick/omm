@@ -35,6 +35,9 @@ COPY ./composer.lock .
 RUN composer install --prefer-dist --no-interaction --no-autoloader --no-scripts
 
 COPY . .
+# Specific docker environment overrides
+COPY docker/env.dev.docker .env.dev
+
 # Docker phpunit has some specific needs, e.g. overriding the
 # database connection.
 COPY phpunit.xml.docker ./phpunit.xml
