@@ -4,9 +4,8 @@ ENV APP_ENV=dev
 
 RUN a2enmod rewrite
 
-# TODO: Remove less & emacs when you're done futzing around in the container environment
 RUN apt-get update \
-  	&& apt-get install -y libzip-dev git wget exiftool less emacs-nox --no-install-recommends \
+  	&& apt-get install -y libzip-dev git wget exiftool --no-install-recommends \
   	&& apt-get clean \
 	&& curl -fsSL https://deb.nodesource.com/setup_19.x | bash - \
 	&& apt-get install -y nodejs \
