@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1940838d97d4942f446643690803b9c",
+    "content-hash": "194c7d4e4d48401f46a2706fbf3d5a65",
     "packages": [
         {
             "name": "beelab/tag-bundle",
-            "version": "v1.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bee-Lab/BeelabTagBundle.git",
-                "reference": "f80b6e27c94632a2a37d57820753ed4b1bf75f2c"
+                "reference": "a68a2bad9f094e2fb395549fc1de17cceb672f99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bee-Lab/BeelabTagBundle/zipball/f80b6e27c94632a2a37d57820753ed4b1bf75f2c",
-                "reference": "f80b6e27c94632a2a37d57820753ed4b1bf75f2c",
+                "url": "https://api.github.com/repos/Bee-Lab/BeelabTagBundle/zipball/a68a2bad9f094e2fb395549fc1de17cceb672f99",
+                "reference": "a68a2bad9f094e2fb395549fc1de17cceb672f99",
                 "shasum": ""
             },
             "require": {
                 "doctrine/orm": "^2.7",
-                "php": "^7.2",
+                "php": "^7.3 || ^8.0",
                 "symfony/config": "^4.4 || ^5.0",
                 "symfony/dependency-injection": "^4.4 || ^5.0",
                 "symfony/form": "^4.4 || ^5.0",
@@ -30,12 +30,13 @@
                 "symfony/routing": "^4.4 || ^5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.4"
+                "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -62,9 +63,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Bee-Lab/BeelabTagBundle/issues",
-                "source": "https://github.com/Bee-Lab/BeelabTagBundle/tree/v1.5.0"
+                "source": "https://github.com/Bee-Lab/BeelabTagBundle/tree/master"
             },
-            "time": "2019-12-03T08:53:27+00:00"
+            "time": "2021-04-28T07:25:54+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -12709,6 +12710,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "beelab/tag-bundle": 20,
         "friendsofsymfony/elastica-bundle": 20,
         "gothick/geotools": 20,
         "jordanbrauer/unit-converter": 20,
