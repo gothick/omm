@@ -22,6 +22,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 RUN install-php-extensions pdo mysqli pdo_mysql zip apcu bcmath intl gd xdebug opcache @composer-2;
 
 COPY docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
+COPY docker/pass-omm-envvars.conf /etc/apache2/conf-available/pass-omm-envvars.conf
+RUN a2enconf pass-omm-envvars
 # Not much different from the original $PHP_INI_DIR/php.ini-development; so far I've
 # just raised the memory limit so our phpunit coverage stuff runs successfully.
 COPY docker/php.ini-development "$PHP_INI_DIR/php.ini"
@@ -35,8 +37,6 @@ COPY ./composer.lock .
 RUN composer install --prefer-dist --no-interaction --no-autoloader --no-scripts
 
 COPY . .
-# Specific docker environment overrides
-COPY docker/env.dev.docker .env.dev
 
 # Docker phpunit has some specific needs, e.g. overriding the
 # database connection.
