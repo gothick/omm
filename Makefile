@@ -51,6 +51,9 @@ buildapp:
 test:
 	$(PHPUNIT)
 
+testapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app php -dxdebug.mode=coverage bin/phpunit --testdox
+
 # We're going to be doing this a lot for a while...
 testtags:
 	$(PHPUNIT) --group tags
