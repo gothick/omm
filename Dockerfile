@@ -33,8 +33,9 @@ WORKDIR /var/www
 # more effectively. https://dev.to/iacons/faster-docker-builds-with-composer-install-3opj
 COPY ./composer.json .
 COPY ./composer.lock .
-RUN composer install --prefer-dist --no-interaction --no-autoloader --no-scripts
-
+RUN composer install --prefer-dist --no-interaction --no-autoloader --no-scripts \
+	# Should get rid of files in /root/.composer/cache that we won't need from here
+	&& composer clear-cache -n
 COPY . .
 
 # Docker phpunit has some specific needs, e.g. overriding the
