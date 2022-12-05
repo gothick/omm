@@ -23,8 +23,8 @@ class SettingsControllerTest Extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $use_https = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $use_https));
+        $useHttps = getenv('SECURE_SCHEME') === 'https';
+        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
             'App\DataFixtures\UserFixtures'
