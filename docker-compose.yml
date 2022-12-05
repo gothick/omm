@@ -23,6 +23,19 @@ services:
       MYSQL_PASSWORD: ChangeMe
     volumes:
       - ./docker/data/mariadb:/var/lib/mysql:rw
+  # TODO: Figure out what these docker values should be once we've got
+  # more of a docker strategy
+  docker-database:
+    container_name: docker-database
+    image: mariadb # Because it's got less problematic Arm64 support
+#    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: omm_docker
+      MYSQL_USER: omm_docker
+      MYSQL_PASSWORD: omm_docker
+    volumes:
+      - ./docker/data/docker_mariadb:/var/lib/mysql:rw
 
   beanstalkd:
     container_name: beanstalkd

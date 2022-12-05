@@ -21,6 +21,10 @@
 	    <!-- Should be the *real* path to exiftool on the test environment -->
 	    <env name="TEST_EXIFTOOL_PATH" value="/usr/local/bin/exiftool" />
         <env name="APP_ENV" value="test" force="true"/>
+        <!-- TODO: Perhaps we could set this in whatever automated test setup script calls phpunit rather
+            than forcing it here; I think this is the only difference between this file and phpunit.xml.dist
+            at the moment -->
+        <env name="DATABASE_URL" value="mysql://omm_test:omm_test@test-database:3306/omm_test?serverVersion=5.7" force="true" />
     </php>
     <groups>
       <exclude>

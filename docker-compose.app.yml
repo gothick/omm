@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  app:
+    container_name: ommapp
+    build: .
+    ports:
+        - 8192:80
+    depends_on:
+      - "docker-database"
+      - "beanstalkd"
+      - "elasticsearch"
+    volumes:
+      - uploads:/var/www/public/uploads
+      - media:/var/www/public/media
+      - ./docker/data/coverage:/var/www/coverage:rw
+    environment:
+      - KERNEL_CLASS=App\Kernel
+      - SECURE_SCHEME=http
+      - MESSENGER_TRANSPORT_DSN=beanstalkd://beanstalkd?tube_name=omm_docker
+      - ELASTICSEARCH_URL=http://elasticsearch:9200/
+      - HOST_FOR_COMMANDS=localhost
+      - TEST_EXIFTOOL_PATH=/usr/bin/exiftool
+
+      # Pass through environment variables set up in .env.docker.secrets
+      - DATABASE_URL
+      - APP_SECRET
+      - MAPBOX_ACCESS_TOKEN
+      - IMAGGA_API_KEY
+      - IMAGGA_API_SECRET
+      - GOOGLE_API_KEY
+      - GOOGLE_PROJECT_ID
+      - GOOGLE_SERVICE_ACCOUNT_FILE
+      - AMAZON_S3_KEY
+      - AMAZON_S3_SECRET
+      - AMAZON_S3_BUCKET
+      - AMAZON_S3_REGION
+      - AMAZON_S3_VERSION
+
+volumes:
+  uploads:
+  media:
+###> doctrine/doctrine-bundle ###
+###< doctrine/doctrine-bundle ###

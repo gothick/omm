@@ -1,5 +1,5 @@
 ## Based to some degree on https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfony
-DOCKER_COMP   = docker-compose
+DOCKER_COMP   = docker compose
 SYMFONY_BIN   = symfony
 
 CONSOLE       = $(SYMFONY_BIN) console
@@ -38,12 +38,21 @@ up:
 #upm: ## Same, but with MySQL config
 #	$(DOCKER_COMP) -f docker-compose.mysql.yml -f docker-compose.mysql.override.yml up --detach
 
+upapp:
+	$(DOCKER_COMP) --env-file ./.env.docker.secrets -f docker-compose.yml -f docker-compose.app.yml up # --detach
+
 down:
-	$(DOCKER_COMP) down
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml down
+
+buildapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml build
 
 ## -- Testing --
 test:
 	$(PHPUNIT)
+
+testapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app php -dxdebug.mode=coverage bin/phpunit --testdox
 
 # We're going to be doing this a lot for a while...
 testtags:
