@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Image;
+use App\Exception\ThirdPartyAPIException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Google\Cloud\Vision\V1\Feature;
@@ -92,7 +93,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         /** @var Status|null $error */
         $error = $result->getError();
         if ($error !== null) {
-            throw new Exception("Error from Google Vision API: {$error->getMessage()}");
+            throw new ThirdPartyAPIException($error->getMessage(), $error->getCode(), $error->getCode());
         }
         return true;
     }
