@@ -1,6 +1,7 @@
 ## Based to some degree on https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfony
 DOCKER_COMP   = docker compose
 DOCKER_BUILD  = docker build
+DOCKER_PUSH  = docker push
 SYMFONY_BIN   = symfony
 
 CONSOLE       = $(SYMFONY_BIN) console
@@ -49,7 +50,10 @@ downapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml down
 
 buildapp:
-	$(DOCKER_BUILD) .
+	$(DOCKER_BUILD) -t gothick/ommtest .
+
+pushapp:
+	$(DOCKER_PUSH) gothick/ommtest
 
 ## -- Testing --
 test:
