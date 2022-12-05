@@ -4,6 +4,7 @@ services:
   app:
     container_name: ommapp
     build: .
+    image: gothick/ommtest
     ports:
         - 8192:80
     depends_on:
