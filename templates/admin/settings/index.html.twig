@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td class="text-nowrap">Site About Page Text</td>
-                <td>{{ settings.siteAbout|striptags|markdown }}</td>
+                <td>{{ settings.siteAbout | striptags | markdown_to_html }}</td>
             </tr>
         </tbody>
     </table>

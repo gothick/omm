@@ -17,7 +17,7 @@
     <div class="row mx-0">
         <div class="col settings d-flex">
             <div class="mt-2">
-                {{ settings.siteAbout |striptags|markdown }}
+                {{ settings.siteAbout | striptags | markdown_to_html }}
             </div>
             {% if settings.hasGravatar %}
                 <img class="gravatar ms-auto py-2 ps-4 d-none d-md-block" width="400" height="400" src="{{ settings.gravatarImageUrl(400) }}" alt="User Avatar" />

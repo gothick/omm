@@ -50,7 +50,6 @@
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.startTime ? wander.startTime|date('d M Y H:i T') : '' }}</td>
                 <td class="text-nowrap {{ wander.isTimeLengthSuspicious ? 'text-danger' }}">{{ wander.endTime ? wander.endTime|date('d M Y H:i T') : '' }}</td>
                 <td>{{ wander.images.count }}</td>
-                {#<td>{{ wander.description|striptags|markdown }}</td>#}
                 <td>{{ wander.description | striptags | u.truncate(50, '...') }}</td>
                 <td>
                     {{ wander.gpxFilename }}<br>

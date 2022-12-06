@@ -17,14 +17,12 @@ class MarkdownServiceTest extends KernelTestCase
     {
         static::bootKernel();
 
-        $container = self::$container;
+        $container = static::getContainer();
         $cache = $container->get(TagAwareCacheInterface::class);
-        $parser = $container->get('markdown.parser');
         $logger = $this->createMock(LoggerInterface::class);
 
         $this->markdownService = new MarkdownService(
             $cache,
-            $parser,
             $logger
         );
     }

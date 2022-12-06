@@ -26,7 +26,7 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td class="text-break">{{ image.description | stripmosttags | markdown }}</td>
+                <td class="text-break">{{ image.description | stripmosttags | markdown_to_html }}</td>
             </tr>
             <tr>
                 <th>Captured Time</th>
