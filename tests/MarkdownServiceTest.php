@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use App\Service\MarkdownService;
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
