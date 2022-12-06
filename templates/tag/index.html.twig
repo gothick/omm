@@ -35,7 +35,7 @@
                 </div>
                 <div class="row wander description highlights">
                     <div class="col">
-                    <small>{{ wander.description | stripmosttags | markdown }}</small>
+                    <small>{{ wander.description | stripmosttags | markdown_to_html }}</small>
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                         <div class="col-8">
                             <div class="row">
                                 <div class="col">
-                                    {{ image.description | stripmosttags | markdown }}
+                                    {{ image.description | stripmosttags | markdown_to_html }}
                                 </div>
                             </div>
                             <div class="row">

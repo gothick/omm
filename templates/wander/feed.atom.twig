@@ -21,7 +21,7 @@
       </author>
       <content type="html">
         <![CDATA[
-          {{ wander.description |striptags|markdown }}
+          {{ wander.description | striptags | markdown_to_html }}
           {% if wander.hasFeaturedImage %}
             <br />
             <img src="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" alt="{{ wander.featuredImage.titleOrId | markdown_to_plain_text | e('html_attr') }}" />
