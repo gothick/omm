@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use DOMDocument;
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
+use Michelf\Markdown;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -13,20 +13,15 @@ class MarkdownService
     /** @var TagAwareCacheInterface */
     private $cache;
 
-    /** @var MarkdownParserInterface */
-    private $markdownParser;
-
     /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         TagAwareCacheInterface $cache,
-        MarkdownParserInterface $markdownParserInterface,
         LoggerInterface $logger
         )
     {
         $this->cache = $cache;
-        $this->markdownParser = $markdownParserInterface;
         $this->logger = $logger;
     }
 
@@ -38,7 +33,7 @@ class MarkdownService
         $key = 'md_' . md5($markdown);
         return $this->cache->get($key, function(ItemInterface $item) use ($markdown) {
             $item->tag('markdown_text');
-            return html_entity_decode(strip_tags($this->markdownParser->transformMarkdown($markdown)), ENT_QUOTES);
+            return html_entity_decode(strip_tags(Markdown::defaultTransform($markdown)), ENT_QUOTES);
         });
     }
 
@@ -49,7 +44,7 @@ class MarkdownService
         }
 
         $results = [];
-        $html = $this->markdownParser->transformMarkdown($markdown);
+        $html = Markdown::defaultTransform($markdown);
         $dom = new DOMDocument();
         $dom->loadHTML($html);
         //dd($dom->saveHTML());
