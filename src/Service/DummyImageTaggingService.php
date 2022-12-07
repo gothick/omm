@@ -23,6 +23,7 @@ class DummyImageTaggingService implements ImageTaggingServiceInterface
         }
 
         $image->setAutoTags(['dummy', 'image', 'tagging', 'service']);
+        $image->setTextTags(['test-dummy', 'test-image', 'test-tagging', 'test-service']);
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
         return true;
