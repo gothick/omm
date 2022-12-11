@@ -68,7 +68,8 @@ class WanderWithImages extends Fixture implements FixtureGroupInterface
             $uploadedFake = new UploadedFile($targetPath, $source->getFilename(), 'image/jpeg', null, true);
             $image->setImageFile($uploadedFake);
             $manager->persist($image);
+            // We have to flush each time otherwise the Beelab Tag Bundle gets confused and starts duplicating tags. Sigh.
+            $manager->flush();
         }
-        $manager->flush();
     }
 }

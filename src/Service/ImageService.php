@@ -129,7 +129,9 @@ class ImageService {
             $image->setTitle($exifHelper->getTitle());
             $image->setDescription($exifHelper->getDescription());
             $image->setLatlng($exifHelper->getGPS());
-            $image->setTagsText(implode(",", $exifHelper->getKeywords() ?? []));
+            $keywords = implode(",", $exifHelper->getKeywords() ?? []);
+            $this->logger->info("Setting image tags on image {$image->getId()} {$image->getName()} to {$keywords}");
+            $image->setTagsText($keywords);
             $image->setRating($exifHelper->getRating());
 
             $neighbourhood = $exifHelper->getLocation();
