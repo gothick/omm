@@ -65,12 +65,19 @@ class WanderController extends AbstractController
     {
         $prev = $wanderRepository->findPrev($wander);
         $next = $wanderRepository->findNext($wander);
+        $page = $request->query->getInt('page', 1);
+        if ($page == 0 || $page > 1024) {
+            // Someone's probably trying a SQL injection attack or something. I prefer just to
+            // ignore them rather than having the pager throw an exception when someone asks for
+            // page 0. Redirect back here but without the dodgy parameter.
+            return $this->redirectToRoute($request->attributes->get('_route'), ['id' => $wander->getId()]);
+        }
 
         $paginatorQuery = $imageRepository->getPaginatorQueryBuilder($wander)->getQuery();
 
         $pagination = $paginator->paginate(
             $paginatorQuery,
-            $request->query->getInt('page', 1),
+            $page,
             20, // Per page
         );
 
