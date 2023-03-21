@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
-use App\EventListener\WanderUploadListener;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Doctrine\Common\Collections\Criteria;
@@ -21,10 +20,6 @@ use Doctrine\ORM\Mapping\Index;
  * @ORM\Entity(repositoryClass=WanderRepository::class)
  *
  * @Table(indexes={@Index(name="ix_wander_start_time", columns={"start_time"})})
- *
- * @ORM\EntityListeners({
- *  WanderUploadListener::class, App\EventListener\WanderDeleteListener::class
- * })
  *
  * @ORM\HasLifecycleCallbacks()
  *
