@@ -18,6 +18,7 @@ set('git_tty', true);
 // The default of ten was a bit much.
 set('keep_releases', 5);
 
+// TODO: Now you've upgraded to PHP 8, this should be fine to get rid of
 // Cachetool needs to be a lower version than default,
 // as the latest only works with php 8.
 // https://github.com/deployphp/deployer/issues/2344
