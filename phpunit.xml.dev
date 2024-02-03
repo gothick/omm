@@ -29,7 +29,7 @@
       </exclude>
     </groups>
     <extensions>
-        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
     <testsuites>
         <testsuite name="Project Test Suite">
