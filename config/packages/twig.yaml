@@ -9,3 +9,7 @@ twig:
 
     date:
         timezone: 'Europe/London'
+
+when@test:
+    twig:
+        strict_variables: true
