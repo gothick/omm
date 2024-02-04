@@ -1,7 +1,6 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-<<<<<<< ours
     csrf_protection: true
 
     # NB: This is what we use for dev, but for staging and production we also
@@ -9,10 +8,6 @@ framework:
     # in index.php as described here:
     # https://symfony.com/doc/current/reference/configuration/framework.html#configuration-framework-http_method_override
     http_method_override: true
-=======
-    #csrf_protection: true
-    http_method_override: false
->>>>>>> theirs
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
@@ -21,25 +16,18 @@ framework:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         cookie_secure: auto
         cookie_samesite: lax
-<<<<<<< ours
-        storage_factory_id: session.storage.factory.native # Avoid 5.3 deprecation warning
-=======
         storage_factory_id: session.storage.factory.native
->>>>>>> theirs
 
     #esi: true
     #fragments: true
     php_errors:
         log: true
 
-<<<<<<< ours
     request:
         formats:
             rss2: 'application/rss+xml'
-=======
 when@test:
     framework:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
->>>>>>> theirs
