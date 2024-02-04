@@ -13,6 +13,7 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '16'
 
+        use_savepoints: true
         # https://github.com/longitude-one/doctrine-spatial
         types:
             polygon: LongitudeOne\Spatial\DBAL\Types\Geometry\PolygonType
@@ -43,6 +44,7 @@ doctrine:
         result_cache_driver:
             type: pool
             pool: doctrine.result_cache_pool
+
 # when@test:
 #     doctrine:
 #         dbal:
