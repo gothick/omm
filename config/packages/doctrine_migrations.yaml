@@ -6,3 +6,4 @@ doctrine_migrations:
 
     services:
          'Doctrine\Migrations\Version\MigrationFactory': 'App\Migrations\Factory\MigrationFactoryDecorator'
+    enable_profiler: false

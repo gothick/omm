@@ -8,7 +8,7 @@
 	}
     ],
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.1.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "beelab/tag-bundle": "dev-master",
@@ -82,7 +82,7 @@
         "vich/uploader-bundle": "^1.15"
     },
     "require-dev": {
-        "dama/doctrine-test-bundle": "^6.5",
+        "dama/doctrine-test-bundle": "^8.0",
         "deployer/deployer": "^7.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "laravel/homestead": "^12.7",
