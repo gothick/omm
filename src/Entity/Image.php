@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
@@ -26,11 +26,11 @@ use DateTimeInterface;
  *
  *
  *
- * @Vich\Uploadable
  */
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\EntityListeners([ImageCalculatedFieldSetterListener::class, SearchIndexer::class])]
 #[ORM\HasLifecycleCallbacks]
+#[Vich\Uploadable]
 class Image implements TaggableInterface
 {
     /**
@@ -46,12 +46,12 @@ class Image implements TaggableInterface
     // TODO: We probably don't want this massive field being returned
     // as part of any API response, etc.
     /**
-     * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes",
-     *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
      *
      * @var File|null
      */
     #[Ignore]
+    #[Vich\UploadableField(mapping: 'image', fileNameProperty: 'name', size: 'sizeInBytes',
+        mimeType: 'mimeType', originalName: 'originalName', dimensions: 'dimensions')]
     private $imageFile;
 
     /**
