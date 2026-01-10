@@ -1,6 +1,14 @@
+<<<<<<< Updated upstream
 /.phpunit.cache
 
 docker/data
+=======
+./.env.docker.secrets
+./.php-version
+./docker/
+
+
+>>>>>>> Stashed changes
 public/apcuinfo.php
 
 .vagrant/
