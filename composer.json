@@ -13,7 +13,6 @@
         "ext-iconv": "*",
         "beelab/tag-bundle": "dev-master",
         "composer/package-versions-deprecated": "^1.11",
-        "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "friendsofsymfony/elastica-bundle": "^6.0@dev",
@@ -81,8 +80,9 @@
         "vich/uploader-bundle": "^1.15"
     },
     "require-dev": {
-        "dama/doctrine-test-bundle": "^8.0",
+        "dama/doctrine-test-bundle": "^8.2",
         "deployer/deployer": "^7.1",
+        "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "liip/test-fixtures-bundle": "^2.0.0-alpha1",
         "phpstan/phpstan": "^2.1",
