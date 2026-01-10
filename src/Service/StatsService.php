@@ -185,8 +185,8 @@ class StatsService
         $overallTimeStats = [
             'firstWanderStartTime' => Carbon::parse($row['firstWanderStartTime']),
             'latestWanderStartTime' => Carbon::parse($row['latestWanderStartTime']),
-            'totalDuration' => CarbonInterval::seconds($row['totalDuration'])->cascade(),
-            'averageDuration'=> CarbonInterval::seconds($row['averageDuration'])->cascade()
+            'totalDuration' => CarbonInterval::seconds((int) $row['totalDuration'])->cascade(),
+            'averageDuration'=> CarbonInterval::seconds((int) $row['averageDuration'])->cascade()
         ];
         return $overallTimeStats;
     }
@@ -237,7 +237,7 @@ class StatsService
                 // returned.
                 throw new Exception("Expected to get a row back from the database no matter what with this query.");
             }
-            $duration = CarbonInterval::seconds($row['total_duration_seconds'])->cascade();
+            $duration = CarbonInterval::seconds((int) $row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
                 'periodType' => $periodType,
                 'periodStartDate' => new CarbonImmutable($rangeStartMonth),
@@ -258,7 +258,7 @@ class StatsService
                 ],
                 'totalDurationInterval' => $duration,
                 'totalDurationForHumans' => $duration->forHumans(['short' => true, 'options' => 0]),
-                'averageDurationInterval' => CarbonInterval::seconds($row['average_duration_seconds'])->cascade(),
+                'averageDurationInterval' => CarbonInterval::seconds((int) $row['average_duration_seconds'])->cascade(),
             ];
         }
         return $periodicStats;
