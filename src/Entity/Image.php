@@ -23,31 +23,24 @@ use DateTimeInterface;
 
 /**
  *
- * @ORM\Entity(repositoryClass=ImageRepository::class)
  *
- * @ORM\EntityListeners({
- *     ImageCalculatedFieldSetterListener::class,
- *     SearchIndexer::class
- * })
  *
- * @ORM\HasLifecycleCallbacks()
- *
- * This is just to control the stuff that goes back from our one controller
- * action that returns a JSON response, ImageController::upload
  *
  * @Vich\Uploadable
  */
-
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ORM\EntityListeners([ImageCalculatedFieldSetterListener::class, SearchIndexer::class])]
+#[ORM\HasLifecycleCallbacks]
 class Image implements TaggableInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      *
      * @var int
      */
     #[Groups(['wander:item', 'image:list'])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     // TODO: We probably don't want this massive field being returned
@@ -62,71 +55,62 @@ class Image implements TaggableInterface
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @var string|null
      */
     #[Groups(['wander:item', 'image:list'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $name; // For Vich, not for us. We use Title.
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @var string|null
      */
     #[Groups(['wander:item', 'image:list'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @var string|null
      */
     #[Groups(['wander:item', 'image:list'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     *
      * @var int|null
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $sizeInBytes;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @var string|null
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $mimeType;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @var string|null
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $originalName;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @var ?array<int>
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $dimensions = [];
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      *
      * @var \DateTimeInterface|null
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
      * @Assert\AtLeastOneOf({
      *   @Assert\Count(
      *      min = 2,
@@ -139,41 +123,39 @@ class Image implements TaggableInterface
      *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair (or nothing.)"
      *   )
      * })
-     *
      * @var ?array<float>
      */
     #[Groups(['wander:item', 'image:list'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $latlng = [];
 
     /**
      * @var Collection<int, TagInterface>
-     * @ORM\ManyToMany(targetEntity="Tag")
      */
+    #[ORM\ManyToMany(targetEntity: \Tag::class)]
     private $tags;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
      * @var DateTimeInterface
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $capturedAt;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
      * @var ?int
      */
     #[Groups(['wander:item'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $rating;
 
     // TODO: This @Ignore was here from when this was a many-to-many. Do we still
     // need it?
     /**
-     * @ORM\ManyToOne(targetEntity=Wander::class, inversedBy="images")
-     *
      * @var ?Wander
      */
     #[Ignore]
+    #[ORM\ManyToOne(targetEntity: Wander::class, inversedBy: 'images')]
     private $wander;
 
     public function __construct()
@@ -422,9 +404,7 @@ class Image implements TaggableInterface
         return $this->tagsText;
     }
 
-    /**
-     * @ORM\PostLoad
-     */
+    #[ORM\PostLoad]
     public function postLoad(): void
     {
         // Bodge to workaround behaviour of BeelabTagBundle, which updates
@@ -514,27 +494,27 @@ class Image implements TaggableInterface
     private $imageShowUri;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
      * @var array<string>
      */
+    #[ORM\Column(type: 'array', nullable: true)]
     private $autoTags = [];
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @var ?string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $location;
 
     /**
-     * @ORM\OneToOne(targetEntity=Wander::class, inversedBy="featuredImage", cascade={"persist"})
      * @var ?Wander
      */
+    #[ORM\OneToOne(targetEntity: Wander::class, inversedBy: 'featuredImage', cascade: ['persist'])]
     private $featuringWander;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
      * @var array<string>
      */
+    #[ORM\Column(type: 'array', nullable: true)]
     private $textTags = [];
 
     public function setImageUri(string $imageUri): void

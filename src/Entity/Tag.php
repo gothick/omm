@@ -5,26 +5,22 @@ namespace App\Entity;
 use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table()
- * @ORM\Entity()
- */
+#[ORM\Entity]
+#[ORM\Table]
 class Tag implements TagInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column()
      */
+    #[ORM\Column]
     protected $name;
 
     public function __toString(): string

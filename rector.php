@@ -19,8 +19,9 @@ return RectorConfig::configure()
     ->withCodeQualityLevel(0)
     ->withAttributesSets(
 	    symfony: true,
-        sensiolabs: true
+        sensiolabs: true,
+        doctrine: true
     )
     ->withPreparedSets(
-        symfonyConfigs: true,
+        symfonyConfigs: true
     );
