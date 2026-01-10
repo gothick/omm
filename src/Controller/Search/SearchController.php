@@ -20,15 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/search", name="search_")
- *
- */
+#[Route(path: '/search', name: 'search_')]
 class SearchController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET", "POST"})
-     */
+    #[Route(path: '/', name: 'index', methods: ['GET', 'POST'])]
     public function index(
         Request $request,
         //PaginatedFinderInterface $imageFinder,

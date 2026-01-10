@@ -20,14 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/image", name="image_")
- */
+#[Route(path: '/image', name: 'image_')]
 class ImageController extends AbstractController
 {
-    /**
-     * @Route("/{id}", name="show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     public function show(Image $image, ImageRepository $imageRepository): Response
     {
         $prev = $imageRepository->findPrev($image);
@@ -39,13 +35,7 @@ class ImageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *  "",
-     *  name="index",
-     *  methods={"GET"},
-     * )
-     */
+    #[Route(path: '', name: 'index', methods: ['GET'])]
     public function index(
         Request $request,
         ImageRepository $imageRepository,

@@ -35,9 +35,7 @@ class StatsController extends AbstractController
         $this->router = $router;
     }
 
-    /**
-     * @Route("/stats", name="stats_index")
-     */
+    #[Route(path: '/stats', name: 'stats_index')]
     public function index(
         StatsService $statsService,
         ChartBuilderInterface $chartBuilder

@@ -19,10 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 // NB: All /api routes are configured to be stateless in the security.yml
 // firewall config. You could also make them stateless using an annotation:
 // https://symfony.com/doc/current/routing.html#stateless-routes
-
-/**
- * @Route("/api/", name="api_")
- */
+#[Route(path: '/api/', name: 'api_')]
 class ApiController extends AbstractController
 {
     /** @var bool */
@@ -54,15 +51,8 @@ class ApiController extends AbstractController
     /**
      *
      * API: Wander list. Returns a basic list of wanders.
-     *
-     * @Route(
-     *  "wanders",
-     *  name="wanders_index",
-     *  methods={"GET"},
-     *  format="json",
-     *  condition="'application/json' in request.getAcceptableContentTypes()"
-     * )
      */
+    #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
     public function wanderIndex(
         WanderRepository $wanderRepository,
         RouterInterface $router
@@ -102,15 +92,7 @@ class ApiController extends AbstractController
         return $this->addCacheHeaders($response);
     }
 
-    /**
-     * @Route(
-     *  "wanders/{id}",
-     *  name="wanders_show",
-     *  methods={"GET"},
-     *  format="json",
-     *  condition="'application/json' in request.getAcceptableContentTypes()"
-     * )
-     */
+    #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
     public function wandersShow(
         Wander $wander,
         RouterInterface $router
@@ -147,15 +129,8 @@ class ApiController extends AbstractController
     /**
      *
      * API: Image list. Returns a basic list of images.
-     *
-     * @Route(
-     *  "images",
-     *  name="images_index",
-     *  methods={"GET"},
-     *  format="json",
-     *  condition="'application/json' in request.getAcceptableContentTypes()"
-     * )
      */
+    #[Route(path: 'images', name: 'images_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
     public function imagesIndex(
         ImageRepository $imageRepository
     ): Response {

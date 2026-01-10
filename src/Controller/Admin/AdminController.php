@@ -13,14 +13,10 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-/**
- * @Route("/admin", name="admin_")
- */
+#[Route(path: '/admin', name: 'admin_')]
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/", name="index")
-     */
+    #[Route(path: '/', name: 'index')]
     public function index(
         StatsService $statsService
     ): Response {
@@ -35,9 +31,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/clearStatsCache", name="clear_stats_cache")
-     */
+    #[Route(path: '/clearStatsCache', name: 'clear_stats_cache')]
     public function clearStatsCache(Request $request, TagAwareCacheInterface $cache): Response
     {
         if ($this->isCsrfTokenValid('admin_clear_stats_cache', (string) $request->request->get('_token'))) {

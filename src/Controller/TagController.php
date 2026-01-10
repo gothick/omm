@@ -25,12 +25,7 @@ class TagController extends AbstractController
         'text-tag'      => 'only tags created by automatic text recognition'
     ];
 
-    /**
-     * @Route("/tag/{tag}/{type}",
-     *  name="tag",
-     *  methods={"GET"},
-     *  requirements={"type": "any|hand-tag|auto-tag|text-tag", "page": "\d+"})
-     */
+    #[Route(path: '/tag/{tag}/{type}', name: 'tag', methods: ['GET'], requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'])]
     public function index(
         string $tag,
         Request $request,

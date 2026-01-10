@@ -18,43 +18,30 @@ class ImageFilterData
 {
     /**
      * @var ?CarbonImmutable
-     *
-     * @Assert\Range(
-     *  min = "Jan 1 1900",
-     *  max = "now + 10 years"
-     * )
      */
+    #[Assert\Range(min: 'Jan 1 1900', max: 'now + 10 years')]
     private $startDate;
 
     /**
      * @var ?CarbonImmutable
-     *
-     * @Assert\Range(
-     *  min = "Jan 1 1900",
-     *  max = "now + 10 years"
-     * )
      */
+    #[Assert\Range(min: 'Jan 1 1900', max: 'now + 10 years')]
     private $endDate;
 
     /**
      * @var ?int
      *
-     * @Assert\Range(
-     *  min = 0,
-     *  max = 5
-     * )
      *
      */
+    #[Assert\Range(min: 0, max: 5)]
     private $rating;
 
     /**
      * @var string
      *
-     * @Assert\Regex(
-     *  pattern = "/eq|lte|gte/"
-     * )
      *
      */
+    #[Assert\Regex(pattern: '/eq|lte|gte/')]
     private $ratingComparison;
 
     /** @var ?string */

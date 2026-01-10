@@ -8,7 +8,7 @@
 	}
     ],
     "require": {
-        "php": ">=8.1.2",
+        "php": ">=8.3.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "beelab/tag-bundle": "dev-master",
@@ -33,7 +33,7 @@
         "nelmio/cors-bundle": "^2.1",
         "nesbot/carbon": "^2.42",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "sensio/framework-extra-bundle": "^5.6",
+	"sensio/framework-extra-bundle": "^5.6",
         "sibyx/phpgpx": "@RC",
         "spatie/guzzle-rate-limiter-middleware": "^2.0",
         "symfony/apache-pack": "^1.0",
@@ -88,7 +88,8 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "laravel/homestead": "^12.7",
         "liip/test-fixtures-bundle": "^2.0.0-alpha1",
-        "phpstan/phpstan": "^0.12.68",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.3",
         "symfony/maker-bundle": "^1.23"
     },
     "config": {

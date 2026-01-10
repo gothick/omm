@@ -45,9 +45,9 @@ class Image implements TaggableInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Groups({"wander:item", "image:list"})
      * @var int
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $id;
 
     // TODO: We probably don't want this massive field being returned
@@ -56,74 +56,73 @@ class Image implements TaggableInterface
      * @Vich\UploadableField(mapping="image", fileNameProperty="name", size="sizeInBytes",
      *  mimeType="mimeType", originalName="originalName", dimensions="dimensions")
      *
-     * @Ignore()
      * @var File|null
      */
+    #[Ignore]
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"wander:item", "image:list"})
      * @var string|null
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $name; // For Vich, not for us. We use Title.
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"wander:item", "image:list"})
      * @var string|null
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"wander:item", "image:list"})
      * @var string|null
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"wander:item"})
      * @var int|null
      */
+    #[Groups(['wander:item'])]
     private $sizeInBytes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"wander:item"})
      * @var string|null
      */
+    #[Groups(['wander:item'])]
     private $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups({"wander:item"})
      * @var string|null
      */
+    #[Groups(['wander:item'])]
     private $originalName;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"wander:item"})
      * @var ?array<int>
      */
+    #[Groups(['wander:item'])]
     private $dimensions = [];
 
     /**
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"wander:item"})
      *
      * @var \DateTimeInterface|null
      */
+    #[Groups(['wander:item'])]
     private $updatedAt;
 
     /**
@@ -141,9 +140,9 @@ class Image implements TaggableInterface
      *   )
      * })
      *
-     * @Groups({"wander:item", "image:list"})
      * @var ?array<float>
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $latlng = [];
 
     /**
@@ -155,16 +154,16 @@ class Image implements TaggableInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"wander:item"})
      * @var DateTimeInterface
      */
+    #[Groups(['wander:item'])]
     private $capturedAt;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"wander:item"})
      * @var ?int
      */
+    #[Groups(['wander:item'])]
     private $rating;
 
     // TODO: This @Ignore was here from when this was a many-to-many. Do we still
@@ -172,9 +171,9 @@ class Image implements TaggableInterface
     /**
      * @ORM\ManyToOne(targetEntity=Wander::class, inversedBy="images")
      *
-     * @Ignore()
      * @var ?Wander
      */
+    #[Ignore]
     private $wander;
 
     public function __construct()
@@ -202,9 +201,7 @@ class Image implements TaggableInterface
         }
     }
 
-    /**
-     * @Ignore()
-     */
+    #[Ignore]
     public function getImageFile(): ?File
     {
         return $this->imageFile;
@@ -492,29 +489,28 @@ class Image implements TaggableInterface
 
 
     /* Computed (set up by Doctrine postLoad listener) */
-
     /**
-     * @Groups({"wander:item"})
      * @var string
      */
+    #[Groups(['wander:item'])]
     private $imageUri;
 
     /**
-     * @Groups({"wander:item", "image:list"})
      * @var string
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $markerImageUri;
 
     /**
-     * @Groups({"wander:item", "image:list"})
      * @var string
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $mediumImageUri;
 
     /**
-     * @Groups({"wander:item", "image:list"})
      * @var string
      */
+    #[Groups(['wander:item', 'image:list'])]
     private $imageShowUri;
 
     /**

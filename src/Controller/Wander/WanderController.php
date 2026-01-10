@@ -17,18 +17,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class WanderController extends AbstractController
 {
-    /**
-     * @Route(
-     *  "/wanders.{_format}",
-     *  name="wanders_index",
-     *  methods={"GET"},
-     *  format="html",
-     *  requirements={
-     *   "_format": "html"
-     *  },
-     *  condition="'application/json' not in request.getAcceptableContentTypes()"
-     * )
-     */
+    #[Route(path: '/wanders.{_format}', name: 'wanders_index', methods: ['GET'], format: 'html', requirements: ['_format' => 'html'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
     public function index(
         Request $request,
         WanderRepository $wanderRepository,
@@ -48,14 +37,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *  "/wanders/{id}",
-     *  name="wanders_show",
-     *  methods={"GET"},
-     *  condition="'application/json' not in request.getAcceptableContentTypes()"
-     * )
-     */
+    #[Route(path: '/wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
     public function show(
         Request $request,
         Wander $wander,
@@ -92,17 +74,8 @@ class WanderController extends AbstractController
     /**
      *
      * RSS, etc. feeds
-     *
-     * @Route(
-     *  "/feed.{!_format}",
-     *  name="feed",
-     *  methods={"GET"},
-     *  format="rss2",
-     *  requirements={
-     *      "_format": "rss2|atom"
-     *  }
-     * )
      */
+    #[Route(path: '/feed.{!_format}', name: 'feed', methods: ['GET'], format: 'rss2', requirements: ['_format' => 'rss2|atom'])]
     public function feed(Request $request, WanderRepository $wanderRepository): Response
     {
         $qb = $wanderRepository

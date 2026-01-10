@@ -30,52 +30,45 @@ class Wander
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=1024)
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $endTime;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $gpxFilename;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="wander", cascade={"persist"})
      * @ORM\OrderBy({ "capturedAt" = "ASC", "id" = "ASC" })
-     *
-     * @Groups({"wander:item"})
      */
+    #[Groups(['wander:item'])]
     private $images;
 
     /**
@@ -113,9 +106,8 @@ class Wander
 
     /**
      * @var string|null
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     public $contentUrl;
 
     /**
@@ -445,16 +437,16 @@ class Wander
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
-     * @Groups({"wander:item"})
      */
+    #[Groups(['wander:item'])]
     private $featuredImage;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups({"wander:list", "wander:item"})
      *
      */
+    #[Groups(['wander:list', 'wander:item'])]
     private $googlePolyline;
 
     public function getSector(): ?string

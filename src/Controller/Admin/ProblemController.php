@@ -12,14 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/problems", name="admin_problems_")
- */
+#[Route(path: '/admin/problems', name: 'admin_problems_')]
 class ProblemController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
         WanderRepository $wanderRepository,
         ImageRepository $imageRepository,
@@ -93,9 +89,7 @@ class ProblemController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/regenerate", name="regenerate", methods={"POST"})
-     */
+    #[Route(path: '/regenerate', name: 'regenerate', methods: ['POST'])]
     public function regenerateProblems(Request $request, ProblemService $problemService): Response
     {
         if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
@@ -109,37 +103,28 @@ class ProblemController extends AbstractController
     // TODO: These all share a lot of things in common, but I'm not sure
     // how much this is going to get used, so I'm keeping it fairly brain-dead
     // for now. Revisit later.
-
-    /**
-     * @Route("/no_title/wander/{id}", name="no_title", methods={"GET"})
-     */
+    #[Route(path: '/no_title/wander/{id}', name: 'no_title', methods: ['GET'])]
     public function noTitle(Wander $wander): Response
     {
         return $this->render('admin/problems/no_title.html.twig', [
             'wander' => $wander
         ]);
     }
-    /**
-     * @Route("/no_latlng/wander/{id}", name="no_latlng", methods={"GET"})
-     */
+    #[Route(path: '/no_latlng/wander/{id}', name: 'no_latlng', methods: ['GET'])]
     public function noLatlng(Wander $wander): Response
     {
         return $this->render('admin/problems/no_latlng.html.twig', [
             'wander' => $wander
         ]);
     }
-    /**
-     * @Route("/no_location/wander/{id}", name="no_location", methods={"GET"})
-     */
+    #[Route(path: '/no_location/wander/{id}', name: 'no_location', methods: ['GET'])]
     public function noLocation(Wander $wander): Response
     {
         return $this->render('admin/problems/no_location.html.twig', [
             'wander' => $wander
         ]);
     }
-    /**
-     * @Route("/no_rating/wander/{id}", name="no_rating", methods={"GET"})
-     */
+    #[Route(path: '/no_rating/wander/{id}', name: 'no_rating', methods: ['GET'])]
     public function noRating(Wander $wander): Response
     {
         return $this->render('admin/problems/no_rating.html.twig', [
@@ -147,9 +132,7 @@ class ProblemController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/no_tags/wander/{id}", name="no_tags", methods={"GET"})
-     */
+    #[Route(path: '/no_tags/wander/{id}', name: 'no_tags', methods: ['GET'])]
     public function noTags(Wander $wander): Response
     {
         return $this->render('admin/problems/no_tags.html.twig', [
@@ -157,9 +140,7 @@ class ProblemController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/no_auto_tags/wander/{id}", name="no_auto_tags", methods={"GET"})
-     */
+    #[Route(path: '/no_auto_tags/wander/{id}', name: 'no_auto_tags', methods: ['GET'])]
     public function noAutoTags(Wander $wander): Response
     {
         return $this->render('admin/problems/no_auto_tags.html.twig', [
@@ -167,9 +148,7 @@ class ProblemController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/broken_links", name="broken_links", methods={"GET"})
-     */
+    #[Route(path: '/broken_links', name: 'broken_links', methods: ['GET'])]
     public function brokenLinks(ProblemRepository $problemRepository): Response
     {
         $problems = $problemRepository->findAll();

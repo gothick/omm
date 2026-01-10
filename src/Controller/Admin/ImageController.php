@@ -27,14 +27,10 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
-/**
- * @Route("/admin/image", name="admin_image_")
- */
+#[Route(path: '/admin/image', name: 'admin_image_')]
 class ImageController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $imageRepository
@@ -54,18 +50,14 @@ class ImageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/cluster", name="cluster", methods={"GET"})
-     */
+    #[Route(path: '/cluster', name: 'cluster', methods: ['GET'])]
     public function cluster(): Response
     {
         return $this->render('admin/image/cluster.html.twig', [
         ]);
     }
 
-    /**
-     * @Route("/upload", name="upload", methods={"GET", "POST"})
-     */
+    #[Route(path: '/upload', name: 'upload', methods: ['GET', 'POST'])]
     public function upload(
             Request $request,
             string $imagesDirectory,
@@ -113,9 +105,7 @@ class ImageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     public function show(Image $image): Response
     {
         return $this->render('admin/image/show.html.twig', [
@@ -123,9 +113,7 @@ class ImageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         Image $image,
@@ -144,9 +132,7 @@ class ImageController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         Request $request,
         Image $image,
@@ -161,9 +147,7 @@ class ImageController extends AbstractController
         return $this->redirectToRoute('admin_image_index');
     }
 
-    /**
-     * @Route("/{id}/set_location", name="set_location", methods={"POST"})
-     */
+    #[Route(path: '/{id}/set_location', name: 'set_location', methods: ['POST'])]
     public function setLocation(Request $request, Image $image, LocationService $locationService, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('set_location'.$image->getId(), (string) $request->request->get('_token'))) {
@@ -178,9 +162,7 @@ class ImageController extends AbstractController
         return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
     }
 
-    /**
-     * @Route("/{id}/set_auto_tags", name="set_auto_tags", methods={"POST"})
-     */
+    #[Route(path: '/{id}/set_auto_tags', name: 'set_auto_tags', methods: ['POST'])]
     public function setAutoTags(Request $request, Image $image, MessageBusInterface $messageBus): Response
     {
         if ($this->isCsrfTokenValid('set_auto_tags'.$image->getId(), (string) $request->request->get('_token'))) {

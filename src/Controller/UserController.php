@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/user", name="user_")
- */
+#[Route(path: '/user', name: 'user_')]
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -28,9 +24,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/changepassword", name="changepassword", methods={"GET", "POST"})
-     */
+    #[Route(path: '/changepassword', name: 'changepassword', methods: ['GET', 'POST'])]
     public function changePassword(
         Request $request,
         UserPasswordHasherInterface $encoder,
