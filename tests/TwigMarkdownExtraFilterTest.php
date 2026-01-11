@@ -1,5 +1,6 @@
 <?php
-
+// TODO: This file is almost identical to TwigGeneralExtensionTest.php. I think one was a test that we started to create but
+// never finished. We should probably either finish it or delete it to avoid confusion.
 namespace App\Tests;
 
 use Twig\Extra\Markdown\MarkdownExtension;
@@ -26,15 +27,12 @@ class TwigMarkdownExtraFilterTest extends IntegrationTestCase
      */
     protected function getExtensions(): array
     {
-        return [new MarkdownExtension(), new GeneralExtension()];
+        return [new GeneralExtension()];
     }
 
     protected function getRuntimeLoaders(): array
     {
         return [new FactoryRuntimeLoader([
-            MarkdownRuntime::class => function (): MarkdownRuntime {
-                return new MarkdownRuntime(new MichelfMarkdown());
-            },
             GeneralRuntime::class => function (): GeneralRuntime {
                 // Later we'll actually need to create a MarkdownService, or at least mock it.
                 // For now we're just testing a non-Markdown filter or two
