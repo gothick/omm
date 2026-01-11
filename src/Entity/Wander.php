@@ -16,116 +16,71 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
 
 
-/**
- * @ORM\Entity(repositoryClass=WanderRepository::class)
- *
- * @Table(indexes={@Index(name="ix_wander_start_time", columns={"start_time"})})
- *
- * @ORM\HasLifecycleCallbacks()
- *
- */
+#[ORM\Entity(repositoryClass: WanderRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[Table]
+#[Index(name: 'ix_wander_start_time', columns: ['start_time'])]
 class Wander
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
-    private $id;
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=1024)
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'string', length: 1024)]
     private $title;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'datetime')]
     private $startTime;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'datetime')]
     private $endTime;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"wander:list", "wander:item"})
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'string', length: 255)]
     private $gpxFilename;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="wander", cascade={"persist"})
-     * @ORM\OrderBy({ "capturedAt" = "ASC", "id" = "ASC" })
-     *
-     * @Groups({"wander:item"})
-     */
+    #[Groups(['wander:item'])]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'wander', cascade: ['persist'])]
+    #[ORM\OrderBy(['capturedAt' => 'ASC', 'id' => 'ASC'])]
     private $images;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     *
-     * Distance walked, in metres.
-     *
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $distance;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $avgSpeed;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $avgPace;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $minAltitude;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $maxAltitude;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $cumulativeElevationGain;
 
     /**
      * @var string|null
-     *
-     * @Groups({"wander:list", "wander:item"})
      */
+    #[Groups(['wander:list', 'wander:item'])]
     public $contentUrl;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
+    #[ORM\Column(type: 'array', nullable: true)]
     private $centroid = [];
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $angleFromHome;
 
     public function __construct()
@@ -290,9 +245,7 @@ class Wander
         return $this;
     }
 
-    /**
-     * @ORM\PreRemove
-     */
+    #[ORM\PreRemove]
     public function removeAllImages(): self
     {
         $images = $this->images;
@@ -443,18 +396,12 @@ class Wander
         15 => 'N'
     ];
 
-    /**
-     * @ORM\OneToOne(targetEntity=Image::class, mappedBy="featuringWander", cascade={"persist"})
-     * @Groups({"wander:item"})
-     */
+    #[Groups(['wander:item'])]
+    #[ORM\OneToOne(targetEntity: Image::class, mappedBy: 'featuringWander', cascade: ['persist'])]
     private $featuredImage;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"wander:list", "wander:item"})
-     *
-     */
+    #[Groups(['wander:list', 'wander:item'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $googlePolyline;
 
     public function getSector(): ?string

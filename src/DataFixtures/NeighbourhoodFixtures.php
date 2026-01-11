@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class NeighbourhoodFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $neighbourhood = new Neighbourhood();
         $neighbourhood->setBoundingPolygon(new Polygon($this->getPolygonRings()));

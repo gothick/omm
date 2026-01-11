@@ -11,14 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin/settings", name="admin_settings_")
- */
+#[Route(path: '/admin/settings', name: 'admin_settings_')]
 class SettingsController extends AbstractController
 {
-    /**
-     * @Route("/", name="index")
-     */
+    #[Route(path: '/', name: 'index')]
     public function index(SettingsService $settingsService): Response
     {
         $settings = $settingsService->getSettings();
@@ -27,9 +23,7 @@ class SettingsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/edit", name="edit")
-     */
+    #[Route(path: '/edit', name: 'edit')]
     public function edit(
         Request $request,
         SettingsService $settingsService,

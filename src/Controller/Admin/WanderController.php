@@ -19,14 +19,10 @@ use App\Service\UploadHelper;
 use Doctrine\ORM\Mapping\OrderBy;
 use Knp\Component\Pager\PaginatorInterface;
 
-/**
- * @Route("/admin/wanders", name="admin_wanders_")
- */
+#[Route(path: '/admin/wanders', name: 'admin_wanders_')]
 class WanderController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
         Request $request,
         WanderRepository $wanderRepository,
@@ -58,17 +54,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route(
-     *  "/backlog.{!_format}",
-     *  name="backlog",
-     *  methods={"GET"},
-     *  format="html",
-     *  requirements={
-     *      "_format": "html|txt"
-     *  }
-     * )
-     */
+    #[Route(path: '/backlog.{!_format}', name: 'backlog', methods: ['GET'], format: 'html', requirements: ['_format' => 'html|txt'])]
     public function backlog(
         Request $request,
         WanderRepository $wanderRepository
@@ -90,9 +76,7 @@ class WanderController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/new", name="new", methods={"GET","POST"})
-     */
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
             Request $request,
             GpxService $gpxService,
@@ -128,9 +112,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     public function show(Wander $wander): Response // Uses “param converter” to find the Wander in db through the {id}
     {
         return $this->render('admin/wander/show.html.twig', [
@@ -138,9 +120,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Wander $wander): Response
     {
         $form = $this->createForm(WanderType::class, $wander);
@@ -160,9 +140,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
@@ -174,9 +152,7 @@ class WanderController extends AbstractController
         return $this->redirectToRoute('admin_wanders_index');
     }
 
-    /**
-     * @Route("/{id}/delete_images", name="delete_images", methods={"POST"})
-     */
+    #[Route(path: '/{id}/delete_images', name: 'delete_images', methods: ['POST'])]
     public function deleteImages(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete_images'.$wander->getId(), $request->request->get('_token'))) {
