@@ -132,7 +132,7 @@ class Image implements TaggableInterface
     /**
      * @var Collection<int, TagInterface>
      */
-    #[ORM\ManyToMany(targetEntity: \Tag::class)]
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
     private $tags;
 
     /**
