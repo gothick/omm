@@ -78,12 +78,12 @@
         "twig/markdown-extra": "^3.4",
         "twig/string-extra": "^3.1",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^2.0"
+        "vich/uploader-bundle": "^2.0",
+        "doctrine/doctrine-bundle": "^2.11"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.2",
         "deployer/deployer": "^7.1",
-        "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "liip/test-fixtures-bundle": "^2.0.0-alpha1",
         "phpstan/phpstan": "^2.1",
