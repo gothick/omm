@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5d3c919934c0c5751a4dfc1ffce411b",
+    "content-hash": "9e5a3687c7ee3cff8b5c491f35430556",
     "packages": [
         {
             "name": "beelab/tag-bundle",
@@ -381,63 +381,6 @@
                 "source": "https://github.com/creof/wkb-parser/tree/v2.4"
             },
             "time": "2022-02-15T22:46:31+00:00"
-        },
-        {
-            "name": "creof/wkt-parser",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/creof/wkt-parser.git",
-                "reference": "bc4c051b7a4e99b4943e2ec358218ed200aa991e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/creof/wkt-parser/zipball/bc4c051b7a4e99b4943e2ec358218ed200aa991e",
-                "reference": "bc4c051b7a4e99b4943e2ec358218ed200aa991e",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/lexer": "~1.0",
-                "ext-spl": "*",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "codeclimate/php-test-reporter": "dev-master",
-                "phpunit/phpunit": ">=4.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CrEOF\\Geo\\WKT": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Derek J. Lambert",
-                    "email": "dlambert@dereklambert.com"
-                }
-            ],
-            "description": "Parser for well-known text (WKT) object strings",
-            "keywords": [
-                "ewkt",
-                "geography",
-                "geometry",
-                "lexer",
-                "parser",
-                "spatial",
-                "string",
-                "text",
-                "wkt"
-            ],
-            "support": {
-                "issues": "https://github.com/creof/wkt-parser/issues",
-                "source": "https://github.com/creof/wkt-parser/tree/master"
-            },
-            "time": "2016-05-03T16:15:16+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -3737,26 +3680,26 @@
         },
         {
             "name": "longitude-one/doctrine-spatial",
-            "version": "3.0.2",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/longitude-one/doctrine-spatial.git",
-                "reference": "c7d2cfbf952ee1a4b44fbf30bf73d06ce3ccaa14"
+                "reference": "ccb069b97359d811679491f68581f7164e077286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/longitude-one/doctrine-spatial/zipball/c7d2cfbf952ee1a4b44fbf30bf73d06ce3ccaa14",
-                "reference": "c7d2cfbf952ee1a4b44fbf30bf73d06ce3ccaa14",
+                "url": "https://api.github.com/repos/longitude-one/doctrine-spatial/zipball/ccb069b97359d811679491f68581f7164e077286",
+                "reference": "ccb069b97359d811679491f68581f7164e077286",
                 "shasum": ""
             },
             "require": {
                 "creof/geo-parser": "~2.2",
                 "creof/wkb-parser": "~2.3",
-                "creof/wkt-parser": "~2.2",
                 "doctrine/orm": "^2.8.0",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^7.4|^8.0"
+                "longitude-one/wkt-parser": "~1.0",
+                "php": "^8.1"
             },
             "replace": {
                 "creof/doctrine2-spatial": "*"
@@ -3808,9 +3751,68 @@
             ],
             "support": {
                 "issues": "https://github.com/longitude-one/doctrine-spatial/issues",
-                "source": "https://github.com/longitude-one/doctrine-spatial/tree/3.0.2"
+                "source": "https://github.com/longitude-one/doctrine-spatial/tree/4.0.0"
             },
-            "time": "2022-02-15T13:12:43+00:00"
+            "time": "2023-06-04T15:11:55+00:00"
+        },
+        {
+            "name": "longitude-one/wkt-parser",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/longitude-one/wkt-parser.git",
+                "reference": "546dfadfc11f467739aec39d329d7fd5271b69eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/longitude-one/wkt-parser/zipball/546dfadfc11f467739aec39d329d7fd5271b69eb",
+                "reference": "546dfadfc11f467739aec39d329d7fd5271b69eb",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/lexer": "~1.0 || ^2.1",
+                "ext-spl": "*",
+                "php": ">=8.1"
+            },
+            "replace": {
+                "creof/wkt-parser": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LongitudeOne\\Geo\\WKT": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Derek J. Lambert",
+                    "email": "dlambert@dereklambert.com"
+                }
+            ],
+            "description": "Parser for well-known text (WKT) object strings",
+            "keywords": [
+                "ewkt",
+                "geography",
+                "geometry",
+                "lexer",
+                "parser",
+                "spatial",
+                "string",
+                "text",
+                "wkt"
+            ],
+            "support": {
+                "issues": "https://github.com/longitude-one/wkt-parser/issues",
+                "source": "https://github.com/longitude-one/wkt-parser/tree/v1.0.0"
+            },
+            "time": "2023-04-04T18:21:29+00:00"
         },
         {
             "name": "mekras/php-speller",
