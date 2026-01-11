@@ -18,7 +18,7 @@ return RectorConfig::configure()
     ->withDeadCodeLevel(0)
     ->withCodeQualityLevel(0)
     ->withAttributesSets(
-	    symfony: true,
+        symfony: true,
         sensiolabs: true,
         doctrine: true
     )
