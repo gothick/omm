@@ -37,7 +37,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
+    #[Route('/wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
     public function show(
         Request $request,
         Wander $wander,

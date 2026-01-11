@@ -26,7 +26,7 @@ class Wander
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[Groups(['wander:list', 'wander:item'])]
     #[ORM\Column(type: 'string', length: 1024)]
