@@ -2822,12 +2822,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gothick/geotools.git",
-                "reference": "cb936ac8966ae5277dbde7433470b167788fd7c1"
+                "reference": "f9918caf7e40047c9685b98e344f235285abb6e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gothick/geotools/zipball/cb936ac8966ae5277dbde7433470b167788fd7c1",
-                "reference": "cb936ac8966ae5277dbde7433470b167788fd7c1",
+                "url": "https://api.github.com/repos/gothick/geotools/zipball/f9918caf7e40047c9685b98e344f235285abb6e0",
+                "reference": "f9918caf7e40047c9685b98e344f235285abb6e0",
                 "shasum": ""
             },
             "require": {
@@ -2856,10 +2856,10 @@
             ],
             "description": "A few small tools related to GPX and geoJSON for use with One Mile Matt.",
             "support": {
-                "source": "https://github.com/gothick/geotools/tree/master",
+                "source": "https://github.com/gothick/geotools/tree/1.0.0",
                 "issues": "https://github.com/gothick/geotools/issues"
             },
-            "time": "2021-12-13T22:00:57+00:00"
+            "time": "2026-01-11T20:49:05+00:00"
         },
         {
             "name": "grpc/grpc",
