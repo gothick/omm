@@ -11,11 +11,30 @@
          cacheDirectory=".phpunit.cache"
 >
     <php>
+        <!--
+            I have decided not to care about deprecations that aren't mine. I'll
+            deal with that when I get up to Symfony 6.
+            https://symfony.com/doc/current/components/phpunit_bridge.html#internal-deprecations
+        -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value='max[self]=0&amp;quiet[]=indirect&amp;quiet[]=other'/>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <!-- Should be the *real* path to exiftool on the test environment -->
+        <env name="TEST_EXIFTOOL_PATH" value="/usr/local/bin/exiftool" />
     </php>
+
+    <groups>
+        <exclude>
+            <!-- skip over Twig's weird legacy tests -->
+            <group>legacy</group>
+        </exclude>
+    </groups>
+
+    <extensions>
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    </extensions>
 
     <testsuites>
         <testsuite name="Project Test Suite">
@@ -28,7 +47,4 @@
             <directory>src</directory>
         </include>
     </source>
-
-    <extensions>
-    </extensions>
 </phpunit>
