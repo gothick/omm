@@ -1,8 +1,18 @@
 <?php
+namespace App\Tests;
 
+use DG\BypassFinals;
 use Symfony\Component\Dotenv\Dotenv;
 
 require dirname(__DIR__).'/vendor/autoload.php';
+
+// The Vich uploader stuff has final classes that we need to mock in tests.
+// Use BypassFinals to allow that, restricted to the /vich/ path.
+BypassFinals::enable();
+BypassFinals::allowPaths([
+    // Allow bypassing finals in our src/ and tests/ directories
+    '*/vich/*'
+]);
 
 if (method_exists(Dotenv::class, 'bootEnv')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
