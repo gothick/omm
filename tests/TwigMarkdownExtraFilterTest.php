@@ -4,15 +4,21 @@ namespace App\Tests;
 
 use Twig\Extra\Markdown\MarkdownExtension;
 use Twig\Extra\Markdown\MarkdownRuntime;
+use App\Twig\GeneralExtension;
+use App\Twig\GeneralRuntime;
 use Twig\Extra\Markdown\MichelfMarkdown;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\Test\IntegrationTestCase;
 
+use App\Service\MarkdownService;
+use App\Service\TagSluggerService;
+
 class TwigMarkdownExtraFilterTest extends IntegrationTestCase
 {
-    protected function getFixturesDir(): string
+    #[\Override]
+    protected static function getFixturesDirectory(): string
     {
-        return __DIR__ . '/twig_fixtures_markdown_extra';
+        return __DIR__ . '/twig_fixtures';
     }
 
     /**
@@ -20,7 +26,7 @@ class TwigMarkdownExtraFilterTest extends IntegrationTestCase
      */
     protected function getExtensions(): array
     {
-        return [new MarkdownExtension()];
+        return [new MarkdownExtension(), new GeneralExtension()];
     }
 
     protected function getRuntimeLoaders(): array
@@ -28,6 +34,14 @@ class TwigMarkdownExtraFilterTest extends IntegrationTestCase
         return [new FactoryRuntimeLoader([
             MarkdownRuntime::class => function (): MarkdownRuntime {
                 return new MarkdownRuntime(new MichelfMarkdown());
+            },
+            GeneralRuntime::class => function (): GeneralRuntime {
+                // Later we'll actually need to create a MarkdownService, or at least mock it.
+                // For now we're just testing a non-Markdown filter or two
+                $markdown = $this->createMock(MarkdownService::class);
+
+                $tagslugger = $this->createMock(TagSluggerService::class);
+                return new GeneralRuntime($markdown, $tagslugger);
             }
         ])];
     }

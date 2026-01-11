@@ -12,7 +12,8 @@ use Twig\Test\IntegrationTestCase;
 
 class TwigGeneralExtensionTest extends IntegrationTestCase
 {
-    protected function getFixturesDir(): string
+    #[\Override]
+    protected static function getFixturesDirectory(): string
     {
         return __DIR__ . '/twig_fixtures';
     }
