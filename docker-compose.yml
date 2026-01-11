@@ -37,14 +37,14 @@ services:
 
   beanstalkd:
     container_name: beanstalkd
-    image: schickling/beanstalkd
+    image: maateen/docker-beanstalkd
     ports:
       - 11300:11300
 
 # Mostly nicked from https://medium.com/@TimvanBaarsen/how-to-run-an-elasticsearch-7-x-single-node-cluster-for-local-development-using-docker-compose-2b7ab73d8b82
   elasticsearch:
     container_name: es-container
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
