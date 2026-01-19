@@ -18,15 +18,6 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99"
     },
-    "creof/geo-parser": {
-        "version": "2.2.1"
-    },
-    "creof/wkb-parser": {
-        "version": "v2.3.0"
-    },
-    "creof/wkt-parser": {
-        "version": "2.2.0"
-    },
     "dama/doctrine-test-bundle": {
         "version": "8.2",
         "recipe": {
@@ -838,12 +829,12 @@
         "version": "v3.1.1"
     },
     "vich/uploader-bundle": {
-        "version": "1.5",
+        "version": "2.9",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
+            "branch": "main",
+            "version": "1.13",
+            "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
         },
         "files": [
             "config/packages/vich_uploader.yaml"

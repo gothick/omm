@@ -32,7 +32,7 @@
     },
     "dependencies": {
         "@fontsource/archivo": "^4.5.1",
-        "@fortawesome/fontawesome-svg-core": "^1.2.36",
+        "@fortawesome/fontawesome-svg-core": "^7.1.0",
         "@fortawesome/free-regular-svg-icons": "^5.15.4",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
         "@hotwired/stimulus": "^3.0.0",
@@ -51,6 +51,6 @@
         "polyline-encoded": "^0.0.9",
         "postcss-loader": "^7.0.0",
         "sass": "^1.43.5",
-        "sass-loader": "^13.0.0"
+        "sass-loader": "^16.0.6"
     }
 }

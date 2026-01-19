@@ -13,6 +13,7 @@
         "ext-iconv": "*",
         "beelab/tag-bundle": "dev-master",
         "composer/package-versions-deprecated": "^1.11",
+        "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "friendsofsymfony/elastica-bundle": "^6.0@dev",
@@ -23,8 +24,8 @@
         "jordanbrauer/unit-converter": "dev-master",
         "knplabs/knp-paginator-bundle": "^5.3",
         "liip/imagine-bundle": "^2.3",
-        "longitude-one/doctrine-spatial": "^3.0",
-        "mekras/php-speller": "^2.1",
+        "longitude-one/doctrine-spatial": "^5",
+        "mekras/php-speller": "~2.3",
         "michelf/php-markdown": "^2.0",
         "miljar/php-exif": "^0.6.5",
         "mistic100/randomcolor": "^1.0",
@@ -54,7 +55,6 @@
         "symfony/mime": "5.4.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/notifier": "5.4.*",
-        "symfony/phpunit-bridge": "^5.4",
         "symfony/process": "5.4.*",
         "symfony/property-access": "5.4.*",
         "symfony/property-info": "5.4.*",
@@ -78,17 +78,19 @@
         "twig/markdown-extra": "^3.4",
         "twig/string-extra": "^3.1",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "^2.0",
-        "doctrine/doctrine-bundle": "^2.11"
+        "vich/uploader-bundle": "^2.0"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.2",
         "deployer/deployer": "^7.1",
+        "dg/bypass-finals": "^1.9",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "liip/test-fixtures-bundle": "^2.0.0-alpha1",
         "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.5",
         "rector/rector": "^2.3",
-        "symfony/maker-bundle": "^1.23"
+        "symfony/maker-bundle": "^1.23",
+        "symfony/phpunit-bridge": "^5.4"
     },
     "config": {
         "optimize-autoloader": true,
