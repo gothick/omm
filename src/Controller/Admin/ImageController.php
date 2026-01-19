@@ -76,12 +76,16 @@ class ImageController extends AbstractController
                 throw new HttpException(500, "No uploaded file found.");
             }
 
-            $image = new Image();
-            $image->setImageFile($file);
-            $entityManager = $managerRegistry->getManager();
-            $entityManager->persist($image);
-            $entityManager->flush();
-
+            try {
+                $image = new Image();
+                $image->setImageFile($file);
+                $entityManager = $managerRegistry->getManager();
+                $entityManager->persist($image);
+                $entityManager->flush();
+            }
+            catch (Exception $e) {
+                return $this->json([ 'error' => 'Error saving uploaded file: ' . $e->getMessage()], 500);
+            }
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
             // file we just uploaded*, thanks to the wander:item grouping limiting the returned
