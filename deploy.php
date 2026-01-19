@@ -5,6 +5,7 @@ require 'recipe/symfony.php';
 
 require 'contrib/cachetool.php';
 require 'contrib/webpack_encore.php';
+require 'contrib/cachetool.php';
 
 // Project name
 set('application', 'omm.gothick.org.uk');
@@ -17,21 +18,6 @@ set('git_tty', true);
 
 // The default of ten was a bit much.
 set('keep_releases', 5);
-
-// TODO: Now you've upgraded to PHP 8, this should be fine to get rid of
-// Cachetool needs to be a lower version than default,
-// as the latest only works with php 8.
-// https://github.com/deployphp/deployer/issues/2344
-// https://gordalina.github.io/cachetool/
-// https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55
-// https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar
-set('bin/cachetool', function () {
-    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
-        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar");
-    }
-    return '{{release_or_current_path}}/cachetool.phar';
-});
-
 
 // Shared files/dirs between deploys
 add('shared_files', [
