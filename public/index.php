@@ -24,19 +24,14 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-if ('prod' === $kernel->getEnvironment() ||
-    'staging' === $kernel->getEnvironment())
-{
-    $kernel = new CacheKernel($kernel);
-    // https://symfony.com/doc/current/reference/configuration/framework.html#http-method-override
-    Request::enableHttpMethodParameterOverride();
-}
-$request = Request::createFromGlobals();
-$response = $kernel->handle($request);
-$response->send();
-$kernel->terminate($request, $response);
-// This was suggested when I upgraded framework-bundle. Maybe I'll need it later?
-// return function (array $context) {
-//     return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-// };
+return function (array $context) {
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    if ('prod' === $kernel->getEnvironment() ||
+        'staging' === $kernel->getEnvironment())
+    {
+        $kernel = new CacheKernel($kernel);
+        // https://symfony.com/doc/current/reference/configuration/framework.html#http-method-override
+        Request::enableHttpMethodParameterOverride();
+    }
+    return $kernel;
+};
