@@ -5,7 +5,7 @@ ENV APP_ENV=dev
 RUN a2enmod rewrite
 
 RUN apt-get update \
-  	&& apt-get install -y libzip-dev git wget exiftool --no-install-recommends \
+  	&& apt-get install -y libzip-dev git wget exiftool sudo --no-install-recommends \
   	&& apt-get clean \
 	&& curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 	&& apt-get install -y nodejs \
@@ -53,9 +53,9 @@ RUN chmod +x entrypoint.sh \
 RUN mkdir -p /var/www/var \
   	&& chown -R www-data:www-data /var/www/var \
     && mkdir -p /var/www/public/uploads \
-	&& chown -R www-data:www-data /var/www/public/uploads \
+	&& chmod 775 /var/www/public/uploads \
     && mkdir -p /var/www/public/uploads/images \
-	&& chown -R www-data:www-data /var/www/public/uploads/images
+	&& chmod 775 /var/www/public/uploads/images
 RUN composer dump-autoload --optimize --no-interaction
 RUN yarn \
 	&& yarn run encore dev
