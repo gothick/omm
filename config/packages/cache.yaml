@@ -12,7 +12,7 @@ framework:
         # For dev/test environments, point to the "redis" service defined in docker-compose.yml
         # We use database index 1 for application cache as on our live server WordPress uses index 0
         # and it's nice to be consistent across environments.
-        default_redis_provider: 'redis://localhost:6379/1'
+        default_redis_provider: '%env(REDIS_URL)%'
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         # app: cache.adapter.apcu
@@ -20,10 +20,3 @@ framework:
         # Namespaced pools use the above "app" backend by default
         #pools:
             #my.dedicated.cache: null
-
-when@prod:
-    framework:
-        cache:
-            app: cache.adapter.redis
-            default_redis_provider: 'redis://localhost:6379/1'
-
