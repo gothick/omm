@@ -55,7 +55,11 @@ RUN mkdir -p /var/www/var \
     && mkdir -p /var/www/public/uploads \
 	&& chmod 775 /var/www/public/uploads \
     && mkdir -p /var/www/public/uploads/images \
-	&& chmod 775 /var/www/public/uploads/images
+	&& chmod 775 /var/www/public/uploads/images \
+	&& chown -R www-data:www-data /var/www/public/uploads \
+	&& mkdir -p /var/www/public/media \
+	&& chmod 775 /var/www/public/media \
+	&& chown -R www-data:www-data /var/www/public/media
 RUN composer dump-autoload --optimize --no-interaction
 RUN yarn \
 	&& yarn run encore dev
