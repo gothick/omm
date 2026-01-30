@@ -67,13 +67,7 @@ task('build', function () {
 });
 
 task('deploy:stop-workers', function () {
-    // Hack alert: https://stackoverflow.com/a/63652279/300836
-    // We've just move the previous release out of the way, but it's
-    // the previous release's cache that has the details of the
-    // workers we need to kill.
-    if (has('previous_release')) {
-        run('{{bin/php}} {{previous_release}}/bin/console messenger:stop-workers');
-    }
+    run('{{bin/php}} {{release_path}}/bin/console messenger:stop-workers');
 })->desc('Stop any existing messenger consumers; Supervisor will restart them.');
 
 // Testing
