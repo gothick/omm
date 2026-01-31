@@ -51,7 +51,7 @@ RUN chmod +x entrypoint.sh \
 	&& chmod +x parseurl.php
 
 RUN mkdir -p /var/www/var \
-  	&& chown -R www-data:www-data /var/www \
+  	&& chown -R www-data:www-data /var/www/var \
     && mkdir -p /var/www/public/uploads \
 	&& chmod 775 /var/www/public/uploads \
     && mkdir -p /var/www/public/uploads/images \
