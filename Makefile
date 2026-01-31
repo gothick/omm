@@ -59,8 +59,10 @@ pushapp:
 test:
 	$(PHPUNIT)
 
+# NB Need to run the php process as www-data to match the file permissions, which are set
+# up that way as we're running the webserver in the container as that user.
 testapp:
-	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app php -dxdebug.mode=coverage bin/phpunit --testdox
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec -u www-data app php -dxdebug.mode=coverage bin/phpunit --cache-directory /tmp/phpunitcache --testdox
 
 # We're going to be doing this a lot for a while...
 testtags:
