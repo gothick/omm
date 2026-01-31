@@ -21,6 +21,7 @@ services:
       - HOST_FOR_COMMANDS=localhost
       - TEST_EXIFTOOL_PATH=/usr/bin/exiftool
       - REDIS_URL=redis://redis:6379/2
+      - LOCK_DSN=redis://redis:6379/2
 
       # Pass through environment variables set up in .env.docker.secrets
       - DATABASE_URL
