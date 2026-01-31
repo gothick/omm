@@ -74,7 +74,7 @@ fos_elastica:
                             my_analyzer:
                                 type: custom
                                 tokenizer: standard
-                                filter: [stop, lowercase, possessive_english_stemmer, 'english_stemmer']
+                                filter: [stop, lowercase, asciifolding, possessive_english_stemmer, 'english_stemmer']
                                 char_filter: [html_strip]
                         filter:
                             possessive_english_stemmer:
