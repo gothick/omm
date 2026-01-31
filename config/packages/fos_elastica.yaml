@@ -69,7 +69,7 @@ fos_elastica:
                         normalizer:
                             keyword_normalizer:
                                 type: custom
-                                filter: [lowercase]
+                                filter: [lowercase, asciifolding]
                         analyzer:
                             my_analyzer:
                                 type: custom
