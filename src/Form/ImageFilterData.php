@@ -48,8 +48,8 @@ class ImageFilterData
     private $location;
 
     public function __construct(
-        DateTimeInterface $startDate = null,
-        DateTimeInterface $endDate = null
+        ?DateTimeInterface $startDate = null,
+        ?DateTimeInterface $endDate = null
     ) {
         $this->startDate = new CarbonImmutable($startDate);
         $this->endDate = new CarbonImmutable($endDate);
