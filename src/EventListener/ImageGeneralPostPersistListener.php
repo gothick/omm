@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Entity\Image;
 use App\Message\RecogniseImage;
 use App\Message\WarmImageCache;
+use App\Message\GeolocateImage;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -24,10 +25,11 @@ class ImageGeneralPostPersistListener {
 
     public function postPersist(Image $image): void
     {
-        // Queue up some image recognition
+        // Queue up some image recognition and location tagging
         $id = $image->getId();
         if ($id !== null) {
             $this->messageBus->dispatch(new RecogniseImage($id));
+            $this->messageBus->dispatch(new GeolocateImage($id));
         }
 
         // And warm up the image cache the new image

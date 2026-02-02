@@ -41,7 +41,7 @@ class ProblemController extends AbstractController
             ->addSelect('COUNT(i) AS image_count')
             ->addSelect('SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END) AS no_title')
             ->addSelect('SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END) AS no_latlng')
-            ->addSelect('SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END) AS no_location')
+            ->addSelect('SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END) AS no_neighbourhood')
             ->addSelect('SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END) AS no_rating')
             // TODO: This is a hideous bodge and will break when we finally give in and move
             // keywords and auto-tags to being related entities rather than a dirty PHP
@@ -53,14 +53,14 @@ class ProblemController extends AbstractController
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
+                "(SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) AS total_problems_excl_auto"
             )
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
-                "(2 * SUM(CASE WHEN i.location IS NULL THEN 1 ELSE 0 END)) + " .
+                "(2 * SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END)) + " .
                 "(5 * SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
                 "(1 * CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END) + " .
                 "(0.01 * SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) + " .
@@ -70,7 +70,7 @@ class ProblemController extends AbstractController
             ->addGroupBy('fi')
             ->having('no_title > 0')
             ->orHaving('no_latlng > 0')
-            ->orHaving('no_location > 0')
+            ->orHaving('no_neighbourhood > 0')
             ->orHaving('no_rating > 0')
             ->orHaving('no_tags > 0')
             ->orHaving('no_auto_tags > 0')
@@ -117,10 +117,10 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
-    #[Route(path: '/no_location/wander/{id}', name: 'no_location', methods: ['GET'])]
-    public function noLocation(Wander $wander): Response
+    #[Route(path: '/no_neighbourhood/wander/{id}', name: 'no_neighbourhood', methods: ['GET'])]
+    public function noNeighbourhood(Wander $wander): Response
     {
-        return $this->render('admin/problems/no_location.html.twig', [
+        return $this->render('admin/problems/no_neighbourhood.html.twig', [
             'wander' => $wander
         ]);
     }

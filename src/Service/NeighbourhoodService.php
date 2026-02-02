@@ -12,7 +12,7 @@ use PhpParser\Node\Expr\Cast\Double;
 use Psr\Log\LoggerInterface;
 use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 
-class LocationService
+class NeighbourhoodService implements NeighbourhoodServiceInterface
 {
     /** @var NeighbourhoodRepository */
     private $neighbourhoodRepository;
@@ -23,7 +23,7 @@ class LocationService
         $this->neighbourhoodRepository = $neighbourhoodRepository;
     }
 
-    public function getLocationName(?float $lat, ?float $lng):?string
+    public function getNeighbourhood(?float $lat, ?float $lng):?string
     {
         if ($lat === null || $lng === null) {
             return null;

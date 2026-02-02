@@ -50,25 +50,24 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findWithNoLocation()
+    public function findWithHasLatLng()
     {
         return $this->createQueryBuilder('i')
-        ->andWhere('i.location IS NULL')
-        ->orWhere("i.location = ''")
-        ->orderBy('i.capturedAt', 'desc')
-        ->getQuery()
-        ->getResult();
+            ->andWhere('i.latlng IS NOT NULL')
+            ->orderBy('i.capturedAt', 'desc')
+            ->getQuery()
+            ->getResult();
     }
 
-    public function findWithNoLocationButHasLatLng()
+    public function findWithNoStreetButHasLatLng()
     {
         $qb = $this->createQueryBuilder('i');
         return $qb
             ->add('where',
                 $qb->expr()->andX(
                     $qb->expr()->orX(
-                        $qb->expr()->eq('i.location', "''"),
-                        $qb->expr()->isNull('i.location')
+                        $qb->expr()->eq('i.street', "''"),
+                        $qb->expr()->isNull('i.street')
                     ),
                     $qb->expr()->isNotNull('i.latlng')
                 )
@@ -78,17 +77,56 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getAllLocations(): array
+    public function findWithNoStreet()
     {
-        // TODO: What happens when there aren't any images/locations?
+        return $this->createQueryBuilder('i')
+        ->andWhere('i.street IS NULL')
+        ->orWhere("i.street = ''")
+        ->orderBy('i.capturedAt', 'desc')
+        ->getQuery()
+        ->getResult();
+    }
+
+
+    public function findWithNoNeighbourhood()
+    {
+        return $this->createQueryBuilder('i')
+        ->andWhere('i.neighbourhood IS NULL')
+        ->orWhere("i.neighbourhood = ''")
+        ->orderBy('i.capturedAt', 'desc')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findWithNoNeighbourhoodButHasLatLng()
+    {
+        $qb = $this->createQueryBuilder('i');
+        return $qb
+            ->add('where',
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->eq('i.neighbourhood', "''"),
+                        $qb->expr()->isNull('i.neighbourhood')
+                    ),
+                    $qb->expr()->isNotNull('i.latlng')
+                )
+            )
+            ->addOrderBy('i.capturedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAllNeighbourhoods(): array
+    {
+        // TODO: What happens when there aren't any images/neighbourhoods?
         $result = $this->createQueryBuilder('i')
-            ->select('i.location')
-            ->where('i.location IS NOT NULL')
-            ->groupBy('i.location')
-            ->orderBy('i.location')
+            ->select('i.neighbourhood')
+            ->where('i.neighbourhood IS NOT NULL')
+            ->groupBy('i.neighbourhood')
+            ->orderBy('i.neighbourhood', 'ASC')
             ->getQuery()
             ->getArrayResult();
-        return array_column($result, 'location');
+        return array_column($result, 'neighbourhood');
     }
 
     public function findFromIdOnwards(int $id)

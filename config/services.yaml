@@ -47,6 +47,7 @@ services:
             $wanderSimplifierEpsilonMetres: '%wander.simplifier_epsilon_metres%'
             $wanderGeoJsonOutputPrecision: '%wander.geojson_output_precision%'
             $kernelEnvironment: '%kernel.environment%'
+            $googleApiKey: '%google.api_key%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -74,8 +75,11 @@ services:
         arguments:
             $baseUri: '%imagga.base_uri%'
 
-    App\Service\LocationService:
+    App\Service\NeighbourhoodServiceInterface: '@App\Service\NeighbourhoodService'
+    App\Service\NeighbourhoodService:
         lazy: true
+
+    App\Service\LocationTaggingServiceInterface: '@App\Service\GoogleLocationTaggingService'
 
     App\Service\ImageTaggingServiceInterface: '@App\Service\GoogleImageTaggingService'
 

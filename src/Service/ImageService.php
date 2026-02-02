@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Image;
 use App\Repository\WanderRepository;
 use App\Utils\ExifHelper;
-use Deployer\Logger\Logger;
 use Exception;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PHPExif\Adapter\Exiftool;
@@ -14,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use App\Service\NeighbourhoodService;
 use App\Utils\ExifHelperInterface;
 
 class ImageService {
@@ -39,8 +39,8 @@ class ImageService {
     /** @var string */
     private $imagesDirectory;
 
-    /** @var LocationService */
-    private $locationService;
+    /** @var NeighbourhoodService */
+    private $neighbourhoodService;
 
     /** @var string */
     private $exiftoolPath;
@@ -51,7 +51,7 @@ class ImageService {
         UrlGeneratorInterface $router,
         LoggerInterface $logger,
         WanderRepository $wanderRepository,
-        LocationService $locationService,
+        NeighbourhoodService $neighbourhoodService,
         string $imagesDirectory,
         ?string $exiftoolPath)
     {
@@ -60,7 +60,7 @@ class ImageService {
         $this->router = $router;
         $this->logger = $logger;
         $this->wanderRepository = $wanderRepository;
-        $this->locationService = $locationService;
+        $this->neighbourhoodService = $neighbourhoodService;
         $this->imagesDirectory = $imagesDirectory;
         $this->exiftoolPath = $exiftoolPath;
 
@@ -85,10 +85,10 @@ class ImageService {
     }
 
     /**
-     * Location was a late addition and we have a Command to update existing ones. We don't want to touch
-     * any other existing data, so this is a special one-off to set Location.
+     * Neighbourhood was a late addition and we have a Command to update existing ones. We don't want to touch
+     * any other existing data, so this is a special one-off to set Neighbourhood.
      */
-    public function setLocationFromEXIF(Image $image): void
+    public function setNeighbourhoodFromEXIF(Image $image): void
     {
         if ($image->getMimeType() !== 'image/jpeg') {
             $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
@@ -100,8 +100,8 @@ class ImageService {
             /** @var ExifHelperInterface */
             $exifHelper = new ExifHelper($exif);
             // Don't want to overwrite anything we've already set.
-            if ($image->getLocation() === null || $image->getLocation() === '') {
-                $image->setLocation($exifHelper->getLocation());
+            if (!$image->hasNeighbourhood()) {
+                $image->setNeighbourhood($exifHelper->getLocation());
             }
         }
         catch(Exception $e) {
@@ -136,10 +136,10 @@ class ImageService {
             if ($neighbourhood === null && $image->hasLatlng()) {
                 // If we didn't set the location from the EXIF, this will try setting it
                 // from the GPS co-ordinates.
-                $neighbourhood = $this->locationService->getLocationName($image->getLatitude(), $image->getLongitude());
+                $neighbourhood = $this->neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             }
             if ($neighbourhood !== null) {
-                $image->setLocation($neighbourhood);
+                $image->setNeighbourhood($neighbourhood);
             }
 
             $capturedAt = $exifHelper->getCreationDate();

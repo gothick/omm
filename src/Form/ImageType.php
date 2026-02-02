@@ -52,7 +52,7 @@ class ImageType extends AbstractType
             ->add('latlng', TextType::class, [
                 'required' => false
             ])
-            ->add('location', TextType::class, [
+            ->add('neighbourhood', TextType::class, [
                 'required' => false
             ])
             ->add('tagsText', TextType::class,

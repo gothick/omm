@@ -68,12 +68,12 @@ class ImageController extends AbstractController
         }
 
         // Filtering form for the top of the page
-        $locationChoices = $this->getLocationChoices($imageRepository);
+        $neighbourhoodChoices = $this->getNeighbourhoodChoices($imageRepository);
         $filterForm = $this->createForm(
             ImageFilterType::class,
             $filterData,
             [
-                'locations' => array_combine($locationChoices, array_values($locationChoices)),
+                'neighbourhoods' => array_combine($neighbourhoodChoices, array_values($neighbourhoodChoices)),
                 'csrf_protection' => false, // We're just a GET request, and nothing bad happens no matter what you do.
                 'attr' => [
                     'data-controller' => 'imagefilter'
@@ -108,9 +108,9 @@ class ImageController extends AbstractController
     /**
      * @return array<string>
      */
-    private function getLocationChoices(ImageRepository $imageRepository)
+    private function getNeighbourhoodChoices(ImageRepository $imageRepository)
     {
-        return $imageRepository->getAllLocations();
+        return $imageRepository->getAllNeighbourhoods();
     }
 
     private function filterQuery(ImageFilterData $filterData, QueryBuilder $qb): void
@@ -136,10 +136,10 @@ class ImageController extends AbstractController
                 ->setParameter('endDate', $endDate);
         }
 
-        if ($filterData->hasLocation()) {
+        if ($filterData->hasNeighbourhood()) {
             $qb
-                ->andWhere('i.location = :location')
-                ->setParameter('location', $filterData->getLocation());
+                ->andWhere('i.neighbourhood = :neighbourhood')
+                ->setParameter('neighbourhood', $filterData->getNeighbourhood());
         }
 
     }

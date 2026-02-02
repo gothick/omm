@@ -6,7 +6,7 @@ use App\Entity\Image;
 use App\Entity\Tag;
 use App\Repository\WanderRepository;
 use App\Service\ImageService;
-use App\Service\LocationService;
+use App\Service\NeighbourhoodService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use InvalidArgumentException;
@@ -29,8 +29,8 @@ class ImageServiceTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $wanderRepository = $this->createMock(WanderRepository::class);
 
-        $locationService = $this->createMock(LocationService::class);
-        $locationService->method('getLocationName')
+        $neighbourhoodService = $this->createMock(NeighbourhoodService::class);
+        $neighbourhoodService->method('getNeighbourhood')
             ->will($this->returnCallback( function($lat, $lng) {
                 // This fakes what the location service does well enough
                 if ($lat === null || $lng === null) {
@@ -51,7 +51,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $locationService,
+            $neighbourhoodService,
             $imagesDirectory,
             null //?string $exiftoolPath
         );
@@ -66,7 +66,7 @@ class ImageServiceTest extends TestCase
         $router = $this->createMock(UrlGeneratorInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
         $wanderRepository = $this->createMock(WanderRepository::class);
-        $locationService = $this->createMock(LocationService::class);
+        $neighbourhoodService = $this->createMock(NeighbourhoodService::class);
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
         // The path to an actual copy of exiftool in this test
@@ -80,7 +80,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $locationService,
+            $neighbourhoodService,
             $imagesDirectory,
             $exiftool_path
         );
@@ -93,7 +93,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $locationService,
+            $neighbourhoodService,
             $imagesDirectory,
             '/floople/oojimaflip/wrong'
         );
@@ -198,14 +198,14 @@ class ImageServiceTest extends TestCase
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $result = $image->getLocation();
+        $result = $image->getNeighbourhood();
         $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location');
+        $this->assertNull($image->getNeighbourhood(), 'Unexpected location set from image with no location');
     }
 
     public function testSetLocationFromLatLng()
@@ -214,14 +214,14 @@ class ImageServiceTest extends TestCase
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without But Has LatLng.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $result = $image->getLocation();
+        $result = $image->getNeighbourhood();
         $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based location lookup.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without LatLng Is Null Island.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $result = $image->getLocation();
+        $result = $image->getNeighbourhood();
         $this->assertNull($result, "Null Island should quietly resolve to a null location");
     }
 
@@ -230,22 +230,22 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
-        $this->imageService->setLocationFromEXIF($image);
-        $result = $image->getLocation();
+        $this->imageService->setNeighbourhoodFromEXIF($image);
+        $result = $image->getNeighbourhood();
         $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image using standalone setter');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
-        $this->imageService->setLocationFromEXIF($image);
-        $this->assertNull($image->getLocation(), 'Unexpected location set from image with no location using standalone setter');
+        $this->imageService->setNeighbourhoodFromEXIF($image);
+        $this->assertNull($image->getNeighbourhood(), 'Unexpected location set from image with no location using standalone setter');
 
         $image = new Image();
-        $image->setLocation('Existing');
+        $image->setNeighbourhood('Existing');
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
-        $this->imageService->setLocationFromEXIF($image);
-        $result = $image->getLocation();
+        $this->imageService->setNeighbourhoodFromEXIF($image);
+        $result = $image->getNeighbourhood();
         $this->assertEquals('Existing', $result, 'Standalone Location setter unexpectedly overwrote data.');
     }
 

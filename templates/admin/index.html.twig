@@ -155,8 +155,8 @@
     <div class="row">
         <div class="col-2 d-none d-md-block">
             <div class="headline">
-                <div class="name">Image Locations</div>
-                <div class="value">{{ imageLocationStats | length }}</div>
+                <div class="name">Image Neighbourhoods</div>
+                <div class="value">{{ imageNeighbourhoodStats | length }}</div>
             </div>
         </div>
         <div class="col">
@@ -164,11 +164,11 @@
                 {% if imageStats.totalCount > 0 %} {# Avoid division by zero #}
                 <table>
                     <tr>
-                        <th>Location</th><td class="ps-4">Number of Images</td>
+                        <th>Neighbourhood</th><td class="ps-4">Number of Images</td>
                     </tr>
-                    {% for location, numberOfImages in imageLocationStats %}
+                    {% for neighbourhood, numberOfImages in imageNeighbourhoodStats %}
                         <tr>
-                            <td>{{ location }}</td><td class="ps-4">{{ numberOfImages }}</td>
+                            <td>{{ neighbourhood }}</td><td class="ps-4">{{ numberOfImages }}</td>
                         </tr>
                     {% endfor %}
                 </table>

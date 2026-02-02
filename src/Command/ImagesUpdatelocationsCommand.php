@@ -2,76 +2,82 @@
 
 namespace App\Command;
 
+use App\Entity\Image;
+use App\Message\GeolocateImage;
 use App\Repository\ImageRepository;
-use App\Service\LocationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\RouterInterface;
 
-class ImagesUpdatelocationsCommand extends Command
+class ImagesUpdateLocationsCommand extends Command
 {
     protected static $defaultName = 'images:updatelocations';
-    protected static $defaultDescription = "Updates images whose locations aren't set using our location service.";
 
     /** @var ImageRepository */
     private $imageRepository;
 
-    /** @var LocationService */
-    private $locationService;
-
     /** @var EntityManagerInterface */
     private $entityManager;
 
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var MessageBusInterface */
+    private $messageBus;
+
     public function __construct(
         ImageRepository $imageRepository,
-        LocationService $locationService,
-        EntityManagerInterface $entityManager
-    )
+        EntityManagerInterface $entityManager,
+        RouterInterface $router,
+        MessageBusInterface $messageBus
+        )
     {
         $this->imageRepository = $imageRepository;
-        $this->locationService = $locationService;
         $this->entityManager = $entityManager;
+        $this->router = $router;
+        $this->messageBus = $messageBus;
 
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this->setDescription(self::$defaultDescription);
+        $this
+            ->setDescription('Add location information to any images missing it, using our location service. This work will be queued, not done immediately.')
+            // TODO: Add option to overwrite existing tags
+            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $overwrite = (bool) $input->getOption('overwrite');
 
-        $io->info("Attempting to add locations to images missing locations.");
-
-        $images = $this->imageRepository->findWithNoLocationButHasLatLng();
+        $images = $this->imageRepository->findWithHasLatLng();
         $total = count($images);
-        $success = 0;
-        $failure = 0;
 
         $progressBar = new ProgressBar($output, $total);
         $progressBar->start();
         foreach ($images as $image) {
-            $neighbourhood = $this->locationService->getLocationName($image->getLatitude(), $image->getLongitude());
-            if ($neighbourhood !== null) {
-                $image->setLocation($neighbourhood);
-                $this->entityManager->persist($image);
-                $this->entityManager->flush(); // It actually seems faster to flush in the loop, rather than afterwards. Odd.
-                $success++;
-            } else {
-                $failure++;
+            $imageid = $image->getId();
+            if ($imageid === null) {
+                throw new \RuntimeException("Image has no ID");
             }
+            $this->messageBus->dispatch(new GeolocateImage($imageid, $overwrite));
             $progressBar->advance();
         }
         $progressBar->finish();
+        $io->newLine();
 
-        $io->success("Tried to locate $total images. Success: $success. Failure: $failure.");
-
+        $io->success("Queued work to locate $total images.");
         return Command::SUCCESS;
     }
 }

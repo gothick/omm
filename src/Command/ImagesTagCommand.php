@@ -24,17 +24,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ImagesTagCommand extends Command
 {
     protected static $defaultName = 'images:tag';
-    /** @var ImaggaService */
-    private $imaggaService;
 
     /** @var WanderRepository */
     private $wanderRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var RouterInterface */
-    private $router;
 
     /** @var MessageBusInterface */
     private $messageBus;
@@ -48,10 +40,7 @@ class ImagesTagCommand extends Command
         MessageBusInterface $messageBus
         )
     {
-        $this->imaggaService = $imaggaService;
         $this->wanderRepository = $wanderRepository;
-        $this->entityManager = $entityManager;
-        $this->router = $router;
         $this->messageBus = $messageBus;
 
         parent::__construct();
@@ -88,8 +77,12 @@ class ImagesTagCommand extends Command
         $progressBar = new ProgressBar($output, count($images));
         $progressBar->start();
         foreach ($images as $image) {
-            //$this->imaggaService->tagImage($image, $overwrite);
-            $this->messageBus->dispatch(new RecogniseImage($image->getId(), $overwrite));
+            $imageId = $image->getId();
+            if ($imageId === null) {
+                $progressBar->advance();
+                continue;
+            }
+            $this->messageBus->dispatch(new RecogniseImage($imageId, $overwrite));
             $progressBar->advance();
         }
         $progressBar->finish();
