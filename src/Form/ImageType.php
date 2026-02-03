@@ -55,6 +55,9 @@ class ImageType extends AbstractType
             ->add('neighbourhood', TextType::class, [
                 'required' => false
             ])
+            ->add('street', TextType::class, [
+                'required' => false
+            ])
             ->add('tagsText', TextType::class,
                 [
                     'required' => false,

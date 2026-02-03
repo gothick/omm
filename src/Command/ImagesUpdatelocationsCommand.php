@@ -48,7 +48,7 @@ class ImagesUpdateLocationsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $overwrite = (bool) $input->getOption('overwrite');
 
-        $images = $overwrite ? $this->imageRepository->findWithHasLatLng() : $this->imageRepository->findAllWithLatLngWithoutNeighbourhood();
+        $images = $overwrite ? $this->imageRepository->findWithHasLatLng() : $this->imageRepository->findWithNoStreetButHasLatLng();
         $total = count($images);
 
         $progressBar = new ProgressBar($output, $total);

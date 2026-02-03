@@ -37,6 +37,8 @@ class SearchWanderCustomPropertyListener implements EventSubscriberInterface {
             $document->set('slugifiedTags', $this->slugifyTags($object->getTagNames()));
             $document->set('slugifiedTextTags', $this->slugifyTags($object->getTextTags()));
             $document->set('slugifiedAutoTags', $this->slugifyTags($object->getAutoTags()));
+            $document->set('street', $object->getStreet());
+            $document->set('neighbourhood', $object->getNeighbourhood());
         }
     }
 

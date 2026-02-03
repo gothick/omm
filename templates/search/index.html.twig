@@ -84,6 +84,22 @@
                                 {% endfor %}
                             {% endif %}
 
+                            {% if imagehit.highlight['images.street'] is defined %}
+                                <p class="mt-2"><strong>Street:</strong>
+                                {% for streethighlight in imagehit.highlight['images.street'] %}
+                                    {{ streethighlight | raw }}
+                                {% endfor %}
+                                </p>
+                            {% endif %}
+
+                            {% if imagehit.highlight['images.neighbourhood'] is defined %}
+                                <p><strong>Neighbourhood:</strong>
+                                {% for neighbourhoodhighlight in imagehit.highlight['images.neighbourhood'] %}
+                                    {{ neighbourhoodhighlight | raw }}
+                                {% endfor %}
+                                </p>
+                            {% endif %}
+
                             <p class="tag mt-2"><span class="tagtitle">Tags:</span>
                                 {% for tag in image.tags %}
                                 <a class="keyword handtag {% if tag | slugify_tag == query_string %}fw-bold{% endif %}" href="{{ path('tag', { 'tag': tag | slugify_tag }) }}">{{ tag }}</a>
