@@ -49,10 +49,10 @@ class ImageController extends AbstractController
         );
 
         // These are overrides that can be sent by links set up on our
-        // charts on the Statistics page. If we get a location, star
+        // charts on the Statistics page. If we get a neighbourhood, star
         // rating or start & end dates via those, we override our defaults.
         try {
-            $filterData->overrideLocationFromUrlParam((string) $request->query->get('location'));
+            $filterData->overrideNeighbourhoodFromUrlParam((string) $request->query->get('neighbourhood'));
             $filterData->overrideRatingFromUrlParam((string) $request->query->get('rating'));
             $filterData->overrideStartDateFromUrlParam((string) $request->query->get('periodStartDate'));
             $filterData->overrideEndDateFromUrlParam((string) $request->query->get('periodEndDate'));

@@ -3,12 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Image;
-use App\Exception\ThirdPartyAPIException;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Google\Rpc\Status;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
 use JeroenDesloovere\Geolocation;
 use Psr\Log\LoggerInterface;
 
@@ -37,6 +32,12 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
         $this->logger = $logger;
     }
 
+    /**
+     * Tags an image with location data from Google Maps API
+     * @param Image $image The image to tag
+     * @param bool $overwriteExisting Whether to overwrite existing location tags
+     * return bool True if tags were applied, false if not
+     */
     public function tagImage(Image $image, bool $overwriteExisting = false): bool
     {
         if ($overwriteExisting === false && $image->hasStreet()) {
@@ -52,6 +53,7 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
             $address = $this->client->getAddress($image->getLatitude(), $image->getLongitude());
             $result = $address->getResult();
 
+            // Google Maps "route" is the street name, it seems.
             $routeLongName = null;
             foreach (($result->address_components ?? []) as $component) {
                 if (in_array('route', $component->types ?? [], true)) {
@@ -63,8 +65,9 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
                 $image->setStreet($routeLongName);
                 $this->entityManager->persist($image);
                 $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
+                return true;
             }
-            return true;
+            return false;
         }
         catch (Geolocation\Exception $e) {
             // You can't always expect to get an address.
