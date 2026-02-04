@@ -117,7 +117,7 @@ class ImageService {
         ): void
     {
         if ($image->getMimeType() !== 'image/jpeg') {
-            $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIT.');
+            $this->logger->info('Ignoring non-JPEG file when trying to set properties from EXIF.');
             return;
         }
 
