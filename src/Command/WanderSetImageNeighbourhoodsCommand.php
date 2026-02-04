@@ -13,10 +13,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class WanderSetImageLocationsCommand extends Command
+class WanderSetImageNeighbourhoodsCommand extends Command
 {
-    protected static $defaultName = 'wander:set-image-locations';
-    protected static $defaultDescription = 'Updates Location field from Exif information for all images for a given wander';
+    protected static $defaultName = 'wander:set-image-neighbourhoods';
+    protected static $defaultDescription = 'Updates Neighbourhood field from Exif information for all images for a given wander';
 
     /** @var WanderRepository */
     private $wanderRepository;
@@ -68,14 +68,14 @@ class WanderSetImageLocationsCommand extends Command
         $progressBar->start();
 
         foreach ($images as $image) {
-            $this->imageService->setLocationFromEXIF($image);
+            $this->imageService->setNeighbourhoodFromEXIF($image);
             $this->entityManager->persist($image);
             $this->entityManager->flush();
             $progressBar->advance();
         }
         $progressBar->finish();
 
-        $io->success('Image locations updated.');
+        $io->success('Image neighbourhoods updated.');
 
         return Command::SUCCESS;
     }
