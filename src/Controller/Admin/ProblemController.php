@@ -33,7 +33,7 @@ class ProblemController extends AbstractController
         $qb = $wanderRepository->createQueryBuilder('w');
 
         // TODO: This doesn't work, as e.g. keywords being an empty array
-        //
+        // TODO: Add locations (streets at the moment, etc.)
         $problems = $qb
             ->join('w.images', 'i')
             ->leftJoin('w.featuredImage', 'fi')
@@ -41,7 +41,7 @@ class ProblemController extends AbstractController
             ->addSelect('COUNT(i) AS image_count')
             ->addSelect('SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END) AS no_title')
             ->addSelect('SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END) AS no_latlng')
-            ->addSelect('SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END) AS no_neighbourhood')
+            ->addSelect("SUM(CASE WHEN i.neighbourhood IS NULL OR i.neighbourhood = '' THEN 1 ELSE 0 END) AS no_neighbourhood")
             ->addSelect('SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END) AS no_rating')
             // TODO: This is a hideous bodge and will break when we finally give in and move
             // keywords and auto-tags to being related entities rather than a dirty PHP
@@ -53,14 +53,14 @@ class ProblemController extends AbstractController
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
-                "(SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END)) + " .
+                "(SUM(CASE WHEN i.neighbourhood IS NULL OR i.neighbourhood = '' THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
                 "(SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) AS total_problems_excl_auto"
             )
             ->addSelect(
                 "(SUM(CASE WHEN i.title IS NULL THEN 1 ELSE 0 END)) + " .
                 "(10 * SUM(CASE WHEN i.latlng IS NULL THEN 1 ELSE 0 END)) + " .
-                "(2 * SUM(CASE WHEN i.neighbourhood IS NULL THEN 1 ELSE 0 END)) + " .
+                "(2 * SUM(CASE WHEN i.neighbourhood IS NULL OR i.neighbourhood = '' THEN 1 ELSE 0 END)) + " .
                 "(5 * SUM(CASE WHEN i.rating IS NULL OR i.rating = 0 THEN 1 ELSE 0 END)) + " .
                 "(1 * CASE WHEN fi.id IS NULL THEN 1 ELSE 0 END) + " .
                 "(0.01 * SUM(CASE WHEN i.tags is empty THEN 1 ELSE 0 END)) + " .
