@@ -38,7 +38,6 @@ class ImagesUpdateLocationsCommand extends Command
     {
         $this
             ->setDescription('Add location information to any images missing it, using our location service. This work will be queued, not done immediately.')
-            // TODO: Add option to overwrite existing tags
             ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations')
         ;
     }

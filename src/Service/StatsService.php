@@ -77,6 +77,7 @@ class StatsService
                 ->addSelect('COUNT(i) AS neighbourhoodCount')
                 ->groupBy('i.neighbourhood')
                 ->Where('i.neighbourhood IS NOT NULL')
+                ->andWhere("i.neighbourhood != ''")
                 ->OrderBy('i.neighbourhood')
                 ->getQuery()
                 ->getResult();

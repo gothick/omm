@@ -199,46 +199,46 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Location With.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image');
+        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertNull($image->getNeighbourhood(), 'Unexpected location set from image with no location');
+        $this->assertNull($image->getNeighbourhood(), 'Unexpected neighbourhood set from image with no neighbourhood');
     }
 
-    public function testSetLocationFromLatLng()
+    public function testSetNeighbourhoodFromLatLng()
     {
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without But Has LatLng.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based location lookup.");
+        $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based neighbourhood lookup.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without LatLng Is Null Island.jpg');
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
-        $this->assertNull($result, "Null Island should quietly resolve to a null location");
+        $this->assertNull($result, "Null Island should quietly resolve to a null neighbourhood");
     }
 
-    public function testStandaloneLocationSetter()
+    public function testStandaloneNeighbourhoodSetter()
     {
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read location from image using standalone setter');
+        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image using standalone setter');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
         $this->imageService->setNeighbourhoodFromEXIF($image);
-        $this->assertNull($image->getNeighbourhood(), 'Unexpected location set from image with no location using standalone setter');
+        $this->assertNull($image->getNeighbourhood(), 'Unexpected neighbourhood set from image with no neighbourhood using standalone setter');
 
         $image = new Image();
         $image->setNeighbourhood('Existing');
@@ -246,7 +246,7 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Location With.jpg');
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Existing', $result, 'Standalone Location setter unexpectedly overwrote data.');
+        $this->assertEquals('Existing', $result, 'Standalone Neighbourhood setter unexpectedly overwrote data.');
     }
 
     public function testTags()
