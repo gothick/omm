@@ -30,9 +30,9 @@ class ImageFilterType extends AbstractType
             ])
             ->add('end_date', DateType::class, [
             ])
-            ->add('location', ChoiceType::class, [
-                'choices' => $options['locations'],
-                'placeholder' => 'Any Location',
+            ->add('neighbourhood', ChoiceType::class, [
+                'choices' => $options['neighbourhoods'],
+                'placeholder' => 'Any Neighbourhood',
                 'required' => false
             ])
             ->add('rating_comparison', ChoiceType::class, [
@@ -57,8 +57,8 @@ class ImageFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'locations' => []
+            'neighbourhoods' => []
         ]);
-        $resolver->setAllowedTypes('locations', 'array');
+        $resolver->setAllowedTypes('neighbourhoods', 'array');
     }
 }
