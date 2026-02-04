@@ -9,6 +9,7 @@ use App\Message\WarmImageCache;
 use App\Repository\ImageRepository;
 use App\Service\DiskStatsService;
 use App\Service\NeighbourhoodService;
+use App\Service\NeighbourhoodServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -152,7 +153,7 @@ class ImageController extends AbstractController
     }
 
     #[Route(path: '/{id}/set_neighbourhood', name: 'set_neighbourhood', methods: ['POST'])]
-    public function setNeighbourhood(Request $request, Image $image, NeighbourhoodService $neighbourhoodService, EntityManagerInterface $entityManager): Response
+    public function setNeighbourhood(Request $request, Image $image, NeighbourhoodServiceInterface $neighbourhoodService, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('set_neighbourhood'.$image->getId(), (string) $request->request->get('_token'))) {
             $neighbourhood  = $neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
