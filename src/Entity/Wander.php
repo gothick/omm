@@ -190,10 +190,10 @@ class Wander
     /**
      * @return Collection|Image[]
      */
-    public function getImagesWithNoLocation(): Collection
+    public function getImagesWithNoNeighbourhood(): Collection
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->isNull('location'));
+            ->where(Criteria::expr()->isNull('neighbourhood'));
         return $this->getImages()->matching($criteria);
     }
 

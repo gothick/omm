@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
-use App\Service\NeighbourhoodService;
+use App\Service\NeighbourhoodServiceInterface;
 use App\Utils\ExifHelperInterface;
 
 class ImageService {
@@ -39,7 +39,7 @@ class ImageService {
     /** @var string */
     private $imagesDirectory;
 
-    /** @var NeighbourhoodService */
+    /** @var NeighbourhoodServiceInterface */
     private $neighbourhoodService;
 
     /** @var string */
@@ -51,7 +51,7 @@ class ImageService {
         UrlGeneratorInterface $router,
         LoggerInterface $logger,
         WanderRepository $wanderRepository,
-        NeighbourhoodService $neighbourhoodService,
+        NeighbourhoodServiceInterface $neighbourhoodService,
         string $imagesDirectory,
         ?string $exiftoolPath)
     {
