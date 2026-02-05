@@ -503,7 +503,7 @@ class Image implements TaggableInterface
      * @var ?string
      */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $location;
+    private $neighbourhood;
 
     /**
      * @var ?Wander
@@ -516,6 +516,9 @@ class Image implements TaggableInterface
      */
     #[ORM\Column(type: 'array', nullable: true)]
     private $textTags = [];
+
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $street = null;
 
     public function setImageUri(string $imageUri): void
     {
@@ -576,19 +579,19 @@ class Image implements TaggableInterface
         return count($this->autoTags);
     }
 
-    public function getLocation(): ?string
+    public function getNeighbourhood(): ?string
     {
-        return $this->location;
+        return $this->neighbourhood;
     }
 
-    public function hasLocation(): bool
+    public function hasNeighbourhood(): bool
     {
-        return $this->location !== null && $this->location <> '';
+        return $this->neighbourhood !== null && $this->neighbourhood <> '';
     }
 
-    public function setLocation(?string $location): self
+    public function setNeighbourhood(?string $neighbourhood): self
     {
-        $this->location = $location;
+        $this->neighbourhood = $neighbourhood;
 
         return $this;
     }
@@ -648,6 +651,23 @@ class Image implements TaggableInterface
     {
         $this->textTags = $textTags;
         return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): static
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function hasStreet(): bool
+    {
+        return $this->street !== null && $this->street !== '';
     }
 }
 

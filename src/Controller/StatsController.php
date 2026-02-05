@@ -42,7 +42,7 @@ class StatsController extends AbstractController
     ): Response {
         $wanderStats = $statsService->getWanderStats();
         $imageStats = $statsService->getImageStats();
-        $imageLocationStats = $statsService->getImageLocationStats();
+        $imageNeighbourhoodStats = $statsService->getImageNeighbourhoodStats();
 
         $wanderDataSeries =
             [
@@ -104,7 +104,7 @@ class StatsController extends AbstractController
                 ]
             ]);
 
-        $locationsChart = $chartBuilder
+        $neighbourhoodsChart = $chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setOptions([
                 'maintainAspectRatio' => false,
@@ -116,16 +116,19 @@ class StatsController extends AbstractController
                 ]
             ])
             ->setData([
-                'labels' => array_keys($imageLocationStats),
-                'urls' => array_map(fn($l): string => $this->router->generate('image_index', ['location' => $l]), array_keys($imageLocationStats)),
+                'labels' => array_keys($imageNeighbourhoodStats),
+                'urls' => array_map(fn($l): string => $this->router->generate('image_index', ['neighbourhood' => $l]), array_keys($imageNeighbourhoodStats)),
                 'datasets' => [
                     [
                         'label' => 'Number of Photos',
-                        'backgroundColor' => RandomColor::many(count($imageLocationStats)),
+                        'backgroundColor' => RandomColor::many(count($imageNeighbourhoodStats), [
+                            'luminosity' => 'bright',
+                            'format' => 'hex'
+                        ]),
                         'borderColor' => 'black',
                         'borderWidth' => 1,
                         'borderRadius' => 5,
-                        'data' => array_values($imageLocationStats),
+                        'data' => array_values($imageNeighbourhoodStats),
                     ]
                 ]
             ]);
@@ -133,12 +136,12 @@ class StatsController extends AbstractController
         return $this->render('stats/index.html.twig', [
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,
-            'imageLocationStats' => $imageLocationStats,
+            'imageNeighbourhoodStats' => $imageNeighbourhoodStats,
             'monthlyWanderChart' => $monthlyWanderChart,
             'yearlyWanderChart' => $yearlyWanderChart,
             'monthlyImagesChart' => $monthlyImagesChart,
             'yearlyImagesChart' => $yearlyImagesChart,
-            'locationsChart' => $locationsChart
+            'neighbourhoodsChart' => $neighbourhoodsChart
         ]);
     }
 

@@ -58,7 +58,10 @@ class SearchController extends AbstractController
                 'images.description',
                 'images.tags',
                 'images.autoTags',
-                'images.textTags']);
+                'images.textTags',
+                'images.neighbourhood',
+                'images.street'
+            ]);
 
             $nested = new Nested();
             $nested->setPath('images');
@@ -78,6 +81,16 @@ class SearchController extends AbstractController
                     'post_tags' => ['</mark>']
                 ],
                 'images.description' => [
+                    'no_match_size' => 1024,
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
+                ],
+                'images.street' => [
+                    'no_match_size' => 1024,
+                    'pre_tags' => ['<mark>'],
+                    'post_tags' => ['</mark>']
+                ],
+                'images.neighbourhood' => [
                     'no_match_size' => 1024,
                     'pre_tags' => ['<mark>'],
                     'post_tags' => ['</mark>']

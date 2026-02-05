@@ -170,15 +170,15 @@
 </div>
 <div class="row stats-row">
     <div class="col-2 d-none d-md-block">
-        <div class="headline locations">
-            <div class="name">Photo Locations</div>
-            <div class="value">{{ imageLocationStats | length }}</div>
+        <div class="headline neighbourhoods">
+            <div class="name">Photo Neighbourhoods</div>
+            <div class="value">{{ imageNeighbourhoodStats | length }}</div>
         </div>
     </div>
-    <div class="col" style="height: {{ (imageLocationStats | length) * 30 }}px;">
-        {{ render_chart(locationsChart, {
-                'class': 'details graph locations',
-                'data-controller': 'charts--location'
+    <div class="col" style="height: {{ (imageNeighbourhoodStats | length) * 30 }}px;">
+        {{ render_chart(neighbourhoodsChart, {
+                'class': 'details graph neighbourhoods',
+                'data-controller': 'charts--neighbourhood'
             })
         }}
     </div>

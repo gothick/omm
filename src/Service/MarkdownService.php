@@ -45,9 +45,9 @@ class MarkdownService
 
         $results = [];
         $html = Markdown::defaultTransform($markdown);
+        // TODO: (In PHP 8.4+) Use DOMDocument::createDocumentFragment or similar to support HTML5 like <mark> etc.
         $dom = new DOMDocument();
-        $dom->loadHTML($html);
-        //dd($dom->saveHTML());
+        $dom->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
         $links = $dom->getElementsByTagName('a');
         foreach ($links as $link) {
             $results[] = [

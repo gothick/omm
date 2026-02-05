@@ -45,7 +45,7 @@ class ImageFilterData
     private $ratingComparison;
 
     /** @var ?string */
-    private $location;
+    private $neighbourhood;
 
     public function __construct(
         ?DateTimeInterface $startDate = null,
@@ -138,23 +138,23 @@ class ImageFilterData
     {
         return $this->ratingComparison;
     }
-    public function setLocation(?string $location): void
+    public function setNeighbourhood(?string $neighbourhood): void
     {
-        $this->location = $location === "" ? null : $location;
+        $this->neighbourhood = $neighbourhood === "" ? null : $neighbourhood;
     }
-    public function overrideLocationFromUrlParam(?string $location): void
+    public function overrideNeighbourhoodFromUrlParam(?string $neighbourhood): void
     {
-        if (!empty($location)) {
-            $this->location = $location;
+        if (!empty($neighbourhood)) {
+            $this->neighbourhood = $neighbourhood;
         }
     }
-    public function getLocation(): ?string
+    public function getNeighbourhood(): ?string
     {
-        return $this->location;
+        return $this->neighbourhood;
     }
-    public function hasLocation(): bool
+    public function hasNeighbourhood(): bool
     {
-        return $this->location !== null;
+        return $this->neighbourhood !== null;
     }
     private function getDateForUrlParam(?CarbonImmutable $d): string
     {
@@ -176,7 +176,7 @@ class ImageFilterData
             'endDate' => $this->getDateForUrlParam($this->endDate),
             'rating' => $this->rating === null ? '' : (string) $this->rating,
             'ratingComparison' => $this->ratingComparison === null ? '' : $this->ratingComparison,
-            'location' => $this->location === null ? '' : $this->location
+            'neighbourhood' => $this->neighbourhood === null ? '' : $this->neighbourhood
         ];
     }
     /**

@@ -60,7 +60,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if ($in === null) {
             return '';
         }
-        return strip_tags($in, '<sup><hr>');
+        return strip_tags($in, '<sup><hr><em><strong><hr><mark>');
     }
 
     /**

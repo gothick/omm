@@ -8,7 +8,8 @@ use App\Message\RecogniseImage;
 use App\Message\WarmImageCache;
 use App\Repository\ImageRepository;
 use App\Service\DiskStatsService;
-use App\Service\LocationService;
+use App\Service\NeighbourhoodService;
+use App\Service\NeighbourhoodServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -151,13 +152,13 @@ class ImageController extends AbstractController
         return $this->redirectToRoute('admin_image_index');
     }
 
-    #[Route(path: '/{id}/set_location', name: 'set_location', methods: ['POST'])]
-    public function setLocation(Request $request, Image $image, LocationService $locationService, EntityManagerInterface $entityManager): Response
+    #[Route(path: '/{id}/set_neighbourhood', name: 'set_neighbourhood', methods: ['POST'])]
+    public function setNeighbourhood(Request $request, Image $image, NeighbourhoodServiceInterface $neighbourhoodService, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('set_location'.$image->getId(), (string) $request->request->get('_token'))) {
-            $neighbourhood  = $locationService->getLocationName($image->getLatitude(), $image->getLongitude());
+        if ($this->isCsrfTokenValid('set_neighbourhood'.$image->getId(), (string) $request->request->get('_token'))) {
+            $neighbourhood  = $neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             if ($neighbourhood !== null) {
-                $image->setLocation($neighbourhood);
+                $image->setNeighbourhood($neighbourhood);
                 $entityManager->persist($image);
                 $entityManager->flush();
             }

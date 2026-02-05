@@ -12,7 +12,7 @@
 return [
     'safe' => 'This is an entirely safe string',
     'script' => 'This has a <script>alert("w00t!")</script> element',
-    'emphasis' => 'This has <em>some HTML tags that we want to strip, too</em>.',
+    'emphasis' => 'This has <em>some HTML tags that we want to let through</em>.',
     'okaytag1' => "We're okay with superscript<sup>1</sup> tags. <sup>1</sup> Anywhere.",
     'okaytag2' => "And also with <hr/> horizontal rules",
     'br' => "This<br>is<br/>a<br>test",
@@ -21,7 +21,7 @@ return [
 --EXPECT--
 This is an entirely safe string
 This has a alert("w00t!") element
-This has some HTML tags that we want to strip, too.
+This has <em>some HTML tags that we want to let through</em>.
 We're okay with superscript<sup>1</sup> tags. <sup>1</sup> Anywhere.
 And also with <hr/> horizontal rules
 Thisisatest

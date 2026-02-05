@@ -1,7 +1,0 @@
-<div class="mt-5">
-    <form method="post" action="{{ path('admin_image_set_location', {'id': image.id}) }}" onsubmit="return confirm('Are you sure you want to auto-update the location for this image?');">
-        <input type="hidden" name="_method" value="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token('set_location' ~ image.id) }}">
-        <button class="btn btn-warning">Set Location</button>
-    </form>
-</div>

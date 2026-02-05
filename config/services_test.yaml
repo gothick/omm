@@ -9,7 +9,8 @@ services:
         public: true
 
     App\Service\ImageTaggingServiceInterface: '@App\Service\DummyImageTaggingService'
-    
+    App\Service\LocationTaggingServiceInterface: '@App\Service\DummyLocationTaggingService'
+
     # Allows us to mock this otherwise-private service in our tests (I coudln't get
     # the alleged special container that lets us access private services to work.)
     # https://stackoverflow.com/a/69232942/300836

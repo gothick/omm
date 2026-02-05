@@ -2,17 +2,9 @@
 
 namespace App\Service;
 
-use App\Entity\Image;
-use App\Entity\Neighbourhood;
 use App\Repository\NeighbourhoodRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use PhpParser\Node\Expr\Cast\Double;
-use Psr\Log\LoggerInterface;
-use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 
-class LocationService
+class NeighbourhoodService implements NeighbourhoodServiceInterface
 {
     /** @var NeighbourhoodRepository */
     private $neighbourhoodRepository;
@@ -23,7 +15,7 @@ class LocationService
         $this->neighbourhoodRepository = $neighbourhoodRepository;
     }
 
-    public function getLocationName(?float $lat, ?float $lng):?string
+    public function getNeighbourhood(?float $lat, ?float $lng):?string
     {
         if ($lat === null || $lng === null) {
             return null;
@@ -32,10 +24,6 @@ class LocationService
             ->neighbourhoodRepository
             ->findByLatlng($lat, $lng);
 
-        if ($neighbourhood === null) {
-            return null;
-        } else {
-            return $neighbourhood->getLsoa11ln();
-        }
+        return $neighbourhood?->getLsoa11ln();
     }
 }

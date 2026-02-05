@@ -69,7 +69,8 @@
                             {{ image.latitude | number_format(5) }}, {{ image.longitude | number_format(5) }}
                             </a>
                     {% endif %}
-                    {% if image.location %}<br/>Location: {{ image.location }}{% endif %}
+                    {% if image.neighbourhood %}<br/>Neighbourhood: {{ image.neighbourhood }}{% endif %}
+                    {% if image.street %}<br/>Street: {{ image.street }}{% endif %}
                     </p>
                 </div>
             </div>

@@ -39,6 +39,14 @@ fos_elastica:
                                 analyzer: my_analyzer
                                 property_path: false
                                 boost: 8
+                            street:
+                                analyzer: my_analyzer
+                                property_path: false
+                                boost: 4
+                            neighbourhood:
+                                analyzer: my_analyzer
+                                property_path: false
+                                boost: 4
                             tags:
                                 type: keyword
                                 normalizer: keyword_normalizer

@@ -67,20 +67,21 @@ class StatsService
     /**
      * @return array<mixed>
      */
-    public function getImageLocationStats(): array
+    public function getImageNeighbourhoodStats(): array
     {
-        return $this->cache->get('image_location_stats', function (ItemInterface $item) {
+        return $this->cache->get('image_neighbourhood_stats', function (ItemInterface $item) {
             $item->tag('stats');
             $stats = $this->imageRepository
                 ->createQueryBuilder('i')
-                ->select('i.location')
-                ->addSelect('COUNT(i) AS locationCount')
-                ->groupBy('i.location')
-                ->Where('i.location IS NOT NULL')
-                ->OrderBy('i.location')
+                ->select('i.neighbourhood')
+                ->addSelect('COUNT(i) AS neighbourhoodCount')
+                ->groupBy('i.neighbourhood')
+                ->Where('i.neighbourhood IS NOT NULL')
+                ->andWhere("i.neighbourhood != ''")
+                ->OrderBy('i.neighbourhood')
                 ->getQuery()
                 ->getResult();
-            return array_column($stats, 'locationCount', 'location');
+            return array_column($stats, 'neighbourhoodCount', 'neighbourhood');
         });
     }
 
