@@ -78,6 +78,5 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
             $this->logger->error('GoogleLocationTaggingService: Error retrieving address for image ID ' . $image->getId() . ': ' . $th->getMessage());
             return false;
         }
-        return false;
     }
 }
