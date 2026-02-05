@@ -71,7 +71,7 @@
                         <div class="col-2">
                             {% if imagehit.highlight['images.title'] is defined %}
                                 {% for titlehighlight in imagehit.highlight['images.title'] %}
-                                    <a href="{{ path('image_show', {'id': image.id}) }}">{{ titlehighlight | raw }}</a>
+                                    <a href="{{ path('image_show', {'id': image.id}) }}">{{ titlehighlight | striptags('<mark>') | raw }}</a>
 
                                 {% endfor %}
                             {% endif %}
@@ -80,14 +80,14 @@
                         <div class="col-8">
                             {% if imagehit.highlight['images.description'] is defined %}
                                 {% for descriptionhighlight in imagehit.highlight['images.description'] %}
-                                    <small>{{ descriptionhighlight | raw }}</small>
+                                    <small>{{ descriptionhighlight | striptags('<mark>') | raw }}</small>
                                 {% endfor %}
                             {% endif %}
 
                             {% if imagehit.highlight['images.street'] is defined %}
                                 <p class="mt-2"><strong>Street:</strong>
                                 {% for streethighlight in imagehit.highlight['images.street'] %}
-                                    {{ streethighlight | raw }}
+                                    {{ streethighlight | striptags('<mark>') | raw }}
                                 {% endfor %}
                                 </p>
                             {% endif %}
@@ -95,7 +95,7 @@
                             {% if imagehit.highlight['images.neighbourhood'] is defined %}
                                 <p><strong>Neighbourhood:</strong>
                                 {% for neighbourhoodhighlight in imagehit.highlight['images.neighbourhood'] %}
-                                    {{ neighbourhoodhighlight | raw }}
+                                    {{ neighbourhoodhighlight | striptags('<mark>') | raw }}
                                 {% endfor %}
                                 </p>
                             {% endif %}
