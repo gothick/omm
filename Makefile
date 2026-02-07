@@ -64,6 +64,9 @@ test:
 testapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec -u www-data app php -dxdebug.mode=coverage bin/phpunit --cache-directory /tmp/phpunitcache --testdox
 
+shellapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app bash
+
 # We're going to be doing this a lot for a while...
 testtags:
 	$(PHPUNIT) --group tags
