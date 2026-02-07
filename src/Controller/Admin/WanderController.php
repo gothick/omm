@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
 use App\Service\UploadHelper;
@@ -80,7 +81,8 @@ class WanderController extends AbstractController
     public function new(
             Request $request,
             GpxService $gpxService,
-            UploadHelper $uploadHelper
+            UploadHelper $uploadHelper,
+            PersistenceManagerRegistry $doctrine
         ): Response
     {
         $wander = new Wander();
@@ -101,7 +103,7 @@ class WanderController extends AbstractController
             $wander = $form->getData();
             $gpxService->updateWanderFromGpx($wander);
 
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($wander);
             $entityManager->flush();
             return $this->redirectToRoute('admin_wanders_show', ['id' => $wander->getId()]);
@@ -121,13 +123,13 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Wander $wander): Response
+    public function edit(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(WanderType::class, $wander);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.
@@ -141,10 +143,10 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Request $request, Wander $wander): Response
+    public function delete(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
             $entityManager->remove($wander);
             $entityManager->flush();
         }
@@ -153,10 +155,10 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}/delete_images', name: 'delete_images', methods: ['POST'])]
-    public function deleteImages(Request $request, Wander $wander): Response
+    public function deleteImages(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete_images'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
             $images = $wander->getImages();
             foreach ($images as $image) {
                 $entityManager->remove($image);
