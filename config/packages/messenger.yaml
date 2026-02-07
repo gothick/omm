@@ -1,8 +1,5 @@
 framework:
     messenger:
-        # reset services after consuming messages
-        reset_on_message: true # https://symfony.com/blog/new-in-symfony-5-4-messenger-improvements
-
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
         failure_transport: failed
