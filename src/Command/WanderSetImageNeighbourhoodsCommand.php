@@ -12,12 +12,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'wander:set-image-neighbourhoods', description: 'Updates Neighbourhood field from Exif information for all images for a given wander.')]
 class WanderSetImageNeighbourhoodsCommand extends Command
 {
-    protected static $defaultName = 'wander:set-image-neighbourhoods';
-    protected static $defaultDescription = 'Updates Neighbourhood field from Exif information for all images for a given wander';
-
     /** @var WanderRepository */
     private $wanderRepository;
 
@@ -40,12 +39,9 @@ class WanderSetImageNeighbourhoodsCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription(self::$defaultDescription)
-            ->addArgument('id', InputArgument::REQUIRED, 'Wander ID')
-        ;
+        $this->addArgument('id', InputArgument::REQUIRED, 'Wander ID');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

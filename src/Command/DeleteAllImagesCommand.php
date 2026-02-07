@@ -9,11 +9,11 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:delete', description: 'Deletes all images.')]
 class DeleteAllImagesCommand extends Command
 {
-    protected static $defaultName = 'images:delete';
-
     /** @var ImageRepository */
     private $imageRepository;
 
@@ -27,11 +27,9 @@ class DeleteAllImagesCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Deletes all Images.')
-            ->setHelp('Deletes all Image entities and their associated uploaded files.');
+        $this->setHelp('Deletes all Image entities and their associated uploaded files.');
     }
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

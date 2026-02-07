@@ -20,11 +20,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:tag', description: 'Retrieve and apply imagga tags to all images in a Wander')]
 class ImagesTagCommand extends Command
 {
-    protected static $defaultName = 'images:tag';
-
     /** @var WanderRepository */
     private $wanderRepository;
 
@@ -33,10 +33,7 @@ class ImagesTagCommand extends Command
 
     public function __construct(
         //Client $imaggaClient,
-        ImaggaService $imaggaService,
         WanderRepository $wanderRepository,
-        EntityManagerInterface $entityManager,
-        RouterInterface $router,
         MessageBusInterface $messageBus
         )
     {
@@ -49,7 +46,6 @@ class ImagesTagCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Retrieve and apply imagga tags to all images in a Wander')
             ->addArgument('id', InputArgument::REQUIRED, 'Wander ID')
             // TODO: Add option to overwrite existing tags
             ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing tags')

@@ -11,11 +11,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updatefromexif', description: 'Updates all images based on their EXIF information.')]
 class UpdateImagesFromExifCommand extends Command
 {
-    protected static $defaultName = 'images:updatefromexif';
-
     /** @var ImageRepository */
     private $imageRepository;
 
@@ -33,10 +33,9 @@ class UpdateImagesFromExifCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Updates all images based on their EXIF information.')
             ->setHelp('Updates image properties based on their EXIF information, for all images. Overwrites existing data, except for related wanders.')
             ->addOption('update-wanders', null, InputOption::VALUE_NONE, 'Find related wanders by matching times, and add relationships.');
     }

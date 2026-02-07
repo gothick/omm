@@ -12,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Repository\ImageRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updatelocations', description: 'Add geolocation information to any images missing it, using our location service. This work will be queued, not done immediately.')]
 class ImagesUpdateLocationsCommand extends Command
 {
-    protected static $defaultName = 'images:updatelocations';
-
     /** @var MessageBusInterface */
     private $messageBus;
 
@@ -36,10 +36,7 @@ class ImagesUpdateLocationsCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Add location information to any images missing it, using our location service. This work will be queued, not done immediately.')
-            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations')
-        ;
+        $this->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

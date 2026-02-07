@@ -11,11 +11,14 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'wander:updatefromgpx',
+    description: 'Updates Wander data (including Google Polyline cache) with GPX information on all wanders.'
+)]
 class WanderUpdateFromGpxCommand extends Command
 {
-    protected static $defaultName = 'wander:updatefromgpx';
-
     /** @var WanderRepository */
     private $wanderRepository;
 
@@ -33,11 +36,9 @@ class WanderUpdateFromGpxCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Updates Wander data (including Google Polyline cache) with GPX information on all wanders.')
-            ->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
+        $this->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

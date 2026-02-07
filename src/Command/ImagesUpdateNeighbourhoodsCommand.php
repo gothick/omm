@@ -10,12 +10,11 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updateneighbourhoods', description: "Updates images whose neighbourhoods aren't set using our neighbourhood service.")]
 class ImagesUpdateNeighbourhoodsCommand extends Command
 {
-    protected static $defaultName = 'images:updateneighbourhoods';
-    protected static $defaultDescription = "Updates images whose neighbourhoods aren't set using our neighbourhood service.";
-
     /** @var ImageRepository */
     private $imageRepository;
 
@@ -36,11 +35,6 @@ class ImagesUpdateNeighbourhoodsCommand extends Command
         $this->entityManager = $entityManager;
 
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
