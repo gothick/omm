@@ -25,7 +25,7 @@ class LocationServiceTest extends KernelTestCase
         parent::setUp();
         static::bootKernel();
 
-        $container = self::$container;
+        $container = self::getContainer();
 
         $this->databaseTool = $container->get(DatabaseToolCollection::class)->get();
 

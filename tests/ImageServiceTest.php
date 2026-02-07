@@ -7,6 +7,7 @@ use App\Entity\Tag;
 use App\Repository\WanderRepository;
 use App\Service\ImageService;
 use App\Service\NeighbourhoodService;
+use PHPUnit\Framework\MockObject\MockObject;
 use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use InvalidArgumentException;
@@ -20,18 +21,20 @@ class ImageServiceTest extends TestCase
 {
     /** @var ImageService */
     protected $imageService;
+    /** @var NeighbourhoodService&MockObject */
+    protected $neighbourhoodService;
 
     protected function setUp(): void
     {
-        $uploaderHelper = $this->createMock(UploaderHelper::class);
-        $cacheManager = $this->createMock(CacheManager::class);
-        $router = $this->createMock(UrlGeneratorInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
-        $wanderRepository = $this->createMock(WanderRepository::class);
+        $uploaderHelper = $this->createStub(UploaderHelper::class);
+        $cacheManager = $this->createStub(CacheManager::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
+        $wanderRepository = $this->createStub(WanderRepository::class);
 
-        $neighbourhoodService = $this->createMock(NeighbourhoodService::class);
-        $neighbourhoodService->method('getNeighbourhood')
-            ->will($this->returnCallback( function($lat, $lng) {
+        $this->neighbourhoodService = $this->createStub(NeighbourhoodService::class);
+        $this->neighbourhoodService->method('getNeighbourhood')
+            ->willReturnCallback( function($lat, $lng) {
                 // This fakes what the location service does well enough
                 if ($lat === null || $lng === null) {
                     return null;
@@ -41,7 +44,7 @@ class ImageServiceTest extends TestCase
                     return null;
                 }
                 return 'Rome'; // All roads lead to Rome
-            }));
+            });
 
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
@@ -51,7 +54,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $neighbourhoodService,
+            $this->neighbourhoodService,
             $imagesDirectory,
             null //?string $exiftoolPath
         );
@@ -61,12 +64,11 @@ class ImageServiceTest extends TestCase
     {
         // Similar to our setUp function, only we want to create our own
         // ImageService just for this test.
-        $uploaderHelper = $this->createMock(UploaderHelper::class);
-        $cacheManager = $this->createMock(CacheManager::class);
-        $router = $this->createMock(UrlGeneratorInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
-        $wanderRepository = $this->createMock(WanderRepository::class);
-        $neighbourhoodService = $this->createMock(NeighbourhoodService::class);
+        $uploaderHelper = $this->createStub(UploaderHelper::class);
+        $cacheManager = $this->createStub(CacheManager::class);
+        $router = $this->createStub(UrlGeneratorInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
+        $wanderRepository = $this->createStub(WanderRepository::class);
         $imagesDirectory = PHPEXIF_TEST_ROOT . '/test_data_images/';
 
         // The path to an actual copy of exiftool in this test
@@ -80,7 +82,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $neighbourhoodService,
+            $this->neighbourhoodService,
             $imagesDirectory,
             $exiftool_path
         );
@@ -93,7 +95,7 @@ class ImageServiceTest extends TestCase
             $router,
             $logger,
             $wanderRepository,
-            $neighbourhoodService,
+            $this->neighbourhoodService,
             $imagesDirectory,
             '/floople/oojimaflip/wrong'
         );

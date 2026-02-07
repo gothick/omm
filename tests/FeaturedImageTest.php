@@ -23,7 +23,7 @@ class FeaturedImageTest extends KernelTestCase
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
-        $this->databaseTool = self::$container->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
             'App\DataFixtures\ThreeWanderFixtures',
             'App\DataFixtures\TwoImageFixtures'

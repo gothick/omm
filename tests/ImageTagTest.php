@@ -8,6 +8,7 @@ use App\Repository\ImageRepository;
 use App\Service\ImageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject;
 use Beelab\TagBundle\Tag\TagInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Translation\Util\ArrayConverter;
@@ -315,9 +316,10 @@ class ImageTagTest extends KernelTestCase
     {
         // We mock the imageservice otherwise it tries to generate URLs etc. based
         // on values we're not bothering to set on Image when persisting/loading:
-        $imageServiceMock = $this->getMockBuilder(ImageService::class)
+        /** @var ImageService&MockObject $imageServiceMock */
+        $imageServiceMock = $this->getStubBuilder(ImageService::class)
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
         $container = static::getContainer();
         $container->set('test.App\Service\ImageService', $imageServiceMock);
 

@@ -1,3 +1,4 @@
 parameters:
     bootstrapFiles:
-       - vendor/bin/.phpunit/phpunit-7.5-0/vendor/autoload.php
+    # If this doesn't work, try maybe vendor/bin/.phpunit/phpunit/vendor/autoload.php
+    - vendor/autoload.php

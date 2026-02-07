@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Service\MarkdownService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -32,7 +33,7 @@ class MarkdownServiceTest extends KernelTestCase
 
         $container = static::getContainer();
         $cache = $container->get(TagAwareCacheInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $this->markdownService = new MarkdownService(
             $cache,
@@ -40,9 +41,7 @@ class MarkdownServiceTest extends KernelTestCase
         );
     }
 
-    /**
-     * @dataProvider markdownToTextProvider
-     */
+    #[DataProvider('markdownToTextProvider')]
     public function testMarkdownToText($in, $expected): void
     {
         $this->assertSame(
