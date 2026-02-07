@@ -7,9 +7,11 @@ use App\Repository\ImageRepository;
 use App\Service\LocationTaggingServiceInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class GeolocateImageHandler implements MessageHandlerInterface {
+
+#[AsMessageHandler]
+class GeolocateImageHandler {
 
     /** @var LocationTaggingServiceInterface */
     private $locationTaggingService;

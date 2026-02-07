@@ -5,9 +5,10 @@ namespace App\MessageHandler;
 use App\Message\WarmImageCache;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Service\FilterService;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class WarmImageCacheHandler implements MessageHandlerInterface {
+#[AsMessageHandler]
+class WarmImageCacheHandler {
     /** @var FilterManager  */
     private $filterManager;
     /** @var FilterService */
