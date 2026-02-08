@@ -6,7 +6,7 @@ use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
 use App\Service\ImageTaggingServiceInterface;
 use Psr\Log\LoggerInterface;
-use Symonfy\Component\Messeger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class RecogniseImageHandler {
