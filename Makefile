@@ -14,6 +14,9 @@ sf: ## List all Symfony commands
 cc: ## Clear the cache. DID YOU CLEAR YOUR CACHE????
 	@$(CONSOLE) cache:clear
 
+cac: ## Clear ALL caches
+	@$(CONSOLE) cache:pool:clear --all
+
 warmup: ## Warmup the cache
 	@$(CONSOLE) cache:warmup
 
