@@ -22,8 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 #[Route(path: '/api/', name: 'api_')]
 class ApiController extends AbstractController
 {
-    /** @var bool */
-    var $shouldSetCacheFields;
+    private readonly bool $shouldSetCacheFields;
 
     public function __construct(string $kernelEnvironment)
     {
@@ -65,18 +64,20 @@ class ApiController extends AbstractController
 
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function (
-            /** @scrutinizer ignore-unused */ $innerObject,
+        $contentUrlCallback = (fn(
+            /** @scrutinizer ignore-unused */
+            $innerObject,
             $outerObject,
-            /** @scrutinizer ignore-unused */ string $attributeName,
-            /** @scrutinizer ignore-unused */ string $format = null,
-            /** @scrutinizer ignore-unused */ array $context = []
-        ) use ($router) {
-            return $router->generate(
-                'wanders_show',
-                ['id' => $outerObject->getId()]
-            );
-        };
+            /** @scrutinizer ignore-unused */
+            string $attributeName,
+            /** @scrutinizer ignore-unused */
+            string $format = null,
+            /** @scrutinizer ignore-unused */
+            array $context = []
+        ) => $router->generate(
+            'wanders_show',
+            ['id' => $outerObject->getId()]
+        ));
 
         $response = $this->json(
             $wanders,
@@ -99,18 +100,20 @@ class ApiController extends AbstractController
     ): Response {
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function (
-            /** @scrutinizer ignore-unused */ $innerObject,
+        $contentUrlCallback = (fn(
+            /** @scrutinizer ignore-unused */
+            $innerObject,
             $outerObject,
-            /** @scrutinizer ignore-unused */ string $attributeName,
-            /** @scrutinizer ignore-unused */ string $format = null,
-            /** @scrutinizer ignore-unused */ array $context = []
-        ) use ($router) {
-            return $router->generate(
-                'wanders_show',
-                ['id' => $outerObject->getId()]
-            );
-        };
+            /** @scrutinizer ignore-unused */
+            string $attributeName,
+            /** @scrutinizer ignore-unused */
+            string $format = null,
+            /** @scrutinizer ignore-unused */
+            array $context = []
+        ) => $router->generate(
+            'wanders_show',
+            ['id' => $outerObject->getId()]
+        ));
 
         $response = $this->json(
             $wander,

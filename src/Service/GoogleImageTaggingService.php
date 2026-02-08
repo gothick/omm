@@ -17,39 +17,29 @@ use Psr\Log\LoggerInterface;
 
 class GoogleImageTaggingService implements ImageTaggingServiceInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     /** @var ImageAnnotatorClient */
     private $client;
-
-    /** @var string imagesDirectory */
-
-    /** @var LoggerInterface */
-    private $logger;
 
     // These sizes seem to work fine with Google's
     // Vision service, and we don't want to waste
     // bandwidth sending the whole original along.
-    private const MAX_WIDTH = 1024;
-    private const MAX_HEIGHT = 1024;
+    private const int MAX_WIDTH = 1024;
+    private const int MAX_HEIGHT = 1024;
 
     private $imagine;
 
     public function __construct(
         string $projectId,
         string $serviceAccountFile,
-        EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface $entityManager,
         string $imagesDirectory,
-        LoggerInterface $logger
+        private readonly LoggerInterface $logger
     )
     {
         $this->client = new ImageAnnotatorClient([
             'projectId' => $projectId,
             'credentials' => $serviceAccountFile
         ]);
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
         $this->imagine = new Imagine();
         $this->imagesDirectory = $imagesDirectory;
     }
@@ -100,7 +90,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
 
     public function resize(string $filename): string
     {
-        list($iwidth, $iheight) = getimagesize($filename);
+        [$iwidth, $iheight] = getimagesize($filename);
         $ratio = $iwidth / $iheight;
         $width = self::MAX_WIDTH;
         $height = self::MAX_HEIGHT;

@@ -17,25 +17,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'wander:set-image-neighbourhoods', description: 'Updates Neighbourhood field from Exif information for all images for a given wander.')]
 class WanderSetImageNeighbourhoodsCommand extends Command
 {
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var ImageService */
-    private $imageService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        WanderRepository $wanderRepository,
-        ImageService $imageService,
-        EntityManagerInterface $entityManager
+        private readonly WanderRepository $wanderRepository,
+        private readonly ImageService $imageService,
+        private readonly EntityManagerInterface $entityManager
     )
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->imageService = $imageService;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 

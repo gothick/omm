@@ -22,7 +22,7 @@ class TagRepository extends ServiceEntityRepository
     public function clearAllTags(): void
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('App\Entity\Tag', 'p')->getQuery()->execute();
+        $qb->delete(\App\Entity\Tag::class, 'p')->getQuery()->execute();
     }
 
     // /**

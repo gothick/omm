@@ -19,19 +19,8 @@ use Doctrine\ORM\Event\PostUpdateEventArgs;
 #[AsDoctrineListener(event: Events::postUpdate)]
 class StatsCacheClearer
 {
-    /** @var TagAwareCacheInterface */
-    private $cache;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-            TagAwareCacheInterface $cache,
-            LoggerInterface $logger
-        )
+    public function __construct(private readonly TagAwareCacheInterface $cache, private readonly LoggerInterface $logger)
     {
-        $this->cache = $cache;
-        $this->logger = $logger;
     }
 
     public function postPersist(PostPersistEventArgs $args): void

@@ -14,16 +14,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'wanders:delete', description: 'Deletes all wanders.')]
 class DeleteAllWandersCommand extends Command
 {
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(WanderRepository $wanderRepository, EntityManagerInterface $entityManager)
+    public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 

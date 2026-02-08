@@ -18,17 +18,9 @@ use FOS\ElasticaBundle\Persister\ObjectPersisterInterface;
  */
 class SearchIndexer
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var ObjectPersisterInterface */
-    private $wanderPersister;
-
-    public function __construct(LoggerInterface $logger, ObjectPersisterInterface $wanderPersister)
+    public function __construct(private readonly LoggerInterface $logger, private readonly ObjectPersisterInterface $wanderPersister)
     {
-        $this->logger = $logger;
-        $logger->debug("Constructing SearchIndexer Doctrine Entity Listener");
-        $this->wanderPersister = $wanderPersister;
+        $this->logger->debug("Constructing SearchIndexer Doctrine Entity Listener");
     }
 
     public function postPersist(Image $image): void

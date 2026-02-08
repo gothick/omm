@@ -31,7 +31,7 @@ use DateTimeInterface;
 #[ORM\EntityListeners([ImageCalculatedFieldSetterListener::class, SearchIndexer::class])]
 #[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
-class Image implements TaggableInterface
+class Image implements TaggableInterface, \Stringable
 {
     /**
      *
@@ -419,7 +419,7 @@ class Image implements TaggableInterface
      */
     public function getTagNames(): array
     {
-        return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
+        return empty($this->tagsText) ? [] : \array_map(trim(...), explode(',', $this->tagsText));
     }
 
     public function getCapturedAt(): ?\DateTimeInterface
@@ -570,7 +570,7 @@ class Image implements TaggableInterface
     {
         // TODO: I think we should probably just declare our parameter non-nullable,
         // but I'm not going to try that just yet.
-        $this->autoTags = $autoTags === null ? [] : $autoTags;
+        $this->autoTags = $autoTags ?? [];
         return $this;
     }
 

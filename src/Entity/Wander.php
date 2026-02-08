@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\Index;
 #[ORM\HasLifecycleCallbacks]
 #[Table]
 #[Index(name: 'ix_wander_start_time', columns: ['start_time'])]
-class Wander
+class Wander implements \Stringable
 {
     #[Groups(['wander:list', 'wander:item'])]
     #[ORM\Id]
@@ -212,9 +212,7 @@ class Wander
      */
     public function getImagesWithNoTags(): Collection
     {
-        return $this->getImages()->filter(function($image) {
-            return $image->getTags()->isEmpty();
-        });
+        return $this->getImages()->filter(fn($image) => $image->getTags()->isEmpty());
     }
 
     /**
@@ -222,9 +220,7 @@ class Wander
      */
     public function getImagesWithNoAutoTags(): Collection
     {
-        return $this->getImages()->filter(function($image) {
-            return $image->getAutoTagsCount() == 0;
-        });
+        return $this->getImages()->filter(fn($image) => $image->getAutoTagsCount() == 0);
     }
 
     public function addImage(Image $image): self
@@ -435,7 +431,7 @@ class Wander
         if (isset($this->startTime)) {
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
-        return $result;
+        return (string) $result;
     }
 
     public function getFeaturedImage(): ?Image

@@ -20,28 +20,8 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class StatsService
 {
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var TagAwareCacheInterface */
-    private $cache;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(
-        ImageRepository $imageRepository,
-        WanderRepository $wanderRepository,
-        TagAwareCacheInterface $cache,
-        EntityManagerInterface $entityManager)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly WanderRepository $wanderRepository, private readonly TagAwareCacheInterface $cache, private readonly EntityManagerInterface $entityManager)
     {
-        $this->imageRepository = $imageRepository;
-        $this->wanderRepository = $wanderRepository;
-        $this->cache = $cache;
-        $this->entityManager = $entityManager;
     }
 
     /**

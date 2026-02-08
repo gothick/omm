@@ -15,29 +15,17 @@ class GpxService
 {
     /** @var phpGPX */
     private $phpGpx;
-    /** @var string */
-    private $gpxDirectory;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var array<float> */
-    private $homebaseCoords;
-    /** @var int */
-    private $wanderSimplifierEpsilonMetres;
 
     /**
      * @param array<float> $homebaseCoords
      */
     public function __construct(
-        string $gpxDirectory,
-        LoggerInterface $logger,
-        array $homebaseCoords,
-        int $wanderSimplifierEpsilonMetres
+        private readonly string $gpxDirectory,
+        private readonly LoggerInterface $logger,
+        private array $homebaseCoords,
+        private readonly int $wanderSimplifierEpsilonMetres
     ) {
         $this->phpGpx = new phpGPX();
-        $this->gpxDirectory = $gpxDirectory;
-        $this->logger = $logger;
-        $this->homebaseCoords = $homebaseCoords;
-        $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
     }
 
     /**

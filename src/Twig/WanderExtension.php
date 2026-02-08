@@ -7,6 +7,7 @@ use Twig\TwigFilter;
 
 class WanderExtension extends AbstractExtension
 {
+    #[\Override]
     public function getFilters(): array
     {
         return [

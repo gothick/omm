@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table]
-class Tag implements TagInterface
+class Tag implements TagInterface, \Stringable
 {
     /**
      * @var int

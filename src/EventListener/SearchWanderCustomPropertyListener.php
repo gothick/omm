@@ -12,16 +12,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SearchWanderCustomPropertyListener implements EventSubscriberInterface {
 
-    /** @var MarkdownService */
-    private $markdownService;
-
-    /** @var TagSluggerService */
-    private $slugger;
-
-    public function __construct(MarkdownService $markdownService, TagSluggerService $slugger)
+    public function __construct(private readonly MarkdownService $markdownService, private readonly TagSluggerService $slugger)
     {
-        $this->markdownService = $markdownService;
-        $this->slugger = $slugger;
     }
 
     public function addCustomProperty(PostTransformEvent $event): void
@@ -51,7 +43,7 @@ class SearchWanderCustomPropertyListener implements EventSubscriberInterface {
         if ($tags === null || empty($tags)) {
             return [];
         }
-        return array_map(fn($tag): string => $this->slugger->slug($tag), $tags);
+        return array_map($this->slugger->slug(...), $tags);
     }
 
     public static function getSubscribedEvents(): array

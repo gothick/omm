@@ -14,16 +14,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class GeneralRuntime implements RuntimeExtensionInterface
 {
-    /** @var MarkdownService */
-    private $markdownService;
-
-    /** @var TagSluggerService */
-    private $slugger;
-
-    public function __construct(MarkdownService $markdownService, TagSluggerService $slugger)
+    public function __construct(private readonly MarkdownService $markdownService, private readonly TagSluggerService $slugger)
     {
-        $this->markdownService = $markdownService;
-        $this->slugger = $slugger;
     }
 
     public function durationToHMS(?DateInterval $interval): string

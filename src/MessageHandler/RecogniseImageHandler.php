@@ -11,23 +11,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class RecogniseImageHandler {
 
-    /** @var ImageTaggingServiceInterface */
-    private $imageTaggingService;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        ImageTaggingServiceInterface $imageTaggingService,
-        ImageRepository $imageRepository,
-        LoggerInterface $logger)
+    public function __construct(private readonly ImageTaggingServiceInterface $imageTaggingService, private readonly ImageRepository $imageRepository, private readonly LoggerInterface $logger)
     {
-        $this->imageTaggingService = $imageTaggingService;
-        $this->imageRepository = $imageRepository;
-        $this->logger = $logger;
     }
 
     public function __invoke(RecogniseImage $recogniseImage): void

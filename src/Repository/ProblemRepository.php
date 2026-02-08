@@ -22,7 +22,7 @@ class ProblemRepository extends ServiceEntityRepository
     public function clearAllProblems(): void
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('App\Entity\Problem', 'p')->getQuery()->execute();
+        $qb->delete(\App\Entity\Problem::class, 'p')->getQuery()->execute();
     }
 
     // /**

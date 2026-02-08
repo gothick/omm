@@ -9,16 +9,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class WanderUploadListener
 {
-    /** @var LoggerInterface $logger */
-    private $logger;
-
-    /** @var ImageRepository $imageRepository */
-    private $imageRepository;
-
-    public function __construct(LoggerInterface $logger, ImageRepository $imageRepository)
+    public function __construct(private readonly LoggerInterface $logger, private readonly ImageRepository $imageRepository)
     {
-        $this->logger = $logger;
-        $this->imageRepository = $imageRepository;
     }
 
     public function prePersist(Wander $wander, /** @scrutinizer ignore-unused */ LifecycleEventArgs $event): void

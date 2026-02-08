@@ -15,25 +15,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'images:updateneighbourhoods', description: "Updates images whose neighbourhoods aren't set using our neighbourhood service.")]
 class ImagesUpdateNeighbourhoodsCommand extends Command
 {
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var NeighbourhoodService */
-    private $neighbourhoodService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        ImageRepository $imageRepository,
-        NeighbourhoodService $neighbourhoodService,
-        EntityManagerInterface $entityManager
+        private readonly ImageRepository $imageRepository,
+        private readonly NeighbourhoodService $neighbourhoodService,
+        private readonly EntityManagerInterface $entityManager
     )
     {
-        $this->imageRepository = $imageRepository;
-        $this->neighbourhoodService = $neighbourhoodService;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 

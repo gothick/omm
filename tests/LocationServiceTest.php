@@ -36,7 +36,7 @@ class LocationServiceTest extends KernelTestCase
     public function testGetLocationName()
     {
         $fixtures = $this->databaseTool->loadFixtures([
-            'App\DataFixtures\NeighbourhoodFixtures',
+            \App\DataFixtures\NeighbourhoodFixtures::class,
         ]);
 
         $name = $this->neighbourhoodService->getNeighbourhood(51.441480601667, -2.612271505);

@@ -14,16 +14,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'images:delete', description: 'Deletes all images.')]
 class DeleteAllImagesCommand extends Command
 {
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->imageRepository = $imageRepository;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 

@@ -25,8 +25,8 @@ class FeaturedImageTest extends KernelTestCase
             ->getManager();
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
-            'App\DataFixtures\ThreeWanderFixtures',
-            'App\DataFixtures\TwoImageFixtures'
+            \App\DataFixtures\ThreeWanderFixtures::class,
+            \App\DataFixtures\TwoImageFixtures::class
         ]);
     }
 

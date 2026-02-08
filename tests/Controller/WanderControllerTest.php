@@ -20,7 +20,7 @@ class WanderControllerTest Extends WebTestCase
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
+        $this->client = static::createClient([], ['HTTPS' => $useHttps]);
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains three wanders:
@@ -32,7 +32,7 @@ class WanderControllerTest Extends WebTestCase
         // $wander->setDescription('Test wander description for ' . $source->getFilename());
 
         $this->databaseTool->loadFixtures([
-            'App\DataFixtures\ThreeWanderFixtures'
+            \App\DataFixtures\ThreeWanderFixtures::class
         ]);
         //$userRepository = static::$container->get(UserRepository::class);
         //$this->adminUser = $userRepository->findOneByUsername('admin');

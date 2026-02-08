@@ -6,12 +6,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TagSluggerService
 {
-    /** @var SluggerInterface */
-    private $slugger;
-
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(private readonly SluggerInterface $slugger)
     {
-        $this->slugger = $slugger;
     }
     /**
      * Our tags can contain almost anything, but we want to use them in URL parameters.

@@ -12,12 +12,8 @@ use PHPExif\Exif;
  */
 class ExifHelper implements ExifHelperInterface
 {
-    /** @var Exif */
-    private $exif;
-
-    public function __construct(Exif $exif)
+    public function __construct(private readonly Exif $exif)
     {
-        $this->exif = $exif;
     }
 
     public function getTitle():?string
@@ -47,7 +43,7 @@ class ExifHelper implements ExifHelperInterface
         $gps = []; // Match the default in our Image entity
         $gps_as_string = $this->exif->getGPS();
         if (is_string($gps_as_string)) {
-            $gps = array_map('doubleval', explode(',', $gps_as_string));
+            $gps = array_map(doubleval(...), explode(',', $gps_as_string));
         }
         return $gps;
     }

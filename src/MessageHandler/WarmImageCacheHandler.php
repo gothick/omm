@@ -9,17 +9,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class WarmImageCacheHandler {
-    /** @var FilterManager  */
-    private $filterManager;
-    /** @var FilterService */
-    private $filterService;
-
-    public function __construct(
-        FilterManager $filterManager,
-        FilterService $filterService)
+    public function __construct(private readonly FilterManager $filterManager, private readonly FilterService $filterService)
     {
-        $this->filterManager = $filterManager;
-        $this->filterService = $filterService;
     }
 
     /**

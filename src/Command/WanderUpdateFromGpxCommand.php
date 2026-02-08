@@ -19,20 +19,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 )]
 class WanderUpdateFromGpxCommand extends Command
 {
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(WanderRepository $wanderRepository, EntityManagerInterface $entityManager, GpxService $gpxService)
+    public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager, private readonly GpxService $gpxService)
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->entityManager = $entityManager;
-        $this->gpxService = $gpxService;
         parent::__construct();
     }
 

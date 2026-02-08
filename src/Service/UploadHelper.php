@@ -11,19 +11,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class UploadHelper
 {
 
-    /** @var SluggerInterface */
-    private $slugger;
-
-    /** @var string */
-    private $gpxDirectory;
-
-    public function __construct(
-        SluggerInterface $slugger,
-        string $gpxDirectory
-    )
+    public function __construct(private readonly SluggerInterface $slugger, private readonly string $gpxDirectory)
     {
-        $this->slugger = $slugger;
-        $this->gpxDirectory = $gpxDirectory;
     }
 
     public function uploadGpxFile(File $gpxFile): string

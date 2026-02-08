@@ -9,16 +9,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class WanderDeleteListener
 {
-    /** @var LoggerInterface $logger */
-    private $logger;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(LoggerInterface $logger, GpxService $gpxService)
+    public function __construct(private readonly LoggerInterface $logger, private readonly GpxService $gpxService)
     {
-        $this->logger = $logger;
-        $this->gpxService = $gpxService;
     }
 
     public function preRemove(

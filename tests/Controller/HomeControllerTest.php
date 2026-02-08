@@ -19,7 +19,7 @@ class HomeControllerTest Extends WebTestCase
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
+        $this->client = static::createClient([], ['HTTPS' => $useHttps]);
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains this wander:
@@ -28,7 +28,7 @@ class HomeControllerTest Extends WebTestCase
         // $wander->setDescription('Single wander description');
 
         $this->databaseTool->loadFixtures([
-            'App\DataFixtures\SingleWanderFixture'
+            \App\DataFixtures\SingleWanderFixture::class
         ]);
         //$userRepository = static::$container->get(UserRepository::class);
         //$this->adminUser = $userRepository->findOneByUsername('admin');

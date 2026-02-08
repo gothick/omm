@@ -11,16 +11,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class ImageCalculatedFieldSetterListener
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var ImageService */
-    private $imageService;
-
-    public function __construct(LoggerInterface $logger, ImageService $imageService)
+    public function __construct(private readonly LoggerInterface $logger, private readonly ImageService $imageService)
     {
-        $this->logger = $logger;
-        $this->imageService = $imageService;
     }
 
     // Mostly we want to set these when they're loaded from the database

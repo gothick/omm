@@ -9,19 +9,8 @@ use Psr\Log\LoggerInterface;
 
 class DummyLocationTaggingService implements LocationTaggingServiceInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger
-    )
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly LoggerInterface $logger)
     {
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     /**

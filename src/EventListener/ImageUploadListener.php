@@ -12,21 +12,8 @@ use Vich\UploaderBundle\Event\Event;
 
 class ImageUploadListener
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var ImageService */
-    private $imageService;
-
-    public function __construct(LoggerInterface $logger, WanderRepository $wanderRepository, ImageService $imageService)
+    public function __construct(private readonly LoggerInterface $logger, private readonly WanderRepository $wanderRepository, private readonly ImageService $imageService)
     {
-        $this->logger = $logger;
-        $this->wanderRepository = $wanderRepository;
-        // TODO Take this back out once we're finished playing with it.
-        $this->imageService = $imageService;
     }
 
     public function onVichUploaderPostUpload(Event $event)

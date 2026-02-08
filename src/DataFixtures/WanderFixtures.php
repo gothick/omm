@@ -14,16 +14,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class WanderFixtures extends Fixture implements FixtureGroupInterface
 {
-    /** @var UploadHelper */
-    private $uploadHelper;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(UploadHelper $uploadHelper, GpxService $gpxService)
+    public function __construct(private readonly UploadHelper $uploadHelper, private readonly GpxService $gpxService)
     {
-        $this->uploadHelper = $uploadHelper;
-        $this->gpxService = $gpxService;
     }
 
     public static function getGroups(): array

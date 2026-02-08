@@ -25,21 +25,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'images:tag', description: 'Retrieve and apply imagga tags to all images in a Wander')]
 class ImagesTagCommand extends Command
 {
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var MessageBusInterface */
-    private $messageBus;
-
     public function __construct(
         //Client $imaggaClient,
-        WanderRepository $wanderRepository,
-        MessageBusInterface $messageBus
+        private readonly WanderRepository $wanderRepository,
+        private readonly MessageBusInterface $messageBus
         )
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->messageBus = $messageBus;
-
         parent::__construct();
     }
 

@@ -13,23 +13,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class GeolocateImageHandler {
 
-    /** @var LocationTaggingServiceInterface */
-    private $locationTaggingService;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        LocationTaggingServiceInterface $locationTaggingService,
-        ImageRepository $imageRepository,
-        LoggerInterface $logger)
+    public function __construct(private readonly LocationTaggingServiceInterface $locationTaggingService, private readonly ImageRepository $imageRepository, private readonly LoggerInterface $logger)
     {
-        $this->locationTaggingService = $locationTaggingService;
-        $this->imageRepository = $imageRepository;
-        $this->logger = $logger;
     }
 
     public function __invoke(GeolocateImage $geolocateImage): void

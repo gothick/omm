@@ -23,9 +23,10 @@ class WanderRepository extends ServiceEntityRepository
         parent::__construct($registry, Wander::class);
     }
 
+    #[\Override]
     public function findAll(): array
     {
-        return $this->findBy(array(), array('startTime' => 'DESC'));
+        return $this->findBy([], ['startTime' => 'DESC']);
     }
 
     public function standardQueryBuilder(): QueryBuilder

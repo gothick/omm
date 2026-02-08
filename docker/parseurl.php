@@ -1,12 +1,12 @@
 #! /usr/local/bin/php
 <?php
 
-function usage_and_exit() {
+function usage_and_exit(): never {
    fwrite(STDERR, "Usage: parseurl.php --component=<port|host> --url=<url>\n");
    exit(42);
 }
 
-$my_args = array();
+$my_args = [];
 for ($i = 1; $i < count($argv); $i++) {
     if (preg_match('/^--([^=]+)=(.*)/', $argv[$i], $match)) {
         $my_args[$match[1]] = $match[2];

@@ -175,8 +175,8 @@ class ImageFilterData
             'startDate' => $this->getDateForUrlParam($this->startDate),
             'endDate' => $this->getDateForUrlParam($this->endDate),
             'rating' => $this->rating === null ? '' : (string) $this->rating,
-            'ratingComparison' => $this->ratingComparison === null ? '' : $this->ratingComparison,
-            'neighbourhood' => $this->neighbourhood === null ? '' : $this->neighbourhood
+            'ratingComparison' => $this->ratingComparison ?? '',
+            'neighbourhood' => $this->neighbourhood ?? ''
         ];
     }
     /**

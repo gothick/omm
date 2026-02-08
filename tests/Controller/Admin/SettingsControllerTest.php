@@ -24,10 +24,10 @@ class SettingsControllerTest Extends WebTestCase
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
+        $this->client = static::createClient([], ['HTTPS' => $useHttps]);
         $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
         $this->databaseTool->loadFixtures([
-            'App\DataFixtures\UserFixtures'
+            \App\DataFixtures\UserFixtures::class
         ]);
         $userRepository = static::getContainer()->get(UserRepository::class);
         $this->adminUser = $userRepository->findOneByUsername('admin');

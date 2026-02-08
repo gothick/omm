@@ -27,12 +27,8 @@ class StatsController extends AbstractController
         '#fff466', // 5 star $yellowish: ;
     ];
 
-    /** @var UrlGeneratorInterface */
-    private $router;
-
-    public function __construct(UrlGeneratorInterface $router)
+    public function __construct(private readonly UrlGeneratorInterface $router)
     {
-        $this->router = $router;
     }
 
     #[Route(path: '/stats', name: 'stats_index')]

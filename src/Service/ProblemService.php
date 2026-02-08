@@ -14,44 +14,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProblemService
 {
-    /** @var ProblemRepository */
-    private $problemRepository;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var MarkdownService */
-    private $markdownService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var SpellingService */
-    private $spellingService;
-
-    public function __construct(
-        problemRepository $problemRepository,
-        WanderRepository $wanderRepository,
-        ImageRepository $imageRepository,
-        RouterInterface $router,
-        MarkdownService $markdownService,
-        EntityManagerInterface $entityManager,
-        SpellingService $spellingService
-        )
+    public function __construct(private readonly problemRepository $problemRepository, private readonly WanderRepository $wanderRepository, private readonly ImageRepository $imageRepository, private readonly RouterInterface $router, private readonly MarkdownService $markdownService, private readonly EntityManagerInterface $entityManager, private readonly SpellingService $spellingService)
     {
-        $this->problemRepository = $problemRepository;
-        $this->wanderRepository = $wanderRepository;
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
-        $this->markdownService = $markdownService;
-        $this->entityManager = $entityManager;
-        $this->spellingService = $spellingService;
     }
 
     public function createProblemReport(): void
@@ -86,7 +50,7 @@ class ProblemService
             // Broken links
             $links  = $this->markdownService->findLinks($description);
             foreach ($links as $link) {
-                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
+                if (str_starts_with((string) $link['uri'], $homepage)) {
                     if (!array_key_exists($link['uri'], $validUris)) {
                         $problem = new Problem();
                         $problem->setDescription('Wander ' . $wander->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
@@ -116,7 +80,7 @@ class ProblemService
             // Broken links
             $links = $this->markdownService->findLinks($image->getDescription());
             foreach ($links as $link) {
-                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
+                if (str_starts_with((string) $link['uri'], $homepage)) {
                     if (!array_key_exists($link['uri'], $validUris)) {
                         $problem = new Problem();
                         $problem->setDescription('Image ' . $image->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');

@@ -17,23 +17,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsCommand(name: 'admin:create-admin', description: 'Create your admin user.')]
 class AdminCreateAdminCommand extends Command
 {
-    /** @var UserRepository */
-    private $userRepository;
-
-    /** @var UserPasswordHasherInterface */
-    private $passwordHasher;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $entityManager
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly EntityManagerInterface $entityManager
     ) {
-        $this->userRepository = $userRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 

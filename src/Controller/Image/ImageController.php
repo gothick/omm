@@ -147,18 +147,12 @@ class ImageController extends AbstractController
     private function filterQueryByRating(?int $rating, string $ratingComparison, QueryBuilder &$qb): QueryBuilder
     {
         if ($rating !== null) {
-            switch ($ratingComparison) {
-                case 'lte':
-                    $qb->andWhere($qb->expr()->lte('i.rating', ':rating'));
-                    break;
-                case 'gte':
-                    $qb->andWhere($qb->expr()->gte('i.rating', ':rating'));
-                    break;
-                default:
-                    // 'eq'
-                    $qb->andWhere($qb->expr()->eq('i.rating', ':rating'));
-                    break;
-            }
+            match ($ratingComparison) {
+                'lte' => $qb->andWhere($qb->expr()->lte('i.rating', ':rating')),
+                'gte' => $qb->andWhere($qb->expr()->gte('i.rating', ':rating')),
+                // 'eq'
+                default => $qb->andWhere($qb->expr()->eq('i.rating', ':rating')),
+            };
             $qb->setParameter('rating', $rating);
         }
         return $qb;

@@ -17,20 +17,11 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'images:updatelocations', description: 'Add geolocation information to any images missing it, using our location service. This work will be queued, not done immediately.')]
 class ImagesUpdateLocationsCommand extends Command
 {
-    /** @var MessageBusInterface */
-    private $messageBus;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
     public function __construct(
-        MessageBusInterface $messageBus,
-        ImageRepository $imageRepository
+        private readonly MessageBusInterface $messageBus,
+        private readonly ImageRepository $imageRepository
         )
     {
-        $this->messageBus = $messageBus;
-        $this->imageRepository = $imageRepository;
-
         parent::__construct();
     }
 

@@ -10,19 +10,8 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class MarkdownService
 {
-    /** @var TagAwareCacheInterface */
-    private $cache;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        TagAwareCacheInterface $cache,
-        LoggerInterface $logger
-        )
+    public function __construct(private readonly TagAwareCacheInterface $cache, private readonly LoggerInterface $logger)
     {
-        $this->cache = $cache;
-        $this->logger = $logger;
     }
 
     public function markdownToText(?string $markdown): string

@@ -16,20 +16,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'images:updatefromexif', description: 'Updates all images based on their EXIF information.')]
 class UpdateImagesFromExifCommand extends Command
 {
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ImageService */
-    private $imageService;
-
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager, ImageService $imageService)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager, private readonly ImageService $imageService)
     {
-        $this->imageRepository = $imageRepository;
-        $this->entityManager = $entityManager;
-        $this->imageService = $imageService;
         parent::__construct();
     }
 

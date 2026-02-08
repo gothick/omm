@@ -25,11 +25,13 @@ class TwigMarkdownExtraFilterTest extends IntegrationTestCase
     /**
      * Unit tested extensions
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         return [new GeneralExtension()];
     }
 
+    #[\Override]
     protected function getRuntimeLoaders(): array
     {
         return [new FactoryRuntimeLoader([
