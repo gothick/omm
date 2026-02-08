@@ -228,10 +228,9 @@ class StatsService
 
         for ($rangeStartMonth = $startMonth->copy(); $rangeStartMonth <= $endMonth; $rangeStartMonth->addMonths($periodLengthMonths)) {
             $rangeEndMonth = $rangeStartMonth->copy()->addMonths($periodLengthMonths);
-            $result = $stmt->executeQuery([
-                'start' => $rangeStartMonth,
-                'end' => $rangeEndMonth
-            ]);
+            $stmt->bindValue("start", $rangeStartMonth);
+            $stmt->bindValue("end", $rangeEndMonth);
+            $result = $stmt->executeQuery();
             $row = $result->fetchAssociative();
             if ($row === false) {
                 // It's entirely aggregated, so even if no rows match the WHERE there should always be a row
