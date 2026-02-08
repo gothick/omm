@@ -20,6 +20,12 @@ framework:
 
     #esi: true
     #fragments: true
+
+    # This will default to true in the future, but for now we need to explicitly enable it
+    # to get the new behaviour of catching all exceptions and converting them to error
+    # responses. This is important for our API, which relies on exceptions being converted
+    # to JSON responses.
+    handle_all_throwables: true
     php_errors:
         log: true
 
