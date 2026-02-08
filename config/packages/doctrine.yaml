@@ -20,8 +20,10 @@ doctrine:
             geometry: LongitudeOne\Spatial\DBAL\Types\GeometryType
         use_savepoints: true
     orm:
+        report_fields_where_declared: true
         controller_resolver:
             auto_mapping: false
+
         # Avoid deprecation warning
         enable_lazy_ghost_objects: true
         auto_generate_proxy_classes: true
