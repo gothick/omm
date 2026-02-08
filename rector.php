@@ -9,7 +9,6 @@ use Rector\Symfony\Set\SymfonySetList;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\ValueObject\PhpVersion;
-use Rector\Renaming\Rector\Class_\RenameAttributeRector;
 
 
 // https://github.com/rectorphp/rector-symfony?tab=readme-ov-file
@@ -27,7 +26,7 @@ return RectorConfig::configure()
     ->withPhpVersion(PhpVersion::PHP_83)
     ->withSets([
         LevelSetList::UP_TO_PHP_83,
-        // SymfonySetList::SYMFONY_64,
+        SymfonySetList::SYMFONY_64,
         // SymfonySetList::SYMFONY_70,
         // SymfonySetList::SYMFONY_71,
         // SymfonySetList::SYMFONY_72,
