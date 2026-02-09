@@ -4,39 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "906dd48021cf6adef797ebb136fecef6",
+    "content-hash": "7a6359068837700407e51fca3d2de7ce",
     "packages": [
         {
             "name": "beelab/tag-bundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gothick/BeelabTagBundle.git",
-                "reference": "49b8e95074f27758a8cdafe8afeea430ab11ddae"
-            },
+            "version": "dev-Upgrade/Symfony64",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gothick/BeelabTagBundle/zipball/49b8e95074f27758a8cdafe8afeea430ab11ddae",
-                "reference": "49b8e95074f27758a8cdafe8afeea430ab11ddae",
-                "shasum": ""
+                "type": "path",
+                "url": "../BeelabTagBundle",
+                "reference": "3084ca8887121e817e0cc8a4af11b96cb8b65314"
             },
             "require": {
-                "doctrine/orm": "^2.7 || ^3.6",
-                "php": "^7.3 || ^8.0",
-                "symfony/config": "^5.4 || ^6.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0",
-                "symfony/form": "^5.4 || ^6.0",
-                "symfony/http-kernel": "^5.4 || ^6.0",
-                "symfony/routing": "^5.4 || ^6.0"
+                "doctrine/orm": "^2.7",
+                "php": "^8.3",
+                "symfony/config": "^6.4",
+                "symfony/dependency-injection": "^6.4",
+                "symfony/form": "^6.4",
+                "symfony/http-kernel": "^6.4",
+                "symfony/routing": "^6.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5"
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^9.5",
+                "rector/rector": "^2.3"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-master": "1.x-dev",
+                    "dev-Upgrade/Symfony64": "2.x-dev"
                 }
             },
             "autoload": {
@@ -65,10 +61,9 @@
                 "Tag",
                 "Tags"
             ],
-            "support": {
-                "source": "https://github.com/gothick/BeelabTagBundle/tree/master"
-            },
-            "time": "2026-02-06T23:38:48+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "brick/math",

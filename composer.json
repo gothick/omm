@@ -2,7 +2,11 @@
     "type": "project",
     "license": "proprietary",
     "repositories": [
-	{
+    {
+            "type": "path",
+            "url": "../BeelabTagBundle"
+    },
+{
 	    "type": "vcs",
 	    "url": "https://github.com/gothick/geotools"
 	},
@@ -19,7 +23,7 @@
         "php": ">=8.3.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "beelab/tag-bundle": "dev-master",
+        "beelab/tag-bundle": "2.x-dev",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.0",

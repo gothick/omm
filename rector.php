@@ -20,33 +20,30 @@ return RectorConfig::configure()
         __DIR__ . '/public',
         __DIR__ . '/src',
         __DIR__ . '/tests',
+        __DIR__ . '/templates'
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    ->withPhpVersion(PhpVersion::PHP_83)
+    ->withFileExtensions(['php', 'twig'])
+    ->withComposerBased(doctrine: true)
+    ->withComposerBased(symfony: true)
+    // ->withPhpVersion(PhpVersion::PHP_83)
+    ->withPhpSets(
+        php83: true
+    )
     ->withSets([
-        LevelSetList::UP_TO_PHP_83,
-        SymfonySetList::SYMFONY_64,
-        SymfonySetList::SYMFONY_70,
-        SymfonySetList::SYMFONY_71,
-        SymfonySetList::SYMFONY_72,
-        SymfonySetList::SYMFONY_73,
         // SymfonySetList::SYMFONY_74,
     ])
     ->withAttributesSets(
         symfony: true,
         sensiolabs: true,
-        doctrine: true
+        doctrine: true,
+        phpunit: true
     )
-    // ->withPreparedSets(symfonyConfigs: true)
-    // ->withPreparedSets(deadCode: true)
-    // ->withPreparedSets(symfonyCodeQuality: true)
-    // ->withPreparedSets(doctrineCodeQuality: true)
-    // ->withPreparedSets(codeQuality: true)
-    // ->withPreparedSets(codingStyle: true)
-    // ->withPreparedSets(carbon: true)
-    // ->withPreparedSets(phpunitCodeQuality: true)
-    // ->withSkip([
-    //     RenameAttributeRector::class
-    // ])
-    ->withPhpVersion(PhpVersion::PHP_83);
+    ->withPreparedSets(symfonyConfigs: true)
+    ->withPreparedSets(deadCode: true)
+    ->withPreparedSets(symfonyCodeQuality: true)
+    ->withPreparedSets(doctrineCodeQuality: true)
+    ->withComposerBased(doctrine: true)
+    ->withPreparedSets(codeQuality: true)
+    ->withPreparedSets(codingStyle: true)
+    ->withPreparedSets(carbon: true)
+    ->withPreparedSets(phpunitCodeQuality: true);
