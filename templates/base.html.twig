@@ -17,6 +17,7 @@
         <meta name="theme-color" content="#ffffff">
         <title>{% block title %}{{ settings.siteTitle }}—{{ settings.siteSubtitle }}{% endblock %}</title>
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {{ encore_entry_link_tags('app') }}
         {% block twittercard %}{% endblock %}
         {% endblock %}
@@ -31,6 +32,7 @@
             {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
         {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </body>
