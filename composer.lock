@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../BeelabTagBundle",
-                "reference": "3084ca8887121e817e0cc8a4af11b96cb8b65314"
+                "reference": "728a782c9a6552934dac0503f4bb7479b0fc7c6b"
             },
             "require": {
                 "doctrine/orm": "^2.7",
@@ -37,12 +37,12 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Beelab\\TagBundle\\": "src"
+                    "Beelab\\TagBundle\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Beelab\\TagBundle\\Tests\\": "tests"
+                    "Beelab\\TagBundle\\Tests\\": "tests/"
                 }
             },
             "license": [
