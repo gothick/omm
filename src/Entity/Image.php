@@ -394,7 +394,13 @@ class Image implements TaggableInterface, \Stringable
 
     public function setTagsText(?string $tagsText): void
     {
-        $this->tagsText = $tagsText;
+        if ($tagsText) {
+            $tags = \array_map('trim', \explode(',', $tagsText));
+            $uniqueTags = \array_unique(\array_filter($tags));
+            $this->tagsText = \implode(', ', $uniqueTags);
+        } else {
+            $this->tagsText = $tagsText;
+        }
         $this->updatedAt = new \DateTimeImmutable();
     }
 
