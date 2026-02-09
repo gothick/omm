@@ -8,11 +8,11 @@
     "packages": [
         {
             "name": "beelab/tag-bundle",
-            "version": "dev-Upgrade/Symfony64",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../BeelabTagBundle",
-                "reference": "728a782c9a6552934dac0503f4bb7479b0fc7c6b"
+                "reference": "3615927ee5b093fecaf75f37d4e3fe8fc11a05eb"
             },
             "require": {
                 "doctrine/orm": "^2.7",
@@ -21,7 +21,8 @@
                 "symfony/dependency-injection": "^6.4",
                 "symfony/form": "^6.4",
                 "symfony/http-kernel": "^6.4",
-                "symfony/routing": "^6.4"
+                "symfony/routing": "^6.4",
+                "symfony/yaml": "^6.4"
             },
             "require-dev": {
                 "phpstan/phpstan": "^2.1",
@@ -31,8 +32,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev",
-                    "dev-Upgrade/Symfony64": "2.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
