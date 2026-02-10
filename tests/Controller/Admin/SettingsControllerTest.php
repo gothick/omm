@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
 
-final class SettingsControllerTest Extends WebTestCase
+final class SettingsControllerTest extends WebTestCase
 {
     /** @var KernelBrowser */
     private $client;

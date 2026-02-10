@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-final class HomeControllerTest Extends WebTestCase
+final class HomeControllerTest extends WebTestCase
 {
     /** @var KernelBrowser */
     private $client;

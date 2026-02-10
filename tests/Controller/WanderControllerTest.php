@@ -10,7 +10,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
-final class WanderControllerTest Extends WebTestCase
+final class WanderControllerTest extends WebTestCase
 {
     /** @var KernelBrowser */
     private $client;
