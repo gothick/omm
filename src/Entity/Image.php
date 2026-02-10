@@ -428,7 +428,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function hasWander(): bool
     {
-        return ($this->wander instanceof \App\Entity\Wander);
+        return $this->wander instanceof \App\Entity\Wander;
     }
 
     public function getRating(): ?int
