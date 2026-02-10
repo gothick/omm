@@ -42,7 +42,7 @@ class ImageFilterData
      *
      */
     #[Assert\Regex(pattern: '/eq|lte|gte/')]
-    private $ratingComparison;
+    private $ratingComparison = 'eq';
 
     /** @var ?string */
     private $neighbourhood;
@@ -53,20 +53,15 @@ class ImageFilterData
     ) {
         $this->startDate = new CarbonImmutable($startDate);
         $this->endDate = new CarbonImmutable($endDate);
-        $this->ratingComparison = 'eq';
     }
 
     public function setStartDate(?DateTimeInterface $startDate): void
     {
-        if ($startDate === null) {
-            $this->startDate = null;
-        } else {
-            $this->startDate = new CarbonImmutable($startDate);
-        }
+        $this->startDate = $startDate instanceof \DateTimeInterface ? new CarbonImmutable($startDate) : null;
     }
     public function overrideStartDateFromUrlParam(?string $startDate): void
     {
-        if (!empty($startDate)) {
+        if (!in_array($startDate, [null, '', '0'], true)) {
             $this->startDate = $this->dateFromUrlParam($startDate);
         }
     }
@@ -83,14 +78,14 @@ class ImageFilterData
     }
     public function setEndDate(?DateTimeInterface $endDate): void
     {
-        if ($endDate === null) {
+        if (!$endDate instanceof \DateTimeInterface) {
             $this->endDate = null;
         }
         $this->endDate = new CarbonImmutable($endDate);
     }
     public function overrideEndDateFromUrlParam(?string $endDate): void
     {
-        if (!empty($endDate)) {
+        if (!in_array($endDate, [null, '', '0'], true)) {
             $this->endDate = $this->dateFromUrlParam($endDate);
         }
     }
@@ -114,7 +109,7 @@ class ImageFilterData
      */
     public function overrideRatingFromUrlParam(?string $rating): void
     {
-        if (!empty($rating)) {
+        if (!in_array($rating, [null, '', '0'], true)) {
             if (intval($rating) >= 0 && intval($rating) <= 5) {
                 $this->rating = intval($rating);
             } else {
@@ -144,7 +139,7 @@ class ImageFilterData
     }
     public function overrideNeighbourhoodFromUrlParam(?string $neighbourhood): void
     {
-        if (!empty($neighbourhood)) {
+        if (!in_array($neighbourhood, [null, '', '0'], true)) {
             $this->neighbourhood = $neighbourhood;
         }
     }
@@ -158,7 +153,7 @@ class ImageFilterData
     }
     private function getDateForUrlParam(?CarbonImmutable $d): string
     {
-        if ($d === null) {
+        if (!$d instanceof \Carbon\CarbonImmutable) {
             return '';
         }
         return $d->isoFormat('YYYY-MM-DD');
@@ -195,12 +190,12 @@ class ImageFilterData
                 // Improbable dates could cause problems if used in DB queries.
                 $result = null;
             }
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             // I don't care what happened personally; we'll just not bother
             // overriding our existing dates. However, whatever called us
             // might want to log this, as someone may be probing the app for
             // insecure points.
-            throw new InvalidArgument('Invalid date URL parameter', 0, $e);
+            throw new InvalidArgument('Invalid date URL parameter', 0, $exception);
         }
         return $result;
     }

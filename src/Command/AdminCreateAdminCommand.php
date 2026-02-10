@@ -56,8 +56,8 @@ class AdminCreateAdminCommand extends Command
             $user->setRoles(['ROLE_ADMIN']);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-        } catch (\Exception $e) {
-            $io->error("Error creating user: {$e->getMessage()}");
+        } catch (\Exception $exception) {
+            $io->error("Error creating user: {$exception->getMessage()}");
             return Command::FAILURE;
         }
         $io->success('Successfully created new user.');

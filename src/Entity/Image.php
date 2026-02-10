@@ -139,7 +139,7 @@ class Image implements TaggableInterface, \Stringable
     {
         $this->imageFile = $imageFile;
 
-        if (null !== $imageFile) {
+        if ($imageFile instanceof \Symfony\Component\HttpFoundation\File\File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
@@ -176,7 +176,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function getTitleOrId(): string
     {
-        if ($this->title !== null && $this->title != "") {
+        if ($this->title !== null && $this->title !== "") {
             return $this->title;
         }
         return "Image " . $this->id;
@@ -271,7 +271,7 @@ class Image implements TaggableInterface, \Stringable
     {
         if ($this->latlng === null ||
             !is_array($this->latlng) ||
-            empty($this->latlng)) {
+            $this->latlng === []) {
             return null;
         }
         return $this->latlng[0];
@@ -281,7 +281,7 @@ class Image implements TaggableInterface, \Stringable
     {
         if ($this->latlng === null ||
             !is_array($this->latlng) ||
-            empty($this->latlng)) {
+            $this->latlng === []) {
             return null;
         }
         return $this->latlng[1];
@@ -297,7 +297,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function hasLatlng(): bool
     {
-        return is_array($this->latlng) && count($this->latlng) == 2;
+        return is_array($this->latlng) && count($this->latlng) === 2;
     }
 
     /**
@@ -405,7 +405,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function hasCapturedAt(): bool
     {
-        return $this->capturedAt !== null;
+        return $this->capturedAt instanceof \DateTimeInterface;
     }
 
     public function getWander(): ?Wander
@@ -421,7 +421,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function hasWander(): bool
     {
-        return ($this->wander !== null);
+        return ($this->wander instanceof \App\Entity\Wander);
     }
 
     public function getRating(): ?int
@@ -471,7 +471,7 @@ class Image implements TaggableInterface, \Stringable
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
     private ?string $neighbourhood = null;
 
-    #[ORM\OneToOne(targetEntity: Wander::class, inversedBy: 'featuredImage', cascade: ['persist'])]
+    #[ORM\OneToOne(inversedBy: 'featuredImage', targetEntity: Wander::class, cascade: ['persist'])]
     private ?\App\Entity\Wander $featuringWander = null;
 
     /**
@@ -549,7 +549,7 @@ class Image implements TaggableInterface, \Stringable
 
     public function hasNeighbourhood(): bool
     {
-        return $this->neighbourhood !== null && $this->neighbourhood <> '';
+        return $this->neighbourhood !== null && $this->neighbourhood !== '';
     }
 
     public function setNeighbourhood(?string $neighbourhood): self
@@ -574,7 +574,7 @@ class Image implements TaggableInterface, \Stringable
     public function setAsFeaturedImage(): void
     {
         $wander = $this->wander;
-        if ($wander === null) {
+        if (!$wander instanceof \App\Entity\Wander) {
             throw new \Exception("Can't call setAsFeaturedImage unless the Image is associated with a Wander.");
         }
         $this->setFeaturingWander($wander);
@@ -584,10 +584,10 @@ class Image implements TaggableInterface, \Stringable
     public function __toString(): string
     {
         $result = $this->title ?? (string) $this->id;
-        if (isset($this->capturedAt)) {
+        if ($this->capturedAt instanceof \DateTimeInterface) {
             $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
         }
-        if (isset($this->rating)) {
+        if ($this->rating !== null) {
             $result .= ' ' . str_repeat('★', $this->rating);
         }
         return $result;

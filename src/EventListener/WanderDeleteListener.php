@@ -21,7 +21,7 @@ class WanderDeleteListener
         // wander from the related Image first, otherwise we'll break referential
         // integrity.
         $image = $wander->getFeaturedImage();
-        if ($image !== null) {
+        if ($image instanceof \App\Entity\Image) {
             $image->setFeaturingWander(null);
         }
     }

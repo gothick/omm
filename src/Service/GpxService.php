@@ -104,7 +104,7 @@ class GpxService
     public function compass(float $x, float $y): float
     {
         // https://www.php.net/manual/en/function.atan2.php#88119
-        if ($x == 0 AND $y == 0) {
+        if ($x == 0 && $y == 0) {
             return 0;
         }
         return ($x < 0)

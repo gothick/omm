@@ -28,7 +28,7 @@ class TagController extends AbstractController
     {
     }
 
-    #[Route(path: '/tag/{tag}/{type}', name: 'tag', methods: ['GET'], requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'])]
+    #[Route(path: '/tag/{tag}/{type}', name: 'tag', requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'], methods: ['GET'])]
     public function index(
         string $tag,
         Request $request,

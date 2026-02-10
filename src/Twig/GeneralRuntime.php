@@ -20,8 +20,9 @@ class GeneralRuntime implements RuntimeExtensionInterface
 
     public function durationToHMS(?DateInterval $interval): string
     {
-        if (!isset($interval))
+        if (!isset($interval)) {
             return "";
+        }
 
         return $interval->format('%hh %im %ss');
     }

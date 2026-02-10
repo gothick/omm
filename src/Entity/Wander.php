@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: WanderRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[Index(name: 'ix_wander_start_time', columns: ['start_time'])]
+#[Index(columns: ['start_time'], name: 'ix_wander_start_time')]
 class Wander implements \Stringable
 {
     #[Groups(['wander:list', 'wander:item'])]
@@ -48,7 +48,7 @@ class Wander implements \Stringable
     private ?string $gpxFilename = null;
 
     #[Groups(['wander:item'])]
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'wander', cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'wander', targetEntity: Image::class, cascade: ['persist'])]
     #[ORM\OrderBy(['capturedAt' => 'ASC', 'id' => 'ASC'])]
     private $images;
 
@@ -219,7 +219,7 @@ class Wander implements \Stringable
      */
     public function getImagesWithNoAutoTags(): Collection
     {
-        return $this->getImages()->filter(fn($image) => $image->getAutoTagsCount() == 0);
+        return $this->getImages()->filter(fn($image) => $image->getAutoTagsCount() === 0);
     }
 
     public function addImage(Image $image): self
@@ -324,7 +324,7 @@ class Wander implements \Stringable
 
     public function getDuration(): ?CarbonInterval
     {
-        if (!isset($this->startTime, $this->endTime)) {
+        if (!$this->startTime instanceof \DateTimeInterface && !$this->endTime instanceof \DateTimeInterface) {
             return null;
         }
         return CarbonInterval::instance($this->startTime->diff($this->endTime));
@@ -390,7 +390,7 @@ class Wander implements \Stringable
     ];
 
     #[Groups(['wander:item'])]
-    #[ORM\OneToOne(targetEntity: Image::class, mappedBy: 'featuringWander', cascade: ['persist'])]
+    #[ORM\OneToOne(mappedBy: 'featuringWander', targetEntity: Image::class, cascade: ['persist'])]
     private ?\App\Entity\Image $featuredImage = null;
 
     #[Groups(['wander:list', 'wander:item'])]
@@ -399,10 +399,8 @@ class Wander implements \Stringable
 
     public function getSector(): ?string
     {
-        if ($this->angleFromHome !== null) {
-            if ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0) {
-                return self::$compass[floor($this->angleFromHome / 22.5)];
-            }
+        if ($this->angleFromHome !== null && ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0)) {
+            return self::$compass[floor($this->angleFromHome / 22.5)];
         }
         return null;
     }
@@ -425,10 +423,10 @@ class Wander implements \Stringable
     public function __toString():string
     {
         $result = $this->title ?? '';
-        if (isset($this->startTime)) {
+        if ($this->startTime instanceof \DateTimeInterface) {
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
-        return (string) $result;
+        return $result;
     }
 
     public function getFeaturedImage(): ?Image
@@ -438,18 +436,18 @@ class Wander implements \Stringable
 
     public function hasFeaturedImage(): bool
     {
-        return $this->featuredImage !== null;
+        return $this->featuredImage instanceof \App\Entity\Image;
     }
 
     public function setFeaturedImage(?Image $featuredImage): self
     {
         // unset the owning side of the relation if necessary
-        if ($this->featuredImage !== null) {
+        if ($this->featuredImage instanceof \App\Entity\Image) {
             $this->featuredImage->setFeaturingWander(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($featuredImage !== null && $featuredImage->getFeaturingWander() !== $this) {
+        if ($featuredImage instanceof \App\Entity\Image && $featuredImage->getFeaturingWander() !== $this) {
             $featuredImage->setFeaturingWander($this);
         }
 

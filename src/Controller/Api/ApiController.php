@@ -30,7 +30,7 @@ class ApiController extends AbstractController
         // but I couldn't find any way of making them environment sensitive, and I didn't want
         // caching in the dev environment. Is there a better way? api-platform did it automatically;
         // maybe you could have a look in their code...
-        $this->shouldSetCacheFields = $kernelEnvironment === 'dev' ? false : true;
+        $this->shouldSetCacheFields = $kernelEnvironment !== 'dev';
     }
 
     private function addCacheHeaders(
@@ -51,7 +51,7 @@ class ApiController extends AbstractController
      *
      * API: Wander list. Returns a basic list of wanders.
      */
-    #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
+    #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
     public function wanderIndex(): Response
     {
         $wanders = $this->wanderRepository
@@ -89,7 +89,7 @@ class ApiController extends AbstractController
         return $this->addCacheHeaders($response);
     }
 
-    #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
+    #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
     public function wandersShow(
         Wander $wander
     ): Response {
@@ -128,7 +128,7 @@ class ApiController extends AbstractController
      *
      * API: Image list. Returns a basic list of images.
      */
-    #[Route(path: 'images', name: 'images_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
+    #[Route(path: 'images', name: 'images_index', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
     public function imagesIndex(): Response
     {
         $results = $this->imageRepository

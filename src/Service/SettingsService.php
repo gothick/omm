@@ -14,7 +14,7 @@ class SettingsService
     public function __construct(SettingsRepository $settingsRepository, EntityManagerInterface $entityManager)
     {
         $settings = $settingsRepository->getTheSingleRow();
-        if ($settings === null) {
+        if (!$settings instanceof \App\Entity\Settings) {
             // Minuscule chance of a race condition but in that worst-case scenario
             // we'll always bring back the first row from the database when we
             // getTheSingleRow() so all that will happen is that an extra row

@@ -56,7 +56,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/backlog.{!_format}', name: 'backlog', methods: ['GET'], format: 'html', requirements: ['_format' => 'html|txt'])]
+    #[Route(path: '/backlog.{!_format}', name: 'backlog', requirements: ['_format' => 'html|txt'], methods: ['GET'], format: 'html')]
     public function backlog(
         Request $request
     ): Response

@@ -16,7 +16,7 @@ class WanderControllerTest Extends WebTestCase
     /** @var KernelBrowser */
     private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';

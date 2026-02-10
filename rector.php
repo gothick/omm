@@ -11,6 +11,10 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\ValueObject\PhpVersion;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Symfony\CodeQuality\Rector\Class_\InlineClassRoutePrefixRector;
+use Rector\CodingStyle\Rector\ClassLike\NewlineBetweenClassLikeStmtsRector;
+use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
+use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 
 // https://github.com/rectorphp/rector-symfony?tab=readme-ov-file
 
@@ -43,12 +47,15 @@ return RectorConfig::configure()
     ->withPreparedSets(deadCode: true)
     ->withPreparedSets(symfonyCodeQuality: true)
     ->withPreparedSets(doctrineCodeQuality: true)
-    // ->withComposerBased(doctrine: true)
-    // ->withPreparedSets(codeQuality: true)
-    // ->withPreparedSets(codingStyle: true)
+    ->withPreparedSets(codeQuality: true)
+    ->withPreparedSets(codingStyle: true)
     // ->withPreparedSets(carbon: true)
     // ->withPreparedSets(phpunitCodeQuality: true)
     ->withSkip([
         EncapsedStringsToSprintfRector::class,
-        InlineClassRoutePrefixRector::class
+        InlineClassRoutePrefixRector::class,
+        NewlineBetweenClassLikeStmtsRector::class,
+        NewlineBeforeNewAssignSetRector::class,
+        NewlineAfterStatementRector::class,
+        WrapEncapsedVariableInCurlyBracesRector::class
     ]);

@@ -36,8 +36,8 @@ class DummyLocationTaggingService implements LocationTaggingServiceInterface
             $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
             return true;
         }
-        catch (\Throwable $th) {
-            $this->logger->error(static::class . ': Error retrieving address for image ID ' . $image->getId() . ': ' . $th->getMessage());
+        catch (\Throwable $throwable) {
+            $this->logger->error(static::class . ': Error retrieving address for image ID ' . $image->getId() . ': ' . $throwable->getMessage());
             return false;
         }
         return false;

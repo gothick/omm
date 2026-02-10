@@ -45,7 +45,7 @@ class SearchIndexer
     {
         $this->logger->info("Updating search index for Wander related to Image");
         $wander = $image->getWander();
-        if ($wander === null) {
+        if (!$wander instanceof \App\Entity\Wander) {
             return;
         }
         $this->wanderPersister->replaceOne($wander);

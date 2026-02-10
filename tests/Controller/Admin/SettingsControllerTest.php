@@ -20,7 +20,7 @@ class SettingsControllerTest Extends WebTestCase
     /** @var User */
     private $adminUser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';

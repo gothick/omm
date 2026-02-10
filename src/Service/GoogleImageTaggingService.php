@@ -32,7 +32,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         string $projectId,
         string $serviceAccountFile,
         private readonly EntityManagerInterface $entityManager,
-        string $imagesDirectory
+        private readonly string $imagesDirectory
     )
     {
         $this->client = new ImageAnnotatorClient([
@@ -40,7 +40,6 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
             'credentials' => $serviceAccountFile
         ]);
         $this->imagine = new Imagine();
-        $this->imagesDirectory = $imagesDirectory;
     }
 
     public function tagImage(Image $image, bool $overwriteExisting = false): bool

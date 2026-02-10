@@ -72,10 +72,10 @@ class ImageService {
                 $image->setNeighbourhood($exifHelper->getLocation());
             }
         }
-        catch(Exception $e) {
+        catch(Exception $exception) {
             // We've started to rely on the information gathered here, so I think
             // this should be a proper error now.
-            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception('Error getting image Exif information: ' . $exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -126,10 +126,10 @@ class ImageService {
                 }
             }
         }
-        catch(Exception $e) {
+        catch(Exception $exception) {
             // We've started to rely on the information gathered here, so I think
             // this should be a proper error now.
-            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception('Error getting image Exif information: ' . $exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }

@@ -23,6 +23,6 @@ class TagSluggerService
             return '-';
         }
         $slugged = strtolower($this->slugger->slug($in));
-        return $slugged == "" ? "-" : $slugged;
+        return $slugged === "" ? "-" : $slugged;
     }
 }

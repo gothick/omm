@@ -20,7 +20,7 @@ class WanderController extends AbstractController
     public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Repository\ImageRepository $imageRepository)
     {
     }
-    #[Route(path: '/wanders.{_format}', name: 'wanders_index', methods: ['GET'], format: 'html', requirements: ['_format' => 'html'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
+    #[Route(path: '/wanders.{_format}', name: 'wanders_index', requirements: ['_format' => 'html'], methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()", format: 'html')]
     public function index(
         Request $request
         ): Response
@@ -73,7 +73,7 @@ class WanderController extends AbstractController
      *
      * RSS, etc. feeds
      */
-    #[Route(path: '/feed.{!_format}', name: 'feed', methods: ['GET'], format: 'rss2', requirements: ['_format' => 'rss2|atom'])]
+    #[Route(path: '/feed.{!_format}', name: 'feed', requirements: ['_format' => 'rss2|atom'], methods: ['GET'], format: 'rss2')]
     public function feed(Request $request): Response
     {
         $qb = $this->wanderRepository

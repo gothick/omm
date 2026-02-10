@@ -30,8 +30,8 @@ class UploadHelper
                 $newFilename
             );
         }
-        catch (FileException $e) {
-            throw new HttpException(500, "Failed finishing GPX upload: " . $e->getMessage());
+        catch (FileException $fileException) {
+            throw new HttpException(500, "Failed finishing GPX upload: " . $fileException->getMessage());
         }
         return $newFilename;
     }

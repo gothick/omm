@@ -10,14 +10,13 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class SrcsetRuntime implements RuntimeExtensionInterface
 {
-    private $filters;
+    private $filters = [];
 
     public function __construct(
         private readonly UploaderHelper $uploaderHelper, 
         FilterManager $filterManager, 
         private readonly CacheManager $imagineCacheManager)
     {
-        $this->filters = [];
         foreach($filterManager->getFilterConfiguration()->all() as $name => $filter) {
             if (preg_match('/^srcset/', (string) $name)) {
                 $width = $filter['filters']['relative_resize']['widen'];
