@@ -395,7 +395,7 @@ class Image implements TaggableInterface, \Stringable
     public function setTagsText(?string $tagsText): void
     {
         if ($tagsText) {
-            $tags = \array_map('trim', \explode(',', $tagsText));
+            $tags = \array_map(trim(...), \explode(',', $tagsText));
             $uniqueTags = \array_unique(\array_filter($tags));
             $this->tagsText = \implode(', ', $uniqueTags);
         } else {

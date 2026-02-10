@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Neighbourhood|null findOneBy(array $criteria, array $orderBy = null)
  * @method Neighbourhood[]    findAll()
  * @method Neighbourhood[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Neighbourhood>
  */
 class NeighbourhoodRepository extends ServiceEntityRepository
 {

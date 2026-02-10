@@ -17,6 +17,7 @@ use Knp\Component\Pager\Paginator;
  * @method Image|null findOneBy(array $criteria, array $orderBy = null)
  * @method Image[]    findAll()
  * @method Image[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Image>
  */
 class ImageRepository extends ServiceEntityRepository
 {

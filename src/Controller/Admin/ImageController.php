@@ -133,7 +133,7 @@ class ImageController extends AbstractController
 
         return $this->render('admin/image/edit.html.twig', [
             'image' => $image,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

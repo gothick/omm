@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Settings|null findOneBy(array $criteria, array $orderBy = null)
  * @method Settings[]    findAll()
  * @method Settings[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Settings>
  */
 class SettingsRepository extends ServiceEntityRepository
 {

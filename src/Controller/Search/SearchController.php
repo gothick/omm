@@ -139,7 +139,7 @@ class SearchController extends AbstractController
         }
         return $this->render('search/index.html.twig', [
             'query_string' => $queryString,
-            'form' => $form->createView(),
+            'form' => $form,
             'pagination' => $pagination
         ]);
     }

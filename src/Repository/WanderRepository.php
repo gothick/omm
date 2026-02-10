@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Wander|null findOneBy(array $criteria, array $orderBy = null)
  * @method Wander[]    findAll()
  * @method Wander[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Wander>
  */
 class WanderRepository extends ServiceEntityRepository
 {

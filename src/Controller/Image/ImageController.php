@@ -101,7 +101,7 @@ class ImageController extends AbstractController
 
         return $this->render('image/index.html.twig', [
             'image_pagination' => $pagination,
-            'filter_form' => $filterForm->createView()
+            'filter_form' => $filterForm
         ]);
     }
 

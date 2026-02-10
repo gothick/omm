@@ -110,7 +110,7 @@ class WanderController extends AbstractController
         }
 
         return $this->render('admin/wander/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -138,7 +138,7 @@ class WanderController extends AbstractController
 
         return $this->render('admin/wander/edit.html.twig', [
             'wander' => $wander,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
