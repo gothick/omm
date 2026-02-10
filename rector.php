@@ -50,7 +50,7 @@ return RectorConfig::configure()
     ->withPreparedSets(doctrineCodeQuality: true)
     ->withPreparedSets(codeQuality: true)
     ->withPreparedSets(codingStyle: true)
-    // ->withPreparedSets(carbon: true)
+    ->withPreparedSets(carbon: true)
     // ->withPreparedSets(phpunitCodeQuality: true)
     ->withSkip([
         // I *like* bare variables in strings, and I've

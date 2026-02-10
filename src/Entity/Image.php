@@ -53,6 +53,7 @@ class Image implements TaggableInterface, \Stringable
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
     private ?string $name = null;
+
      // For Vich, not for us. We use Title.
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
@@ -143,7 +144,7 @@ class Image implements TaggableInterface, \Stringable
         if ($imageFile instanceof \Symfony\Component\HttpFoundation\File\File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = \Carbon\CarbonImmutable::now();
         }
     }
 
@@ -370,7 +371,7 @@ class Image implements TaggableInterface, \Stringable
             $this->tagsText = $tagsText;
         }
 
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = \Carbon\CarbonImmutable::now();
     }
 
     public function getTagsText(): ?string

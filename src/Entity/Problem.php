@@ -11,7 +11,7 @@ class Problem
 {
     public function __construct()
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = \Carbon\Carbon::now();
     }
 
     #[ORM\Id]

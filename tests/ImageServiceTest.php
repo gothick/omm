@@ -111,7 +111,7 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-CapturedAt With.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $expected = new \DateTime("@1549892566");
+        $expected = \Carbon\Carbon::parse('@1549892566');
         $this->assertEquals($expected, $image->getCapturedAt(), "Unexpected value for capturedAt when reading image");
     }
 
