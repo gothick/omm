@@ -44,8 +44,10 @@ class AdminCreateAdminCommand extends Command
             $io->warning("A valid user ({$user->getUsername()}) already exists.");
             return Command::FAILURE;
         }
+
         $question = new Question("Please enter a password for new user '{$username}': ", 'AcmeDemoBundle');
         $question->setHidden(true);
+
         $helper = $this->getHelper('question');
         $password = $helper->ask($input, $output, $question);
 
@@ -60,6 +62,7 @@ class AdminCreateAdminCommand extends Command
             $io->error("Error creating user: {$exception->getMessage()}");
             return Command::FAILURE;
         }
+
         $io->success('Successfully created new user.');
 
         return Command::SUCCESS;

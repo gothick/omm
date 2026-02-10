@@ -39,10 +39,13 @@ class ImageTagTest extends KernelTestCase
 
         $this->alphaTag = new Tag();
         $this->alphaTag->setName('alpha');
+
         $this->betaTag = new Tag();
         $this->betaTag->setName('beta');
+
         $this->gammaTag = new Tag();
         $this->gammaTag->setName('gamma');
+
         $this->betaUppercaseTag = new Tag();
         $this->betaUppercaseTag->setName('BETA');
     }
@@ -67,8 +70,10 @@ class ImageTagTest extends KernelTestCase
 
         $floopy = new Tag();
         $floopy->setName("floopy");
+
         $image = new Image();
         $image->addTag($floopy);
+
         $tags = $image->getTags();
         /** @var TagInterface */
         $hopefullyFloopy = $tags->current();
@@ -76,8 +81,10 @@ class ImageTagTest extends KernelTestCase
 
         $tagAlpha = new Tag();
         $tagAlpha->setName("alpha");
+
         $tagBeta = new Tag();
         $tagBeta->setName("beta");
+
         $image = new Image();
         $image->addTag($tagAlpha);
         $image->addTag($tagBeta);
@@ -94,6 +101,7 @@ class ImageTagTest extends KernelTestCase
             "Couldn't find beta tag"
         );
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testAddTag(): void
     {
@@ -101,6 +109,7 @@ class ImageTagTest extends KernelTestCase
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
         $image->addTag($this->betaUppercaseTag);
+
         $tags = $image->getTags();
         // We're expecting three because our tags are case sensitive. I mean, they probably *shouldn't* be, but hey...
         $this->assertCount(3, $tags);
@@ -112,6 +121,7 @@ class ImageTagTest extends KernelTestCase
         $image->addTag(new Tag());
         $this->assertCount(4, $tags);
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testClearTags(): void
     {
@@ -128,6 +138,7 @@ class ImageTagTest extends KernelTestCase
         $image->clearTags();
         $this->assertCount(0, $image->getTags(), "Cleared two tags but don't have zero tags.");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testRemoveTag(): void {
         $image = new Image();
@@ -138,10 +149,12 @@ class ImageTagTest extends KernelTestCase
         $image->addTag($this->alphaTag);
         $newAlphaTag = new Tag();
         $newAlphaTag->setName($this->alphaTag->getName());
+
         $image->removeTag($newAlphaTag);
         // Tags are removed when the actual *object* is the same, not when the name is the same.
         $this->assertCount(1, $image->getTags(), "Tags shouldn't be removed by name.");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testHasTag(): void
     {
@@ -155,6 +168,7 @@ class ImageTagTest extends KernelTestCase
         $newAlphaTag->setName($this->alphaTag->getName());
         $this->assertFalse($image->hasTag($newAlphaTag), "hasTag should compare tags by identity, not just name.");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testSetTags(): void
     {
@@ -171,6 +185,7 @@ class ImageTagTest extends KernelTestCase
         $this->assertCount(1, $image->getTags(), "setTags didn't clear existing tags");
         $this->assertTrue($image->hasTag($this->betaTag), "Resetting tags failed.");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testSetTagsText(): void
     {
@@ -195,6 +210,7 @@ class ImageTagTest extends KernelTestCase
         $this->assertIsArray($names, "Expected an array from getTagNames()");
         $this->assertCount(3, $names, "Set three tags via setTagsText, expected three names back from getTagNames()");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testGetTagsText(): void
     {
@@ -207,6 +223,7 @@ class ImageTagTest extends KernelTestCase
         $image->addTag($this->gammaTag);
         $this->assertEquals('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
     }
+
     #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testGetTagNames(): void
     {
@@ -289,6 +306,7 @@ class ImageTagTest extends KernelTestCase
         $image1 = new Image();
         $image1->setImageUri('https://justfortesting');
         $image1->setTagsText("one,two,three");
+
         $image2 = new Image();
         $image2->setImageUri('https://justfortesting');
         $image2->setTagsText("two,three,four");

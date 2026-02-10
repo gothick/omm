@@ -24,6 +24,7 @@ class TagController extends AbstractController
         'auto-tag'      => 'only tags created by automatic image recognition',
         'text-tag'      => 'only tags created by automatic text recognition'
     ];
+
     public function __construct(private readonly \FOS\ElasticaBundle\Finder\PaginatedFinderInterface $wanderFinder, private readonly \Knp\Component\Pager\PaginatorInterface $paginator)
     {
     }
@@ -38,9 +39,11 @@ class TagController extends AbstractController
         if ($type === 'hand-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedTags' => ['value' => $tag]]));
         }
+
         if ($type === 'auto-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedAutoTags' => ['value' => $tag]]));
         }
+
         if ($type === 'text-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedTextTags' => ['value' => $tag]]));
         }
@@ -57,6 +60,7 @@ class TagController extends AbstractController
         // an overly-broad search will bring back way too many images even with pagination of
         // the outer results.
         $innerHits->setSize(10);
+
         $nested->setInnerHits($innerHits);
 
         $searchDescription = self::$translateParam[$type];

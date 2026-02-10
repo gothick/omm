@@ -56,6 +56,7 @@ class WanderSetImageNeighbourhoodsCommand extends Command
             $this->entityManager->flush();
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success('Image neighbourhoods updated.');

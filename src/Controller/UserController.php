@@ -17,6 +17,7 @@ class UserController extends AbstractController
     public function __construct(private readonly \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder)
     {
     }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {

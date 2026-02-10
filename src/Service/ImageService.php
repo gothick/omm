@@ -106,6 +106,7 @@ class ImageService {
                 // from the GPS co-ordinates.
                 $neighbourhood = $this->neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             }
+
             if ($neighbourhood !== null) {
                 $image->setNeighbourhood($neighbourhood);
             }

@@ -44,6 +44,7 @@ class DeleteAllWandersCommand extends Command
             $this->entityManager->remove($wander);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

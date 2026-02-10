@@ -14,8 +14,11 @@ use Symfony\UX\Chartjs\Model\Chart;
 class StatsController extends AbstractController
 {
     const WANDER_NUMBER_COLOUR = '#2491B3';
+
     const WANDER_DISTANCE_COLOUR = '#ffb266';
+
     const IMAGES_NUMBER_COLOUR = '#ae411e';
+
     const IMAGES_COLOUR_STACK = [
         // Generated from a couple of our base colours using
         // Aquarelo https://setapp.com/apps/aquarelo
@@ -65,6 +68,7 @@ class StatsController extends AbstractController
                 'rating' => $rating
             ];
         }
+
         $monthlyImagesChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $imageDataSeries))
@@ -163,6 +167,7 @@ class StatsController extends AbstractController
                 }, $sourceStats);
             }
         }
+
         return $data;
     }
 }

@@ -26,6 +26,7 @@ class SearchController extends AbstractController
     public function __construct(private readonly \FOS\ElasticaBundle\Finder\PaginatedFinderInterface $wanderFinder, private readonly \Knp\Component\Pager\PaginatorInterface $paginator)
     {
     }
+
     #[Route(path: '/', name: 'index', methods: ['GET', 'POST'])]
     public function index(
         Request $request): Response
@@ -42,6 +43,7 @@ class SearchController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
+
         $pagination = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -137,6 +139,7 @@ class SearchController extends AbstractController
                 10
             );
         }
+
         return $this->render('search/index.html.twig', [
             'query_string' => $queryString,
             'form' => $form,

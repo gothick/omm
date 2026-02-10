@@ -26,6 +26,7 @@ class WanderController extends AbstractController
     public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\GpxService $gpxService, private readonly \App\Service\UploadHelper $uploadHelper, private readonly \Doctrine\Persistence\ManagerRegistry $doctrine)
     {
     }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
         Request $request
@@ -160,6 +161,7 @@ class WanderController extends AbstractController
             foreach ($images as $image) {
                 $entityManager->remove($image);
             }
+
             $entityManager->flush();
         }
 

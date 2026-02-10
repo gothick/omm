@@ -52,7 +52,8 @@ class Image implements TaggableInterface, \Stringable
 
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
-    private ?string $name = null; // For Vich, not for us. We use Title.
+    private ?string $name = null;
+     // For Vich, not for us. We use Title.
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
     private ?string $title = null;
@@ -179,6 +180,7 @@ class Image implements TaggableInterface, \Stringable
         if ($this->title !== null && $this->title !== "") {
             return $this->title;
         }
+
         return "Image " . $this->id;
     }
 
@@ -274,6 +276,7 @@ class Image implements TaggableInterface, \Stringable
             $this->latlng === []) {
             return null;
         }
+
         return $this->latlng[0];
     }
 
@@ -284,6 +287,7 @@ class Image implements TaggableInterface, \Stringable
             $this->latlng === []) {
             return null;
         }
+
         return $this->latlng[1];
     }
 
@@ -349,6 +353,7 @@ class Image implements TaggableInterface, \Stringable
         foreach ($tags as $tag) {
             $this->addTag($tag);
         }
+
         return $this;
     }
 
@@ -364,6 +369,7 @@ class Image implements TaggableInterface, \Stringable
         } else {
             $this->tagsText = $tagsText;
         }
+
         $this->updatedAt = new \DateTimeImmutable();
     }
 
@@ -496,6 +502,7 @@ class Image implements TaggableInterface, \Stringable
     {
         $this->markerImageUri = $markerImageUri;
     }
+
     public function getMarkerImageUri(): ?string {
         return $this->markerImageUri;
     }
@@ -504,6 +511,7 @@ class Image implements TaggableInterface, \Stringable
     {
         $this->mediumImageUri = $mediumImageUri;
     }
+
     public function getMediumImageUri(): ?string
     {
         return $this->mediumImageUri;
@@ -513,6 +521,7 @@ class Image implements TaggableInterface, \Stringable
     {
         $this->imageShowUri = $imageShowUri;
     }
+
     public function getImageShowUri(): ?string
     {
         return $this->imageShowUri;
@@ -577,6 +586,7 @@ class Image implements TaggableInterface, \Stringable
         if (!$wander instanceof \App\Entity\Wander) {
             throw new \Exception("Can't call setAsFeaturedImage unless the Image is associated with a Wander.");
         }
+
         $this->setFeaturingWander($wander);
     }
 
@@ -587,9 +597,11 @@ class Image implements TaggableInterface, \Stringable
         if ($this->capturedAt instanceof \DateTimeInterface) {
             $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
         }
+
         if ($this->rating !== null) {
             $result .= ' ' . str_repeat('★', $this->rating);
         }
+
         return $result;
     }
 

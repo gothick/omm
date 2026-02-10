@@ -39,6 +39,7 @@ class ProblemService
             $uri = $this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $validUris[$uri] = true; // Really I just want a hash that doesn't actually map
         }
+
         $homepage = $this->router->generate('home', [], RouterInterface::ABSOLUTE_URL);
 
         // Okay, now we've got a list of all valid URIs, let's have a look through all our descriptions
@@ -70,6 +71,7 @@ class ProblemService
                 }
             }
         }
+
         $this->entityManager->flush();
         // ...then Images:
         foreach($images as $image) {
@@ -98,6 +100,7 @@ class ProblemService
                 }
             }
         }
+
         $this->entityManager->flush();
     }
 }

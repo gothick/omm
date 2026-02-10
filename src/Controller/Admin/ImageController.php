@@ -34,6 +34,7 @@ class ImageController extends AbstractController
     public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\DiskStatsService $diskStatsService, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry, private readonly \App\Service\NeighbourhoodServiceInterface $neighbourhoodService, private readonly \Symfony\Component\Messenger\MessageBusInterface $messageBus)
     {
     }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(Request $request): Response
     {
@@ -88,6 +89,7 @@ class ImageController extends AbstractController
             catch (Exception $e) {
                 return $this->json([ 'error' => 'Error saving uploaded file: ' . $e->getMessage()], 500);
             }
+
             // It's not exactly an API response, but it'll do until we switch to handling this
             // a bit more properly. At least it's a JSON repsonse and *doesn't include the entire
             // file we just uploaded*, thanks to the wander:item grouping limiting the returned
@@ -174,9 +176,11 @@ class ImageController extends AbstractController
             if ($imageId === null) {
                 throw new InvalidParameterException('No image id in setAutoTags');
             }
+
             $this->messageBus->dispatch(new RecogniseImage($imageId, true));
             $this->addFlash('success', 'Image re-queued for recognition.');
         }
+
         return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
     }
 }

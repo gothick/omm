@@ -79,6 +79,7 @@ class ImageType extends AbstractType
                     if ($latlngAsString === null) {
                         return null;
                     }
+
                     return explode(',', preg_replace('/\s+/', '', $latlngAsString));
                 }
             ));

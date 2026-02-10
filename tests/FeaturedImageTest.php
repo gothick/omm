@@ -92,6 +92,7 @@ class FeaturedImageTest extends KernelTestCase
             ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
 
         $wander->setFeaturedImage($testImage1);
+
         $this->entityManager->flush();
         $this->entityManager->refresh($testImage1);
         $this->assertNotNull($testImage1->getFeaturingWander(), "Related Image not updated");
@@ -116,6 +117,7 @@ class FeaturedImageTest extends KernelTestCase
             ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
 
         $wander->setFeaturedImage($testImage1);
+
         $this->entityManager->flush();
 
         $this->entityManager->refresh($testImage1);
@@ -179,6 +181,7 @@ class FeaturedImageTest extends KernelTestCase
             ->findOneBy(['title' => 'Test Wander Title for 01-APR-21.GPX']);
 
         $wander->setFeaturedImage($testImage1);
+
         $this->entityManager->flush();
         $this->entityManager->refresh($wander);
         $this->entityManager->refresh($testImage1);

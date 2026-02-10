@@ -24,6 +24,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
     // Vision service, and we don't want to waste
     // bandwidth sending the whole original along.
     private const int MAX_WIDTH = 1024;
+
     private const int MAX_HEIGHT = 1024;
 
     private $imagine;
@@ -65,12 +66,14 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         foreach ($result->getLabelAnnotations() as $annotation) {
             $tags[] = $annotation->getDescription();
         }
+
         $image->setAutoTags($tags);
 
         $tags = [];
         foreach ($result->getTextAnnotations() as $annotation) {
             $tags[] = $annotation->getDescription();
         }
+
         $image->setTextTags($tags);
 
         $this->entityManager->persist($image);
@@ -83,6 +86,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         if ($error !== null) {
             throw new ThirdPartyAPIException($error->getMessage(), $error->getCode(), $error->getCode());
         }
+
         return true;
     }
 

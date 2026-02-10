@@ -69,9 +69,11 @@ class ImagesTagCommand extends Command
                 $progressBar->advance();
                 continue;
             }
+
             $this->messageBus->dispatch(new RecogniseImage($imageId, $overwrite));
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success("Tagged the wander's images.");

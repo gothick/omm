@@ -22,6 +22,7 @@ class ImageUploadListener
         if (!$object instanceof Image) {
             throw new \Exception("Vich upload listener invoked on non-image object.");
         }
+
         $this->imageService->setPropertiesFromEXIF($object);
     }
 }

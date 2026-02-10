@@ -13,6 +13,7 @@ class HomeController extends AbstractController
     public function __construct(private readonly \App\Service\StatsService $statsService)
     {
     }
+
     #[Route(path: '/', name: 'home')]
     public function index(): Response
     {

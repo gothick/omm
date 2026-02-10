@@ -36,6 +36,7 @@ class GpxService
         if (!$filename) {
             throw new \Exception("No GPX file path found in wander.");
         }
+
         return $this->getFullGpxFilePathFromFilename($filename);
     }
 
@@ -50,6 +51,7 @@ class GpxService
         if ($gpx === false) {
             throw new Exception("Couldn't read GPX file from $filename");
         }
+
         return $gpx;
     }
 
@@ -107,6 +109,7 @@ class GpxService
         if ($x == 0 && $y == 0) {
             return 0;
         }
+
         return ($x < 0)
             ? rad2deg(atan2($x, $y)) + 360
             : rad2deg(atan2($x, $y));

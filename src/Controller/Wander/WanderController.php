@@ -20,6 +20,7 @@ class WanderController extends AbstractController
     public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Repository\ImageRepository $imageRepository)
     {
     }
+
     #[Route(path: '/wanders.{_format}', name: 'wanders_index', requirements: ['_format' => 'html'], methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()", format: 'html')]
     public function index(
         Request $request

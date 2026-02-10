@@ -46,9 +46,11 @@ class ImagesUpdateLocationsCommand extends Command
             if ($imageid === null) {
                 throw new \RuntimeException("Image has no ID");
             }
+
             $this->messageBus->dispatch(new GeolocateImage($imageid, $overwrite));
             $progressBar->advance();
         }
+
         $progressBar->finish();
         $io->newLine();
 

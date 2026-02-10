@@ -247,6 +247,7 @@ class Wander implements \Stringable
         foreach ($images as $image) {
             $this->removeImage($image);
         }
+
         return $this;
     }
 
@@ -327,6 +328,7 @@ class Wander implements \Stringable
         if (!$this->startTime instanceof \DateTimeInterface && !$this->endTime instanceof \DateTimeInterface) {
             return null;
         }
+
         return CarbonInterval::instance($this->startTime->diff($this->endTime));
     }
 
@@ -402,6 +404,7 @@ class Wander implements \Stringable
         if ($this->angleFromHome !== null && ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0)) {
             return self::$compass[floor($this->angleFromHome / 22.5)];
         }
+
         return null;
     }
 
@@ -409,6 +412,7 @@ class Wander implements \Stringable
         if ($this->centroid !== null) {
             return implode(", ", $this->centroid);
         }
+
         return null;
     }
 
@@ -426,6 +430,7 @@ class Wander implements \Stringable
         if ($this->startTime instanceof \DateTimeInterface) {
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
+
         return $result;
     }
 

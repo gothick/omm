@@ -62,6 +62,7 @@ class ImaggaService implements ImageTaggingServiceInterface
         foreach($imagga_result->result->tags as $tag) {
             $tags[] = $tag->tag->en;
         }
+
         $image->setAutoTags($tags);
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.

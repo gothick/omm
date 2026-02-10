@@ -15,6 +15,7 @@ class NeighbourhoodService implements NeighbourhoodServiceInterface
         if ($lat === null || $lng === null) {
             return null;
         }
+
         $neighbourhood = $this
             ->neighbourhoodRepository
             ->findByLatlng($lat, $lng);

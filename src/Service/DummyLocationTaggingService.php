@@ -40,6 +40,7 @@ class DummyLocationTaggingService implements LocationTaggingServiceInterface
             $this->logger->error(static::class . ': Error retrieving address for image ID ' . $image->getId() . ': ' . $throwable->getMessage());
             return false;
         }
+
         return false;
     }
 }

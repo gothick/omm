@@ -22,6 +22,7 @@ class UploadHelper
         } else {
             $originalFilename = $gpxFile->getFilename();
         }
+
         $safeFilename = $this->slugger->slug(/** @scrutinizer ignore-type */ $originalFilename);
         $newFilename = $safeFilename . '-' . uniqid() . '.' . $gpxFile->guessExtension();
         try {
@@ -33,6 +34,7 @@ class UploadHelper
         catch (FileException $fileException) {
             throw new HttpException(500, "Failed finishing GPX upload: " . $fileException->getMessage());
         }
+
         return $newFilename;
     }
 }

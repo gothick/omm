@@ -12,6 +12,7 @@ class SecurityController extends AbstractController
     public function __construct(private readonly \Symfony\Component\Security\Http\Authentication\AuthenticationUtils $authenticationUtils)
     {
     }
+
     #[Route(path: '/login', name: 'login', methods: ['GET', 'POST'])]
     public function login(): Response
     {

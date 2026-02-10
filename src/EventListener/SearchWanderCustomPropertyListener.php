@@ -43,6 +43,7 @@ class SearchWanderCustomPropertyListener implements EventSubscriberInterface {
         if ($tags === null || empty($tags)) {
             return [];
         }
+
         return array_map($this->slugger->slug(...), $tags);
     }
 

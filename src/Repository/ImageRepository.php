@@ -162,6 +162,7 @@ class ImageRepository extends ServiceEntityRepository
         if (!$image instanceof \App\Entity\Image) {
             return null;
         }
+
         return $image->getCapturedAt();
     }
 
@@ -187,6 +188,7 @@ class ImageRepository extends ServiceEntityRepository
         if (!$image instanceof \App\Entity\Image) {
             return null;
         }
+
         return $image->getCapturedAt();
     }
 
@@ -200,6 +202,7 @@ class ImageRepository extends ServiceEntityRepository
                 ->andWhere('i.wander = :wander')
                 ->setParameter('wander', $wander);
         }
+
         return $qb;
     }
 
@@ -213,6 +216,7 @@ class ImageRepository extends ServiceEntityRepository
                 ->andWhere('i.wander = :wander')
                 ->setParameter('wander', $wander);
         }
+
         return $qb;
     }
 

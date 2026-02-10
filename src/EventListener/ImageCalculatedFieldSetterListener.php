@@ -20,6 +20,7 @@ class ImageCalculatedFieldSetterListener
     {
         $this->imageService->setCalculatedImageUris($image);
     }
+
     // But also it's helpful to have them available just after we've created
     // a new Image, so we can return them as part of the JSON response.
     public function postPersist(Image $image): void

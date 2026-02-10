@@ -29,6 +29,7 @@ class DeleteImagesNewerThanCommand extends Command
             ->setHelp('Deletes specific Image entities and their associated uploaded files.')
             ->addArgument('id', InputArgument::REQUIRED, 'Image ID. Images with IDs from this ID onward will be deleted.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -46,6 +47,7 @@ class DeleteImagesNewerThanCommand extends Command
             $output->writeln('Aborting.');
             return Command::SUCCESS; // Well, technically I think it's not a failure.
         }
+
         $output->writeln('Deleting ' . $count . ' images');
 
         $progressBar = new ProgressBar($output, $count);
@@ -55,6 +57,7 @@ class DeleteImagesNewerThanCommand extends Command
             $this->entityManager->remove($image);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

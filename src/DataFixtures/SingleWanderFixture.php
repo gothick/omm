@@ -33,9 +33,11 @@ class SingleWanderFixture extends Fixture implements FixtureGroupInterface
         $uploadedFile = $this->uploadHelper->uploadGpxFile(new File($targetPath));
         $wander = new Wander();
         $wander->setGpxFilename($uploadedFile);
+
         $this->gpxService->updateWanderFromGpx($wander);
         $wander->setTitle('Single test wander');
         $wander->setDescription('Single wander description');
+
         $manager->persist($wander);
         $manager->flush();
     }

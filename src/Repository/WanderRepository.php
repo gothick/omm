@@ -50,6 +50,7 @@ class WanderRepository extends ServiceEntityRepository
         if ($hasImages !== null) {
             return $qb->andWhere('w.images is ' . ($hasImages ? 'not' : '') . ' empty');
         }
+
         return $qb;
     }
 

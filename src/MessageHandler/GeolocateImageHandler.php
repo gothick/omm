@@ -26,6 +26,7 @@ class GeolocateImageHandler {
             if ($imageid === null) {
                 throw new UnrecoverableMessageHandlingException("Image has no ID");
             }
+
             $this->logger->debug("GeolocateImageHandler calling location tagger for image $imageid");
             $this->locationTaggingService->tagImage($image, $geolocateImage->getOverwrite());
         }

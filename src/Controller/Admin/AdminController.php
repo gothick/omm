@@ -19,6 +19,7 @@ class AdminController extends AbstractController
     public function __construct(private readonly \App\Service\StatsService $statsService, private readonly \Symfony\Contracts\Cache\TagAwareCacheInterface $cache)
     {
     }
+
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
@@ -47,6 +48,7 @@ class AdminController extends AbstractController
                 'Stats not cleared. Invalid Csrf token.'
             );
         }
+
         return $this->redirectToRoute('admin_index');
     }
 }

@@ -23,6 +23,7 @@ class DeleteAllImagesCommand extends Command
     {
         $this->setHelp('Deletes all Image entities and their associated uploaded files.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -43,6 +44,7 @@ class DeleteAllImagesCommand extends Command
             $this->entityManager->remove($image);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

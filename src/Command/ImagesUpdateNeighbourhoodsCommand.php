@@ -47,8 +47,10 @@ class ImagesUpdateNeighbourhoodsCommand extends Command
             } else {
                 $failure++;
             }
+
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success("Tried to update $total images with neighbourhoods. Success: $success. Failure: $failure.");

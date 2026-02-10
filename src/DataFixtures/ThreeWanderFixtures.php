@@ -38,6 +38,7 @@ class ThreeWanderFixtures extends Fixture implements FixtureGroupInterface
             $wander->setDescription('Test wander description for ' . $source->getFilename());
             $manager->persist($wander);
         }
+
         $manager->flush();
     }
 }

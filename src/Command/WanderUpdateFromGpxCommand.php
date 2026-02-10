@@ -28,6 +28,7 @@ class WanderUpdateFromGpxCommand extends Command
     {
         $this->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -49,6 +50,7 @@ class WanderUpdateFromGpxCommand extends Command
             $this->entityManager->persist($wander);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

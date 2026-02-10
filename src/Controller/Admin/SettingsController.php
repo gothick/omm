@@ -17,6 +17,7 @@ class SettingsController extends AbstractController
     public function __construct(private readonly \App\Service\SettingsService $settingsService, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry)
     {
     }
+
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {

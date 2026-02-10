@@ -21,6 +21,7 @@ class ImageServiceTest extends TestCase
 {
     /** @var ImageService */
     protected $imageService;
+
     /** @var NeighbourhoodService&MockObject */
     protected $neighbourhoodService;
 
@@ -39,10 +40,12 @@ class ImageServiceTest extends TestCase
                 if ($lat === null || $lng === null) {
                     return null;
                 }
+
                 // Null Island
                 if ($lat === 0.0 && $lng === 0.0) {
                     return null;
                 }
+
                 return 'Rome'; // All roads lead to Rome
             });
 
@@ -106,6 +109,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-CapturedAt With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $expected = new \DateTime("@1549892566");
         $this->assertEquals($expected, $image->getCapturedAt(), "Unexpected value for capturedAt when reading image");
@@ -116,12 +120,14 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Stars 5.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(5, $image->getRating(), "Failed to read five-star rating from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Stars None.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(0, $image->getRating(), "Failed to read zero rating from image");
     }
@@ -131,12 +137,14 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Title With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals("Title With", $image->getTitle(), "Failed to read title from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Title Without.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(null, $image->getTitle(), "Failed to set empty title from image");
     }
@@ -146,6 +154,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20210411-ommtest-Title Numeric.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals("42", $image->getTitle(), 'Failed to set title for a numeric title');
     }
@@ -155,6 +164,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20210419-ommtest-Description Numeric.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals("1984", $image->getDescription(), 'Failed to set title for a numeric description');
     }
@@ -164,12 +174,14 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Caption With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals("This is a caption", $image->getDescription(), "Failed to read description from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Caption Without.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertEquals(null, $image->getDescription(), "Failed to set empty description from image");
     }
@@ -179,6 +191,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getLatlng();
         $this->assertIsArray($result, "Latitude/Longitude pair should be in array");
@@ -189,6 +202,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertIsArray($image->getLatlng(), "An image with no co-ordinates should leave the lat/lon as an array");
         $this->assertCount(0, $image->getLatlng(), "An image with no co-ordinates should result in an empty lat/lon array");
@@ -199,6 +213,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
         $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image');
@@ -206,6 +221,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $this->assertNull($image->getNeighbourhood(), 'Unexpected neighbourhood set from image with no neighbourhood');
     }
@@ -215,6 +231,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without But Has LatLng.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
         $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based neighbourhood lookup.");
@@ -222,6 +239,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20200925-ommtest-Location Without LatLng Is Null Island.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
         $this->assertNull($result, "Null Island should quietly resolve to a null neighbourhood");
@@ -232,6 +250,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
+
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
         $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image using standalone setter');
@@ -239,6 +258,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location Without.jpg');
+
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $this->assertNull($image->getNeighbourhood(), 'Unexpected neighbourhood set from image with no neighbourhood using standalone setter');
 
@@ -246,6 +266,7 @@ class ImageServiceTest extends TestCase
         $image->setNeighbourhood('Existing');
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Location With.jpg');
+
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
         $this->assertEquals('Existing', $result, 'Standalone Neighbourhood setter unexpectedly overwrote data.');
@@ -256,6 +277,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Keywords None.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $tags = $image->getTagNames();
         $this->assertIsIterable($tags, "Reading image with no keywords should still produce an array, albeit empty");
@@ -264,6 +286,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Keywords Multiple.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $tags = $image->getTagNames();
 
@@ -280,6 +303,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Keywords One.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $tags = $image->getTagNames();
         $this->assertIsIterable($tags, "Reading an image with a single keyword should still result in an array");
@@ -292,6 +316,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/gif');
         $image->setName('20190211-ommtest-Location With.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getLatlng();
         $this->assertIsArray($result, "Trying to read a non-JPEG file should keep the default value");
@@ -303,6 +328,7 @@ class ImageServiceTest extends TestCase
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Minimal Metadata.jpg');
+
         $this->imageService->setPropertiesFromEXIF($image, false);
 
         $this->assertIsIterable($image->getTags());

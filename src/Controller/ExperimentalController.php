@@ -14,6 +14,7 @@ class ExperimentalController extends AbstractController
     {
         return $this->render('experimental/index.html.twig');
     }
+
     #[Route(path: '/imagecluster', name: 'imagecluster', methods: ['GET'])]
     public function cluster(): Response
     {

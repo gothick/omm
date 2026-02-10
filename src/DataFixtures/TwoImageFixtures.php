@@ -35,6 +35,7 @@ class TwoImageFixtures extends Fixture implements FixtureGroupInterface
                 $image->setImageFile($uploadedFake);
                 $manager->persist($image);
             }
+
             $manager->flush();
         } catch (\Exception $exception) {
             // Add details, including the user running the process

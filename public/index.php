@@ -33,5 +33,6 @@ return function (array $context) {
         // https://symfony.com/doc/current/reference/configuration/framework.html#http-method-override
         Request::enableHttpMethodParameterOverride();
     }
+
     return $kernel;
 };

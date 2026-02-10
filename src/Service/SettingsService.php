@@ -23,6 +23,7 @@ class SettingsService
             $entityManager->persist($settings);
             $entityManager->flush();
         }
+
         $this->settings = $settings;
     }
 
@@ -67,10 +68,12 @@ class SettingsService
         if ($size < 0 || $size > 2000) {
             $size = 200;
         }
+
         $email = $this->settings->getGravatarEmail();
         if (!$email) {
             return null;
         }
+
         $hash = md5(trim(strtolower($email)));
         // TODO: This is hardcoded to 200px. Make it configurable.
         return "https://www.gravatar.com/avatar/$hash?s=$size";

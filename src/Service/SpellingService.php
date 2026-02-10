@@ -28,6 +28,7 @@ class SpellingService
         foreach ($results as $result) {
             $misspelledWords[] = $result->word;
         }
+
         return $misspelledWords;
     }
 }

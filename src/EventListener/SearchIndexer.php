@@ -48,6 +48,7 @@ class SearchIndexer
         if (!$wander instanceof \App\Entity\Wander) {
             return;
         }
+
         $this->wanderPersister->replaceOne($wander);
     }
 }

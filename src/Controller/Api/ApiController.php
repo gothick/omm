@@ -44,6 +44,7 @@ class ApiController extends AbstractController
                 ->setSharedMaxAge($sharedMaxAge)
                 ->setPublic();
         }
+
         return $r;
     }
 

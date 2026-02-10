@@ -18,6 +18,7 @@ class ProblemController extends AbstractController
     public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \App\Repository\ImageRepository $imageRepository, private readonly \App\Repository\ProblemRepository $problemRepository, private readonly \App\Service\ProblemService $problemService)
     {
     }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
@@ -105,6 +106,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_latlng/wander/{id}', name: 'no_latlng', methods: ['GET'])]
     public function noLatlng(Wander $wander): Response
     {
@@ -112,6 +114,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_neighbourhood/wander/{id}', name: 'no_neighbourhood', methods: ['GET'])]
     public function noNeighbourhood(Wander $wander): Response
     {
@@ -119,6 +122,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_rating/wander/{id}', name: 'no_rating', methods: ['GET'])]
     public function noRating(Wander $wander): Response
     {

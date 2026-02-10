@@ -26,6 +26,7 @@ class ImageController extends AbstractController
     public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \Psr\Log\LoggerInterface $logger)
     {
     }
+
     #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     public function show(Image $image): Response
     {
@@ -155,6 +156,7 @@ class ImageController extends AbstractController
             };
             $qb->setParameter('rating', $rating);
         }
+
         return $qb;
     }
 }

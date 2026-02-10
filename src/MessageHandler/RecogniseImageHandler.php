@@ -22,12 +22,15 @@ class RecogniseImageHandler {
         if ($imageid == null) {
             throw new \RuntimeException("Image ID from RecogniseImage message is null");
         }
+
         $image = $this->imageRepository->find($imageid);
         if ($image == null) {
             throw new \RuntimeException("Image with ID $imageid not found");
         }
+
         $this->logger->debug("RecogniseImageHandler found image with id " . $image->getId());
         $this->logger->debug("RecogniseImageHandler calling image tagger");
+
         $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
     }
 }

@@ -9,6 +9,7 @@ class TagSluggerService
     public function __construct(private readonly SluggerInterface $slugger)
     {
     }
+
     /**
      * Our tags can contain almost anything, but we want to use them in URL parameters.
      * Instead we slugify them consistently for feeding to Elastica as special slugifed
@@ -22,6 +23,7 @@ class TagSluggerService
         if ($in === null || $in === "") {
             return '-';
         }
+
         $slugged = strtolower($this->slugger->slug($in));
         return $slugged === "" ? "-" : $slugged;
     }

@@ -32,6 +32,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if (is_int($rating) && $rating >= 0) {
             return str_repeat('★', $rating);
         }
+
         return "-";
     }
 
@@ -39,10 +40,12 @@ class GeneralRuntime implements RuntimeExtensionInterface
     {
         return Metric::bytes($bytes)->format($format);
     }
+
     public function formatBinaryBytes(int $bytes, string $format = null): string
     {
         return Binary::bytes($bytes)->format($format);
     }
+
     public function markdownToPlainText(?string $markdown): string
     {
         return $this->markdownService->markdownToText($markdown);
@@ -53,6 +56,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if ($in === null) {
             return '';
         }
+
         return strip_tags($in, '<sup><hr><em><strong><hr><mark>');
     }
 

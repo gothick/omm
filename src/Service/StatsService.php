@@ -132,6 +132,7 @@ class StatsService
         $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
         return $wanderStats;
     }
+
     /**
      * @return array<string, mixed>
      */
@@ -159,6 +160,7 @@ class StatsService
         if ($row === false) {
             throw new Exception("Got no results when finding duration stats.");
         }
+
         return [
             'firstWanderStartTime' => Carbon::parse($row['firstWanderStartTime']),
             'latestWanderStartTime' => Carbon::parse($row['latestWanderStartTime']),
@@ -212,6 +214,7 @@ class StatsService
                 // returned.
                 throw new Exception("Expected to get a row back from the database no matter what with this query.");
             }
+
             $duration = CarbonInterval::seconds((int) $row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
                 'periodType' => $periodType,
@@ -236,6 +239,7 @@ class StatsService
                 'averageDurationInterval' => CarbonInterval::seconds((int) $row['average_duration_seconds'])->cascade(),
             ];
         }
+
         return $periodicStats;
     }
 }
