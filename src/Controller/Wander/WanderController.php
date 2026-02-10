@@ -17,16 +17,17 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class WanderController extends AbstractController
 {
+    public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Repository\ImageRepository $imageRepository)
+    {
+    }
     #[Route(path: '/wanders.{_format}', name: 'wanders_index', methods: ['GET'], format: 'html', requirements: ['_format' => 'html'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
     public function index(
-        Request $request,
-        WanderRepository $wanderRepository,
-        PaginatorInterface $paginator
+        Request $request
         ): Response
     {
-        $qb = $wanderRepository->wandersWithImageCountQueryBuilder();
+        $qb = $this->wanderRepository->wandersWithImageCountQueryBuilder();
         $query = $qb->getQuery();
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             20 // Items per page
@@ -40,13 +41,10 @@ class WanderController extends AbstractController
     #[Route('/wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' not in request.getAcceptableContentTypes()")]
     public function show(
         Request $request,
-        Wander $wander,
-        WanderRepository $wanderRepository,
-        ImageRepository $imageRepository,
-        PaginatorInterface $paginator): Response
+        Wander $wander): Response
     {
-        $prev = $wanderRepository->findPrev($wander);
-        $next = $wanderRepository->findNext($wander);
+        $prev = $this->wanderRepository->findPrev($wander);
+        $next = $this->wanderRepository->findNext($wander);
         $page = $request->query->getInt('page', 1);
         if ($page == 0 || $page > 1024) {
             // Someone's probably trying a SQL injection attack or something. I prefer just to
@@ -55,9 +53,9 @@ class WanderController extends AbstractController
             return $this->redirectToRoute($request->attributes->get('_route'), ['id' => $wander->getId()]);
         }
 
-        $paginatorQuery = $imageRepository->getPaginatorQueryBuilder($wander)->getQuery();
+        $paginatorQuery = $this->imageRepository->getPaginatorQueryBuilder($wander)->getQuery();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $paginatorQuery,
             $page,
             20, // Per page
@@ -76,9 +74,9 @@ class WanderController extends AbstractController
      * RSS, etc. feeds
      */
     #[Route(path: '/feed.{!_format}', name: 'feed', methods: ['GET'], format: 'rss2', requirements: ['_format' => 'rss2|atom'])]
-    public function feed(Request $request, WanderRepository $wanderRepository): Response
+    public function feed(Request $request): Response
     {
-        $qb = $wanderRepository
+        $qb = $this->wanderRepository
             ->standardQueryBuilder()
             ->setMaxResults(20);
 

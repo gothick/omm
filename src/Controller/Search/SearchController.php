@@ -23,12 +23,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/search', name: 'search_')]
 class SearchController extends AbstractController
 {
+    public function __construct(private readonly \FOS\ElasticaBundle\Finder\PaginatedFinderInterface $wanderFinder, private readonly \Knp\Component\Pager\PaginatorInterface $paginator)
+    {
+    }
     #[Route(path: '/', name: 'index', methods: ['GET', 'POST'])]
     public function index(
-        Request $request,
-        //PaginatedFinderInterface $imageFinder,
-        PaginatedFinderInterface $wanderFinder,
-        PaginatorInterface $paginator): Response
+        Request $request): Response
     {
         // $finder = $this->container->get('fos_elastica.finder.app');
         // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
@@ -130,8 +130,8 @@ class SearchController extends AbstractController
                 ]
             ]]);
 
-            $results = $wanderFinder->createHybridPaginatorAdapter($searchQuery);
-            $pagination = $paginator->paginate(
+            $results = $this->wanderFinder->createHybridPaginatorAdapter($searchQuery);
+            $pagination = $this->paginator->paginate(
                 $results,
                 $request->query->getInt('page', 1),
                 10

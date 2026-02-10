@@ -25,7 +25,7 @@ class ImageFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->setMethod('GET')
+            ->setMethod(\Symfony\Component\HttpFoundation\Request::METHOD_GET)
             ->add('start_date', DateType::class, [
             ])
             ->add('end_date', DateType::class, [

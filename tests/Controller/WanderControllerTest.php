@@ -41,7 +41,7 @@ class WanderControllerTest Extends WebTestCase
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $this->client->request('GET', '/wanders');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/wanders');
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame('Wanders');
     }
@@ -50,7 +50,7 @@ class WanderControllerTest Extends WebTestCase
     {
         // :)
         /** @var Crawler */
-        $this->client->request('GET', '/wanders');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/wanders');
         $this->assertResponseIsSuccessful();
         // Should be in date order, most recent first
         $this->assertSelectorTextContains('div.wander:nth-child(1) h3 a', 'Test Wander Title for 01-APR-21.GPX', 'April wander missing from index page or in wrong order');

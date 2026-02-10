@@ -27,19 +27,16 @@ class StatsController extends AbstractController
         '#fff466', // 5 star $yellowish: ;
     ];
 
-    public function __construct(private readonly UrlGeneratorInterface $router)
+    public function __construct(private readonly UrlGeneratorInterface $router, private readonly \App\Service\StatsService $statsService, private readonly \Symfony\UX\Chartjs\Builder\ChartBuilderInterface $chartBuilder)
     {
     }
 
     #[Route(path: '/stats', name: 'stats_index')]
-    public function index(
-        StatsService $statsService,
-        ChartBuilderInterface $chartBuilder
-    ): Response {
-        $wanderStats = $statsService->getWanderStats();
-        $imageStats = $statsService->getImageStats();
-        $imageNeighbourhoodStats = $statsService->getImageNeighbourhoodStats();
-
+    public function index(): Response
+    {
+        $wanderStats = $this->statsService->getWanderStats();
+        $imageStats = $this->statsService->getImageStats();
+        $imageNeighbourhoodStats = $this->statsService->getImageNeighbourhoodStats();
         $wanderDataSeries =
             [
                 [
@@ -53,15 +50,12 @@ class StatsController extends AbstractController
                     'extractFunction' => fn($dp): string => number_format($dp['totalDistance'] / 1000.0, 2)
                 ]
             ];
-
-        $monthlyWanderChart = $chartBuilder
+        $monthlyWanderChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $wanderDataSeries));
-
-        $yearlyWanderChart = $chartBuilder
+        $yearlyWanderChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $wanderDataSeries));
-
         $imageDataSeries = [];
         for ($rating = 0; $rating <= 5; $rating++) {
             $imageDataSeries[] = [
@@ -71,8 +65,7 @@ class StatsController extends AbstractController
                 'rating' => $rating
             ];
         }
-
-        $monthlyImagesChart = $chartBuilder
+        $monthlyImagesChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['monthlyStats'], $imageDataSeries))
             ->setOptions([
@@ -85,8 +78,7 @@ class StatsController extends AbstractController
                     ]
                 ]
             ]);
-
-        $yearlyImagesChart = $chartBuilder
+        $yearlyImagesChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setData($this->generatePeriodicChartData($wanderStats['yearlyStats'], $imageDataSeries))
             ->setOptions([
@@ -99,8 +91,7 @@ class StatsController extends AbstractController
                     ]
                 ]
             ]);
-
-        $neighbourhoodsChart = $chartBuilder
+        $neighbourhoodsChart = $this->chartBuilder
             ->createChart(Chart::TYPE_BAR)
             ->setOptions([
                 'maintainAspectRatio' => false,
@@ -128,7 +119,6 @@ class StatsController extends AbstractController
                     ]
                 ]
             ]);
-
         return $this->render('stats/index.html.twig', [
             'imageStats' => $imageStats,
             'wanderStats' => $wanderStats,

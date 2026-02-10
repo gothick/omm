@@ -23,11 +23,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/image', name: 'image_')]
 class ImageController extends AbstractController
 {
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
-    public function show(Image $image, ImageRepository $imageRepository): Response
+    public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \Psr\Log\LoggerInterface $logger)
     {
-        $prev = $imageRepository->findPrev($image);
-        $next = $imageRepository->findNext($image);
+    }
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Image $image): Response
+    {
+        $prev = $this->imageRepository->findPrev($image);
+        $next = $this->imageRepository->findNext($image);
         return $this->render('image/show.html.twig', [
             'image' => $image,
             'prev' => $prev,
@@ -37,15 +40,12 @@ class ImageController extends AbstractController
 
     #[Route(path: '', name: 'index', methods: ['GET'])]
     public function index(
-        Request $request,
-        ImageRepository $imageRepository,
-        PaginatorInterface $paginator,
-        LoggerInterface $logger
+        Request $request
     ): Response {
         /** @var ImageFilterData $filterData */
         $filterData = new ImageFilterData(
-            $imageRepository->getEarliestImageCaptureDate(),
-            $imageRepository->getLatestImageCaptureDate(),
+            $this->imageRepository->getEarliestImageCaptureDate(),
+            $this->imageRepository->getLatestImageCaptureDate(),
         );
 
         // These are overrides that can be sent by links set up on our
@@ -59,7 +59,7 @@ class ImageController extends AbstractController
         } catch (Exception $e) {
             // Someone may be trying to fiddle with our URL parameters. Don't fail; the override
             // functions are sensible enough to ignore invalid inputs. But we should log.
-            $logger->error(
+            $this->logger->error(
                 'Image controller override parameters caused an exception to be thrown. Quietly ignoring them.',
                 [
                     'exception_message' => $e->getMessage()
@@ -68,7 +68,7 @@ class ImageController extends AbstractController
         }
 
         // Filtering form for the top of the page
-        $neighbourhoodChoices = $this->getNeighbourhoodChoices($imageRepository);
+        $neighbourhoodChoices = $this->getNeighbourhoodChoices($this->imageRepository);
         $filterForm = $this->createForm(
             ImageFilterType::class,
             $filterData,
@@ -86,14 +86,14 @@ class ImageController extends AbstractController
             $filterData = $filterForm->getData();
         };
 
-        $qb = $imageRepository->getReversePaginatorQueryBuilder();
+        $qb = $this->imageRepository->getReversePaginatorQueryBuilder();
 
         $this->filterQuery($filterData, $qb);
 
         $query = $qb->getQuery();
 
         $page = $request->query->getInt('page', 1);
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $page,
             20

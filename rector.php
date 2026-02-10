@@ -10,7 +10,7 @@ use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\ValueObject\PhpVersion;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
-
+use Rector\Symfony\CodeQuality\Rector\Class_\InlineClassRoutePrefixRector;
 
 // https://github.com/rectorphp/rector-symfony?tab=readme-ov-file
 
@@ -41,7 +41,7 @@ return RectorConfig::configure()
     )
     ->withPreparedSets(symfonyConfigs: true)
     ->withPreparedSets(deadCode: true)
-    //->withPreparedSets(symfonyCodeQuality: true)
+    ->withPreparedSets(symfonyCodeQuality: true)
     // ->withPreparedSets(doctrineCodeQuality: true)
     // ->withComposerBased(doctrine: true)
     // ->withPreparedSets(codeQuality: true)
@@ -50,4 +50,5 @@ return RectorConfig::configure()
     // ->withPreparedSets(phpunitCodeQuality: true)
     ->withSkip([
         EncapsedStringsToSprintfRector::class,
+        InlineClassRoutePrefixRector::class
     ]);

@@ -24,7 +24,7 @@ class ApiController extends AbstractController
 {
     private readonly bool $shouldSetCacheFields;
 
-    public function __construct(string $kernelEnvironment)
+    public function __construct(string $kernelEnvironment, private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Symfony\Component\Routing\RouterInterface $router, private readonly \App\Repository\ImageRepository $imageRepository)
     {
         // TODO: I used to control the caching with annotations (https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/cache.html)
         // but I couldn't find any way of making them environment sensitive, and I didn't want
@@ -52,16 +52,13 @@ class ApiController extends AbstractController
      * API: Wander list. Returns a basic list of wanders.
      */
     #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
-    public function wanderIndex(
-        WanderRepository $wanderRepository,
-        RouterInterface $router
-    ): Response {
-        $wanders = $wanderRepository
+    public function wanderIndex(): Response
+    {
+        $wanders = $this->wanderRepository
             ->standardQueryBuilder()
             ->orderBy('w.startTime', 'asc')
             ->getQuery()
             ->execute();
-
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
         $contentUrlCallback = (fn(
@@ -74,11 +71,10 @@ class ApiController extends AbstractController
             string $format = null,
             /** @scrutinizer ignore-unused */
             array $context = []
-        ) => $router->generate(
+        ) => $this->router->generate(
             'wanders_show',
             ['id' => $outerObject->getId()]
         ));
-
         $response = $this->json(
             $wanders,
             Response::HTTP_OK,
@@ -95,8 +91,7 @@ class ApiController extends AbstractController
 
     #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
     public function wandersShow(
-        Wander $wander,
-        RouterInterface $router
+        Wander $wander
     ): Response {
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
@@ -110,7 +105,7 @@ class ApiController extends AbstractController
             string $format = null,
             /** @scrutinizer ignore-unused */
             array $context = []
-        ) => $router->generate(
+        ) => $this->router->generate(
             'wanders_show',
             ['id' => $outerObject->getId()]
         ));
@@ -134,15 +129,13 @@ class ApiController extends AbstractController
      * API: Image list. Returns a basic list of images.
      */
     #[Route(path: 'images', name: 'images_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
-    public function imagesIndex(
-        ImageRepository $imageRepository
-    ): Response {
-        $results = $imageRepository
+    public function imagesIndex(): Response
+    {
+        $results = $this->imageRepository
             ->standardQueryBuilder()
             ->where('i.latlng IS NOT NULL')
             ->getQuery()
             ->execute();
-
         $response = $this->json(
             $results,
             Response::HTTP_OK,

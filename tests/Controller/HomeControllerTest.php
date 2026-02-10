@@ -37,13 +37,13 @@ class HomeControllerTest Extends WebTestCase
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $this->client->request('GET', '/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testShouldHaveOneWander(): void
     {
-        $this->client->request('GET', '/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.headerstrip .row .col', 'Total Wanders: 1');
     }

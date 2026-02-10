@@ -24,13 +24,14 @@ class TagController extends AbstractController
         'auto-tag'      => 'only tags created by automatic image recognition',
         'text-tag'      => 'only tags created by automatic text recognition'
     ];
+    public function __construct(private readonly \FOS\ElasticaBundle\Finder\PaginatedFinderInterface $wanderFinder, private readonly \Knp\Component\Pager\PaginatorInterface $paginator)
+    {
+    }
 
     #[Route(path: '/tag/{tag}/{type}', name: 'tag', methods: ['GET'], requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'])]
     public function index(
         string $tag,
         Request $request,
-        PaginatedFinderInterface $wanderFinder,
-        PaginatorInterface $paginator,
         string $type = "any"
     ): Response {
         $boolQuery = new BoolQuery();
@@ -60,7 +61,7 @@ class TagController extends AbstractController
 
         $searchDescription = self::$translateParam[$type];
 
-        $results = $wanderFinder->createHybridPaginatorAdapter($nested);
+        $results = $this->wanderFinder->createHybridPaginatorAdapter($nested);
 
         $perPage = 10; // TODO: Parameterise this results-per-page
         $page = $request->query->getInt('page', 1);
@@ -70,7 +71,7 @@ class TagController extends AbstractController
             $page = 1;
         }
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $results,
             $page,
             $perPage

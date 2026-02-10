@@ -31,17 +31,20 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 #[Route(path: '/admin/image', name: 'admin_image_')]
 class ImageController extends AbstractController
 {
-    #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function index(ImageRepository $imageRepository, PaginatorInterface $paginator, Request $request): Response
+    public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\DiskStatsService $diskStatsService, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry, private readonly \App\Service\NeighbourhoodServiceInterface $neighbourhoodService, private readonly \Symfony\Component\Messenger\MessageBusInterface $messageBus)
     {
-        $query = $imageRepository
+    }
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(Request $request): Response
+    {
+        $query = $this->imageRepository
             ->createQueryBuilder('i')
             // Nice orphan check: ->where('i.wanders is empty')
             ->orderBy('i.capturedAt', 'DESC')
             ->addOrderBy('i.id', 'DESC')
             ->getQuery();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             10);
@@ -61,9 +64,7 @@ class ImageController extends AbstractController
     #[Route(path: '/upload', name: 'upload', methods: ['GET', 'POST'])]
     public function upload(
             Request $request,
-            string $imagesDirectory,
-            DiskStatsService $diskStatsService,
-            ManagerRegistry $managerRegistry
+            string $imagesDirectory
     ): Response {
         if ($request->isMethod('POST')) {
 
@@ -80,7 +81,7 @@ class ImageController extends AbstractController
             try {
                 $image = new Image();
                 $image->setImageFile($file);
-                $entityManager = $managerRegistry->getManager();
+                $entityManager = $this->managerRegistry->getManager();
                 $entityManager->persist($image);
                 $entityManager->flush();
             }
@@ -103,7 +104,7 @@ class ImageController extends AbstractController
         }
 
         // Normal GET request.
-        $disk = $diskStatsService->getDiskStats($imagesDirectory);
+        $disk = $this->diskStatsService->getDiskStats($imagesDirectory);
 
         return $this->render('admin/image/upload.html.twig', [
                 'disk' => $disk
@@ -121,13 +122,12 @@ class ImageController extends AbstractController
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        Image $image,
-        ManagerRegistry $managerRegistry
+        Image $image
     ): Response {
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $managerRegistry->getManager()->flush();
+            $this->managerRegistry->getManager()->flush();
             return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);
         }
 
@@ -140,11 +140,10 @@ class ImageController extends AbstractController
     #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         Request $request,
-        Image $image,
-        ManagerRegistry $managerRegistry
+        Image $image
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$image->getId(), (string) $request->request->get('_token'))) {
-            $entityManager = $managerRegistry->getManager();
+            $entityManager = $this->managerRegistry->getManager();
             $entityManager->remove($image);
             $entityManager->flush();
         }
@@ -153,10 +152,10 @@ class ImageController extends AbstractController
     }
 
     #[Route(path: '/{id}/set_neighbourhood', name: 'set_neighbourhood', methods: ['POST'])]
-    public function setNeighbourhood(Request $request, Image $image, NeighbourhoodServiceInterface $neighbourhoodService, EntityManagerInterface $entityManager): Response
+    public function setNeighbourhood(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('set_neighbourhood'.$image->getId(), (string) $request->request->get('_token'))) {
-            $neighbourhood  = $neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
+            $neighbourhood  = $this->neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             if ($neighbourhood !== null) {
                 $image->setNeighbourhood($neighbourhood);
                 $entityManager->persist($image);
@@ -168,14 +167,14 @@ class ImageController extends AbstractController
     }
 
     #[Route(path: '/{id}/set_auto_tags', name: 'set_auto_tags', methods: ['POST'])]
-    public function setAutoTags(Request $request, Image $image, MessageBusInterface $messageBus): Response
+    public function setAutoTags(Request $request, Image $image): Response
     {
         if ($this->isCsrfTokenValid('set_auto_tags'.$image->getId(), (string) $request->request->get('_token'))) {
             $imageId = $image->getId();
             if ($imageId === null) {
                 throw new InvalidParameterException('No image id in setAutoTags');
             }
-            $messageBus->dispatch(new RecogniseImage($imageId, true));
+            $this->messageBus->dispatch(new RecogniseImage($imageId, true));
             $this->addFlash('success', 'Image re-queued for recognition.');
         }
         return $this->redirectToRoute('admin_image_show', ['id' => $image->getId()]);

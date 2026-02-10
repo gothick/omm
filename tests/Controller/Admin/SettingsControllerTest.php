@@ -36,20 +36,20 @@ class SettingsControllerTest Extends WebTestCase
     public function testLoggedIn(): void
     {
         $this->client->loginUser($this->adminUser);
-        $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testNotLoggedIn(): void
     {
-        $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseRedirects(getenv('SECURE_SCHEME') . '://localhost/login');
     }
 
     public function testClickEdit(): void
     {
         $this->client->loginUser($this->adminUser);
-        $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseIsSuccessful();
         $this->client->clickLink('Edit settings');
         $this->assertResponseIsSuccessful();
@@ -59,7 +59,7 @@ class SettingsControllerTest Extends WebTestCase
     public function testEditSettings(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/edit');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/edit');
         $this->assertResponseIsSuccessful();
         $this->client->submitForm('settings_save', [
             'settings[siteTitle]' => 'Test Site Title',

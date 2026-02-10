@@ -23,27 +23,28 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route(path: '/admin/wanders', name: 'admin_wanders_')]
 class WanderController extends AbstractController
 {
+    public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\GpxService $gpxService, private readonly \App\Service\UploadHelper $uploadHelper, private readonly \Doctrine\Persistence\ManagerRegistry $doctrine)
+    {
+    }
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
-        Request $request,
-        WanderRepository $wanderRepository,
-        PaginatorInterface $paginator
+        Request $request
         ): Response
     {
         $filterHasImages = null;
 
         // Customise the query to add an imageCount built-in so we can efficiently
         // (and at all :) ) sort it in our paginator.
-        $qb = $wanderRepository->wandersWithImageCountQueryBuilder();
+        $qb = $this->wanderRepository->wandersWithImageCountQueryBuilder();
 
         if ($request->query->has('hasImages')) {
             $filterHasImages = $request->query->getBoolean('hasImages');
-            $wanderRepository->addWhereHasImages($qb, $filterHasImages);
+            $this->wanderRepository->addWhereHasImages($qb, $filterHasImages);
         }
 
         $query = $qb->getQuery();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             20
@@ -57,14 +58,13 @@ class WanderController extends AbstractController
 
     #[Route(path: '/backlog.{!_format}', name: 'backlog', methods: ['GET'], format: 'html', requirements: ['_format' => 'html|txt'])]
     public function backlog(
-        Request $request,
-        WanderRepository $wanderRepository
+        Request $request
     ): Response
     {
-        $qb = $wanderRepository
+        $qb = $this->wanderRepository
             ->standardQueryBuilder()
             ->OrderBy('w.startTime');
-        $wanderRepository->addWhereHasImages($qb, false);
+        $this->wanderRepository->addWhereHasImages($qb, false);
         $wanders = $qb->getQuery()->getResult();
         $response = new Response();
         $format = $request->getRequestFormat();
@@ -79,10 +79,7 @@ class WanderController extends AbstractController
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-            Request $request,
-            GpxService $gpxService,
-            UploadHelper $uploadHelper,
-            PersistenceManagerRegistry $doctrine
+            Request $request
         ): Response
     {
         $wander = new Wander();
@@ -97,13 +94,13 @@ class WanderController extends AbstractController
             $gpxFile = $form->get('gpxFilename')->getData();
 
             if ($gpxFile) {
-                $wander->setGpxFilename($uploadHelper->uploadGpxFile($gpxFile));
+                $wander->setGpxFilename($this->uploadHelper->uploadGpxFile($gpxFile));
             }
 
             $wander = $form->getData();
-            $gpxService->updateWanderFromGpx($wander);
+            $this->gpxService->updateWanderFromGpx($wander);
 
-            $entityManager = $doctrine->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($wander);
             $entityManager->flush();
             return $this->redirectToRoute('admin_wanders_show', ['id' => $wander->getId()]);
@@ -123,13 +120,13 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
+    public function edit(Request $request, Wander $wander): Response
     {
         $form = $this->createForm(WanderType::class, $wander);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $doctrine->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.
@@ -143,10 +140,10 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
+    public function delete(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $doctrine->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($wander);
             $entityManager->flush();
         }
@@ -155,10 +152,10 @@ class WanderController extends AbstractController
     }
 
     #[Route(path: '/{id}/delete_images', name: 'delete_images', methods: ['POST'])]
-    public function deleteImages(Request $request, Wander $wander, PersistenceManagerRegistry $doctrine): Response
+    public function deleteImages(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete_images'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $doctrine->getManager();
+            $entityManager = $this->doctrine->getManager();
             $images = $wander->getImages();
             foreach ($images as $image) {
                 $entityManager->remove($image);
