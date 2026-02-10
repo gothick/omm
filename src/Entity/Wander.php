@@ -18,58 +18,57 @@ use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: WanderRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[Table]
 #[Index(name: 'ix_wander_start_time', columns: ['start_time'])]
 class Wander implements \Stringable
 {
     #[Groups(['wander:list', 'wander:item'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'string', length: 1024)]
-    private $title;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 1024)]
+    private ?string $title = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $startTime;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $startTime = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $endTime;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endTime = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'string', length: 255)]
-    private $gpxFilename;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $gpxFilename = null;
 
     #[Groups(['wander:item'])]
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'wander', cascade: ['persist'])]
     #[ORM\OrderBy(['capturedAt' => 'ASC', 'id' => 'ASC'])]
     private $images;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $distance;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $distance = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $avgSpeed;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $avgSpeed = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $avgPace;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $avgPace = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $minAltitude;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $minAltitude = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $maxAltitude;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $maxAltitude = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $cumulativeElevationGain;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $cumulativeElevationGain = null;
 
     /**
      * @var string|null
@@ -77,11 +76,11 @@ class Wander implements \Stringable
     #[Groups(['wander:list', 'wander:item'])]
     public $contentUrl;
 
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $centroid = [];
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $angleFromHome;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $angleFromHome = null;
 
     public function __construct()
     {
@@ -160,7 +159,7 @@ class Wander implements \Stringable
     }
 
     /**
-     * @return Collection|Image[]
+     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\Image>
      */
     public function getImages(): Collection
     {
@@ -392,11 +391,11 @@ class Wander implements \Stringable
 
     #[Groups(['wander:item'])]
     #[ORM\OneToOne(targetEntity: Image::class, mappedBy: 'featuringWander', cascade: ['persist'])]
-    private $featuredImage;
+    private ?\App\Entity\Image $featuredImage = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $googlePolyline;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $googlePolyline = null;
 
     public function getSector(): ?string
     {

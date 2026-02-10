@@ -16,17 +16,17 @@ class Problem
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: 'text')]
-    private $description;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $uri;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $uri = null;
 
     public function getId(): ?int
     {

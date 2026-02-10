@@ -33,15 +33,11 @@ use DateTimeInterface;
 #[Vich\Uploadable]
 class Image implements TaggableInterface, \Stringable
 {
-    /**
-     *
-     * @var int
-     */
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     // TODO: We probably don't want this massive field being returned
     // as part of any API response, etc.
@@ -54,61 +50,39 @@ class Image implements TaggableInterface, \Stringable
         mimeType: 'mimeType', originalName: 'originalName', dimensions: 'dimensions')]
     private $imageFile;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name; // For Vich, not for us. We use Title.
-    /**
-     * @var string|null
-     */
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $name = null; // For Vich, not for us. We use Title.
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $title;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $title = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var int|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $sizeInBytes;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER, nullable: true)]
+    private ?int $sizeInBytes = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $mimeType;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $mimeType = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $originalName;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $originalName = null;
 
     /**
      * @var ?array<int>
      */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
     private $dimensions = [];
 
-    /**
-     *
-     * @var \DateTimeInterface|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @Assert\AtLeastOneOf({
@@ -126,7 +100,7 @@ class Image implements TaggableInterface, \Stringable
      * @var ?array<float>
      */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
     private $latlng = [];
 
     /**
@@ -135,28 +109,19 @@ class Image implements TaggableInterface, \Stringable
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     private $tags;
 
-    /**
-     * @var DateTimeInterface
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $capturedAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $capturedAt = null;
 
-    /**
-     * @var ?int
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $rating;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER, nullable: true)]
+    private ?int $rating = null;
 
     // TODO: This @Ignore was here from when this was a many-to-many. Do we still
     // need it?
-    /**
-     * @var ?Wander
-     */
     #[Ignore]
     #[ORM\ManyToOne(targetEntity: Wander::class, inversedBy: 'images')]
-    private $wander;
+    private ?\App\Entity\Wander $wander = null;
 
     public function __construct()
     {
@@ -500,25 +465,19 @@ class Image implements TaggableInterface, \Stringable
     /**
      * @var array<string>
      */
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $autoTags = [];
 
-    /**
-     * @var ?string
-     */
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $neighbourhood;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $neighbourhood = null;
 
-    /**
-     * @var ?Wander
-     */
     #[ORM\OneToOne(targetEntity: Wander::class, inversedBy: 'featuredImage', cascade: ['persist'])]
-    private $featuringWander;
+    private ?\App\Entity\Wander $featuringWander = null;
 
     /**
      * @var array<string>
      */
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $textTags = [];
 
     #[ORM\Column(length: 512, nullable: true)]

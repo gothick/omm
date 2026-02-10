@@ -12,20 +12,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $username;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 180, unique: true)]
+    private ?string $username = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::JSON)]
     private $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(type: 'string')]
-    private $password;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING)]
+    private ?string $password = null;
 
     public function getId(): ?int
     {

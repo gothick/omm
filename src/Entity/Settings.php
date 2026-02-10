@@ -10,23 +10,23 @@ class Settings
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $siteTitle;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $siteTitle = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $siteSubtitle;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $siteSubtitle = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $siteAbout;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $siteAbout = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $twitterHandle;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $twitterHandle = null;
 
-    #[ORM\Column(type: 'string', length: 1024, nullable: true)]
-    private $gravatarEmail;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 1024, nullable: true)]
+    private ?string $gravatarEmail = null;
 
     public function getId(): ?int
     {
