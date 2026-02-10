@@ -21,7 +21,7 @@
             than forcing it here; I think this is the only difference between this file and phpunit.xml.dist
             at the moment -->
         <env name="DATABASE_URL"
-            value="mysql://omm_test:omm_test@test-database:3306/omm_test?serverVersion=5.7"
+            value="mysql://omm_test:omm_test@test-database:3306/omm_test?serverVersion=12.1.2-MariaDB"
             force="true" />
     </php>
     <groups>
