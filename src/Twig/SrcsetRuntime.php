@@ -43,12 +43,10 @@ class SrcsetRuntime implements RuntimeExtensionInterface
         // Add original image as srcset option, otherwise it may never be used.
         $srcset[] = ['width' => $image->getDimensions()[0], 'path' => $image_asset_path];
 
-        $srcsetString = implode(', ', array_map(fn($src) => sprintf(
+        return implode(', ', array_map(fn($src) => sprintf(
             '%s %uw',
             $src['path'],
             $src['width']
         ), $srcset));
-
-        return $srcsetString;
     }
 }

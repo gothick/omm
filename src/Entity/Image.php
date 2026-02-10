@@ -169,8 +169,6 @@ class Image implements TaggableInterface, \Stringable
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {
@@ -216,7 +214,7 @@ class Image implements TaggableInterface, \Stringable
         if ($this->title !== null && $this->title != "") {
             return $this->title;
         }
-        return (string) "Image " . $this->id;
+        return "Image " . $this->id;
     }
 
     public function setTitle(?string $title): self

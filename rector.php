@@ -39,9 +39,9 @@ return RectorConfig::configure()
         doctrine: true,
         phpunit: true
     )
-    // ->withPreparedSets(symfonyConfigs: true)
-    // ->withPreparedSets(deadCode: true)
-    // ->withPreparedSets(symfonyCodeQuality: true)
+    ->withPreparedSets(symfonyConfigs: true)
+    ->withPreparedSets(deadCode: true)
+    //->withPreparedSets(symfonyCodeQuality: true)
     // ->withPreparedSets(doctrineCodeQuality: true)
     // ->withComposerBased(doctrine: true)
     // ->withPreparedSets(codeQuality: true)

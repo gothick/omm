@@ -89,7 +89,7 @@ class ImageServiceTest extends TestCase
         $this->assertInstanceOf(ImageService::class, $imageService, "Couldn't create ImageService with exiftool path that should be valid: " . $exiftool_path);
 
         $this->expectException(InvalidArgumentException::class);
-        $imageService = new ImageService(
+        new ImageService(
             $uploaderHelper,
             $cacheManager,
             $router,

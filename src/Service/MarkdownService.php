@@ -10,7 +10,7 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class MarkdownService
 {
-    public function __construct(private readonly TagAwareCacheInterface $cache, private readonly LoggerInterface $logger)
+    public function __construct(private readonly TagAwareCacheInterface $cache)
     {
     }
 

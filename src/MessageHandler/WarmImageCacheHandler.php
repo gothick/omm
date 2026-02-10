@@ -13,9 +13,6 @@ class WarmImageCacheHandler {
     {
     }
 
-    /**
-     * @param WarmImageCache $message
-    */
     public function __invoke(WarmImageCache $message): void
     {
         $path = $message->getPath();

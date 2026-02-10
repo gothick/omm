@@ -11,7 +11,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class ImageCalculatedFieldSetterListener
 {
-    public function __construct(private readonly LoggerInterface $logger, private readonly ImageService $imageService)
+    public function __construct(private readonly ImageService $imageService)
     {
     }
 

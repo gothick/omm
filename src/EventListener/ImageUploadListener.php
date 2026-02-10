@@ -12,7 +12,7 @@ use Vich\UploaderBundle\Event\Event;
 
 class ImageUploadListener
 {
-    public function __construct(private readonly LoggerInterface $logger, private readonly WanderRepository $wanderRepository, private readonly ImageService $imageService)
+    public function __construct(private readonly ImageService $imageService)
     {
     }
 

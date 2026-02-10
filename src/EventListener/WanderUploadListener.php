@@ -9,7 +9,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class WanderUploadListener
 {
-    public function __construct(private readonly LoggerInterface $logger, private readonly ImageRepository $imageRepository)
+    public function __construct(private readonly ImageRepository $imageRepository)
     {
     }
 

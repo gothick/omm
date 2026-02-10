@@ -29,9 +29,9 @@ class StatsService
      */
     public function getImageStats(): array
     {
-        $stats = $this->cache->get('image_stats', function(ItemInterface $item) {
+        return $this->cache->get('image_stats', function(ItemInterface $item) {
             $item->tag('stats');
-            $imageStats = $this->imageRepository
+            return $this->imageRepository
                 ->createQueryBuilder('i')
                 ->select('COUNT(i.id) as totalCount')
                 ->addSelect('COUNT(i.latlng) as countWithCoords')
@@ -39,9 +39,7 @@ class StatsService
                 ->addSelect('COUNT(i.description) as countWithDescription')
                 ->getQuery()
                 ->getSingleResult();
-            return $imageStats;
         });
-        return $stats;
     }
 
     /**
@@ -70,7 +68,7 @@ class StatsService
      */
     public function getWanderStats(): array
     {
-        $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {
+        return $this->cache->get('wander_stats', function(ItemInterface $item) {
             $item->tag('stats');
 
             $wanderStats = $this->getGeneralWanderStats();
@@ -113,7 +111,6 @@ class StatsService
 
             return $wanderStats;
         });
-        return $stats;
     }
 
     /**
@@ -162,14 +159,12 @@ class StatsService
         if ($row === false) {
             throw new Exception("Got no results when finding duration stats.");
         }
-
-        $overallTimeStats = [
+        return [
             'firstWanderStartTime' => Carbon::parse($row['firstWanderStartTime']),
             'latestWanderStartTime' => Carbon::parse($row['latestWanderStartTime']),
             'totalDuration' => CarbonInterval::seconds((int) $row['totalDuration'])->cascade(),
             'averageDuration'=> CarbonInterval::seconds((int) $row['averageDuration'])->cascade()
         ];
-        return $overallTimeStats;
     }
 
     /**

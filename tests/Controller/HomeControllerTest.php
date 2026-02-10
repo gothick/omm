@@ -13,7 +13,7 @@ class HomeControllerTest Extends WebTestCase
     private $databaseTool;
 
     /** @var KernelBrowser */
-    private $client = null;
+    private $client;
 
     public function setUp(): void
     {
@@ -37,13 +37,13 @@ class HomeControllerTest Extends WebTestCase
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $crawler = $this->client->request('GET', '/');
+        $this->client->request('GET', '/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testShouldHaveOneWander(): void
     {
-        $crawler = $this->client->request('GET', '/');
+        $this->client->request('GET', '/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.headerstrip .row .col', 'Total Wanders: 1');
     }

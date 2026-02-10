@@ -55,9 +55,6 @@ class WanderRepository extends ServiceEntityRepository
 
     /**
      * Used by Elastica to transform results to model
-     *
-     * @param string $entityAlias
-     * @return QueryBuilder
      */
     public function createSearchQueryBuilder(string $entityAlias): QueryBuilder
     {

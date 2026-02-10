@@ -25,9 +25,6 @@ class WarmImageCache {
         return $this->pathToImage;
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         return $this->filters;

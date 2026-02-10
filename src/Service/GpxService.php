@@ -21,7 +21,6 @@ class GpxService
      */
     public function __construct(
         private readonly string $gpxDirectory,
-        private readonly LoggerInterface $logger,
         private array $homebaseCoords,
         private readonly int $wanderSimplifierEpsilonMetres
     ) {

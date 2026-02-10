@@ -32,8 +32,7 @@ class GoogleImageTaggingService implements ImageTaggingServiceInterface
         string $projectId,
         string $serviceAccountFile,
         private readonly EntityManagerInterface $entityManager,
-        string $imagesDirectory,
-        private readonly LoggerInterface $logger
+        string $imagesDirectory
     )
     {
         $this->client = new ImageAnnotatorClient([

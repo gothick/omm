@@ -15,7 +15,7 @@ class SettingsControllerTest Extends WebTestCase
     private $databaseTool;
 
     /** @var KernelBrowser */
-    private $client = null;
+    private $client;
 
     /** @var User */
     private $adminUser;
@@ -36,20 +36,20 @@ class SettingsControllerTest Extends WebTestCase
     public function testLoggedIn(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request('GET', '/admin/settings/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testNotLoggedIn(): void
     {
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request('GET', '/admin/settings/');
         $this->assertResponseRedirects(getenv('SECURE_SCHEME') . '://localhost/login');
     }
 
     public function testClickEdit(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request('GET', '/admin/settings/');
         $this->assertResponseIsSuccessful();
         $this->client->clickLink('Edit settings');
         $this->assertResponseIsSuccessful();
@@ -61,7 +61,7 @@ class SettingsControllerTest Extends WebTestCase
         $this->client->loginUser($this->adminUser);
         $crawler = $this->client->request('GET', '/admin/settings/edit');
         $this->assertResponseIsSuccessful();
-        $crawler = $this->client->submitForm('settings_save', [
+        $this->client->submitForm('settings_save', [
             'settings[siteTitle]' => 'Test Site Title',
             'settings[siteSubtitle]' => 'Test Site Subtitle',
             'settings[twitterHandle]' => 'testTwitterHandle',

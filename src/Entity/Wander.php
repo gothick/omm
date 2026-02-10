@@ -328,9 +328,7 @@ class Wander implements \Stringable
         if (!isset($this->startTime, $this->endTime)) {
             return null;
         }
-
-        $difference = CarbonInterval::instance($this->startTime->diff($this->endTime));
-        return $difference;
+        return CarbonInterval::instance($this->startTime->diff($this->endTime));
     }
 
     /**
