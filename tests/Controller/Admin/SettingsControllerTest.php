@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Admin;
 
 use App\Repository\UserRepository;
@@ -9,11 +11,8 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
 
-class SettingsControllerTest Extends WebTestCase
+final class SettingsControllerTest Extends WebTestCase
 {
-    /** @var AbstractDatabaseTool */
-    private $databaseTool;
-
     /** @var KernelBrowser */
     private $client;
 
@@ -24,12 +23,12 @@ class SettingsControllerTest Extends WebTestCase
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient([], ['HTTPS' => $useHttps]);
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $this->databaseTool->loadFixtures([
+        $this->client = self::createClient([], ['HTTPS' => $useHttps]);
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures([
             \App\DataFixtures\UserFixtures::class
         ]);
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $this->adminUser = $userRepository->findOneByUsername('admin');
     }
 

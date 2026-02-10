@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\Image;
@@ -13,7 +15,7 @@ use Beelab\TagBundle\Tag\TagInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Translation\Util\ArrayConverter;
 
-class ImageTagTest extends KernelTestCase
+final class ImageTagTest extends KernelTestCase
 {
     /** @var TagInterface */
     private $alphaTag;
@@ -216,12 +218,12 @@ class ImageTagTest extends KernelTestCase
     {
         $image = new Image();
         $this->assertIsString($image->getTagsText(), "Expected a string result even if no tags are set.");
-        $this->assertEquals("", $image->getTagsText(), "Expected an empty string if no tags set");
+        $this->assertSame("", $image->getTagsText(), "Expected an empty string if no tags set");
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
-        $this->assertEquals('alpha, beta', $image->getTagsText(), "Tags were not converted to expected tags text.");
+        $this->assertSame('alpha, beta', $image->getTagsText(), "Tags were not converted to expected tags text.");
         $image->addTag($this->gammaTag);
-        $this->assertEquals('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
+        $this->assertSame('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
     }
 
     #[\PHPUnit\Framework\Attributes\Group('tags')]
@@ -249,7 +251,7 @@ class ImageTagTest extends KernelTestCase
         $image = new Image();
         $this->assertIsArray($image->getAutoTags(), "Expected no auto tags still to be an array");
         $this->assertEmpty($image->getAutoTags(), "Expected no auto tags to be an empty array");
-        $this->assertEquals(0, $image->getAutoTagsCount(), "Expected empty tags to have a zero count.");
+        $this->assertSame(0, $image->getAutoTagsCount(), "Expected empty tags to have a zero count.");
 
         $image->setAutoTags(null);
         $this->assertIsArray($image->getAutoTags(), "Expected setting Auto Tags to null still to be an array");
@@ -260,13 +262,13 @@ class ImageTagTest extends KernelTestCase
         $this->assertEmpty($image->getAutoTags(), "Expected setting Auto Tags to empty array to result in an empty array");
 
         $image->setAutoTags(['foo', 'bar', 'baz']);
-        $this->assertEquals(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
-        $this->assertEquals(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
+        $this->assertSame(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
+        $this->assertSame(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
         $image->setAutoTags(['foop']);
         /** @var array<string> $tags */
         $tags = $image->getAutoTags();
         $this->assertCount(1, $tags, "Resetting auto tags with a single tag should result in a tag count of one.");
-        $this->assertEquals(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
+        $this->assertSame(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
     }
 
     #[\PHPUnit\Framework\Attributes\Group('tags')]
@@ -275,20 +277,20 @@ class ImageTagTest extends KernelTestCase
         $image = new Image();
         $this->assertIsArray($image->getTextTags(), "Expected no text tags still to be an array");
         $this->assertEmpty($image->getTextTags(), "Expected no text tags to be an empty array");
-        $this->assertEquals(0, $image->getTextTagsCount(), "Expected empty text tags to have a zero count.");
+        $this->assertSame(0, $image->getTextTagsCount(), "Expected empty text tags to have a zero count.");
 
         $image->setTextTags([]);
         $this->assertIsArray($image->getTextTags(), "Expected setting text Tags to empty array to result in array");
         $this->assertEmpty($image->getTextTags(), "Expected setting text Tags to empty array to result in an empty array");
 
         $image->setTextTags(['foo', 'bar', 'baz']);
-        $this->assertEquals(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
-        $this->assertEquals(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
+        $this->assertSame(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
+        $this->assertSame(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
         $image->setTextTags(['foop']);
         /** @var array<string> $tags */
         $tags = $image->getTextTags();
         $this->assertCount(1, $tags, "Resetting text tags with a single tag should result in a tag count of one.");
-        $this->assertEquals(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
+        $this->assertSame(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
     }
 
     #[\PHPUnit\Framework\Attributes\Group('tags')]
@@ -300,7 +302,7 @@ class ImageTagTest extends KernelTestCase
         $imageServiceMock = $this->getStubBuilder(ImageService::class)
             ->disableOriginalConstructor()
             ->getStub();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $container->set('test.App\Service\ImageService', $imageServiceMock);
 
         $image1 = new Image();
@@ -323,7 +325,7 @@ class ImageTagTest extends KernelTestCase
 
         // The first tag of image2 should be "two"...
         $image2tagTwo = $image2->getTags()->current();
-        $this->assertEquals($image2tagTwo->getName(), 'two', "Unexpected tag name found in image2");
+        $this->assertEquals('two', $image2tagTwo->getName(), "Unexpected tag name found in image2");
         // ...but it should also be the *same* tag as was used
         // for "two" in image1, so the same database id should
         // exist in image2's tags.

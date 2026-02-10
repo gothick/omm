@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Service\MarkdownService;
@@ -10,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\Test\IntegrationTestCase;
 
-class TwigGeneralExtensionTest extends IntegrationTestCase
+final class TwigGeneralExtensionTest extends IntegrationTestCase
 {
     #[\Override]
     protected static function getFixturesDirectory(): string

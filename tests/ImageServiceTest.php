@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\Image;
@@ -17,7 +19,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
-class ImageServiceTest extends TestCase
+final class ImageServiceTest extends TestCase
 {
     /** @var ImageService */
     protected $imageService;
@@ -35,7 +37,7 @@ class ImageServiceTest extends TestCase
 
         $this->neighbourhoodService = $this->createStub(NeighbourhoodService::class);
         $this->neighbourhoodService->method('getNeighbourhood')
-            ->willReturnCallback( function($lat, $lng) {
+            ->willReturnCallback( function(?float $lat, ?float $lng): ?string {
                 // This fakes what the location service does well enough
                 if ($lat === null || $lng === null) {
                     return null;
@@ -122,14 +124,14 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Stars 5.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals(5, $image->getRating(), "Failed to read five-star rating from image.");
+        $this->assertSame(5, $image->getRating(), "Failed to read five-star rating from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
         $image->setName('20190211-ommtest-Stars None.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals(0, $image->getRating(), "Failed to read zero rating from image");
+        $this->assertSame(null, $image->getRating(), "Failed to read zero rating from image");
     }
 
     public function testReadTitle()
@@ -139,7 +141,7 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Title With.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals("Title With", $image->getTitle(), "Failed to read title from image.");
+        $this->assertSame("Title With", $image->getTitle(), "Failed to read title from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -176,7 +178,7 @@ class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Caption With.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertEquals("This is a caption", $image->getDescription(), "Failed to read description from image.");
+        $this->assertSame("This is a caption", $image->getDescription(), "Failed to read description from image.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -196,8 +198,8 @@ class ImageServiceTest extends TestCase
         $result = $image->getLatlng();
         $this->assertIsArray($result, "Latitude/Longitude pair should be in array");
         $this->assertCount(2, $result, "Latitude/Longitude should be two numbers");
-        $this->assertEqualsWithDelta(51.448236285, $result[0], "0.000001", "Latitude seems adrift");
-        $this->assertEqualsWithDelta(-2.6241279266667, $result[1], "0.000001", "Longitude seems adrift");
+        $this->assertEqualsWithDelta(51.448236285, $result[0], 0.000001, "Latitude seems adrift");
+        $this->assertEqualsWithDelta(-2.6241279266667, $result[1], 0.000001, "Longitude seems adrift");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -216,7 +218,7 @@ class ImageServiceTest extends TestCase
 
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image');
+        $this->assertSame('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -234,7 +236,7 @@ class ImageServiceTest extends TestCase
 
         $this->imageService->setPropertiesFromEXIF($image, false);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based neighbourhood lookup.");
+        $this->assertSame('Rome', $result, "setPropertiesFromEXIF should fall back to a GPS-based neighbourhood lookup.");
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -253,7 +255,7 @@ class ImageServiceTest extends TestCase
 
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image using standalone setter');
+        $this->assertSame('Hotwells & Harbourside', $result, 'Failed to read neighbourhood from image using standalone setter');
 
         $image = new Image();
         $image->setMimeType('image/jpeg');
@@ -269,7 +271,7 @@ class ImageServiceTest extends TestCase
 
         $this->imageService->setNeighbourhoodFromEXIF($image);
         $result = $image->getNeighbourhood();
-        $this->assertEquals('Existing', $result, 'Standalone Neighbourhood setter unexpectedly overwrote data.');
+        $this->assertSame('Existing', $result, 'Standalone Neighbourhood setter unexpectedly overwrote data.');
     }
 
     public function testTags()
@@ -339,7 +341,6 @@ class ImageServiceTest extends TestCase
 
         $this->assertNull($image->getTitle());
         $this->assertNull($image->getDescription());
-        $this->assertNull($image->getCapturedAt());
+        $this->assertNotInstanceOf(\DateTimeInterface::class, $image->getCapturedAt());
     }
 }
-

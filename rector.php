@@ -51,7 +51,7 @@ return RectorConfig::configure()
     ->withPreparedSets(codeQuality: true)
     ->withPreparedSets(codingStyle: true)
     ->withPreparedSets(carbon: true)
-    // ->withPreparedSets(phpunitCodeQuality: true)
+    ->withPreparedSets(phpunitCodeQuality: true)
     ->withSkip([
         // I *like* bare variables in strings, and I've
         // always preferred interpolation over concatenation.

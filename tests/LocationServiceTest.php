@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Repository\NeighbourhoodRepository;
@@ -9,11 +11,8 @@ use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
-class LocationServiceTest extends KernelTestCase
+final class LocationServiceTest extends KernelTestCase
 {
-    /** @var NeighbourhoodRepository */
-    private $neighbourhoodRepository;
-
     /** @var NeighbourhoodService */
     private $neighbourhoodService;
 
@@ -23,14 +22,14 @@ class LocationServiceTest extends KernelTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        static::bootKernel();
+        self::bootKernel();
 
         $container = self::getContainer();
 
         $this->databaseTool = $container->get(DatabaseToolCollection::class)->get();
 
-        $this->neighbourhoodRepository = $container->get(NeighbourhoodRepository::class);
-        $this->neighbourhoodService = new NeighbourhoodService($this->neighbourhoodRepository);
+        $neighbourhoodRepository = $container->get(NeighbourhoodRepository::class);
+        $this->neighbourhoodService = new NeighbourhoodService($neighbourhoodRepository);
     }
 
     public function testGetLocationName()

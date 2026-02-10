@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -8,11 +10,8 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
-class WanderControllerTest Extends WebTestCase
+final class WanderControllerTest Extends WebTestCase
 {
-    /** @var AbstractDatabaseTool */
-    private $databaseTool;
-
     /** @var KernelBrowser */
     private $client;
 
@@ -20,8 +19,8 @@ class WanderControllerTest Extends WebTestCase
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient([], ['HTTPS' => $useHttps]);
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->client = self::createClient([], ['HTTPS' => $useHttps]);
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains three wanders:
         //   01-APR-21.GPX
@@ -31,7 +30,7 @@ class WanderControllerTest Extends WebTestCase
         // $wander->setTitle('Test Wander Title for ' . $source->getFilename());
         // $wander->setDescription('Test wander description for ' . $source->getFilename());
 
-        $this->databaseTool->loadFixtures([
+        $databaseTool->loadFixtures([
             \App\DataFixtures\ThreeWanderFixtures::class
         ]);
         //$userRepository = static::$container->get(UserRepository::class);

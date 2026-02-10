@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 // TODO: This file is almost identical to TwigGeneralExtensionTest.php. I think one was a test that we started to create but
 // never finished. We should probably either finish it or delete it to avoid confusion.
 namespace App\Tests;
@@ -14,7 +17,7 @@ use Twig\Test\IntegrationTestCase;
 use App\Service\MarkdownService;
 use App\Service\TagSluggerService;
 
-class TwigMarkdownExtraFilterTest extends IntegrationTestCase
+final class TwigMarkdownExtraFilterTest extends IntegrationTestCase
 {
     #[\Override]
     protected static function getFixturesDirectory(): string
