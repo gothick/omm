@@ -5,12 +5,9 @@
     colors="true" bootstrap="tests/bootstrap.php">
     <php>
         <!--
-            I have decided not to care about deprecations that aren't mine. I'll
-            deal with that when I get up to Symfony 6.
-            https://symfony.com/doc/current/components/phpunit_bridge.html#internal-deprecations
-        -->
         <env name="SYMFONY_DEPRECATIONS_HELPER"
-            value="max[self]=0&amp;quiet[]=indirect&amp;quiet[]=other" />
+            value="max[self]=0&amp;quiet[]=indirect&amp;quiet[]=other" /> -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
