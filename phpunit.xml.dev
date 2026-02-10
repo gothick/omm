@@ -30,7 +30,6 @@
     </groups>
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
-        <bootstrap class="App\Tests\BypassFinalHook"/>
     </extensions>
     <testsuites>
         <testsuite name="Project Test Suite">
