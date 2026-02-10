@@ -13,8 +13,8 @@ class SrcsetRuntime implements RuntimeExtensionInterface
     private $filters = [];
 
     public function __construct(
-        private readonly UploaderHelper $uploaderHelper, 
-        FilterManager $filterManager, 
+        private readonly UploaderHelper $uploaderHelper,
+        FilterManager $filterManager,
         private readonly CacheManager $imagineCacheManager)
     {
         foreach($filterManager->getFilterConfiguration()->all() as $name => $filter) {
@@ -38,7 +38,7 @@ class SrcsetRuntime implements RuntimeExtensionInterface
                 'path' => $this->imagineCacheManager->getBrowserPath($image_asset_path, $filter['filter'])
             ];
         }
-        
+
         // Add original image as srcset option, otherwise it may never be used.
         $srcset[] = ['width' => $image->getDimensions()[0], 'path' => $image_asset_path];
 
