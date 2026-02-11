@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Service\MarkdownService;
@@ -10,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\Test\IntegrationTestCase;
 
-class TwigGeneralExtensionTest extends IntegrationTestCase
+final class TwigGeneralExtensionTest extends IntegrationTestCase
 {
     #[\Override]
     protected static function getFixturesDirectory(): string
@@ -21,11 +23,13 @@ class TwigGeneralExtensionTest extends IntegrationTestCase
     /**
      * Unit tested extensions
      */
+    #[\Override]
     protected function getExtensions(): array
     {
         return [new GeneralExtension()];
     }
 
+    #[\Override]
     protected function getRuntimeLoaders(): array
     {
         return [new FactoryRuntimeLoader([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -8,20 +10,17 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
-class WanderControllerTest Extends WebTestCase
+final class WanderControllerTest extends WebTestCase
 {
-    /** @var AbstractDatabaseTool */
-    private $databaseTool;
-
     /** @var KernelBrowser */
-    private $client = null;
+    private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->client = self::createClient([], ['HTTPS' => $useHttps]);
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains three wanders:
         //   01-APR-21.GPX
@@ -31,8 +30,8 @@ class WanderControllerTest Extends WebTestCase
         // $wander->setTitle('Test Wander Title for ' . $source->getFilename());
         // $wander->setDescription('Test wander description for ' . $source->getFilename());
 
-        $this->databaseTool->loadFixtures([
-            'App\DataFixtures\ThreeWanderFixtures'
+        $databaseTool->loadFixtures([
+            \App\DataFixtures\ThreeWanderFixtures::class
         ]);
         //$userRepository = static::$container->get(UserRepository::class);
         //$this->adminUser = $userRepository->findOneByUsername('admin');
@@ -41,7 +40,7 @@ class WanderControllerTest Extends WebTestCase
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $crawler = $this->client->request('GET', '/wanders');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/wanders');
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame('Wanders');
     }
@@ -50,7 +49,7 @@ class WanderControllerTest Extends WebTestCase
     {
         // :)
         /** @var Crawler */
-        $crawler = $this->client->request('GET', '/wanders');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/wanders');
         $this->assertResponseIsSuccessful();
         // Should be in date order, most recent first
         $this->assertSelectorTextContains('div.wander:nth-child(1) h3 a', 'Test Wander Title for 01-APR-21.GPX', 'April wander missing from index page or in wrong order');

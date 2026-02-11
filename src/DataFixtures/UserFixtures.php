@@ -9,12 +9,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
-    /** @var UserPasswordHasherInterface */
-    private $userPasswordEncoder;
-
-    public function __construct(UserPasswordHasherInterface $userPasswordEncoder)
+    public function __construct(private readonly UserPasswordHasherInterface $userPasswordEncoder)
     {
-        $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
     public function load(ObjectManager $manager): void
@@ -23,6 +19,7 @@ class UserFixtures extends Fixture
         $user->setUsername('admin');
         $user->setPassword($this->userPasswordEncoder->hashPassword($user, 'password123'));
         $user->setRoles(['ROLE_ADMIN']);
+
         $manager->persist($user);
         $manager->flush();
     }

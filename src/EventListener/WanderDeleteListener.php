@@ -9,16 +9,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class WanderDeleteListener
 {
-    /** @var LoggerInterface $logger */
-    private $logger;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(LoggerInterface $logger, GpxService $gpxService)
+    public function __construct(private readonly LoggerInterface $logger, private readonly GpxService $gpxService)
     {
-        $this->logger = $logger;
-        $this->gpxService = $gpxService;
     }
 
     public function preRemove(
@@ -29,7 +21,7 @@ class WanderDeleteListener
         // wander from the related Image first, otherwise we'll break referential
         // integrity.
         $image = $wander->getFeaturedImage();
-        if ($image !== null) {
+        if ($image instanceof \App\Entity\Image) {
             $image->setFeaturingWander(null);
         }
     }

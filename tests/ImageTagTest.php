@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\Image;
@@ -8,11 +10,12 @@ use App\Repository\ImageRepository;
 use App\Service\ImageService;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject;
 use Beelab\TagBundle\Tag\TagInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Translation\Util\ArrayConverter;
 
-class ImageTagTest extends KernelTestCase
+final class ImageTagTest extends KernelTestCase
 {
     /** @var TagInterface */
     private $alphaTag;
@@ -38,17 +41,18 @@ class ImageTagTest extends KernelTestCase
 
         $this->alphaTag = new Tag();
         $this->alphaTag->setName('alpha');
+
         $this->betaTag = new Tag();
         $this->betaTag->setName('beta');
+
         $this->gammaTag = new Tag();
         $this->gammaTag->setName('gamma');
+
         $this->betaUppercaseTag = new Tag();
         $this->betaUppercaseTag->setName('BETA');
     }
 
-    /**
-     * @group tags
-     */
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testGetTags(): void
     {
         $image = new Image();
@@ -68,8 +72,10 @@ class ImageTagTest extends KernelTestCase
 
         $floopy = new Tag();
         $floopy->setName("floopy");
+
         $image = new Image();
         $image->addTag($floopy);
+
         $tags = $image->getTags();
         /** @var TagInterface */
         $hopefullyFloopy = $tags->current();
@@ -77,8 +83,10 @@ class ImageTagTest extends KernelTestCase
 
         $tagAlpha = new Tag();
         $tagAlpha->setName("alpha");
+
         $tagBeta = new Tag();
         $tagBeta->setName("beta");
+
         $image = new Image();
         $image->addTag($tagAlpha);
         $image->addTag($tagBeta);
@@ -95,15 +103,15 @@ class ImageTagTest extends KernelTestCase
             "Couldn't find beta tag"
         );
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testAddTag(): void
     {
         $image = new Image();
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
         $image->addTag($this->betaUppercaseTag);
+
         $tags = $image->getTags();
         // We're expecting three because our tags are case sensitive. I mean, they probably *shouldn't* be, but hey...
         $this->assertCount(3, $tags);
@@ -115,9 +123,8 @@ class ImageTagTest extends KernelTestCase
         $image->addTag(new Tag());
         $this->assertCount(4, $tags);
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testClearTags(): void
     {
         $image = new Image();
@@ -133,9 +140,8 @@ class ImageTagTest extends KernelTestCase
         $image->clearTags();
         $this->assertCount(0, $image->getTags(), "Cleared two tags but don't have zero tags.");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testRemoveTag(): void {
         $image = new Image();
         $image->addTag($this->alphaTag);
@@ -145,13 +151,13 @@ class ImageTagTest extends KernelTestCase
         $image->addTag($this->alphaTag);
         $newAlphaTag = new Tag();
         $newAlphaTag->setName($this->alphaTag->getName());
+
         $image->removeTag($newAlphaTag);
         // Tags are removed when the actual *object* is the same, not when the name is the same.
         $this->assertCount(1, $image->getTags(), "Tags shouldn't be removed by name.");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testHasTag(): void
     {
         // I don't think hasTag is actually used anywhere, but better safe than sorry
@@ -164,9 +170,8 @@ class ImageTagTest extends KernelTestCase
         $newAlphaTag->setName($this->alphaTag->getName());
         $this->assertFalse($image->hasTag($newAlphaTag), "hasTag should compare tags by identity, not just name.");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testSetTags(): void
     {
         $image = new Image();
@@ -182,9 +187,8 @@ class ImageTagTest extends KernelTestCase
         $this->assertCount(1, $image->getTags(), "setTags didn't clear existing tags");
         $this->assertTrue($image->hasTag($this->betaTag), "Resetting tags failed.");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testSetTagsText(): void
     {
         // This is fairly minimal interface, but it's an important part of both how Beelab's tag
@@ -208,23 +212,21 @@ class ImageTagTest extends KernelTestCase
         $this->assertIsArray($names, "Expected an array from getTagNames()");
         $this->assertCount(3, $names, "Set three tags via setTagsText, expected three names back from getTagNames()");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testGetTagsText(): void
     {
         $image = new Image();
         $this->assertIsString($image->getTagsText(), "Expected a string result even if no tags are set.");
-        $this->assertEquals("", $image->getTagsText(), "Expected an empty string if no tags set");
+        $this->assertSame("", $image->getTagsText(), "Expected an empty string if no tags set");
         $image->addTag($this->alphaTag);
         $image->addTag($this->betaTag);
-        $this->assertEquals('alpha, beta', $image->getTagsText(), "Tags were not converted to expected tags text.");
+        $this->assertSame('alpha, beta', $image->getTagsText(), "Tags were not converted to expected tags text.");
         $image->addTag($this->gammaTag);
-        $this->assertEquals('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
+        $this->assertSame('alpha, beta, gamma', $image->getTagsText(), "Tags were not converted to expected tags text.");
     }
-    /**
-     * @group tags
-     */
+
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testGetTagNames(): void
     {
         // GetTagNames is just used by Beelab's tagging system to read back anything set with
@@ -243,19 +245,13 @@ class ImageTagTest extends KernelTestCase
         $this->assertContains('three', $names, "Expected tag 'three' set via setTagsText() to come back from getTagNames()");
     }
 
-    /**
-     * AUTO TAGS
-     */
-
-    /**
-     * @group tags
-     */
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testAutoTags(): void
     {
         $image = new Image();
         $this->assertIsArray($image->getAutoTags(), "Expected no auto tags still to be an array");
         $this->assertEmpty($image->getAutoTags(), "Expected no auto tags to be an empty array");
-        $this->assertEquals(0, $image->getAutoTagsCount(), "Expected empty tags to have a zero count.");
+        $this->assertSame(0, $image->getAutoTagsCount(), "Expected empty tags to have a zero count.");
 
         $image->setAutoTags(null);
         $this->assertIsArray($image->getAutoTags(), "Expected setting Auto Tags to null still to be an array");
@@ -266,64 +262,53 @@ class ImageTagTest extends KernelTestCase
         $this->assertEmpty($image->getAutoTags(), "Expected setting Auto Tags to empty array to result in an empty array");
 
         $image->setAutoTags(['foo', 'bar', 'baz']);
-        $this->assertEquals(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
-        $this->assertEquals(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
+        $this->assertSame(3, $image->getAutoTagsCount(), "Set three auto tags, expected count of 3");
+        $this->assertSame(['foo', 'bar', 'baz'], $image->getAutoTags(), "Expected to get same tags out as we put in.");
         $image->setAutoTags(['foop']);
         /** @var array<string> $tags */
         $tags = $image->getAutoTags();
         $this->assertCount(1, $tags, "Resetting auto tags with a single tag should result in a tag count of one.");
-        $this->assertEquals(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
+        $this->assertSame(1, $image->getAutoTagsCount(), "Resetting to one auto tag should result in getAutoTagsCount() of 1");
     }
 
-    /**
-     * TEXT TAGS
-     */
-
-    /**
-     * @group tags
-     */
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testTextTags(): void
     {
         $image = new Image();
         $this->assertIsArray($image->getTextTags(), "Expected no text tags still to be an array");
         $this->assertEmpty($image->getTextTags(), "Expected no text tags to be an empty array");
-        $this->assertEquals(0, $image->getTextTagsCount(), "Expected empty text tags to have a zero count.");
+        $this->assertSame(0, $image->getTextTagsCount(), "Expected empty text tags to have a zero count.");
 
         $image->setTextTags([]);
         $this->assertIsArray($image->getTextTags(), "Expected setting text Tags to empty array to result in array");
         $this->assertEmpty($image->getTextTags(), "Expected setting text Tags to empty array to result in an empty array");
 
         $image->setTextTags(['foo', 'bar', 'baz']);
-        $this->assertEquals(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
-        $this->assertEquals(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
+        $this->assertSame(3, $image->getTextTagsCount(), "Set three text tags, expected count of 3");
+        $this->assertSame(['foo', 'bar', 'baz'], $image->getTextTags(), "Expected to get same text tags out as we put in.");
         $image->setTextTags(['foop']);
         /** @var array<string> $tags */
         $tags = $image->getTextTags();
         $this->assertCount(1, $tags, "Resetting text tags with a single tag should result in a tag count of one.");
-        $this->assertEquals(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
+        $this->assertSame(1, $image->getTextTagsCount(), "Resetting to one text tag should result in getTextTagsCount() of 1");
     }
 
-    /**
-     * Persistence testing for our manual tags that use Beelabs' tagging system, especially whether
-     * tags are kept unique in the database.
-     */
-
-    /**
-     * @group tags
-    */
+    #[\PHPUnit\Framework\Attributes\Group('tags')]
     public function testSaveTagsAvoidsDuplication(): void
     {
         // We mock the imageservice otherwise it tries to generate URLs etc. based
         // on values we're not bothering to set on Image when persisting/loading:
-        $imageServiceMock = $this->getMockBuilder(ImageService::class)
+        /** @var ImageService&MockObject $imageServiceMock */
+        $imageServiceMock = $this->getStubBuilder(ImageService::class)
             ->disableOriginalConstructor()
-            ->getMock();
-        $container = static::getContainer();
+            ->getStub();
+        $container = self::getContainer();
         $container->set('test.App\Service\ImageService', $imageServiceMock);
 
         $image1 = new Image();
         $image1->setImageUri('https://justfortesting');
         $image1->setTagsText("one,two,three");
+
         $image2 = new Image();
         $image2->setImageUri('https://justfortesting');
         $image2->setTagsText("two,three,four");
@@ -340,7 +325,7 @@ class ImageTagTest extends KernelTestCase
 
         // The first tag of image2 should be "two"...
         $image2tagTwo = $image2->getTags()->current();
-        $this->assertEquals($image2tagTwo->getName(), 'two', "Unexpected tag name found in image2");
+        $this->assertEquals('two', $image2tagTwo->getName(), "Unexpected tag name found in image2");
         // ...but it should also be the *same* tag as was used
         // for "two" in image1, so the same database id should
         // exist in image2's tags.

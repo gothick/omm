@@ -1,38 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Service\MarkdownService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
-class MarkdownServiceTest extends KernelTestCase
+final class MarkdownServiceTest extends KernelTestCase
 {
     /** @var MarkdownService */
     protected $markdownService;
 
-    public static function markdownToTextProvider(): array
+    public static function markdownToTextProvider(): \Iterator
     {
-        return [
-            'null input'    => [null, ''],
-            'empty string'  => ['', ''],
-            'simple text'   => ['This is a test', "This is a test\n"],
-            'formatting'    => ['*This* is a _test_', "This is a test\n"],
-            'link'    => ['*[This](https://gothick.org.uk)* is a _test_', "This is a test\n"],
-            'html'  => ["I'm <em>just</em> testing...", "I'm just testing...\n"],
-            'entities1' => ["I'm just testing & testing", "I'm just testing & testing\n"],
-            'entities2' => ["Not Testing < Testing", "Not Testing < Testing\n"]
-        ];
+        yield 'null input' => [null, ''];
+        yield 'empty string' => ['', ''];
+        yield 'simple text' => ['This is a test', "This is a test\n"];
+        yield 'formatting' => ['*This* is a _test_', "This is a test\n"];
+        yield 'link' => ['*[This](https://gothick.org.uk)* is a _test_', "This is a test\n"];
+        yield 'html' => ["I'm <em>just</em> testing...", "I'm just testing...\n"];
+        yield 'entities1' => ["I'm just testing & testing", "I'm just testing & testing\n"];
+        yield 'entities2' => ["Not Testing < Testing", "Not Testing < Testing\n"];
     }
 
     protected function setUp(): void
     {
-        static::bootKernel();
+        self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $cache = $container->get(TagAwareCacheInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $this->markdownService = new MarkdownService(
             $cache,
@@ -40,9 +41,7 @@ class MarkdownServiceTest extends KernelTestCase
         );
     }
 
-    /**
-     * @dataProvider markdownToTextProvider
-     */
+    #[DataProvider('markdownToTextProvider')]
     public function testMarkdownToText($in, $expected): void
     {
         $this->assertSame(

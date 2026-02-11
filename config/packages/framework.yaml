@@ -9,6 +9,8 @@ framework:
     # https://symfony.com/doc/current/reference/configuration/framework.html#configuration-framework-http_method_override
     http_method_override: true
 
+    annotations: false
+
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
     session:
@@ -16,10 +18,15 @@ framework:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         cookie_secure: auto
         cookie_samesite: lax
-        storage_factory_id: session.storage.factory.native
 
     #esi: true
     #fragments: true
+
+    # This will default to true in the future, but for now we need to explicitly enable it
+    # to get the new behaviour of catching all exceptions and converting them to error
+    # responses. This is important for our API, which relies on exceptions being converted
+    # to JSON responses.
+    handle_all_throwables: true
     php_errors:
         log: true
 

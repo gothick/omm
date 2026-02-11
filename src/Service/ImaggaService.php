@@ -14,17 +14,12 @@ class ImaggaService implements ImageTaggingServiceInterface
     /** @var Client */
     private $guzzle;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
         string $imaggaApiKey,
         string $imaggaApiSecret,
         string $baseUri,
-        EntityManagerInterface $entityManager)
+        private readonly EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
-
         $stack = HandlerStack::create();
         // TODO: Parameterise rate limit
         $stack->push(RateLimiterMiddleware::perSecond(1));
@@ -67,6 +62,7 @@ class ImaggaService implements ImageTaggingServiceInterface
         foreach($imagga_result->result->tags as $tag) {
             $tags[] = $tag->tag->en;
         }
+
         $image->setAutoTags($tags);
         $this->entityManager->persist($image);
         $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.

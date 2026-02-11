@@ -11,7 +11,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -22,16 +22,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 #[Route(path: '/api/', name: 'api_')]
 class ApiController extends AbstractController
 {
-    /** @var bool */
-    var $shouldSetCacheFields;
+    private readonly bool $shouldSetCacheFields;
 
-    public function __construct(string $kernelEnvironment)
+    public function __construct(string $kernelEnvironment, private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Symfony\Component\Routing\RouterInterface $router, private readonly \App\Repository\ImageRepository $imageRepository)
     {
         // TODO: I used to control the caching with annotations (https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/cache.html)
         // but I couldn't find any way of making them environment sensitive, and I didn't want
         // caching in the dev environment. Is there a better way? api-platform did it automatically;
         // maybe you could have a look in their code...
-        $this->shouldSetCacheFields = $kernelEnvironment === 'dev' ? false : true;
+        $this->shouldSetCacheFields = $kernelEnvironment !== 'dev';
     }
 
     private function addCacheHeaders(
@@ -45,6 +44,7 @@ class ApiController extends AbstractController
                 ->setSharedMaxAge($sharedMaxAge)
                 ->setPublic();
         }
+
         return $r;
     }
 
@@ -52,32 +52,30 @@ class ApiController extends AbstractController
      *
      * API: Wander list. Returns a basic list of wanders.
      */
-    #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
-    public function wanderIndex(
-        WanderRepository $wanderRepository,
-        RouterInterface $router
-    ): Response {
-        $wanders = $wanderRepository
+    #[Route(path: 'wanders', name: 'wanders_index', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
+    public function wanderIndex(): Response
+    {
+        $wanders = $this->wanderRepository
             ->standardQueryBuilder()
             ->orderBy('w.startTime', 'asc')
             ->getQuery()
             ->execute();
-
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function (
-            /** @scrutinizer ignore-unused */ $innerObject,
+        $contentUrlCallback = (fn(
+            /** @scrutinizer ignore-unused */
+            $innerObject,
             $outerObject,
-            /** @scrutinizer ignore-unused */ string $attributeName,
-            /** @scrutinizer ignore-unused */ string $format = null,
-            /** @scrutinizer ignore-unused */ array $context = []
-        ) use ($router) {
-            return $router->generate(
-                'wanders_show',
-                ['id' => $outerObject->getId()]
-            );
-        };
-
+            /** @scrutinizer ignore-unused */
+            string $attributeName,
+            /** @scrutinizer ignore-unused */
+            string $format = null,
+            /** @scrutinizer ignore-unused */
+            array $context = []
+        ) => $this->router->generate(
+            'wanders_show',
+            ['id' => $outerObject->getId()]
+        ));
         $response = $this->json(
             $wanders,
             Response::HTTP_OK,
@@ -92,25 +90,26 @@ class ApiController extends AbstractController
         return $this->addCacheHeaders($response);
     }
 
-    #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
+    #[Route(path: 'wanders/{id}', name: 'wanders_show', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
     public function wandersShow(
-        Wander $wander,
-        RouterInterface $router
+        Wander $wander
     ): Response {
         // It's nicer for our JavaScript to be handed the Wander URI on a plate, so we add it
         // to the returned JSON.
-        $contentUrlCallback = function (
-            /** @scrutinizer ignore-unused */ $innerObject,
+        $contentUrlCallback = (fn(
+            /** @scrutinizer ignore-unused */
+            $innerObject,
             $outerObject,
-            /** @scrutinizer ignore-unused */ string $attributeName,
-            /** @scrutinizer ignore-unused */ string $format = null,
-            /** @scrutinizer ignore-unused */ array $context = []
-        ) use ($router) {
-            return $router->generate(
-                'wanders_show',
-                ['id' => $outerObject->getId()]
-            );
-        };
+            /** @scrutinizer ignore-unused */
+            string $attributeName,
+            /** @scrutinizer ignore-unused */
+            string $format = null,
+            /** @scrutinizer ignore-unused */
+            array $context = []
+        ) => $this->router->generate(
+            'wanders_show',
+            ['id' => $outerObject->getId()]
+        ));
 
         $response = $this->json(
             $wander,
@@ -130,16 +129,14 @@ class ApiController extends AbstractController
      *
      * API: Image list. Returns a basic list of images.
      */
-    #[Route(path: 'images', name: 'images_index', methods: ['GET'], format: 'json', condition: "'application/json' in request.getAcceptableContentTypes()")]
-    public function imagesIndex(
-        ImageRepository $imageRepository
-    ): Response {
-        $results = $imageRepository
+    #[Route(path: 'images', name: 'images_index', methods: ['GET'], condition: "'application/json' in request.getAcceptableContentTypes()", format: 'json')]
+    public function imagesIndex(): Response
+    {
+        $results = $this->imageRepository
             ->standardQueryBuilder()
             ->where('i.latlng IS NOT NULL')
             ->getQuery()
             ->execute();
-
         $response = $this->json(
             $results,
             Response::HTTP_OK,

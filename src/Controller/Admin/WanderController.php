@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Repository\WanderRepository;
 use App\Service\GpxService;
 use App\Service\UploadHelper;
@@ -22,27 +23,29 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route(path: '/admin/wanders', name: 'admin_wanders_')]
 class WanderController extends AbstractController
 {
+    public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\GpxService $gpxService, private readonly \App\Service\UploadHelper $uploadHelper, private readonly \Doctrine\Persistence\ManagerRegistry $doctrine)
+    {
+    }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
-        Request $request,
-        WanderRepository $wanderRepository,
-        PaginatorInterface $paginator
+        Request $request
         ): Response
     {
         $filterHasImages = null;
 
         // Customise the query to add an imageCount built-in so we can efficiently
         // (and at all :) ) sort it in our paginator.
-        $qb = $wanderRepository->wandersWithImageCountQueryBuilder();
+        $qb = $this->wanderRepository->wandersWithImageCountQueryBuilder();
 
         if ($request->query->has('hasImages')) {
             $filterHasImages = $request->query->getBoolean('hasImages');
-            $wanderRepository->addWhereHasImages($qb, $filterHasImages);
+            $this->wanderRepository->addWhereHasImages($qb, $filterHasImages);
         }
 
         $query = $qb->getQuery();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
             20
@@ -54,16 +57,15 @@ class WanderController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/backlog.{!_format}', name: 'backlog', methods: ['GET'], format: 'html', requirements: ['_format' => 'html|txt'])]
+    #[Route(path: '/backlog.{!_format}', name: 'backlog', requirements: ['_format' => 'html|txt'], methods: ['GET'], format: 'html')]
     public function backlog(
-        Request $request,
-        WanderRepository $wanderRepository
+        Request $request
     ): Response
     {
-        $qb = $wanderRepository
+        $qb = $this->wanderRepository
             ->standardQueryBuilder()
             ->OrderBy('w.startTime');
-        $wanderRepository->addWhereHasImages($qb, false);
+        $this->wanderRepository->addWhereHasImages($qb, false);
         $wanders = $qb->getQuery()->getResult();
         $response = new Response();
         $format = $request->getRequestFormat();
@@ -78,9 +80,7 @@ class WanderController extends AbstractController
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-            Request $request,
-            GpxService $gpxService,
-            UploadHelper $uploadHelper
+            Request $request
         ): Response
     {
         $wander = new Wander();
@@ -95,20 +95,20 @@ class WanderController extends AbstractController
             $gpxFile = $form->get('gpxFilename')->getData();
 
             if ($gpxFile) {
-                $wander->setGpxFilename($uploadHelper->uploadGpxFile($gpxFile));
+                $wander->setGpxFilename($this->uploadHelper->uploadGpxFile($gpxFile));
             }
 
             $wander = $form->getData();
-            $gpxService->updateWanderFromGpx($wander);
+            $this->gpxService->updateWanderFromGpx($wander);
 
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->persist($wander);
             $entityManager->flush();
             return $this->redirectToRoute('admin_wanders_show', ['id' => $wander->getId()]);
         }
 
         return $this->render('admin/wander/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -127,7 +127,7 @@ class WanderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             // It seems to be safe to redirect to show with an ID even after
             // deletion.
@@ -136,7 +136,7 @@ class WanderController extends AbstractController
 
         return $this->render('admin/wander/edit.html.twig', [
             'wander' => $wander,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -144,7 +144,7 @@ class WanderController extends AbstractController
     public function delete(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $entityManager->remove($wander);
             $entityManager->flush();
         }
@@ -156,11 +156,12 @@ class WanderController extends AbstractController
     public function deleteImages(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete_images'.$wander->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->doctrine->getManager();
             $images = $wander->getImages();
             foreach ($images as $image) {
                 $entityManager->remove($image);
             }
+
             $entityManager->flush();
         }
 

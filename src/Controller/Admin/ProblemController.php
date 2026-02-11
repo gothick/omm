@@ -10,28 +10,26 @@ use App\Service\ProblemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/admin/problems', name: 'admin_problems_')]
 class ProblemController extends AbstractController
 {
+    public function __construct(private readonly \App\Repository\WanderRepository $wanderRepository, private readonly \App\Repository\ImageRepository $imageRepository, private readonly \App\Repository\ProblemRepository $problemRepository, private readonly \App\Service\ProblemService $problemService)
+    {
+    }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function index(
-        WanderRepository $wanderRepository,
-        ImageRepository $imageRepository,
-        ProblemRepository $problemRepository
-        ): Response
+    public function index(): Response
     {
         // Problems that might take time/resources to find, that are
         // popped into a table on specific demand rather than every
         // time we load this page:
-        $builtProblems = $problemRepository->findAll();
-
+        $builtProblems = $this->problemRepository->findAll();
         // TODO: Might be sensible to do everything here into the problems
         // table, depending on how much we add to this.
         // Other issues, found on the fly:
-        $qb = $wanderRepository->createQueryBuilder('w');
-
+        $qb = $this->wanderRepository->createQueryBuilder('w');
         // TODO: This doesn't work, as e.g. keywords being an empty array
         // TODO: Add locations (streets at the moment, etc.)
         $problems = $qb
@@ -79,9 +77,7 @@ class ProblemController extends AbstractController
             ->addOrderBy('w.startTime', 'desc')
             ->getQuery()
             ->getResult();
-
-        $orphans = $imageRepository->findWithNoWander();
-
+        $orphans = $this->imageRepository->findWithNoWander();
         return $this->render('admin/problems/index.html.twig', [
             'problems' => $problems,
             'orphans' => $orphans,
@@ -90,10 +86,10 @@ class ProblemController extends AbstractController
     }
 
     #[Route(path: '/regenerate', name: 'regenerate', methods: ['POST'])]
-    public function regenerateProblems(Request $request, ProblemService $problemService): Response
+    public function regenerateProblems(Request $request): Response
     {
         if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
-            $problemService->createProblemReport();
+            $this->problemService->createProblemReport();
         }
 
         return $this->redirectToRoute('admin_problems_index');
@@ -110,6 +106,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_latlng/wander/{id}', name: 'no_latlng', methods: ['GET'])]
     public function noLatlng(Wander $wander): Response
     {
@@ -117,6 +114,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_neighbourhood/wander/{id}', name: 'no_neighbourhood', methods: ['GET'])]
     public function noNeighbourhood(Wander $wander): Response
     {
@@ -124,6 +122,7 @@ class ProblemController extends AbstractController
             'wander' => $wander
         ]);
     }
+
     #[Route(path: '/no_rating/wander/{id}', name: 'no_rating', methods: ['GET'])]
     public function noRating(Wander $wander): Response
     {
@@ -149,9 +148,9 @@ class ProblemController extends AbstractController
     }
 
     #[Route(path: '/broken_links', name: 'broken_links', methods: ['GET'])]
-    public function brokenLinks(ProblemRepository $problemRepository): Response
+    public function brokenLinks(): Response
     {
-        $problems = $problemRepository->findAll();
+        $problems = $this->problemRepository->findAll();
         return $this->render('admin/problems/broken_links.html.twig', [
             'problems' => $problems
         ]);

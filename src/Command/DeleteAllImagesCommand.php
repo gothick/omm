@@ -9,30 +9,21 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:delete', description: 'Deletes all images.')]
 class DeleteAllImagesCommand extends Command
 {
-    protected static $defaultName = 'images:delete';
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->imageRepository = $imageRepository;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Deletes all Images.')
-            ->setHelp('Deletes all Image entities and their associated uploaded files.');
+        $this->setHelp('Deletes all Image entities and their associated uploaded files.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -53,6 +44,7 @@ class DeleteAllImagesCommand extends Command
             $this->entityManager->remove($image);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

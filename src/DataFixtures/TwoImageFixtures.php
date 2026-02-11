@@ -35,14 +35,15 @@ class TwoImageFixtures extends Fixture implements FixtureGroupInterface
                 $image->setImageFile($uploadedFake);
                 $manager->persist($image);
             }
+
             $manager->flush();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             // Add details, including the user running the process
             $processUser = posix_getpwuid(posix_geteuid());
             $name = $processUser['name'] ?? 'unknown';
             throw new \RuntimeException(
-                'Failed to load TwoImageFixtures: ' . $e->getMessage() .
-                ' (User: ' . $name . ')', 0, $e);
+                'Failed to load TwoImageFixtures: ' . $exception->getMessage() .
+                ' (User: ' . $name . ')', 0, $exception);
         }
     }
 }

@@ -126,13 +126,6 @@ services:
         tags:
             - { name: 'doctrine.orm.entity_listener' }
 
-    # Listens for events that might affect our stats cache on multiple
-    # entity types
-    App\EventListener\StatsCacheClearer:
-        tags:
-            -
-                name: 'doctrine.event_subscriber'
-
     # Store session in database https://symfony.com/doc/current/session/database.html
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
             arguments:

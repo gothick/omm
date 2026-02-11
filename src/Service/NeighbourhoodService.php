@@ -6,13 +6,8 @@ use App\Repository\NeighbourhoodRepository;
 
 class NeighbourhoodService implements NeighbourhoodServiceInterface
 {
-    /** @var NeighbourhoodRepository */
-    private $neighbourhoodRepository;
-
-    public function __construct(
-        NeighbourhoodRepository $neighbourhoodRepository)
+    public function __construct(private readonly NeighbourhoodRepository $neighbourhoodRepository)
     {
-        $this->neighbourhoodRepository = $neighbourhoodRepository;
     }
 
     public function getNeighbourhood(?float $lat, ?float $lng):?string
@@ -20,6 +15,7 @@ class NeighbourhoodService implements NeighbourhoodServiceInterface
         if ($lat === null || $lng === null) {
             return null;
         }
+
         $neighbourhood = $this
             ->neighbourhoodRepository
             ->findByLatlng($lat, $lng);

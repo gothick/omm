@@ -12,40 +12,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'wander:set-image-neighbourhoods', description: 'Updates Neighbourhood field from Exif information for all images for a given wander.')]
 class WanderSetImageNeighbourhoodsCommand extends Command
 {
-    protected static $defaultName = 'wander:set-image-neighbourhoods';
-    protected static $defaultDescription = 'Updates Neighbourhood field from Exif information for all images for a given wander';
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var ImageService */
-    private $imageService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        WanderRepository $wanderRepository,
-        ImageService $imageService,
-        EntityManagerInterface $entityManager
+        private readonly WanderRepository $wanderRepository,
+        private readonly ImageService $imageService,
+        private readonly EntityManagerInterface $entityManager
     )
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->imageService = $imageService;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription(self::$defaultDescription)
-            ->addArgument('id', InputArgument::REQUIRED, 'Wander ID')
-        ;
+        $this->addArgument('id', InputArgument::REQUIRED, 'Wander ID');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -73,6 +56,7 @@ class WanderSetImageNeighbourhoodsCommand extends Command
             $this->entityManager->flush();
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success('Image neighbourhoods updated.');

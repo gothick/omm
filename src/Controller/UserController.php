@@ -9,11 +9,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/user', name: 'user_')]
 class UserController extends AbstractController
 {
+    public function __construct(private readonly \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder)
+    {
+    }
+
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
@@ -27,7 +31,6 @@ class UserController extends AbstractController
     #[Route(path: '/changepassword', name: 'changepassword', methods: ['GET', 'POST'])]
     public function changePassword(
         Request $request,
-        UserPasswordHasherInterface $encoder,
         EntityManagerInterface $entityManager
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -46,7 +49,7 @@ class UserController extends AbstractController
             $info = $form->getData();
             $plainPassword = $info['plainPassword'];
             // TODO: Password strength validation?
-            $password = $encoder->hashPassword($user, $plainPassword);
+            $password = $this->encoder->hashPassword($user, $plainPassword);
             $user->setPassword($password);
             $entityManager->flush();
 
@@ -59,7 +62,7 @@ class UserController extends AbstractController
 
         return $this->render('user/changepassword.html.twig', [
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form
         ]);
     }
 }

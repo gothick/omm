@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         bootstrap="tests/bootstrap.php"
->
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" backupGlobals="false"
+    colors="true" bootstrap="tests/bootstrap.php">
     <php>
         <!--
-            I have decided not to care about deprecations that aren't mine. I'll
-            deal with that when I get up to Symfony 6.
-            https://symfony.com/doc/current/components/phpunit_bridge.html#internal-deprecations
-        -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value='max[self]=0&amp;quiet[]=indirect&amp;quiet[]=other'/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER"
+            value="max[self]=0&amp;quiet[]=indirect&amp;quiet[]=other" /> -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-	    <!-- Should be the *real* path to exiftool on the test environment -->
-	    <env name="TEST_EXIFTOOL_PATH" value="/usr/local/bin/exiftool" />
-        <env name="APP_ENV" value="test" force="true"/>
-        <!-- TODO: Perhaps we could set this in whatever automated test setup script calls phpunit rather
+        <server name="SYMFONY_PHPUNIT_VERSION" value="12.5" />
+        <!-- Should be the *real* path to exiftool on the test environment -->
+        <env name="TEST_EXIFTOOL_PATH" value="/usr/local/bin/exiftool" />
+        <env name="APP_ENV" value="test" force="true" />
+        <!-- TODO: Perhaps we could set this in whatever automated test setup script calls phpunit
+        rather
             than forcing it here; I think this is the only difference between this file and phpunit.xml.dist
             at the moment -->
-        <env name="DATABASE_URL" value="mysql://omm_test:omm_test@test-database:3306/omm_test?serverVersion=5.7" force="true" />
+        <env name="DATABASE_URL"
+            value="mysql://omm_test:omm_test@test-database:3306/omm_test?serverVersion=12.1.2-MariaDB"
+            force="true" />
     </php>
     <groups>
-      <exclude>
-	    <!-- skip over Twig's weird legacy tests -->
-	    <group>legacy</group>
-      </exclude>
+        <exclude>
+            <!-- skip over Twig's weird legacy tests -->
+            <group>legacy</group>
+        </exclude>
     </groups>
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
     <testsuites>
         <testsuite name="Project Test Suite">
-          <directory>tests</directory>
+            <directory>tests</directory>
+            <!-- TODO: Skipping these until we can upgrade to Twig 4, which might
+                  help us get these working with PHPUnit v12
+              -->
+            <exclude>tests/TwigGeneralExtensionTest.php</exclude>
+            <exclude>tests/TwigMarkdownExtraFilterTest.php</exclude>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage>
+        <report>
+            <html outputDirectory="coverage" />
+        </report>
+    </coverage>
+    <source>
+        <include>
             <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
-    <logging>
-        <log type="coverage-html" target="coverage" />
-        <!-- I'd rather just look at the HTML occasionally.
-        <log type="coverage-text" target="php://stdout" />
-        -->
-    </logging>
+        </include>
+    </source>
 </phpunit>

@@ -7,27 +7,14 @@ use App\Repository\ImageRepository;
 use App\Service\LocationTaggingServiceInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class GeolocateImageHandler implements MessageHandlerInterface {
 
-    /** @var LocationTaggingServiceInterface */
-    private $locationTaggingService;
+#[AsMessageHandler]
+class GeolocateImageHandler {
 
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        LocationTaggingServiceInterface $locationTaggingService,
-        ImageRepository $imageRepository,
-        LoggerInterface $logger)
+    public function __construct(private readonly LocationTaggingServiceInterface $locationTaggingService, private readonly ImageRepository $imageRepository, private readonly LoggerInterface $logger)
     {
-        $this->locationTaggingService = $locationTaggingService;
-        $this->imageRepository = $imageRepository;
-        $this->logger = $logger;
     }
 
     public function __invoke(GeolocateImage $geolocateImage): void
@@ -39,6 +26,7 @@ class GeolocateImageHandler implements MessageHandlerInterface {
             if ($imageid === null) {
                 throw new UnrecoverableMessageHandlingException("Image has no ID");
             }
+
             $this->logger->debug("GeolocateImageHandler calling location tagger for image $imageid");
             $this->locationTaggingService->tagImage($image, $geolocateImage->getOverwrite());
         }

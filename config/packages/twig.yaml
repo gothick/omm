@@ -9,6 +9,7 @@ twig:
 
     date:
         timezone: 'Europe/London'
+    file_name_pattern: '*.twig'
 
 when@test:
     twig:

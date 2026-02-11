@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -7,28 +9,25 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-class HomeControllerTest Extends WebTestCase
+final class HomeControllerTest extends WebTestCase
 {
-    /** @var AbstractDatabaseTool */
-    private $databaseTool;
-
     /** @var KernelBrowser */
-    private $client = null;
+    private $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->client = self::createClient([], ['HTTPS' => $useHttps]);
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
 
         // Fixture contains this wander:
         // GPX: 01-APR-21 125735.GPX
         // $wander->setTitle('Single test wander');
         // $wander->setDescription('Single wander description');
 
-        $this->databaseTool->loadFixtures([
-            'App\DataFixtures\SingleWanderFixture'
+        $databaseTool->loadFixtures([
+            \App\DataFixtures\SingleWanderFixture::class
         ]);
         //$userRepository = static::$container->get(UserRepository::class);
         //$this->adminUser = $userRepository->findOneByUsername('admin');
@@ -37,13 +36,13 @@ class HomeControllerTest Extends WebTestCase
     public function testAnythingWorksAtAll(): void
     {
         // :)
-        $crawler = $this->client->request('GET', '/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testShouldHaveOneWander(): void
     {
-        $crawler = $this->client->request('GET', '/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.headerstrip .row .col', 'Total Wanders: 1');
     }

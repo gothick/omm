@@ -11,34 +11,24 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'wander:updatefromgpx',
+    description: 'Updates Wander data (including Google Polyline cache) with GPX information on all wanders.'
+)]
 class WanderUpdateFromGpxCommand extends Command
 {
-    protected static $defaultName = 'wander:updatefromgpx';
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(WanderRepository $wanderRepository, EntityManagerInterface $entityManager, GpxService $gpxService)
+    public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager, private readonly GpxService $gpxService)
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->entityManager = $entityManager;
-        $this->gpxService = $gpxService;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Updates Wander data (including Google Polyline cache) with GPX information on all wanders.')
-            ->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
+        $this->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -60,6 +50,7 @@ class WanderUpdateFromGpxCommand extends Command
             $this->entityManager->persist($wander);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

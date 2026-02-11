@@ -20,28 +20,8 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class StatsService
 {
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var TagAwareCacheInterface */
-    private $cache;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(
-        ImageRepository $imageRepository,
-        WanderRepository $wanderRepository,
-        TagAwareCacheInterface $cache,
-        EntityManagerInterface $entityManager)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly WanderRepository $wanderRepository, private readonly TagAwareCacheInterface $cache, private readonly EntityManagerInterface $entityManager)
     {
-        $this->imageRepository = $imageRepository;
-        $this->wanderRepository = $wanderRepository;
-        $this->cache = $cache;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -49,9 +29,9 @@ class StatsService
      */
     public function getImageStats(): array
     {
-        $stats = $this->cache->get('image_stats', function(ItemInterface $item) {
+        return $this->cache->get('image_stats', function(ItemInterface $item) {
             $item->tag('stats');
-            $imageStats = $this->imageRepository
+            return $this->imageRepository
                 ->createQueryBuilder('i')
                 ->select('COUNT(i.id) as totalCount')
                 ->addSelect('COUNT(i.latlng) as countWithCoords')
@@ -59,9 +39,7 @@ class StatsService
                 ->addSelect('COUNT(i.description) as countWithDescription')
                 ->getQuery()
                 ->getSingleResult();
-            return $imageStats;
         });
-        return $stats;
     }
 
     /**
@@ -90,7 +68,7 @@ class StatsService
      */
     public function getWanderStats(): array
     {
-        $stats = $this->cache->get('wander_stats', function(ItemInterface $item) {
+        return $this->cache->get('wander_stats', function(ItemInterface $item) {
             $item->tag('stats');
 
             $wanderStats = $this->getGeneralWanderStats();
@@ -133,7 +111,6 @@ class StatsService
 
             return $wanderStats;
         });
-        return $stats;
     }
 
     /**
@@ -155,6 +132,7 @@ class StatsService
         $wanderStats['hasWanders'] = $wanderStats['totalCount'] > 0;
         return $wanderStats;
     }
+
     /**
      * @return array<string, mixed>
      */
@@ -183,13 +161,12 @@ class StatsService
             throw new Exception("Got no results when finding duration stats.");
         }
 
-        $overallTimeStats = [
+        return [
             'firstWanderStartTime' => Carbon::parse($row['firstWanderStartTime']),
             'latestWanderStartTime' => Carbon::parse($row['latestWanderStartTime']),
             'totalDuration' => CarbonInterval::seconds((int) $row['totalDuration'])->cascade(),
             'averageDuration'=> CarbonInterval::seconds((int) $row['averageDuration'])->cascade()
         ];
-        return $overallTimeStats;
     }
 
     /**
@@ -228,16 +205,16 @@ class StatsService
 
         for ($rangeStartMonth = $startMonth->copy(); $rangeStartMonth <= $endMonth; $rangeStartMonth->addMonths($periodLengthMonths)) {
             $rangeEndMonth = $rangeStartMonth->copy()->addMonths($periodLengthMonths);
-            $result = $stmt->executeQuery([
-                'start' => $rangeStartMonth,
-                'end' => $rangeEndMonth
-            ]);
+            $stmt->bindValue("start", $rangeStartMonth);
+            $stmt->bindValue("end", $rangeEndMonth);
+            $result = $stmt->executeQuery();
             $row = $result->fetchAssociative();
             if ($row === false) {
                 // It's entirely aggregated, so even if no rows match the WHERE there should always be a row
                 // returned.
                 throw new Exception("Expected to get a row back from the database no matter what with this query.");
             }
+
             $duration = CarbonInterval::seconds((int) $row['total_duration_seconds'])->cascade();
             $periodicStats[] = [
                 'periodType' => $periodType,
@@ -262,6 +239,7 @@ class StatsService
                 'averageDurationInterval' => CarbonInterval::seconds((int) $row['average_duration_seconds'])->cascade(),
             ];
         }
+
         return $periodicStats;
     }
 }

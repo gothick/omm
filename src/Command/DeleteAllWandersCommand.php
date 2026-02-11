@@ -9,29 +9,19 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'wanders:delete', description: 'Deletes all wanders.')]
 class DeleteAllWandersCommand extends Command
 {
-    protected static $defaultName = 'wanders:delete';
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(WanderRepository $wanderRepository, EntityManagerInterface $entityManager)
+    public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Deletes all Wanders.')
-            ->setHelp('Deletes all Wander entities and their associated uploaded files.');
+        $this->setHelp('Deletes all Wander entities and their associated uploaded files.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -54,6 +44,7 @@ class DeleteAllWandersCommand extends Command
             $this->entityManager->remove($wander);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

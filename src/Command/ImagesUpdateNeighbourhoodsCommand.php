@@ -10,37 +10,18 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updateneighbourhoods', description: "Updates images whose neighbourhoods aren't set using our neighbourhood service.")]
 class ImagesUpdateNeighbourhoodsCommand extends Command
 {
-    protected static $defaultName = 'images:updateneighbourhoods';
-    protected static $defaultDescription = "Updates images whose neighbourhoods aren't set using our neighbourhood service.";
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var NeighbourhoodService */
-    private $neighbourhoodService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        ImageRepository $imageRepository,
-        NeighbourhoodService $neighbourhoodService,
-        EntityManagerInterface $entityManager
+        private readonly ImageRepository $imageRepository,
+        private readonly NeighbourhoodService $neighbourhoodService,
+        private readonly EntityManagerInterface $entityManager
     )
     {
-        $this->imageRepository = $imageRepository;
-        $this->neighbourhoodService = $neighbourhoodService;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription(self::$defaultDescription);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -66,8 +47,10 @@ class ImagesUpdateNeighbourhoodsCommand extends Command
             } else {
                 $failure++;
             }
+
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success("Tried to update $total images with neighbourhoods. Success: $success. Failure: $failure.");

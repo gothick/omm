@@ -10,24 +10,15 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class SrcsetRuntime implements RuntimeExtensionInterface
 {
-    /** @var UploaderHelper */
-    private $uploaderHelper;
-    /** @var CacheManager */
-    private $imagineCacheManager;
-
-    private $filters;
+    private $filters = [];
 
     public function __construct(
-        UploaderHelper $uploaderHelper, 
-        FilterManager $filterManager, 
-        CacheManager $imagineCacheManager)
+        private readonly UploaderHelper $uploaderHelper,
+        FilterManager $filterManager,
+        private readonly CacheManager $imagineCacheManager)
     {
-        $this->uploaderHelper = $uploaderHelper;
-        $this->imagineCacheManager = $imagineCacheManager;
-
-        $this->filters = [];
         foreach($filterManager->getFilterConfiguration()->all() as $name => $filter) {
-            if (preg_match('/^srcset/', $name)) {
+            if (preg_match('/^srcset/', (string) $name)) {
                 $width = $filter['filters']['relative_resize']['widen'];
                 $this->filters[] = [
                     'filter' => $name,
@@ -47,18 +38,14 @@ class SrcsetRuntime implements RuntimeExtensionInterface
                 'path' => $this->imagineCacheManager->getBrowserPath($image_asset_path, $filter['filter'])
             ];
         }
-        
+
         // Add original image as srcset option, otherwise it may never be used.
         $srcset[] = ['width' => $image->getDimensions()[0], 'path' => $image_asset_path];
 
-        $srcsetString = implode(', ', array_map(function ($src) {
-            return sprintf(
-                '%s %uw',
-                $src['path'],
-                $src['width']
-            );
-        }, $srcset));
-
-        return $srcsetString;
+        return implode(', ', array_map(fn($src) => sprintf(
+            '%s %uw',
+            $src['path'],
+            $src['width']
+        ), $srcset));
     }
 }

@@ -6,38 +6,31 @@ use App\Message\RecogniseImage;
 use App\Repository\ImageRepository;
 use App\Service\ImageTaggingServiceInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class RecogniseImageHandler implements MessageHandlerInterface {
+#[AsMessageHandler]
+class RecogniseImageHandler {
 
-    /** @var ImageTaggingServiceInterface */
-    private $imageTaggingService;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        ImageTaggingServiceInterface $imageTaggingService,
-        ImageRepository $imageRepository,
-        LoggerInterface $logger)
+    public function __construct(private readonly ImageTaggingServiceInterface $imageTaggingService, private readonly ImageRepository $imageRepository, private readonly LoggerInterface $logger)
     {
-        $this->imageTaggingService = $imageTaggingService;
-        $this->imageRepository = $imageRepository;
-        $this->logger = $logger;
     }
 
     public function __invoke(RecogniseImage $recogniseImage): void
     {
         $this->logger->debug('RecogniseImageHandler invoked');
-        $image = $this->imageRepository->find($recogniseImage->getImageId());
-        $this->logger->debug("RecogniseImageHandler found image with id " . $image->getId());
-        if ($image !== null) {
-            $this->logger->debug("RecogniseImageHandler calling image tagger");
-            $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
+        $imageid = $recogniseImage->getImageId();
+        if ($imageid == null) {
+            throw new \RuntimeException("Image ID from RecogniseImage message is null");
         }
+
+        $image = $this->imageRepository->find($imageid);
+        if ($image == null) {
+            throw new \RuntimeException("Image with ID $imageid not found");
+        }
+
+        $this->logger->debug("RecogniseImageHandler found image with id " . $image->getId());
+        $this->logger->debug("RecogniseImageHandler calling image tagger");
+
+        $this->imageTaggingService->tagImage($image, $recogniseImage->getOverwrite());
     }
 }

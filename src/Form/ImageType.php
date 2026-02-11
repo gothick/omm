@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             //->add('imageFile', VichImageType::class)
@@ -34,10 +34,8 @@ class ImageType extends AbstractType
                 'class' => Wander::class,
                 //'multiple' => true,
                 //'by_reference' => false, // You took this back out when you changed to One-to-Many https://stackoverflow.com/a/35765987/300836
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('w')
-                        ->orderBy('w.startTime', 'DESC');
-                }
+                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('w')
+                    ->orderBy('w.startTime', 'DESC')
             ])
             ->add('rating', ChoiceType::class, [
                 'choices'  => [
@@ -81,12 +79,13 @@ class ImageType extends AbstractType
                     if ($latlngAsString === null) {
                         return null;
                     }
+
                     return explode(',', preg_replace('/\s+/', '', $latlngAsString));
                 }
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Image::class,

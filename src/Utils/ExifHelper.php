@@ -12,12 +12,8 @@ use PHPExif\Exif;
  */
 class ExifHelper implements ExifHelperInterface
 {
-    /** @var Exif */
-    private $exif;
-
-    public function __construct(Exif $exif)
+    public function __construct(private readonly Exif $exif)
     {
-        $this->exif = $exif;
     }
 
     public function getTitle():?string
@@ -26,6 +22,7 @@ class ExifHelper implements ExifHelperInterface
         if ($title === false) {
             return null;
         }
+
         // I cast to string to work around a weird bug in
         // what looks like exiftool, where PHPExif's use
         // of it uses its JSON output, and exiftool's
@@ -34,23 +31,28 @@ class ExifHelper implements ExifHelperInterface
         // JSON.)
         return (string) $title;
     }
+
     public function getDescription():?string
     {
         $description = $this->exif->getCaption();
         if ($description === false) {
             return null;
         }
+
         return (string) $description;
     }
+
     public function getGPS():?array
     {
         $gps = []; // Match the default in our Image entity
         $gps_as_string = $this->exif->getGPS();
         if (is_string($gps_as_string)) {
-            $gps = array_map('doubleval', explode(',', $gps_as_string));
+            $gps = array_map(floatval(...), explode(',', $gps_as_string));
         }
+
         return $gps;
     }
+
     public function getKeywords():?array
     {
         $keywords = $this->exif->getKeywords();
@@ -59,11 +61,14 @@ class ExifHelper implements ExifHelperInterface
             // always return an array.
             $keywords = [ $keywords ];
         }
+
         if (is_array($keywords)) {
             return $keywords;
         }
+
         return []; // Match the default in our Image entity
     }
+
     public function getCreationDate():?\DateTime
     {
         $creationDate = $this->exif->getCreationDate();
@@ -76,8 +81,10 @@ class ExifHelper implements ExifHelperInterface
             $converted->setTimezone(new \DateTimeZone("UTC"));
             return $converted;
         }
+
         return null;
     }
+
     public function getRating():?int
     {
         $raw = $this->exif->getRawData();
@@ -87,8 +94,10 @@ class ExifHelper implements ExifHelperInterface
                 return $rating;
             }
         }
+
         return null;
     }
+
     public function getLocation(): ?string
     {
         $raw = $this->exif->getRawData();
@@ -98,6 +107,7 @@ class ExifHelper implements ExifHelperInterface
                 return $location;
             }
         }
+
         return null;
     }
 }

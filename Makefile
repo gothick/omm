@@ -14,6 +14,9 @@ sf: ## List all Symfony commands
 cc: ## Clear the cache. DID YOU CLEAR YOUR CACHE????
 	@$(CONSOLE) cache:clear
 
+cac: ## Clear ALL caches
+	@$(CONSOLE) cache:pool:clear --all
+
 warmup: ## Warmup the cache
 	@$(CONSOLE) cache:warmup
 
@@ -63,6 +66,9 @@ test:
 # up that way as we're running the webserver in the container as that user.
 testapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec -u www-data app php -dxdebug.mode=coverage bin/phpunit --cache-directory /tmp/phpunitcache --testdox
+
+shellapp:
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app bash
 
 # We're going to be doing this a lot for a while...
 testtags:

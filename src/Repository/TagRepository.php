@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Tag|null findOneBy(array $criteria, array $orderBy = null)
  * @method Tag[]    findAll()
  * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Tag>
  */
 class TagRepository extends ServiceEntityRepository
 {
@@ -22,7 +23,7 @@ class TagRepository extends ServiceEntityRepository
     public function clearAllTags(): void
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('App\Entity\Tag', 'p')->getQuery()->execute();
+        $qb->delete(\App\Entity\Tag::class, 'p')->getQuery()->execute();
     }
 
     // /**

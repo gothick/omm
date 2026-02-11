@@ -20,36 +20,23 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:tag', description: 'Retrieve and apply imagga tags to all images in a Wander')]
 class ImagesTagCommand extends Command
 {
-    protected static $defaultName = 'images:tag';
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var MessageBusInterface */
-    private $messageBus;
-
     public function __construct(
         //Client $imaggaClient,
-        ImaggaService $imaggaService,
-        WanderRepository $wanderRepository,
-        EntityManagerInterface $entityManager,
-        RouterInterface $router,
-        MessageBusInterface $messageBus
+        private readonly WanderRepository $wanderRepository,
+        private readonly MessageBusInterface $messageBus
         )
     {
-        $this->wanderRepository = $wanderRepository;
-        $this->messageBus = $messageBus;
-
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Retrieve and apply imagga tags to all images in a Wander')
             ->addArgument('id', InputArgument::REQUIRED, 'Wander ID')
             // TODO: Add option to overwrite existing tags
             ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing tags')
@@ -82,9 +69,11 @@ class ImagesTagCommand extends Command
                 $progressBar->advance();
                 continue;
             }
+
             $this->messageBus->dispatch(new RecogniseImage($imageId, $overwrite));
             $progressBar->advance();
         }
+
         $progressBar->finish();
 
         $io->success("Tagged the wander's images.");

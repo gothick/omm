@@ -11,19 +11,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class UploadHelper
 {
 
-    /** @var SluggerInterface */
-    private $slugger;
-
-    /** @var string */
-    private $gpxDirectory;
-
-    public function __construct(
-        SluggerInterface $slugger,
-        string $gpxDirectory
-    )
+    public function __construct(private readonly SluggerInterface $slugger, private readonly string $gpxDirectory)
     {
-        $this->slugger = $slugger;
-        $this->gpxDirectory = $gpxDirectory;
     }
 
     public function uploadGpxFile(File $gpxFile): string
@@ -33,6 +22,7 @@ class UploadHelper
         } else {
             $originalFilename = $gpxFile->getFilename();
         }
+
         $safeFilename = $this->slugger->slug(/** @scrutinizer ignore-type */ $originalFilename);
         $newFilename = $safeFilename . '-' . uniqid() . '.' . $gpxFile->guessExtension();
         try {
@@ -41,9 +31,10 @@ class UploadHelper
                 $newFilename
             );
         }
-        catch (FileException $e) {
-            throw new HttpException(500, "Failed finishing GPX upload: " . $e->getMessage());
+        catch (FileException $fileException) {
+            throw new HttpException(500, "Failed finishing GPX upload: " . $fileException->getMessage());
         }
+
         return $newFilename;
     }
 }

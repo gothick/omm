@@ -18,58 +18,57 @@ use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: WanderRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[Table]
-#[Index(name: 'ix_wander_start_time', columns: ['start_time'])]
-class Wander
+#[Index(columns: ['start_time'], name: 'ix_wander_start_time')]
+class Wander implements \Stringable
 {
     #[Groups(['wander:list', 'wander:item'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'string', length: 1024)]
-    private $title;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 1024)]
+    private ?string $title = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $startTime;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $startTime = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $endTime;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endTime = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'string', length: 255)]
-    private $gpxFilename;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255)]
+    private ?string $gpxFilename = null;
 
     #[Groups(['wander:item'])]
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'wander', cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'wander', targetEntity: Image::class, cascade: ['persist'])]
     #[ORM\OrderBy(['capturedAt' => 'ASC', 'id' => 'ASC'])]
     private $images;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $distance;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $distance = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $avgSpeed;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $avgSpeed = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $avgPace;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $avgPace = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $minAltitude;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $minAltitude = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $maxAltitude;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $maxAltitude = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $cumulativeElevationGain;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $cumulativeElevationGain = null;
 
     /**
      * @var string|null
@@ -77,11 +76,11 @@ class Wander
     #[Groups(['wander:list', 'wander:item'])]
     public $contentUrl;
 
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $centroid = [];
 
-    #[ORM\Column(type: 'float', nullable: true)]
-    private $angleFromHome;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT, nullable: true)]
+    private ?float $angleFromHome = null;
 
     public function __construct()
     {
@@ -160,7 +159,7 @@ class Wander
     }
 
     /**
-     * @return Collection|Image[]
+     * @return \Doctrine\Common\Collections\Collection<int, \App\Entity\Image>
      */
     public function getImages(): Collection
     {
@@ -212,9 +211,7 @@ class Wander
      */
     public function getImagesWithNoTags(): Collection
     {
-        return $this->getImages()->filter(function($image) {
-            return $image->getTags()->isEmpty();
-        });
+        return $this->getImages()->filter(fn($image) => $image->getTags()->isEmpty());
     }
 
     /**
@@ -222,9 +219,7 @@ class Wander
      */
     public function getImagesWithNoAutoTags(): Collection
     {
-        return $this->getImages()->filter(function($image) {
-            return $image->getAutoTagsCount() == 0;
-        });
+        return $this->getImages()->filter(fn($image) => $image->getAutoTagsCount() === 0);
     }
 
     public function addImage(Image $image): self
@@ -252,6 +247,7 @@ class Wander
         foreach ($images as $image) {
             $this->removeImage($image);
         }
+
         return $this;
     }
 
@@ -329,12 +325,11 @@ class Wander
 
     public function getDuration(): ?CarbonInterval
     {
-        if (!isset($this->startTime, $this->endTime)) {
+        if (!$this->startTime instanceof \DateTimeInterface && !$this->endTime instanceof \DateTimeInterface) {
             return null;
         }
 
-        $difference = CarbonInterval::instance($this->startTime->diff($this->endTime));
-        return $difference;
+        return CarbonInterval::instance($this->startTime->diff($this->endTime));
     }
 
     /**
@@ -397,20 +392,19 @@ class Wander
     ];
 
     #[Groups(['wander:item'])]
-    #[ORM\OneToOne(targetEntity: Image::class, mappedBy: 'featuringWander', cascade: ['persist'])]
-    private $featuredImage;
+    #[ORM\OneToOne(mappedBy: 'featuringWander', targetEntity: Image::class, cascade: ['persist'])]
+    private ?\App\Entity\Image $featuredImage = null;
 
     #[Groups(['wander:list', 'wander:item'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $googlePolyline;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $googlePolyline = null;
 
     public function getSector(): ?string
     {
-        if ($this->angleFromHome !== null) {
-            if ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0) {
-                return self::$compass[floor($this->angleFromHome / 22.5)];
-            }
+        if ($this->angleFromHome !== null && ($this->angleFromHome >= 0 && $this->angleFromHome < 360.0)) {
+            return self::$compass[floor($this->angleFromHome / 22.5)];
         }
+
         return null;
     }
 
@@ -418,6 +412,7 @@ class Wander
         if ($this->centroid !== null) {
             return implode(", ", $this->centroid);
         }
+
         return null;
     }
 
@@ -432,9 +427,10 @@ class Wander
     public function __toString():string
     {
         $result = $this->title ?? '';
-        if (isset($this->startTime)) {
+        if ($this->startTime instanceof \DateTimeInterface) {
             $result .= ' (' . $this->startTime->format('j M Y') . ')';
         }
+
         return $result;
     }
 
@@ -445,18 +441,18 @@ class Wander
 
     public function hasFeaturedImage(): bool
     {
-        return $this->featuredImage !== null;
+        return $this->featuredImage instanceof \App\Entity\Image;
     }
 
     public function setFeaturedImage(?Image $featuredImage): self
     {
         // unset the owning side of the relation if necessary
-        if ($this->featuredImage !== null) {
+        if ($this->featuredImage instanceof \App\Entity\Image) {
             $this->featuredImage->setFeaturingWander(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($featuredImage !== null && $featuredImage->getFeaturingWander() !== $this) {
+        if ($featuredImage instanceof \App\Entity\Image && $featuredImage->getFeaturingWander() !== $this) {
             $featuredImage->setFeaturingWander($this);
         }
 

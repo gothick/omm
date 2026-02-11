@@ -10,31 +10,26 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(
+    name: 'images:deletenewerthan',
+    description: 'Deletes images newer than a certain id.'
+)]
 class DeleteImagesNewerThanCommand extends Command
 {
-    protected static $defaultName = 'images:deletenewerthan';
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->imageRepository = $imageRepository;
-        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
-    protected function configure():void
+    protected function configure(): void
     {
         $this
-            ->setDescription('Deletes Images newer than a certain id.')
             ->setHelp('Deletes specific Image entities and their associated uploaded files.')
             ->addArgument('id', InputArgument::REQUIRED, 'Image ID. Images with IDs from this ID onward will be deleted.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
@@ -52,6 +47,7 @@ class DeleteImagesNewerThanCommand extends Command
             $output->writeln('Aborting.');
             return Command::SUCCESS; // Well, technically I think it's not a failure.
         }
+
         $output->writeln('Deleting ' . $count . ' images');
 
         $progressBar = new ProgressBar($output, $count);
@@ -61,6 +57,7 @@ class DeleteImagesNewerThanCommand extends Command
             $this->entityManager->remove($image);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
 

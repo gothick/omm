@@ -9,19 +9,8 @@ use Psr\Log\LoggerInterface;
 
 class DummyLocationTaggingService implements LocationTaggingServiceInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger
-    )
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly LoggerInterface $logger)
     {
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -47,10 +36,11 @@ class DummyLocationTaggingService implements LocationTaggingServiceInterface
             $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
             return true;
         }
-        catch (\Throwable $th) {
-            $this->logger->error(static::class . ': Error retrieving address for image ID ' . $image->getId() . ': ' . $th->getMessage());
+        catch (\Throwable $throwable) {
+            $this->logger->error(static::class . ': Error retrieving address for image ID ' . $image->getId() . ': ' . $throwable->getMessage());
             return false;
         }
+
         return false;
     }
 }

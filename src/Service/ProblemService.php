@@ -14,44 +14,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProblemService
 {
-    /** @var ProblemRepository */
-    private $problemRepository;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var MarkdownService */
-    private $markdownService;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var SpellingService */
-    private $spellingService;
-
-    public function __construct(
-        problemRepository $problemRepository,
-        WanderRepository $wanderRepository,
-        ImageRepository $imageRepository,
-        RouterInterface $router,
-        MarkdownService $markdownService,
-        EntityManagerInterface $entityManager,
-        SpellingService $spellingService
-        )
+    public function __construct(private readonly problemRepository $problemRepository, private readonly WanderRepository $wanderRepository, private readonly ImageRepository $imageRepository, private readonly RouterInterface $router, private readonly MarkdownService $markdownService, private readonly EntityManagerInterface $entityManager, private readonly SpellingService $spellingService)
     {
-        $this->problemRepository = $problemRepository;
-        $this->wanderRepository = $wanderRepository;
-        $this->imageRepository = $imageRepository;
-        $this->router = $router;
-        $this->markdownService = $markdownService;
-        $this->entityManager = $entityManager;
-        $this->spellingService = $spellingService;
     }
 
     public function createProblemReport(): void
@@ -75,6 +39,7 @@ class ProblemService
             $uri = $this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $validUris[$uri] = true; // Really I just want a hash that doesn't actually map
         }
+
         $homepage = $this->router->generate('home', [], RouterInterface::ABSOLUTE_URL);
 
         // Okay, now we've got a list of all valid URIs, let's have a look through all our descriptions
@@ -86,13 +51,11 @@ class ProblemService
             // Broken links
             $links  = $this->markdownService->findLinks($description);
             foreach ($links as $link) {
-                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
-                    if (!array_key_exists($link['uri'], $validUris)) {
-                        $problem = new Problem();
-                        $problem->setDescription('Wander ' . $wander->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
-                        $problem->setUri($this->router->generate('wanders_show', [ 'id' => $wander->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
-                        $this->entityManager->persist($problem);
-                    }
+                if (str_starts_with((string) $link['uri'], $homepage) && !array_key_exists($link['uri'], $validUris)) {
+                    $problem = new Problem();
+                    $problem->setDescription('Wander ' . $wander->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
+                    $problem->setUri($this->router->generate('wanders_show', [ 'id' => $wander->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+                    $this->entityManager->persist($problem);
                 }
             }
 
@@ -100,7 +63,7 @@ class ProblemService
             $date = $wander->getStartTime();
             if ($date !== null && Carbon::now()->subWeeks(2)->lessThan($date)) {
                 $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
-                if (count($misspelledWords) > 0) {
+                if ($misspelledWords !== []) {
                     $problem = new Problem();
                     $problem->setDescription('Wander ' . $wander->getId() . ' has potential spelling mistakes: ' . implode(", ", $misspelledWords));
                     $problem->setUri($this->router->generate('wanders_show', [ 'id' => $wander->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
@@ -108,6 +71,7 @@ class ProblemService
                 }
             }
         }
+
         $this->entityManager->flush();
         // ...then Images:
         foreach($images as $image) {
@@ -116,13 +80,11 @@ class ProblemService
             // Broken links
             $links = $this->markdownService->findLinks($image->getDescription());
             foreach ($links as $link) {
-                if (substr($link['uri'], 0, strlen($homepage)) == $homepage) {
-                    if (!array_key_exists($link['uri'], $validUris)) {
-                        $problem = new Problem();
-                        $problem->setDescription('Image ' . $image->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
-                        $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
-                        $this->entityManager->persist($problem);
-                    }
+                if (str_starts_with((string) $link['uri'], $homepage) && !array_key_exists($link['uri'], $validUris)) {
+                    $problem = new Problem();
+                    $problem->setDescription('Image ' . $image->getId() . ' links to invalid URI: ' . $link['uri'] . ' (text is: "' . $link['text'] . '")');
+                    $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+                    $this->entityManager->persist($problem);
                 }
             }
 
@@ -130,7 +92,7 @@ class ProblemService
             $date = $image->getCapturedAt();
             if ($date !== null && Carbon::now()->subWeeks(2)->lessThan($date)) {
                 $misspelledWords = $this->spellingService->checkString($this->markdownService->markdownToText($description));
-                if (count($misspelledWords) > 0) {
+                if ($misspelledWords !== []) {
                     $problem = new Problem();
                     $problem->setDescription('Image ' . $image->getId() . ' has potential spelling mistakes: ' . implode(", ", $misspelledWords));
                     $problem->setUri($this->router->generate('image_show', [ 'id' => $image->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
@@ -138,6 +100,7 @@ class ProblemService
                 }
             }
         }
+
         $this->entityManager->flush();
     }
 }

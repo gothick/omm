@@ -15,16 +15,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class SingleWanderFixture extends Fixture implements FixtureGroupInterface
 {
-    /** @var UploadHelper */
-    private $uploadHelper;
-
-    /** @var GpxService */
-    private $gpxService;
-
-    public function __construct(UploadHelper $uploadHelper, GpxService $gpxService)
+    public function __construct(private readonly UploadHelper $uploadHelper, private readonly GpxService $gpxService)
     {
-        $this->uploadHelper = $uploadHelper;
-        $this->gpxService = $gpxService;
     }
 
     public static function getGroups(): array
@@ -41,9 +33,11 @@ class SingleWanderFixture extends Fixture implements FixtureGroupInterface
         $uploadedFile = $this->uploadHelper->uploadGpxFile(new File($targetPath));
         $wander = new Wander();
         $wander->setGpxFilename($uploadedFile);
+
         $this->gpxService->updateWanderFromGpx($wander);
         $wander->setTitle('Single test wander');
         $wander->setDescription('Single wander description');
+
         $manager->persist($wander);
         $manager->flush();
     }

@@ -5,25 +5,14 @@ namespace App\MessageHandler;
 use App\Message\WarmImageCache;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Service\FilterService;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class WarmImageCacheHandler implements MessageHandlerInterface {
-    /** @var FilterManager  */
-    private $filterManager;
-    /** @var FilterService */
-    private $filterService;
-
-    public function __construct(
-        FilterManager $filterManager,
-        FilterService $filterService)
+#[AsMessageHandler]
+class WarmImageCacheHandler {
+    public function __construct(private readonly FilterManager $filterManager, private readonly FilterService $filterService)
     {
-        $this->filterManager = $filterManager;
-        $this->filterService = $filterService;
     }
 
-    /**
-     * @param WarmImageCache $message
-    */
     public function __invoke(WarmImageCache $message): void
     {
         $path = $message->getPath();

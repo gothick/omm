@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Problem|null findOneBy(array $criteria, array $orderBy = null)
  * @method Problem[]    findAll()
  * @method Problem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Problem>
  */
 class ProblemRepository extends ServiceEntityRepository
 {
@@ -22,7 +23,7 @@ class ProblemRepository extends ServiceEntityRepository
     public function clearAllProblems(): void
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('App\Entity\Problem', 'p')->getQuery()->execute();
+        $qb->delete(\App\Entity\Problem::class, 'p')->getQuery()->execute();
     }
 
     // /**

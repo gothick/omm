@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/experimental', name: 'experimental_')]
 class ExperimentalController extends AbstractController
@@ -14,6 +14,7 @@ class ExperimentalController extends AbstractController
     {
         return $this->render('experimental/index.html.twig');
     }
+
     #[Route(path: '/imagecluster', name: 'imagecluster', methods: ['GET'])]
     public function cluster(): Response
     {

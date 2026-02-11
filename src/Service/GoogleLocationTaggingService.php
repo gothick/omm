@@ -9,27 +9,19 @@ use Psr\Log\LoggerInterface;
 
 class GoogleLocationTaggingService implements LocationTaggingServiceInterface
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     /** @var Geolocation\Geolocation */
     private $client;
 
-    /** @var LoggerInterface */
-    private $logger;
-
     public function __construct(
         string $googleApiKey,
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
     )
     {
         $this->client = new Geolocation\Geolocation(
             $googleApiKey,
             true /* use SSL */
         );
-        $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     /**
@@ -61,12 +53,14 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
                     break;
                 }
             }
+
             if ($routeLongName !== null) {
                 $image->setStreet($routeLongName);
                 $this->entityManager->persist($image);
                 $this->entityManager->flush(); // Calling the API's a lot more overhead; we might as well flush on every image.
                 return true;
             }
+
             return false;
         }
         catch (Geolocation\Exception $e) {
@@ -78,6 +72,7 @@ class GoogleLocationTaggingService implements LocationTaggingServiceInterface
             $this->logger->error('GoogleLocationTaggingService: Error retrieving address for image ID ' . $image->getId() . ': ' . $th->getMessage());
             return false;
         }
+
         return false;
     }
 }

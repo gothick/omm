@@ -15,29 +15,16 @@ class GpxService
 {
     /** @var phpGPX */
     private $phpGpx;
-    /** @var string */
-    private $gpxDirectory;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var array<float> */
-    private $homebaseCoords;
-    /** @var int */
-    private $wanderSimplifierEpsilonMetres;
 
     /**
      * @param array<float> $homebaseCoords
      */
     public function __construct(
-        string $gpxDirectory,
-        LoggerInterface $logger,
-        array $homebaseCoords,
-        int $wanderSimplifierEpsilonMetres
+        private readonly string $gpxDirectory,
+        private array $homebaseCoords,
+        private readonly int $wanderSimplifierEpsilonMetres
     ) {
         $this->phpGpx = new phpGPX();
-        $this->gpxDirectory = $gpxDirectory;
-        $this->logger = $logger;
-        $this->homebaseCoords = $homebaseCoords;
-        $this->wanderSimplifierEpsilonMetres = $wanderSimplifierEpsilonMetres;
     }
 
     /**
@@ -49,6 +36,7 @@ class GpxService
         if (!$filename) {
             throw new \Exception("No GPX file path found in wander.");
         }
+
         return $this->getFullGpxFilePathFromFilename($filename);
     }
 
@@ -63,6 +51,7 @@ class GpxService
         if ($gpx === false) {
             throw new Exception("Couldn't read GPX file from $filename");
         }
+
         return $gpx;
     }
 
@@ -117,9 +106,10 @@ class GpxService
     public function compass(float $x, float $y): float
     {
         // https://www.php.net/manual/en/function.atan2.php#88119
-        if ($x == 0 AND $y == 0) {
+        if ($x == 0 && $y == 0) {
             return 0;
         }
+
         return ($x < 0)
             ? rad2deg(atan2($x, $y)) + 360
             : rad2deg(atan2($x, $y));

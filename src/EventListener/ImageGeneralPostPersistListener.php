@@ -11,16 +11,8 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class ImageGeneralPostPersistListener {
 
-    /** @var MessageBusInterface */
-    private $messageBus;
-
-    /** @var UploaderHelper */
-    private $uploaderHelper;
-
-    public function __construct(MessageBusInterface $messageBus, UploaderHelper $uploaderHelper)
+    public function __construct(private readonly MessageBusInterface $messageBus, private readonly UploaderHelper $uploaderHelper)
     {
-        $this->messageBus = $messageBus;
-        $this->uploaderHelper = $uploaderHelper;
     }
 
     public function postPersist(Image $image): void

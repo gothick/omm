@@ -14,22 +14,15 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class GeneralRuntime implements RuntimeExtensionInterface
 {
-    /** @var MarkdownService */
-    private $markdownService;
-
-    /** @var TagSluggerService */
-    private $slugger;
-
-    public function __construct(MarkdownService $markdownService, TagSluggerService $slugger)
+    public function __construct(private readonly MarkdownService $markdownService, private readonly TagSluggerService $slugger)
     {
-        $this->markdownService = $markdownService;
-        $this->slugger = $slugger;
     }
 
     public function durationToHMS(?DateInterval $interval): string
     {
-        if (!isset($interval))
+        if (!isset($interval)) {
             return "";
+        }
 
         return $interval->format('%hh %im %ss');
     }
@@ -39,6 +32,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if (is_int($rating) && $rating >= 0) {
             return str_repeat('★', $rating);
         }
+
         return "-";
     }
 
@@ -46,10 +40,12 @@ class GeneralRuntime implements RuntimeExtensionInterface
     {
         return Metric::bytes($bytes)->format($format);
     }
+
     public function formatBinaryBytes(int $bytes, string $format = null): string
     {
         return Binary::bytes($bytes)->format($format);
     }
+
     public function markdownToPlainText(?string $markdown): string
     {
         return $this->markdownService->markdownToText($markdown);
@@ -60,6 +56,7 @@ class GeneralRuntime implements RuntimeExtensionInterface
         if ($in === null) {
             return '';
         }
+
         return strip_tags($in, '<sup><hr><em><strong><hr><mark>');
     }
 

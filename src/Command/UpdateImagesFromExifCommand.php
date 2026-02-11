@@ -11,35 +11,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updatefromexif', description: 'Updates all images based on their EXIF information.')]
 class UpdateImagesFromExifCommand extends Command
 {
-    protected static $defaultName = 'images:updatefromexif';
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var ImageService */
-    private $imageService;
-
-    public function __construct(ImageRepository $imageRepository, EntityManagerInterface $entityManager, ImageService $imageService)
+    public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager, private readonly ImageService $imageService)
     {
-        $this->imageRepository = $imageRepository;
-        $this->entityManager = $entityManager;
-        $this->imageService = $imageService;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Updates all images based on their EXIF information.')
             ->setHelp('Updates image properties based on their EXIF information, for all images. Overwrites existing data, except for related wanders.')
             ->addOption('update-wanders', null, InputOption::VALUE_NONE, 'Find related wanders by matching times, and add relationships.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $updateWanders = $input->getOption('update-wanders');
@@ -70,6 +58,7 @@ class UpdateImagesFromExifCommand extends Command
             $this->entityManager->persist($image);
             $progressBar->advance();
         }
+
         $this->entityManager->flush();
         $progressBar->finish();
         $output->writeln("\nImages updated.");

@@ -12,34 +12,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Repository\ImageRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'images:updatelocations', description: 'Add geolocation information to any images missing it, using our location service. This work will be queued, not done immediately.')]
 class ImagesUpdateLocationsCommand extends Command
 {
-    protected static $defaultName = 'images:updatelocations';
-
-    /** @var MessageBusInterface */
-    private $messageBus;
-
-    /** @var ImageRepository */
-    private $imageRepository;
-
     public function __construct(
-        MessageBusInterface $messageBus,
-        ImageRepository $imageRepository
+        private readonly MessageBusInterface $messageBus,
+        private readonly ImageRepository $imageRepository
         )
     {
-        $this->messageBus = $messageBus;
-        $this->imageRepository = $imageRepository;
-
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Add location information to any images missing it, using our location service. This work will be queued, not done immediately.')
-            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations')
-        ;
+        $this->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite existing locations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,9 +46,11 @@ class ImagesUpdateLocationsCommand extends Command
             if ($imageid === null) {
                 throw new \RuntimeException("Image has no ID");
             }
+
             $this->messageBus->dispatch(new GeolocateImage($imageid, $overwrite));
             $progressBar->advance();
         }
+
         $progressBar->finish();
         $io->newLine();
 

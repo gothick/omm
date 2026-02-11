@@ -18,7 +18,6 @@ class SpellingService
 
     /**
      * Returns simple array of potentially-misspelled words, nothing more for now.
-     * @param string $input
      * @return string[]
      */
     public function checkString(string $input): array
@@ -29,6 +28,7 @@ class SpellingService
         foreach ($results as $result) {
             $misspelledWords[] = $result->word;
         }
+
         return $misspelledWords;
     }
 }

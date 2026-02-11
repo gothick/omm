@@ -1,13 +1,14 @@
 #! /usr/local/bin/php
 <?php
 
-function usage_and_exit() {
+function usage_and_exit(): never {
    fwrite(STDERR, "Usage: parseurl.php --component=<port|host> --url=<url>\n");
    exit(42);
 }
 
-$my_args = array();
-for ($i = 1; $i < count($argv); $i++) {
+$my_args = [];
+$counter = count($argv);
+for ($i = 1; $i < $counter; $i++) {
     if (preg_match('/^--([^=]+)=(.*)/', $argv[$i], $match)) {
         $my_args[$match[1]] = $match[2];
     }
@@ -20,11 +21,11 @@ if (!(array_key_exists("component", $my_args) && array_key_exists("url", $my_arg
 $component = $my_args["component"];
 $url = $my_args["url"];
 
-if (!($component == "port" || $component == "host")) {
+if ($component !== "port" && $component !== "host") {
    usage_and_exit();
 };
 
-$result = parse_url($url, $component == "port" ? PHP_URL_PORT : PHP_URL_HOST);
+$result = parse_url($url, $component === "port" ? PHP_URL_PORT : PHP_URL_HOST);
 if ($result === false || $result === null) {
    throw new \Exception("Could not parse {$component} from URL {$url}");
 }

@@ -10,41 +10,41 @@ class Neighbourhood
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'geometry')]
     private $boundingPolygon;
 
-    #[ORM\Column(type: 'integer')]
-    private $objectId;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $objectId = null;
 
-    #[ORM\Column(type: 'integer')]
-    private $miPrinx;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $miPrinx = null;
 
-    #[ORM\Column(type: 'string', length: 2000)]
-    private $wardcd;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 2000)]
+    private ?string $wardcd = null;
 
-    #[ORM\Column(type: 'float')]
-    private $perimeterM;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT)]
+    private ?float $perimeterM = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $msoa11cd;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 100)]
+    private ?string $msoa11cd = null;
 
-    #[ORM\Column(type: 'string', length: 200)]
-    private $geoPoint2d;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 200)]
+    private ?string $geoPoint2d = null;
 
-    #[ORM\Column(type: 'float')]
-    private $areaM2;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::FLOAT)]
+    private ?float $areaM2 = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $lsoa11nm;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 100)]
+    private ?string $lsoa11nm = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $lsoa11cd;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 100)]
+    private ?string $lsoa11cd = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $lsoa11ln;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 100)]
+    private ?string $lsoa11ln = null;
 
     public function getId(): ?int
     {

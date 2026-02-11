@@ -6,13 +6,9 @@ use Exception;
 
 class ThirdPartyAPIException extends Exception
 {
-    /** @var mixed */
-    private $thirdPartyErrorDetails;
-
-    public function __construct(string $errorMessage, int $errorCode, mixed $errorDetails)
+    public function __construct(string $errorMessage, int $errorCode, private readonly mixed $thirdPartyErrorDetails)
     {
         parent::__construct($errorMessage, $errorCode);
-        $this->thirdPartyErrorDetails = $errorDetails;
     }
 
     public function getThirdPartyErrorDetails(): mixed

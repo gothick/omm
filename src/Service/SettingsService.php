@@ -14,7 +14,7 @@ class SettingsService
     public function __construct(SettingsRepository $settingsRepository, EntityManagerInterface $entityManager)
     {
         $settings = $settingsRepository->getTheSingleRow();
-        if ($settings === null) {
+        if (!$settings instanceof \App\Entity\Settings) {
             // Minuscule chance of a race condition but in that worst-case scenario
             // we'll always bring back the first row from the database when we
             // getTheSingleRow() so all that will happen is that an extra row
@@ -23,6 +23,7 @@ class SettingsService
             $entityManager->persist($settings);
             $entityManager->flush();
         }
+
         $this->settings = $settings;
     }
 
@@ -67,10 +68,12 @@ class SettingsService
         if ($size < 0 || $size > 2000) {
             $size = 200;
         }
+
         $email = $this->settings->getGravatarEmail();
         if (!$email) {
             return null;
         }
+
         $hash = md5(trim(strtolower($email)));
         // TODO: This is hardcoded to 200px. Make it configurable.
         return "https://www.gravatar.com/avatar/$hash?s=$size";

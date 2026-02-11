@@ -17,6 +17,7 @@ use Knp\Component\Pager\Paginator;
  * @method Image|null findOneBy(array $criteria, array $orderBy = null)
  * @method Image[]    findAll()
  * @method Image[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Image>
  */
 class ImageRepository extends ServiceEntityRepository
 {
@@ -158,9 +159,10 @@ class ImageRepository extends ServiceEntityRepository
     public function getEarliestImageCaptureDate(): ?DateTimeInterface
     {
         $image = $this->getEarliestImageOrNull();
-        if ($image === null) {
+        if (!$image instanceof \App\Entity\Image) {
             return null;
         }
+
         return $image->getCapturedAt();
     }
 
@@ -183,9 +185,10 @@ class ImageRepository extends ServiceEntityRepository
     public function getLatestImageCaptureDate(): ?DateTimeInterface
     {
         $image = $this->getLatestImageOrNull();
-        if ($image === null) {
+        if (!$image instanceof \App\Entity\Image) {
             return null;
         }
+
         return $image->getCapturedAt();
     }
 
@@ -194,11 +197,12 @@ class ImageRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i')
             ->addOrderBy('i.capturedAt')
             ->addOrderBy('i.id'); // tie-breaker
-        if ($wander !== null) {
+        if ($wander instanceof \App\Entity\Wander) {
             $qb
                 ->andWhere('i.wander = :wander')
                 ->setParameter('wander', $wander);
         }
+
         return $qb;
     }
 
@@ -207,18 +211,19 @@ class ImageRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i')
             ->addOrderBy('i.capturedAt', 'desc')
             ->addOrderBy('i.id', 'desc'); // tie-breaker
-        if ($wander !== null) {
+        if ($wander instanceof \App\Entity\Wander) {
             $qb
                 ->andWhere('i.wander = :wander')
                 ->setParameter('wander', $wander);
         }
+
         return $qb;
     }
 
     public function findNext(Image $image)
     {
         $wander = $image->getWander();
-        if ($wander === null) {
+        if (!$wander instanceof \App\Entity\Wander) {
             return null;
         }
 
@@ -246,7 +251,7 @@ class ImageRepository extends ServiceEntityRepository
     public function findPrev(Image $image)
     {
         $wander = $image->getWander();
-        if ($wander === null) {
+        if (!$wander instanceof \App\Entity\Wander) {
             return null;
         }
 

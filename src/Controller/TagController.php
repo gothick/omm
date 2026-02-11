@@ -13,7 +13,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TagController extends AbstractController
 {
@@ -25,21 +25,25 @@ class TagController extends AbstractController
         'text-tag'      => 'only tags created by automatic text recognition'
     ];
 
-    #[Route(path: '/tag/{tag}/{type}', name: 'tag', methods: ['GET'], requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'])]
+    public function __construct(private readonly \FOS\ElasticaBundle\Finder\PaginatedFinderInterface $wanderFinder, private readonly \Knp\Component\Pager\PaginatorInterface $paginator)
+    {
+    }
+
+    #[Route(path: '/tag/{tag}/{type}', name: 'tag', requirements: ['type' => 'any|hand-tag|auto-tag|text-tag', 'page' => '\d+'], methods: ['GET'])]
     public function index(
         string $tag,
         Request $request,
-        PaginatedFinderInterface $wanderFinder,
-        PaginatorInterface $paginator,
         string $type = "any"
     ): Response {
         $boolQuery = new BoolQuery();
         if ($type === 'hand-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedTags' => ['value' => $tag]]));
         }
+
         if ($type === 'auto-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedAutoTags' => ['value' => $tag]]));
         }
+
         if ($type === 'text-tag' || $type === 'any') {
             $boolQuery->addShould(new Term(['images.slugifiedTextTags' => ['value' => $tag]]));
         }
@@ -56,11 +60,12 @@ class TagController extends AbstractController
         // an overly-broad search will bring back way too many images even with pagination of
         // the outer results.
         $innerHits->setSize(10);
+
         $nested->setInnerHits($innerHits);
 
         $searchDescription = self::$translateParam[$type];
 
-        $results = $wanderFinder->createHybridPaginatorAdapter($nested);
+        $results = $this->wanderFinder->createHybridPaginatorAdapter($nested);
 
         $perPage = 10; // TODO: Parameterise this results-per-page
         $page = $request->query->getInt('page', 1);
@@ -70,7 +75,7 @@ class TagController extends AbstractController
             $page = 1;
         }
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $results,
             $page,
             $perPage

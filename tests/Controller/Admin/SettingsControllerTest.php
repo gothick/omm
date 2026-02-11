@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Admin;
 
 use App\Repository\UserRepository;
@@ -9,47 +11,44 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\User;
 
-class SettingsControllerTest Extends WebTestCase
+final class SettingsControllerTest extends WebTestCase
 {
-    /** @var AbstractDatabaseTool */
-    private $databaseTool;
-
     /** @var KernelBrowser */
-    private $client = null;
+    private $client;
 
     /** @var User */
     private $adminUser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $useHttps = getenv('SECURE_SCHEME') === 'https';
-        $this->client = static::createClient(array(), array('HTTPS' => $useHttps));
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
-        $this->databaseTool->loadFixtures([
-            'App\DataFixtures\UserFixtures'
+        $this->client = self::createClient([], ['HTTPS' => $useHttps]);
+        $databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
+        $databaseTool->loadFixtures([
+            \App\DataFixtures\UserFixtures::class
         ]);
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $this->adminUser = $userRepository->findOneByUsername('admin');
     }
 
     public function testLoggedIn(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseIsSuccessful();
     }
 
     public function testNotLoggedIn(): void
     {
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseRedirects(getenv('SECURE_SCHEME') . '://localhost/login');
     }
 
     public function testClickEdit(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/');
         $this->assertResponseIsSuccessful();
         $this->client->clickLink('Edit settings');
         $this->assertResponseIsSuccessful();
@@ -59,9 +58,9 @@ class SettingsControllerTest Extends WebTestCase
     public function testEditSettings(): void
     {
         $this->client->loginUser($this->adminUser);
-        $crawler = $this->client->request('GET', '/admin/settings/edit');
+        $this->client->request(\Symfony\Component\HttpFoundation\Request::METHOD_GET, '/admin/settings/edit');
         $this->assertResponseIsSuccessful();
-        $crawler = $this->client->submitForm('settings_save', [
+        $this->client->submitForm('settings_save', [
             'settings[siteTitle]' => 'Test Site Title',
             'settings[siteSubtitle]' => 'Test Site Subtitle',
             'settings[twitterHandle]' => 'testTwitterHandle',

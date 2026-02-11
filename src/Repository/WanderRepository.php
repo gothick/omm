@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Wander|null findOneBy(array $criteria, array $orderBy = null)
  * @method Wander[]    findAll()
  * @method Wander[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<\App\Entity\Wander>
  */
 class WanderRepository extends ServiceEntityRepository
 {
@@ -23,9 +24,10 @@ class WanderRepository extends ServiceEntityRepository
         parent::__construct($registry, Wander::class);
     }
 
+    #[\Override]
     public function findAll(): array
     {
-        return $this->findBy(array(), array('startTime' => 'DESC'));
+        return $this->findBy([], ['startTime' => 'DESC']);
     }
 
     public function standardQueryBuilder(): QueryBuilder
@@ -48,14 +50,12 @@ class WanderRepository extends ServiceEntityRepository
         if ($hasImages !== null) {
             return $qb->andWhere('w.images is ' . ($hasImages ? 'not' : '') . ' empty');
         }
+
         return $qb;
     }
 
     /**
      * Used by Elastica to transform results to model
-     *
-     * @param string $entityAlias
-     * @return QueryBuilder
      */
     public function createSearchQueryBuilder(string $entityAlias): QueryBuilder
     {

@@ -31,17 +31,13 @@ use DateTimeInterface;
 #[ORM\EntityListeners([ImageCalculatedFieldSetterListener::class, SearchIndexer::class])]
 #[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
-class Image implements TaggableInterface
+class Image implements TaggableInterface, \Stringable
 {
-    /**
-     *
-     * @var int
-     */
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    private ?int $id = null;
 
     // TODO: We probably don't want this massive field being returned
     // as part of any API response, etc.
@@ -54,61 +50,41 @@ class Image implements TaggableInterface
         mimeType: 'mimeType', originalName: 'originalName', dimensions: 'dimensions')]
     private $imageFile;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $name; // For Vich, not for us. We use Title.
-    /**
-     * @var string|null
-     */
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $name = null;
+
+     // For Vich, not for us. We use Title.
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $title;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $title = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @var int|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $sizeInBytes;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER, nullable: true)]
+    private ?int $sizeInBytes = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $mimeType;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $mimeType = null;
 
-    /**
-     * @var string|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $originalName;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $originalName = null;
 
     /**
      * @var ?array<int>
      */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
     private $dimensions = [];
 
-    /**
-     *
-     * @var \DateTimeInterface|null
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @Assert\AtLeastOneOf({
@@ -126,7 +102,7 @@ class Image implements TaggableInterface
      * @var ?array<float>
      */
     #[Groups(['wander:item', 'image:list'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
     private $latlng = [];
 
     /**
@@ -135,28 +111,19 @@ class Image implements TaggableInterface
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     private $tags;
 
-    /**
-     * @var DateTimeInterface
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private $capturedAt;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $capturedAt = null;
 
-    /**
-     * @var ?int
-     */
     #[Groups(['wander:item'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $rating;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER, nullable: true)]
+    private ?int $rating = null;
 
     // TODO: This @Ignore was here from when this was a many-to-many. Do we still
     // need it?
-    /**
-     * @var ?Wander
-     */
     #[Ignore]
     #[ORM\ManyToOne(targetEntity: Wander::class, inversedBy: 'images')]
-    private $wander;
+    private ?\App\Entity\Wander $wander = null;
 
     public function __construct()
     {
@@ -169,17 +136,15 @@ class Image implements TaggableInterface
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
 
-        if (null !== $imageFile) {
+        if ($imageFile instanceof \Symfony\Component\HttpFoundation\File\File) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = \Carbon\CarbonImmutable::now();
         }
     }
 
@@ -213,10 +178,11 @@ class Image implements TaggableInterface
 
     public function getTitleOrId(): string
     {
-        if ($this->title !== null && $this->title != "") {
+        if ($this->title !== null && $this->title !== "") {
             return $this->title;
         }
-        return (string) "Image " . $this->id;
+
+        return "Image " . $this->id;
     }
 
     public function setTitle(?string $title): self
@@ -308,9 +274,10 @@ class Image implements TaggableInterface
     {
         if ($this->latlng === null ||
             !is_array($this->latlng) ||
-            empty($this->latlng)) {
+            $this->latlng === []) {
             return null;
         }
+
         return $this->latlng[0];
     }
 
@@ -318,9 +285,10 @@ class Image implements TaggableInterface
     {
         if ($this->latlng === null ||
             !is_array($this->latlng) ||
-            empty($this->latlng)) {
+            $this->latlng === []) {
             return null;
         }
+
         return $this->latlng[1];
     }
 
@@ -334,7 +302,7 @@ class Image implements TaggableInterface
 
     public function hasLatlng(): bool
     {
-        return is_array($this->latlng) && count($this->latlng) == 2;
+        return is_array($this->latlng) && count($this->latlng) === 2;
     }
 
     /**
@@ -386,6 +354,7 @@ class Image implements TaggableInterface
         foreach ($tags as $tag) {
             $this->addTag($tag);
         }
+
         return $this;
     }
 
@@ -394,8 +363,15 @@ class Image implements TaggableInterface
 
     public function setTagsText(?string $tagsText): void
     {
-        $this->tagsText = $tagsText;
-        $this->updatedAt = new \DateTimeImmutable();
+        if ($tagsText) {
+            $tags = \array_map(trim(...), \explode(',', $tagsText));
+            $uniqueTags = \array_unique(\array_filter($tags));
+            $this->tagsText = \implode(', ', $uniqueTags);
+        } else {
+            $this->tagsText = $tagsText;
+        }
+
+        $this->updatedAt = \Carbon\CarbonImmutable::now();
     }
 
     public function getTagsText(): ?string
@@ -419,7 +395,7 @@ class Image implements TaggableInterface
      */
     public function getTagNames(): array
     {
-        return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
+        return empty($this->tagsText) ? [] : \array_map(trim(...), explode(',', $this->tagsText));
     }
 
     public function getCapturedAt(): ?\DateTimeInterface
@@ -436,7 +412,7 @@ class Image implements TaggableInterface
 
     public function hasCapturedAt(): bool
     {
-        return $this->capturedAt !== null;
+        return $this->capturedAt instanceof \DateTimeInterface;
     }
 
     public function getWander(): ?Wander
@@ -452,7 +428,7 @@ class Image implements TaggableInterface
 
     public function hasWander(): bool
     {
-        return ($this->wander !== null);
+        return $this->wander instanceof \App\Entity\Wander;
     }
 
     public function getRating(): ?int
@@ -496,25 +472,19 @@ class Image implements TaggableInterface
     /**
      * @var array<string>
      */
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $autoTags = [];
 
-    /**
-     * @var ?string
-     */
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $neighbourhood;
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    private ?string $neighbourhood = null;
 
-    /**
-     * @var ?Wander
-     */
-    #[ORM\OneToOne(targetEntity: Wander::class, inversedBy: 'featuredImage', cascade: ['persist'])]
-    private $featuringWander;
+    #[ORM\OneToOne(inversedBy: 'featuredImage', targetEntity: Wander::class, cascade: ['persist'])]
+    private ?\App\Entity\Wander $featuringWander = null;
 
     /**
      * @var array<string>
      */
-    #[ORM\Column(type: 'array', nullable: true)]
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::ARRAY, nullable: true)]
     private $textTags = [];
 
     #[ORM\Column(length: 512, nullable: true)]
@@ -533,6 +503,7 @@ class Image implements TaggableInterface
     {
         $this->markerImageUri = $markerImageUri;
     }
+
     public function getMarkerImageUri(): ?string {
         return $this->markerImageUri;
     }
@@ -541,6 +512,7 @@ class Image implements TaggableInterface
     {
         $this->mediumImageUri = $mediumImageUri;
     }
+
     public function getMediumImageUri(): ?string
     {
         return $this->mediumImageUri;
@@ -550,6 +522,7 @@ class Image implements TaggableInterface
     {
         $this->imageShowUri = $imageShowUri;
     }
+
     public function getImageShowUri(): ?string
     {
         return $this->imageShowUri;
@@ -570,7 +543,7 @@ class Image implements TaggableInterface
     {
         // TODO: I think we should probably just declare our parameter non-nullable,
         // but I'm not going to try that just yet.
-        $this->autoTags = $autoTags === null ? [] : $autoTags;
+        $this->autoTags = $autoTags ?? [];
         return $this;
     }
 
@@ -586,7 +559,7 @@ class Image implements TaggableInterface
 
     public function hasNeighbourhood(): bool
     {
-        return $this->neighbourhood !== null && $this->neighbourhood <> '';
+        return $this->neighbourhood !== null && $this->neighbourhood !== '';
     }
 
     public function setNeighbourhood(?string $neighbourhood): self
@@ -611,9 +584,10 @@ class Image implements TaggableInterface
     public function setAsFeaturedImage(): void
     {
         $wander = $this->wander;
-        if ($wander === null) {
+        if (!$wander instanceof \App\Entity\Wander) {
             throw new \Exception("Can't call setAsFeaturedImage unless the Image is associated with a Wander.");
         }
+
         $this->setFeaturingWander($wander);
     }
 
@@ -621,12 +595,14 @@ class Image implements TaggableInterface
     public function __toString(): string
     {
         $result = $this->title ?? (string) $this->id;
-        if (isset($this->capturedAt)) {
+        if ($this->capturedAt instanceof \DateTimeInterface) {
             $result .= ' (' . $this->capturedAt->format('j M Y') . ')';
         }
-        if (isset($this->rating)) {
+
+        if ($this->rating !== null) {
             $result .= ' ' . str_repeat('★', $this->rating);
         }
+
         return $result;
     }
 

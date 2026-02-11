@@ -18,56 +18,24 @@ use App\Utils\ExifHelperInterface;
 
 class ImageService {
 
-    /** @var UploaderHelper */
-    private $uploaderHelper;
-
-    /** @var CacheManager */
-    private $imagineCacheManager;
-
-    /** @var UrlGeneratorInterface */
-    private $router;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var WanderRepository */
-    private $wanderRepository;
-
     /** @var Reader */
     private $reader;
 
-    /** @var string */
-    private $imagesDirectory;
-
-    /** @var NeighbourhoodServiceInterface */
-    private $neighbourhoodService;
-
-    /** @var string */
-    private $exiftoolPath;
-
     public function __construct(
-        UploaderHelper $uploaderHelper,
-        CacheManager $imagineCacheManager,
-        UrlGeneratorInterface $router,
-        LoggerInterface $logger,
-        WanderRepository $wanderRepository,
-        NeighbourhoodServiceInterface $neighbourhoodService,
-        string $imagesDirectory,
-        ?string $exiftoolPath)
+        private readonly UploaderHelper $uploaderHelper,
+        private readonly CacheManager $imagineCacheManager,
+        private readonly UrlGeneratorInterface $router,
+        private readonly LoggerInterface $logger,
+        private readonly WanderRepository $wanderRepository,
+        private readonly NeighbourhoodServiceInterface $neighbourhoodService,
+        private readonly string $imagesDirectory,
+        /** @var string */
+        private readonly ?string $exiftoolPath)
     {
-        $this->uploaderHelper = $uploaderHelper;
-        $this->imagineCacheManager = $imagineCacheManager;
-        $this->router = $router;
-        $this->logger = $logger;
-        $this->wanderRepository = $wanderRepository;
-        $this->neighbourhoodService = $neighbourhoodService;
-        $this->imagesDirectory = $imagesDirectory;
-        $this->exiftoolPath = $exiftoolPath;
-
-        if ($exiftoolPath !== null) {
+        if ($this->exiftoolPath !== null) {
             // Will throw if path is wrong
             $adapter = new Exiftool([
-                'toolpath' => $exiftoolPath
+                'toolpath' => $this->exiftoolPath
             ]);
             $this->reader = new Reader($adapter);
         } else {
@@ -104,10 +72,10 @@ class ImageService {
                 $image->setNeighbourhood($exifHelper->getLocation());
             }
         }
-        catch(Exception $e) {
+        catch(Exception $exception) {
             // We've started to rely on the information gathered here, so I think
             // this should be a proper error now.
-            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception('Error getting image Exif information: ' . $exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -138,6 +106,7 @@ class ImageService {
                 // from the GPS co-ordinates.
                 $neighbourhood = $this->neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             }
+
             if ($neighbourhood !== null) {
                 $image->setNeighbourhood($neighbourhood);
             }
@@ -158,10 +127,10 @@ class ImageService {
                 }
             }
         }
-        catch(Exception $e) {
+        catch(Exception $exception) {
             // We've started to rely on the information gathered here, so I think
             // this should be a proper error now.
-            throw new Exception('Error getting image Exif information: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception('Error getting image Exif information: ' . $exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }
