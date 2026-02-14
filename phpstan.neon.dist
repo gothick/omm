@@ -1,4 +1,11 @@
 parameters:
+    level: 6
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
     bootstrapFiles:
-    # If this doesn't work, try maybe vendor/bin/.phpunit/phpunit/vendor/autoload.php
-    - vendor/autoload.php
+        # If this doesn't work, try maybe vendor/bin/.phpunit/phpunit/vendor/autoload.php
+        - vendor/autoload.php
