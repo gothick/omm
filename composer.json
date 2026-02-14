@@ -13,13 +13,17 @@
     {
         "type": "vcs",
         "url": "https://github.com/gothick/BeelabTagBundle"
+    },
+    {
+        "type": "vcs",
+        "url": "https://github.com/gothick/php-speller"
     }
     ],
     "require": {
         "php": ">=8.3.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "beelab/tag-bundle": "2.x-dev",
+        "beelab/tag-bundle": "^2.1-dev",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.0",
@@ -31,15 +35,15 @@
         "jeroendesloovere/geolocation-php-api": "dev-master",
         "guzzlehttp/guzzle": "^7.3",
         "jordanbrauer/unit-converter": "dev-master",
-        "knplabs/knp-paginator-bundle": "^5.3",
+        "knplabs/knp-paginator-bundle": "^5.3 || ^6.0",
         "liip/imagine-bundle": "^2.3",
         "longitude-one/doctrine-spatial": "^5",
-        "mekras/php-speller": "~2.3",
+        "mekras/php-speller": "^2.4",
         "michelf/php-markdown": "^2.0",
         "miljar/php-exif": "^0.6.5",
         "mistic100/randomcolor": "^1.0",
         "nelmio/cors-bundle": "^2.1",
-        "nesbot/carbon": "^2.42",
+        "nesbot/carbon": "^2.42 || ^3.0",
         "phpdocumentor/reflection-docblock": "^5.2",
         "predis/predis": "^3.3",
         "sibyx/phpgpx": "@RC",
@@ -50,40 +54,39 @@
         "symfony/ux-chartjs": "^2.32",
         "symfony/webpack-encore-bundle": "^2.4",
 
-        "symfony/asset": "6.4.*",
-        "symfony/beanstalkd-messenger": "6.4.*",
-        "symfony/browser-kit": "6.4.*",
-        "symfony/console": "6.4.*",
-        "symfony/css-selector": "6.4.*",
-        "symfony/debug-bundle": "6.4.*",
-        "symfony/doctrine-messenger": "6.4.*",
-        "symfony/dotenv": "6.4.*",
-        "symfony/expression-language": "6.4.*",
-        "symfony/form": "6.4.*",
-        "symfony/framework-bundle": "6.4.*",
-        "symfony/http-client": "6.4.*",
-        "symfony/intl": "6.4.*",
-        "symfony/mailer": "6.4.*",
-        "symfony/messenger": "6.4.*",
-        "symfony/mime": "6.4.*",
-        "symfony/notifier": "6.4.*",
-        "symfony/process": "6.4.*",
-        "symfony/property-access": "6.4.*",
-        "symfony/property-info": "6.4.*",
-        "symfony/proxy-manager-bridge": "6.4.*",
-        "symfony/rate-limiter": "6.4.*",
-        "symfony/runtime": "6.4.*",
-        "symfony/security-bundle": "6.4.*",
-        "symfony/serializer": "6.4.*",
-        "symfony/stopwatch": "6.4.*",
-        "symfony/string": "6.4.*",
-        "symfony/translation": "6.4.*",
-        "symfony/twig-bundle": "6.4.*",
-        "symfony/validator": "6.4.*",
-        "symfony/var-dumper": "6.4.*",
-        "symfony/web-link": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*",
-        "symfony/yaml": "6.4.*",
+        "symfony/asset": "7.4.*",
+        "symfony/beanstalkd-messenger": "7.4.*",
+        "symfony/browser-kit": "7.4.*",
+        "symfony/console": "7.4.*",
+        "symfony/css-selector": "7.4.*",
+        "symfony/debug-bundle": "7.4.*",
+        "symfony/doctrine-messenger": "7.4.*",
+        "symfony/dotenv": "7.4.*",
+        "symfony/expression-language": "7.4.*",
+        "symfony/form": "7.4.*",
+        "symfony/framework-bundle": "7.4.*",
+        "symfony/http-client": "7.4.*",
+        "symfony/intl": "7.4.*",
+        "symfony/mailer": "7.4.*",
+        "symfony/messenger": "7.4.*",
+        "symfony/mime": "7.4.*",
+        "symfony/notifier": "7.4.*",
+        "symfony/process": "7.4.*",
+        "symfony/property-access": "7.4.*",
+        "symfony/property-info": "7.4.*",
+        "symfony/rate-limiter": "7.4.*",
+        "symfony/runtime": "7.4.*",
+        "symfony/security-bundle": "7.4.*",
+        "symfony/serializer": "7.4.*",
+        "symfony/stopwatch": "7.4.*",
+        "symfony/string": "7.4.*",
+        "symfony/translation": "7.4.*",
+        "symfony/twig-bundle": "7.4.*",
+        "symfony/validator": "7.4.*",
+        "symfony/var-dumper": "7.4.*",
+        "symfony/web-link": "7.4.*",
+        "symfony/web-profiler-bundle": "7.4.*",
+        "symfony/yaml": "7.4.*",
         "twig/extra-bundle": "^3.4",
         "twig/intl-extra": "^3.1",
         "twig/markdown-extra": "^3.4",
@@ -113,6 +116,11 @@
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
             "symfony/runtime": true
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-rkkf-636k-qjb3"
+            ]
         }
     },
     "autoload": {
@@ -152,7 +160,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.4.*"
+            "require": "7.4.*"
         }
     }
 }
