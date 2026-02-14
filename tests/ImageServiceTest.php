@@ -131,7 +131,7 @@ final class ImageServiceTest extends TestCase
         $image->setName('20190211-ommtest-Stars None.jpg');
 
         $this->imageService->setPropertiesFromEXIF($image, false);
-        $this->assertSame(null, $image->getRating(), "Failed to read zero rating from image");
+        $this->assertNull($image->getRating(), "Failed to read zero rating from image");
     }
 
     public function testReadTitle()

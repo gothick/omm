@@ -13,7 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'images:updatefromexif', description: 'Updates all images based on their EXIF information.')]
+#[AsCommand(name: 'images:updatefromexif', description: 'Updates all images based on their EXIF information.', help: <<<'TXT'
+Updates image properties based on their EXIF information, for all images. Overwrites existing data, except for related wanders.
+TXT)]
 class UpdateImagesFromExifCommand extends Command
 {
     public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager, private readonly ImageService $imageService)
@@ -24,7 +26,6 @@ class UpdateImagesFromExifCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('Updates image properties based on their EXIF information, for all images. Overwrites existing data, except for related wanders.')
             ->addOption('update-wanders', null, InputOption::VALUE_NONE, 'Find related wanders by matching times, and add relationships.');
     }
 

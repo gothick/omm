@@ -11,7 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'wanders:delete', description: 'Deletes all wanders.')]
+#[AsCommand(name: 'wanders:delete', description: 'Deletes all wanders.', help: <<<'TXT'
+Deletes all Wander entities and their associated uploaded files.
+TXT)]
 class DeleteAllWandersCommand extends Command
 {
     public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager)
@@ -21,7 +23,6 @@ class DeleteAllWandersCommand extends Command
 
     protected function configure(): void
     {
-        $this->setHelp('Deletes all Wander entities and their associated uploaded files.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

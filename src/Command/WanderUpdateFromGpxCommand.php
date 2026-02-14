@@ -13,10 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(
-    name: 'wander:updatefromgpx',
-    description: 'Updates Wander data (including Google Polyline cache) with GPX information on all wanders.'
-)]
+#[AsCommand(name: 'wander:updatefromgpx', description: 'Updates Wander data (including Google Polyline cache) with GPX information on all wanders.', help: <<<'TXT'
+Updates Wander from GPX data on all Wanders. Overwrites all existing data.
+TXT)]
 class WanderUpdateFromGpxCommand extends Command
 {
     public function __construct(private readonly WanderRepository $wanderRepository, private readonly EntityManagerInterface $entityManager, private readonly GpxService $gpxService)
@@ -26,7 +25,6 @@ class WanderUpdateFromGpxCommand extends Command
 
     protected function configure(): void
     {
-        $this->setHelp('Updates Wander from GPX data on all Wanders. Overwrites all existing data.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

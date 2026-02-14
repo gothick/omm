@@ -37,6 +37,14 @@ framework:
     request:
         formats:
             rss2: 'application/rss+xml'
+
+    # Property info configuration
+    property_info:
+        enabled: true
+
+        # Registers the constructor extractor.
+        with_constructor_extractor: ~
+
 when@test:
     framework:
         test: true

@@ -83,11 +83,7 @@ class ImageFilterData
 
     public function setEndDate(?DateTimeInterface $endDate): void
     {
-        if (!$endDate instanceof \DateTimeInterface) {
-            $this->endDate = null;
-        } else {
-            $this->endDate = new CarbonImmutable($endDate);
-        }
+        $this->endDate = $endDate instanceof \DateTimeInterface ? new CarbonImmutable($endDate) : null;
     }
 
     public function overrideEndDateFromUrlParam(?string $endDate): void
