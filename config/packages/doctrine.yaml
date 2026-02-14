@@ -23,8 +23,6 @@ doctrine:
         use_savepoints: true
     orm:
         report_fields_where_declared: true
-        controller_resolver:
-            auto_mapping: false
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         validate_xml_mapping: true

@@ -30,6 +30,9 @@ framework:
     php_errors:
         log: true
 
+    #esi: true
+    #fragments: true
+
     request:
         formats:
             rss2: 'application/rss+xml'
