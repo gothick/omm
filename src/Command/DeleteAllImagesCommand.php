@@ -11,17 +11,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'images:delete', description: 'Deletes all images.')]
+#[AsCommand(name: 'images:delete', description: 'Deletes all images.', help: <<<'TXT'
+Deletes all Image entities and their associated uploaded files.
+TXT)]
 class DeleteAllImagesCommand extends Command
 {
     public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this->setHelp('Deletes all Image entities and their associated uploaded files.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

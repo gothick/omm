@@ -47,13 +47,9 @@ class WanderType extends AbstractType
                     'label' => 'GPX track file',
                     'mapped' => false,
                     'constraints' => [
-                        new File([
-                            'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                "application/gpx+xml","text/xml","application/xml","application/octet-stream"
-                            ],
-                            'mimeTypesMessage' =>'Please upload a valid GPX document'
-                        ])
+                        new File(maxSize: '1024k', mimeTypes: [
+                            "application/gpx+xml","text/xml","application/xml","application/octet-stream"
+                        ], mimeTypesMessage: 'Please upload a valid GPX document')
                     ],
                 ]);
         }

@@ -1,7 +1,6 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    csrf_protection: true
 
     # NB: This is what we use for dev, but for staging and production we also
     # call enableHttpMethodParameterOverride() in the reverse proxy creation
@@ -19,9 +18,6 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
-    #esi: true
-    #fragments: true
-
     # This will default to true in the future, but for now we need to explicitly enable it
     # to get the new behaviour of catching all exceptions and converting them to error
     # responses. This is important for our API, which relies on exceptions being converted
@@ -33,6 +29,14 @@ framework:
     request:
         formats:
             rss2: 'application/rss+xml'
+
+    # Property info configuration
+    property_info:
+        enabled: true
+
+        # Registers the constructor extractor.
+        with_constructor_extractor: ~
+
 when@test:
     framework:
         test: true

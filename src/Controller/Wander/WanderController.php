@@ -47,7 +47,7 @@ class WanderController extends AbstractController
         $prev = $this->wanderRepository->findPrev($wander);
         $next = $this->wanderRepository->findNext($wander);
         $page = $request->query->getInt('page', 1);
-        if ($page == 0 || $page > 1024) {
+        if ($page === 0 || $page > 1024) {
             // Someone's probably trying a SQL injection attack or something. I prefer just to
             // ignore them rather than having the pager throw an exception when someone asks for
             // page 0. Redirect back here but without the dodgy parameter.

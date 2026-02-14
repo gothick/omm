@@ -1,19 +1,16 @@
-# EditorConfig helps developers define and maintain consistent
-# coding styles between different editors and IDEs
 # editorconfig.org
 
 root = true
 
 [*]
+<<<<<<< ours
 # Change these settings to your own preference
-indent_style = space
-indent_size = 4
-
-# We recommend you to keep these unchanged
-end_of_line = lf
 charset = utf-8
-trim_trailing_whitespace = true
+end_of_line = lf
+indent_size = 4
+indent_style = space
 insert_final_newline = true
+trim_trailing_whitespace = true
 
 [*.{js,html}]
 indent_style = space
@@ -21,6 +18,8 @@ indent_size = 2
 
 [*.json]
 indent_style = space
+
+[{compose.yaml,compose.*.yaml}]
 indent_size = 2
 
 [*.md]
@@ -72,5 +71,9 @@ indent_style = space
 indent_size = 2
 
 [Dockerfile]
+indent_style = tab
+indent_size = 4
+
+[{Makefile,**.mk}]
 indent_style = tab
 indent_size = 4

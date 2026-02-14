@@ -12,10 +12,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(
-    name: 'images:deletenewerthan',
-    description: 'Deletes images newer than a certain id.'
-)]
+#[AsCommand(name: 'images:deletenewerthan', description: 'Deletes images newer than a certain id.', help: <<<'TXT'
+Deletes specific Image entities and their associated uploaded files.
+TXT)]
 class DeleteImagesNewerThanCommand extends Command
 {
     public function __construct(private readonly ImageRepository $imageRepository, private readonly EntityManagerInterface $entityManager)
@@ -26,7 +25,6 @@ class DeleteImagesNewerThanCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('Deletes specific Image entities and their associated uploaded files.')
             ->addArgument('id', InputArgument::REQUIRED, 'Image ID. Images with IDs from this ID onward will be deleted.');
     }
 
