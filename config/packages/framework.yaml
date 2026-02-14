@@ -1,7 +1,8 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    csrf_protection: true
+    csrf_protection:
+        stateless_token_ids: ['submit', 'authenticate', 'logout']
 
     # NB: This is what we use for dev, but for staging and production we also
     # call enableHttpMethodParameterOverride() in the reverse proxy creation
