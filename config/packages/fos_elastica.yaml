@@ -7,7 +7,7 @@ fos_elastica:
             # the same day I reported it: https://github.com/symfony-cli/symfony-cli/issues/154
             #host: '%env(ELASTICSEARCH_HOST)%'
             #port: '%env(ELASTICSEARCH_PORT)%'
-            url: '%env(ELASTICSEARCH_URL)%'
+            hosts: ['%env(ELASTICSEARCH_URL)%']
     indexes:
         #app:
         #    finder: ~

@@ -9,7 +9,12 @@ when@dev:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: warning
-                channels: ["!event"]
+                channels: ["!event", "!deprecation"]
+            deprecation:
+                type: rotating_file
+                channels: ["deprecation"]
+                path: "%kernel.logs_dir%/%kernel.environment%_deprecations.log"
+                max_files: 10
             console:
                 type: console
                 process_psr_3_messages: false

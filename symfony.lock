@@ -123,12 +123,6 @@
     "evenement/evenement": {
         "version": "v3.0.1"
     },
-    "ezimuel/guzzlestreams": {
-        "version": "3.0.1"
-    },
-    "ezimuel/ringphp": {
-        "version": "1.1.2"
-    },
     "firebase/php-jwt": {
         "version": "v5.2.1"
     },
@@ -250,9 +244,6 @@
     "nikic/php-parser": {
         "version": "v4.10.2"
     },
-    "nyholm/dsn": {
-        "version": "2.0.0"
-    },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
@@ -261,6 +252,18 @@
     },
     "php": {
         "version": "7.4"
+    },
+    "php-http/discovery": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "config/packages/http_discovery.yaml"
+        ]
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -330,9 +333,6 @@
     },
     "react/http": {
         "version": "v1.1.0"
-    },
-    "react/promise": {
-        "version": "v2.8.0"
     },
     "react/promise-stream": {
         "version": "v1.2.0"
@@ -605,9 +605,6 @@
         "version": "v1.20.0"
     },
     "symfony/polyfill-mbstring": {
-        "version": "v1.20.0"
-    },
-    "symfony/polyfill-php73": {
         "version": "v1.20.0"
     },
     "symfony/polyfill-php80": {
