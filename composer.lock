@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93c4bdd075dee6d4dde69694acfacfaa",
+    "content-hash": "542e826833780a59dc7ede40b2f8231f",
     "packages": [
         {
             "name": "beelab/tag-bundle",
@@ -1911,16 +1911,16 @@
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "6.x-dev",
+            "version": "v6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "f073151b258b3f5433fda38eea428898f9dad4d1"
+                "reference": "b69ad24b9765f82985cd760376ec7b32093f6234"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/f073151b258b3f5433fda38eea428898f9dad4d1",
-                "reference": "f073151b258b3f5433fda38eea428898f9dad4d1",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/b69ad24b9765f82985cd760376ec7b32093f6234",
+                "reference": "b69ad24b9765f82985cd760376ec7b32093f6234",
                 "shasum": ""
             },
             "require": {
@@ -2006,9 +2006,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfSymfony/FOSElasticaBundle/issues",
-                "source": "https://github.com/FriendsOfSymfony/FOSElasticaBundle/tree/master"
+                "source": "https://github.com/FriendsOfSymfony/FOSElasticaBundle/tree/v6.6.0"
             },
-            "time": "2025-03-15T11:44:47+00:00"
+            "time": "2025-03-15T11:43:45+00:00"
         },
         {
             "name": "gabrielelana/byte-units",
@@ -15199,7 +15199,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "beelab/tag-bundle": 20,
-        "friendsofsymfony/elastica-bundle": 20,
         "gothick/geotools": 20,
         "jeroendesloovere/geolocation-php-api": 20,
         "jordanbrauer/unit-converter": 20,
