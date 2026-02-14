@@ -45,10 +45,12 @@ COPY phpunit.xml.docker ./phpunit.xml
 COPY ./docker/wait-for-it.sh .
 COPY ./docker/parseurl.php .
 COPY ./docker/entrypoint.sh .
+COPY ./docker/testentrypoint.sh .
 
 RUN chmod +x entrypoint.sh \
 	&& chmod +x wait-for-it.sh \
-	&& chmod +x parseurl.php
+	&& chmod +x parseurl.php \
+	&& chmod +x testentrypoint.sh
 
 RUN mkdir -p /var/www/var \
   	&& chown -R www-data:www-data /var/www/var \

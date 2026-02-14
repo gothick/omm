@@ -65,7 +65,7 @@ test:
 # NB Need to run the php process as www-data to match the file permissions, which are set
 # up that way as we're running the webserver in the container as that user.
 testapp:
-	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec -u www-data app php -dxdebug.mode=coverage bin/phpunit --cache-directory /tmp/phpunitcache --testdox
+	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec -u www-data app ./testentrypoint.sh
 
 shellapp:
 	$(DOCKER_COMP) -f docker-compose.yml -f docker-compose.app.yml exec app bash
