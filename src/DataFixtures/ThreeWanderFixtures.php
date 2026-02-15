@@ -20,7 +20,7 @@ class ThreeWanderFixtures extends Fixture implements FixtureGroupInterface
 
     public static function getGroups(): array
     {
-        return ['wander'];
+        return ['wander', 'threewanderfixtures', 'threewandersandtwoimages'];
     }
 
     public function load(ObjectManager $manager): void

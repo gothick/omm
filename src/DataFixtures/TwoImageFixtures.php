@@ -17,7 +17,7 @@ class TwoImageFixtures extends Fixture implements FixtureGroupInterface
 {
     public static function getGroups(): array
     {
-        return ['image'];
+        return ['image', 'threewandersandtwoimages'];
     }
 
     public function load(ObjectManager $manager): void
