@@ -3,6 +3,6 @@ import "./fontawesome";
 import "@fontsource/archivo";
 
 // start the Stimulus application
-import './bootstrap';
+import './stimulus_bootstrap.js';
 
 require('bootstrap');
