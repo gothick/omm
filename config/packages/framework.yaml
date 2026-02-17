@@ -37,8 +37,18 @@ framework:
         # Registers the constructor extractor.
         with_constructor_extractor: ~
 
+    http_cache: true
+
 when@test:
     framework:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+when@prod:
+    framework:
+        http_cache: true
+
+when@staging:
+    framework:
+        http_cache: true
