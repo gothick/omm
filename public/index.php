@@ -25,14 +25,5 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
 }
 
 return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-    if ('prod' === $kernel->getEnvironment() ||
-        'staging' === $kernel->getEnvironment())
-    {
-        $kernel = new CacheKernel($kernel);
-        // https://symfony.com/doc/current/reference/configuration/framework.html#http-method-override
-        Request::enableHttpMethodParameterOverride();
-    }
-
-    return $kernel;
+    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 };
