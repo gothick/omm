@@ -140,7 +140,7 @@ class WanderController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route(path: '/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Wander $wander): Response
     {
         if ($this->isCsrfTokenValid('delete'.$wander->getId(), $request->request->get('_token'))) {

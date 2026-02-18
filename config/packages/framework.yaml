@@ -2,11 +2,7 @@
 framework:
     secret: '%env(APP_SECRET)%'
 
-    # NB: This is what we use for dev, but for staging and production we also
-    # call enableHttpMethodParameterOverride() in the reverse proxy creation
-    # in index.php as described here:
-    # https://symfony.com/doc/current/reference/configuration/framework.html#configuration-framework-http_method_override
-    http_method_override: true
+    http_method_override: false
 
     annotations: false
 
