@@ -41,8 +41,12 @@ when@test:
 
 when@prod:
     framework:
-        http_cache: true
+        http_cache:
+            enabled: true
+            trace_level: full
 
 when@staging:
     framework:
-        http_cache: true
+        http_cache:
+            enabled: true
+            trace_level: full
