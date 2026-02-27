@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class ImageType extends AbstractType
@@ -83,6 +84,9 @@ class ImageType extends AbstractType
                     return explode(',', preg_replace('/\s+/', '', $latlngAsString));
                 }
             ));
+        $builder
+            ->add('save', SubmitType::class, ['label' => 'Save']);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

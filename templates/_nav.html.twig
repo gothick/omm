@@ -18,7 +18,7 @@
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <a class="nav-item nav-link" href="{{ path('user_index') }}">👤</a>
             <a class="nav-item nav-link" href="{{ path('admin_index') }}">Admin</a>
-            <a class="nav-item nav-link" href="{{ path('app_logout') }}">Log out</a>
+            {{ include('_logout.html.twig') }}
             {% else %}
             <a class="nav-item nav-link" href="{{ path('login') }}">Log in</a>
             {% endif %}

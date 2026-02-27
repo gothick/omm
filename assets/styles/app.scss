@@ -11,11 +11,11 @@
     font-family: Archivo, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-h1, h2, h3, h4, h5, h6, .navbar a {
+h1, h2, h3, h4, h5, h6, .navbar a, .navbar input {
     @include display-font-stack();
 }
 
-.navbar a {
+.navbar a, .navbar input {
     font-size: 1.4rem;
 }
 

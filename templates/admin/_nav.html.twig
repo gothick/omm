@@ -16,7 +16,7 @@
         </div>
         <div class="navbar-nav">
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <a class="nav-item nav-link" href="{{ path('app_logout') }}">Log out</a>
+            {{ include('_logout.html.twig') }}
             {% endif %}
         </div>
     </div>
