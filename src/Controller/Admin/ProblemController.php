@@ -3,16 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Wander;
-use App\Repository\ImageRepository;
-use App\Repository\ProblemRepository;
-use App\Repository\WanderRepository;
-use App\Service\ProblemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 
@@ -96,7 +90,11 @@ class ProblemController extends AbstractController
     public function regenerateProblems(Request $request): Response
     {
         if (!$this->isCsrfTokenValid('problems_regenerate', (string) $request->request->get('_token'))) {
-            throw new BadRequestHttpException('This token is invalid');
+            $this->addFlash(
+                'danger',
+                'Invalid CSRF token. Please try again.'
+            );
+            return $this->redirectToRoute('admin_problems_index');
         }
         $this->problemService->createProblemReport();
         return $this->redirectToRoute('admin_problems_index');
