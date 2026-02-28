@@ -3,6 +3,14 @@
 {% block title %}One-Mile Matt Problems{% endblock %}
 
 {% block body %}
+    {# read and display all flash messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Problems</h1>
     <h2>Broken Links</h2>
     <table class="table">
