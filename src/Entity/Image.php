@@ -490,6 +490,9 @@ class Image implements TaggableInterface, \Stringable
     #[ORM\Column(length: 512, nullable: true)]
     private ?string $street = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $copyright = null;
+
     public function setImageUri(string $imageUri): void
     {
         $this->imageUri = $imageUri;
@@ -644,6 +647,18 @@ class Image implements TaggableInterface, \Stringable
     public function hasStreet(): bool
     {
         return $this->street !== null && $this->street !== '';
+    }
+
+    public function getCopyright(): ?string
+    {
+        return $this->copyright;
+    }
+
+    public function setCopyright(?string $copyright): static
+    {
+        $this->copyright = $copyright;
+
+        return $this;
     }
 }
 

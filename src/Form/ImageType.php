@@ -67,6 +67,7 @@ class ImageType extends AbstractType
                 'widget' => 'choice'
 
             ])
+            ->add('copyright')
         ;
         // Transform latitude, longitude string to/from array
         $builder->get('latlng')

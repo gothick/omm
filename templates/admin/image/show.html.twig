@@ -101,6 +101,10 @@
                 <td>{{ image.updatedAt ? image.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
+                <th>Copyright</th>
+                <td>{{ image.copyright }}</td>
+            </tr>
+            <tr>
                 <td colspan="2">
                 <img class="img-fluid" src="{{ vich_uploader_asset(image, 'imageFile') }}" srcset="{{ image | srcset }}" alt="{{ image.name }}" />
                 </td>
