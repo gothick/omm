@@ -110,4 +110,17 @@ class ExifHelper implements ExifHelperInterface
 
         return null;
     }
+
+    public function getCopyright(): ?string
+    {
+        $raw = $this->exif->getRawData();
+        if (array_key_exists('IPTC:CopyrightNotice', $raw)) {
+            $copyright = $raw['IPTC:CopyrightNotice'];
+            if (is_string($copyright) && !empty($copyright)) {
+                return $copyright;
+            }
+        }
+
+        return null;
+    }
 }
