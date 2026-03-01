@@ -1,3 +1,5 @@
 _security_logout:
+    # This route is used by the Symfony security system to handle logout requests.
+    # See https://symfony.com/blog/new-in-symfony-6-4-simpler-logout
     resource: security.route_loader.logout
     type: service

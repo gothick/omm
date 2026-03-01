@@ -3,14 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Wander;
-use App\Repository\ImageRepository;
-use App\Repository\ProblemRepository;
-use App\Repository\WanderRepository;
-use App\Service\ProblemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
 
 #[Route(path: '/admin/problems', name: 'admin_problems_')]
 class ProblemController extends AbstractController
@@ -85,13 +83,20 @@ class ProblemController extends AbstractController
         ]);
     }
 
+    /* TODO: Maybe use this once it's fixed? #[IsCsrfTokenValid('problems_regenerate')]
+       see: https://github.com/symfony/symfony/issues/57343
+    */
     #[Route(path: '/regenerate', name: 'regenerate', methods: ['POST'])]
     public function regenerateProblems(Request $request): Response
     {
-        if ($this->isCsrfTokenValid('problems_regenerate', $request->request->get('_token'))) {
-            $this->problemService->createProblemReport();
+        if (!$this->isCsrfTokenValid('problems_regenerate', (string) $request->request->get('_token'))) {
+            $this->addFlash(
+                'danger',
+                'Invalid CSRF token. Please try again.'
+            );
+            return $this->redirectToRoute('admin_problems_index');
         }
-
+        $this->problemService->createProblemReport();
         return $this->redirectToRoute('admin_problems_index');
     }
 
