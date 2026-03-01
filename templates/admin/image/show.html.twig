@@ -102,7 +102,7 @@
             </tr>
             <tr>
                 <th>Copyright</th>
-                <td>{{ image.copyright }}</td>
+                <td>{{ image.copyright | stripmosttags | markdown_to_html }}</td>
             </tr>
             <tr>
                 <td colspan="2">

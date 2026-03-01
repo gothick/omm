@@ -99,6 +99,7 @@ class ImageService {
             $image->setLatlng($exifHelper->getGPS());
             $image->setTagsText(implode(",", $exifHelper->getKeywords() ?? []));
             $image->setRating($exifHelper->getRating());
+            $image->setCopyright($exifHelper->getCopyright());
 
             $neighbourhood = $exifHelper->getLocation();
             if ($neighbourhood === null && $image->hasLatlng()) {

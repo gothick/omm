@@ -17,4 +17,6 @@ interface ExifHelperInterface
     public function getCreationDate(): ?\DateTime;
 
     public function getRating(): ?int;
+
+    public function getCopyright(): ?string;
 }
