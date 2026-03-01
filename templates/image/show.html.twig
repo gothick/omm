@@ -108,6 +108,7 @@
                 <a class="keyword texttag" href="{{ path('tag', { 'tag': tag | slugify_tag }) }}">{{ tag }}</a>
                 {% endfor %}
             </p>
+            <p>{{ image.copyright | stripmosttags | markdown_to_html }}</p>
         </div>
     </div>
     <div class="row comments mx-0">
