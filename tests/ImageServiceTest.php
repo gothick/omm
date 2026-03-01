@@ -228,6 +228,24 @@ final class ImageServiceTest extends TestCase
         $this->assertNull($image->getNeighbourhood(), 'Unexpected neighbourhood set from image with no neighbourhood');
     }
 
+    public function testReadCopyright()
+    {
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20210411-ommtest-Everything With.jpg');
+
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $result = $image->getCopyright();
+        $this->assertSame('© Matt Gibson 2020', $result, 'Failed to read copyright from image');
+
+        $image = new Image();
+        $image->setMimeType('image/jpeg');
+        $image->setName('20190211-ommtest-Minimal Metadata.jpg');
+
+        $this->imageService->setPropertiesFromEXIF($image, false);
+        $this->assertNull($image->getCopyright(), 'Unexpected copyright set from image with no copyright');
+    }
+
     public function testSetNeighbourhoodFromLatLng()
     {
         $image = new Image();
