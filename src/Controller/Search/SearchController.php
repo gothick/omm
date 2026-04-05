@@ -2,18 +2,11 @@
 
 namespace App\Controller\Search;
 
-use App\Entity\Image;
-use Elastica\Collapse\InnerHits as CollapseInnerHits;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\InnerHits;
-use Elastica\Query\MatchQuery;
 use Elastica\Query\MultiMatch;
 use Elastica\Query\Nested;
-use Elastica\Query\QueryString;
-use FOS\ElasticaBundle\Finder\FinderInterface;
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +24,6 @@ class SearchController extends AbstractController
     public function index(
         Request $request): Response
     {
-        // $finder = $this->container->get('fos_elastica.finder.app');
-        // TODO: Maybe try combining results from $imageFinder and $wanderFinder?
         $queryString = "";
 
         $form = $this->createFormBuilder(null, [
@@ -47,97 +38,126 @@ class SearchController extends AbstractController
         $pagination = null;
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $queryString = $data['query'];
-            // Nested query to find all wanders with images that match
-            // the text.
-            $nmm = new MultiMatch();
-            $nmm->setQuery($queryString);
-            // TODO By the looks of https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
-            // you might be able to just not setFields and it'll default to * and might catch everything
-            // anyway.
-            $nmm->setFields([
-                'images.title',
-                'images.description',
-                'images.tags',
-                'images.autoTags',
-                'images.textTags',
-                'images.neighbourhood',
-                'images.street'
-            ]);
+            $rawQuery = is_array($data) ? ($data['query'] ?? '') : '';
+            $queryString = is_scalar($rawQuery) ? trim((string) $rawQuery) : '';
 
-            $nested = new Nested();
-            $nested->setPath('images');
-            $nested->setQuery($nmm);
+            if ($queryString !== '') {
+                // Boost results where all terms are present across combined text fields,
+                // but keep any-term matching as a fallback for broader discovery.
+                $imageAllTerms = new MultiMatch();
+                $imageAllTerms->setQuery($queryString);
+                $imageAllTerms->setFields([
+                    'images.title',
+                    'images.description',
+                    'images.neighbourhood',
+                    'images.street'
+                ]);
+                $imageAllTerms->setType('cross_fields');
+                $imageAllTerms->setOperator('and');
+                $imageAllTerms->setParam('boost', 4.0);
 
-            $innerHits = new InnerHits();
-            // We want more than the default three inner hits, as there may be several related
-            // images on a particular wander, but we don't want to bump things up too high otherwise
-            // an overly-broad search will bring back way too many images even with pagination of
-            // the outer results.
-            $innerHits->setSize(10);
-            $innerHits->setHighlight(['fields' => [
-                'images.title' => [
-                    'number_of_fragments' => 0,
-                    'no_match_size' => 1024,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'images.description' => [
-                    'no_match_size' => 1024,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'images.street' => [
-                    'no_match_size' => 1024,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'images.neighbourhood' => [
-                    'no_match_size' => 1024,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ]
-                // We don't need to highlight tag hits, as they're Elasticsearch keywords and will
-                // only be found by an exact match on the search term. We highlight them more simply
-                // just by looking at which ones match $queryString in the twig template.
-            ]]);
-            $nested->setInnerHits($innerHits);
+                $imageAnyTerms = new MultiMatch();
+                $imageAnyTerms->setQuery($queryString);
+                $imageAnyTerms->setFields([
+                    'images.title',
+                    'images.description',
+                    'images.tags',
+                    'images.autoTags',
+                    'images.textTags',
+                    'images.neighbourhood',
+                    'images.street'
+                ]);
 
-            // Combine that with a normal query to find all wanders that
-            // themselves match the text
-            $mm = new MultiMatch();
-            $mm->setQuery($data['query']);
-            $mm->setFields(['title', 'description']);
+                $imageBool = new BoolQuery();
+                $imageBool->addShould($imageAllTerms);
+                $imageBool->addShould($imageAnyTerms);
+                $imageBool->setMinimumShouldMatch(1);
 
-            $bool = new BoolQuery();
-            $bool->addShould($nested);
-            $bool->addShould($mm);
+                $nested = new Nested();
+                $nested->setPath('images');
+                $nested->setQuery($imageBool);
 
-            // Wrap it with an outer query to add highlighting to the
-            // Wander-level query.
-            $searchQuery = new Query();
-            $searchQuery->setQuery($bool);
+                $innerHits = new InnerHits();
+                // We want more than the default three inner hits, as there may be several related
+                // images on a particular wander, but we don't want to bump things up too high otherwise
+                // an overly-broad search will bring back way too many images even with pagination of
+                // the outer results.
+                $innerHits->setSize(10);
+                $innerHits->setHighlight(['fields' => [
+                    'images.title' => [
+                        'number_of_fragments' => 0,
+                        'no_match_size' => 1024,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ],
+                    'images.description' => [
+                        'no_match_size' => 1024,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ],
+                    'images.street' => [
+                        'no_match_size' => 1024,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ],
+                    'images.neighbourhood' => [
+                        'no_match_size' => 1024,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ]
+                    // We don't need to highlight tag hits, as they're Elasticsearch keywords and will
+                    // only be found by an exact match on the search term. We highlight them more simply
+                    // just by looking at which ones match $queryString in the twig template.
+                ]]);
+                $nested->setInnerHits($innerHits);
 
-            $searchQuery->setHighlight(['fields' => [
-                'title' => [
-                    'number_of_fragments' => 0,
-                    'no_match_size' => 1024,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ],
-                'description' => [
-                    'no_match_size' => 200,
-                    'pre_tags' => ['<mark>'],
-                    'post_tags' => ['</mark>']
-                ]
-            ]]);
+                $wanderAllTerms = new MultiMatch();
+                $wanderAllTerms->setQuery($queryString);
+                $wanderAllTerms->setFields(['title', 'description']);
+                $wanderAllTerms->setType('cross_fields');
+                $wanderAllTerms->setOperator('and');
+                $wanderAllTerms->setParam('boost', 4.0);
 
-            $results = $this->wanderFinder->createHybridPaginatorAdapter($searchQuery);
-            $pagination = $this->paginator->paginate(
-                $results,
-                $request->query->getInt('page', 1),
-                10
-            );
+                $wanderAnyTerms = new MultiMatch();
+                $wanderAnyTerms->setQuery($queryString);
+                $wanderAnyTerms->setFields(['title', 'description']);
+
+                $wanderBool = new BoolQuery();
+                $wanderBool->addShould($wanderAllTerms);
+                $wanderBool->addShould($wanderAnyTerms);
+                $wanderBool->setMinimumShouldMatch(1);
+
+                $bool = new BoolQuery();
+                $bool->addShould($nested);
+                $bool->addShould($wanderBool);
+                $bool->setMinimumShouldMatch(1);
+
+                // Wrap it with an outer query to add highlighting to the
+                // Wander-level query.
+                $searchQuery = new Query();
+                $searchQuery->setQuery($bool);
+
+                $searchQuery->setHighlight(['fields' => [
+                    'title' => [
+                        'number_of_fragments' => 0,
+                        'no_match_size' => 1024,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ],
+                    'description' => [
+                        'no_match_size' => 200,
+                        'pre_tags' => ['<mark>'],
+                        'post_tags' => ['</mark>']
+                    ]
+                ]]);
+
+                $results = $this->wanderFinder->createHybridPaginatorAdapter($searchQuery);
+                $pagination = $this->paginator->paginate(
+                    $results,
+                    $request->query->getInt('page', 1),
+                    10
+                );
+            }
         }
 
         return $this->render('search/index.html.twig', [
