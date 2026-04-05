@@ -7,7 +7,7 @@ RUN a2enmod rewrite
 RUN apt-get update \
   	&& apt-get install -y libzip-dev git wget exiftool sudo --no-install-recommends \
   	&& apt-get clean \
-	&& curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+	&& curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 	&& apt-get install -y nodejs \
 	&& curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null \
 	&& echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list \
