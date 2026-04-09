@@ -16,3 +16,8 @@ knp_paginator:
         sortable: '@KnpPaginator/Pagination/bootstrap_v5_fa_sortable_link.html.twig'
         filtration: '@KnpPaginator/Pagination/bootstrap_v5_filtration.html.twig'  # filters template
     remove_first_page_param: true # Removes ?page=1
+
+when@test:
+    knp_paginator:
+        default_options:
+            default_limit: 2 # Reduce items per page so we get pagination even if we only have a few items in the test DB.

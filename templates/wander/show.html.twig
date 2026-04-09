@@ -20,6 +20,9 @@
     <meta property="og:image" content="{{ vich_uploader_asset(wander.featuredImage) | imagine_filter('open_graph_image') }}" />
     {% endif %}
 {% endblock %}
+{% block canonical %}
+    {{ knp_pagination_rel_links(image_pagination) }}
+{% endblock %}
 {% block container %}<div class="container-xl px-0">{% endblock %}
 {% block body %}
     <div class="row wander mx-0">
