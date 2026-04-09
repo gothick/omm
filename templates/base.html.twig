@@ -18,9 +18,9 @@
         <title>{% block title %}{{ settings.siteTitle }}—{{ settings.siteSubtitle }}{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-        {{ encore_entry_link_tags('app') }}
-        {% block twittercard %}{% endblock %}
         {% endblock %}
+        {% block twittercard %}{% endblock %}
+        {% block canonical %}{% endblock %}
     </head>
     <body>
         {% block container %}<div class="{% block containerclass %}default-container{% endblock %} container-xl d-flex h-100 flex-column px-0">{% endblock %}
