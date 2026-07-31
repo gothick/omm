@@ -36,13 +36,14 @@ final class UserControllerTest extends WebTestCase
     {
         $this->client->loginUser($this->adminUser);
         $originalHash = $this->adminUser->getPassword();
-        $this->client->request(Request::METHOD_GET, '/user/changepassword');
+        $crawler = $this->client->request(Request::METHOD_GET, '/user/changepassword');
         $this->assertResponseIsSuccessful();
 
-        $this->client->submitForm('user_change_password_save', [
+        $form = $crawler->filter('form')->form([
             'user_change_password[plainPassword][first]' => '',
             'user_change_password[plainPassword][second]' => '',
         ]);
+        $this->client->submit($form);
 
         $this->assertResponseIsSuccessful();
 
