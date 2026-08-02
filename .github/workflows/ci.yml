@@ -110,7 +110,7 @@ jobs:
           cache: yarn
 
       - name: Install JS dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts
 
       # base.html.twig calls encore_entry_link_tags()/encore_entry_script_tags(),
       # which need public/build/entrypoints.json (git-ignored, Webpack Encore
