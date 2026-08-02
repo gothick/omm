@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201126220805 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -25,6 +26,7 @@ final class Version20201126220805 extends AbstractMigration
         $this->addSql('ALTER TABLE wander_image ADD CONSTRAINT FK_69C7253A3DA5256D FOREIGN KEY (image_id) REFERENCES image (id) ON DELETE CASCADE');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

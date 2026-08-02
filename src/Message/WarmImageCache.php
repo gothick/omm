@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Message;
 
 // Basically https://github.com/liip/LiipImagineBundle/issues/1193#issuecomment-793849806

@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201114163020 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20201114163020 extends AbstractMigration
         $this->addSql("INSERT INTO settings (site_title, site_subtitle, site_about) VALUES ('One-Mile Matt', 'Wanders of a Bristol Geek', 'TODO: Edit this About text')");
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

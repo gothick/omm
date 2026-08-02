@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Wander;
@@ -96,6 +98,7 @@ class ProblemController extends AbstractController
             );
             return $this->redirectToRoute('admin_problems_index');
         }
+
         $this->problemService->createProblemReport();
         return $this->redirectToRoute('admin_problems_index');
     }

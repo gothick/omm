@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210531094747 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -25,6 +26,7 @@ final class Version20210531094747 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_C53D045F5ED948F0 ON image (featuring_wander_id)');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

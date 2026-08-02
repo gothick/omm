@@ -116,7 +116,7 @@ class ExifHelper implements ExifHelperInterface
         $raw = $this->exif->getRawData();
         if (array_key_exists('IPTC:CopyrightNotice', $raw)) {
             $copyright = $raw['IPTC:CopyrightNotice'];
-            if (is_string($copyright) && !empty($copyright)) {
+            if (is_string($copyright) && ($copyright !== '' && $copyright !== '0')) {
                 return $copyright;
             }
         }

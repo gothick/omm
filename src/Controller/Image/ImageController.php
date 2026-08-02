@@ -43,7 +43,6 @@ class ImageController extends AbstractController
     public function index(
         Request $request
     ): Response {
-        /** @var ImageFilterData $filterData */
         $filterData = new ImageFilterData(
             $this->imageRepository->getEarliestImageCaptureDate(),
             $this->imageRepository->getLatestImageCaptureDate(),

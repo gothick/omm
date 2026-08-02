@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Image;
@@ -31,7 +33,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 #[Route(path: '/admin/image', name: 'admin_image_')]
 class ImageController extends AbstractController
 {
-    public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\DiskStatsService $diskStatsService, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry, private readonly \App\Service\NeighbourhoodServiceInterface $neighbourhoodService, private readonly \Symfony\Component\Messenger\MessageBusInterface $messageBus)
+    public function __construct(private readonly \App\Repository\ImageRepository $imageRepository, private readonly \Knp\Component\Pager\PaginatorInterface $paginator, private readonly \App\Service\DiskStatsService $diskStatsService, private readonly \Doctrine\Persistence\ManagerRegistry $managerRegistry, private readonly \App\Service\NeighbourhoodServiceInterface $neighbourhoodService, private readonly \Symfony\Component\Messenger\MessageBusInterface $messageBus, private readonly \Doctrine\ORM\EntityManagerInterface $entityManager)
     {
     }
 
@@ -154,14 +156,14 @@ class ImageController extends AbstractController
     }
 
     #[Route(path: '/{id}/set_neighbourhood', name: 'set_neighbourhood', methods: ['POST'])]
-    public function setNeighbourhood(Request $request, Image $image, EntityManagerInterface $entityManager): Response
+    public function setNeighbourhood(Request $request, Image $image): Response
     {
         if ($this->isCsrfTokenValid('set_neighbourhood'.$image->getId(), (string) $request->request->get('_token'))) {
             $neighbourhood  = $this->neighbourhoodService->getNeighbourhood($image->getLatitude(), $image->getLongitude());
             if ($neighbourhood !== null) {
                 $image->setNeighbourhood($neighbourhood);
-                $entityManager->persist($image);
-                $entityManager->flush();
+                $this->entityManager->persist($image);
+                $this->entityManager->flush();
             }
         }
 

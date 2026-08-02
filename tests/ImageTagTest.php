@@ -326,13 +326,13 @@ final class ImageTagTest extends KernelTestCase
 
         // The first tag of image2 should be "two"...
         $image2tagTwo = $image2->getTags()->current();
-        assert($image2tagTwo instanceof Tag);
-        $this->assertEquals('two', $image2tagTwo->getName(), "Unexpected tag name found in image2");
+        $this->assertInstanceOf(Tag::class, $image2tagTwo);
+        $this->assertSame('two', $image2tagTwo->getName(), "Unexpected tag name found in image2");
         // ...but it should also be the *same* tag as was used
         // for "two" in image1, so the same database id should
         // exist in image2's tags.
         $this->assertTrue($image1->getTags()->exists(function ($k, $v) use ($image2tagTwo) {
-            assert($v instanceof Tag);
+            $this->assertInstanceOf(Tag::class, $v);
             return $v->getId() === $image2tagTwo->getId();
         }));
     }

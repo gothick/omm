@@ -21,6 +21,8 @@ final class Version20211213220450 extends AbstractMigration
     {
         parent::__construct($connection, $logger);
     }
+
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -32,11 +34,13 @@ final class Version20211213220450 extends AbstractMigration
         $this->addSql('ALTER TABLE wander ADD google_polyline LONGTEXT DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE wander DROP google_polyline');
     }
+
     public function postUp(Schema $schema): void
     {
         $updateGeoJsonStatement = $this->connection->prepare('UPDATE wander SET google_polyline = (:google_polyline) WHERE id = :id');
@@ -49,6 +53,7 @@ final class Version20211213220450 extends AbstractMigration
             if (!$filename) {
                 continue;
             }
+
             $googlePolyline = $this->gpxService->gpxToGooglePolyline($this->gpxService->getGpxStringFromFilename($filename));
             $updateGeoJsonStatement->bindValue('id', $wander->getId());
             $updateGeoJsonStatement->bindValue('google_polyline', $googlePolyline);

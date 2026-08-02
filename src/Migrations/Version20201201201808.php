@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201201201808 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20201201201808 extends AbstractMigration
         $this->addSql('ALTER TABLE wander ADD distance DOUBLE PRECISION DEFAULT NULL, ADD avg_speed DOUBLE PRECISION DEFAULT NULL, ADD avg_pace DOUBLE PRECISION DEFAULT NULL, ADD min_altitude DOUBLE PRECISION DEFAULT NULL, ADD max_altitude DOUBLE PRECISION DEFAULT NULL, ADD cumulative_elevation_gain DOUBLE PRECISION DEFAULT NULL, ADD duration DOUBLE PRECISION DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
