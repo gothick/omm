@@ -103,6 +103,21 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile
+
+      # base.html.twig calls encore_entry_link_tags()/encore_entry_script_tags(),
+      # which need public/build/entrypoints.json (git-ignored, Webpack Encore
+      # output) to exist, or any test that renders it 500s.
+      - name: Build front-end assets
+        run: yarn build
+
       # Actions blocks these steps until the health checks above report
       # healthy, so unlike docker/testentrypoint.sh's wait-for-it.sh dance,
       # there's nothing to poll for manually here.
