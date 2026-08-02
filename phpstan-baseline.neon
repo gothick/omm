@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#4 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 2
-			path: src/Controller/Api/ApiController.php
-
-		-
 			message: '#^Method App\\DataFixtures\\NeighbourhoodFixtures\:\:getPolygonRings\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -511,12 +505,6 @@ parameters:
 			path: src/Service/MarkdownService.php
 
 		-
-			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$format \(string\) is implicitly nullable via default value null\.$#'
-			identifier: parameter.implicitlyNullable
-			count: 2
-			path: src/Twig/GeneralRuntime.php
-
-		-
 			message: '#^Method App\\Twig\\SrcsetRuntime\:\:srcset\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -803,3 +791,4 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: tests/bootstrap.php
+
