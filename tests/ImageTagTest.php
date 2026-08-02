@@ -331,7 +331,7 @@ final class ImageTagTest extends KernelTestCase
         // ...but it should also be the *same* tag as was used
         // for "two" in image1, so the same database id should
         // exist in image2's tags.
-        $this->assertTrue($image1->getTags()->exists(function ($k, $v) use ($image2tagTwo) {
+        $this->assertTrue($image1->getTags()->exists(function ($_, $v) use ($image2tagTwo) {
             $this->assertInstanceOf(Tag::class, $v);
             return $v->getId() === $image2tagTwo->getId();
         }));
