@@ -48,6 +48,7 @@ class AdminCreateAdminCommand extends Command
         $question = new Question("Please enter a password for new user '{$username}': ", 'AcmeDemoBundle');
         $question->setHidden(true);
 
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $password = $helper->ask($input, $output, $question);
 

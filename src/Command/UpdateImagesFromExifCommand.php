@@ -33,6 +33,7 @@ class UpdateImagesFromExifCommand extends Command
     {
         $updateWanders = $input->getOption('update-wanders');
 
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
         $helper = $this->getHelper('question');
 
         if ($updateWanders) {
