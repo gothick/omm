@@ -1,0 +1,805 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#4 \$format \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/Controller/Api/ApiController.php
+
+		-
+			message: '#^Method App\\DataFixtures\\NeighbourhoodFixtures\:\:getPolygonRings\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/DataFixtures/NeighbourhoodFixtures.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 2
+			path: src/Entity/Image.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<int, Beelab\\TagBundle\\Tag\\TagInterface\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Entity/Image.php
+
+		-
+			message: '#^Property App\\Entity\\Image\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Image.php
+
+		-
+			message: '#^Property App\\Entity\\Image\:\:\$latlng \(array\<float\>\|null\) is never assigned array\<float\> so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Image.php
+
+		-
+			message: '#^Method App\\Entity\\Neighbourhood\:\:getBoundingPolygon\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Neighbourhood.php
+
+		-
+			message: '#^Method App\\Entity\\Neighbourhood\:\:setBoundingPolygon\(\) has parameter \$boundingPolygon with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Entity/Neighbourhood.php
+
+		-
+			message: '#^Property App\\Entity\\Neighbourhood\:\:\$boundingPolygon has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Entity/Neighbourhood.php
+
+		-
+			message: '#^Property App\\Entity\\Neighbourhood\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Neighbourhood.php
+
+		-
+			message: '#^Property App\\Entity\\Problem\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Problem.php
+
+		-
+			message: '#^Property App\\Entity\\Settings\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Settings.php
+
+		-
+			message: '#^Method App\\Entity\\User\:\:setRoles\(\) has parameter \$roles with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/User.php
+
+		-
+			message: '#^Property App\\Entity\\User\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/User.php
+
+		-
+			message: '#^Property App\\Entity\\User\:\:\$roles has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Entity/User.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\Common\\Collections\\Collection\<int, App\\Entity\\Image\>\:\:matching\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Invalid array key type float\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoAutoTags\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoLatLng\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoNeighbourhood\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoRating\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoTags\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:getImagesWithNoTitle\(\) return type with generic interface Doctrine\\Common\\Collections\\Collection does not specify its types\: TKey, T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\Entity\\Wander\:\:isTimeLengthSuspicious\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Property App\\Entity\\Wander\:\:\$centroid has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Property App\\Entity\\Wander\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Property App\\Entity\\Wander\:\:\$images has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Entity/Wander.php
+
+		-
+			message: '#^Method App\\EventListener\\ImageUploadListener\:\:onVichUploaderPostUpload\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/EventListener/ImageUploadListener.php
+
+		-
+			message: '#^Method App\\EventListener\\WanderDeleteListener\:\:postRemove\(\) has parameter \$event with generic class Doctrine\\Persistence\\Event\\LifecycleEventArgs but does not specify its types\: TObjectManager$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/EventListener/WanderDeleteListener.php
+
+		-
+			message: '#^Method App\\EventListener\\WanderDeleteListener\:\:preRemove\(\) has parameter \$event with generic class Doctrine\\Persistence\\Event\\LifecycleEventArgs but does not specify its types\: TObjectManager$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/EventListener/WanderDeleteListener.php
+
+		-
+			message: '#^Method App\\EventListener\\WanderUploadListener\:\:prePersist\(\) has parameter \$event with generic class Doctrine\\Persistence\\Event\\LifecycleEventArgs but does not specify its types\: TObjectManager$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/EventListener/WanderUploadListener.php
+
+		-
+			message: '#^Parameter \#1 \$from of method App\\Repository\\ImageRepository\:\:findBetweenDates\(\) expects DateTime, DateTimeInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/EventListener/WanderUploadListener.php
+
+		-
+			message: '#^Parameter \#2 \$to of method App\\Repository\\ImageRepository\:\:findBetweenDates\(\) expects DateTime, DateTimeInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/EventListener/WanderUploadListener.php
+
+		-
+			message: '#^Property App\\Form\\ImageFilterData\:\:\$ratingComparison \(string\) on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.property
+			count: 1
+			path: src/Form/ImageFilterData.php
+
+		-
+			message: '#^Method App\\Message\\WarmImageCache\:\:__construct\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/WarmImageCache.php
+
+		-
+			message: '#^Method App\\Message\\WarmImageCache\:\:getFilters\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/WarmImageCache.php
+
+		-
+			message: '#^Call to method setContainer\(\) on an unknown class Symfony\\Component\\DependencyInjection\\ContainerAwareInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Migrations/Factory/MigrationFactoryDecorator.php
+
+		-
+			message: '#^Class Symfony\\Component\\DependencyInjection\\ContainerAwareInterface not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Migrations/Factory/MigrationFactoryDecorator.php
+
+		-
+			message: '#^Class App\\Repository\\ImageRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ImageRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ImageRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ImageRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findBetweenDates\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findFromIdOnwards\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findNext\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findPrev\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithHasLatLng\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithNoNeighbourhood\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithNoNeighbourhoodButHasLatLng\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithNoStreet\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithNoStreetButHasLatLng\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:findWithNoWander\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Method App\\Repository\\ImageRepository\:\:getAllNeighbourhoods\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ImageRepository.php
+
+		-
+			message: '#^Class App\\Repository\\NeighbourhoodRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/NeighbourhoodRepository.php
+
+		-
+			message: '#^Class App\\Repository\\NeighbourhoodRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/NeighbourhoodRepository.php
+
+		-
+			message: '#^Class App\\Repository\\NeighbourhoodRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/NeighbourhoodRepository.php
+
+		-
+			message: '#^Class App\\Repository\\NeighbourhoodRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/NeighbourhoodRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ProblemRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ProblemRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ProblemRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ProblemRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ProblemRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ProblemRepository.php
+
+		-
+			message: '#^Class App\\Repository\\ProblemRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/ProblemRepository.php
+
+		-
+			message: '#^Class App\\Repository\\SettingsRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/SettingsRepository.php
+
+		-
+			message: '#^Class App\\Repository\\SettingsRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/SettingsRepository.php
+
+		-
+			message: '#^Class App\\Repository\\SettingsRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/SettingsRepository.php
+
+		-
+			message: '#^Class App\\Repository\\SettingsRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/SettingsRepository.php
+
+		-
+			message: '#^Class App\\Repository\\TagRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/TagRepository.php
+
+		-
+			message: '#^Class App\\Repository\\TagRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/TagRepository.php
+
+		-
+			message: '#^Class App\\Repository\\TagRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/TagRepository.php
+
+		-
+			message: '#^Class App\\Repository\\TagRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/TagRepository.php
+
+		-
+			message: '#^Class App\\Repository\\WanderRepository has PHPDoc tag @method for method findBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Class App\\Repository\\WanderRepository has PHPDoc tag @method for method findBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Class App\\Repository\\WanderRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#1 \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Class App\\Repository\\WanderRepository has PHPDoc tag @method for method findOneBy\(\) parameter \#2 \$orderBy with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:addWhereHasImages\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:findAverageDistance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:findFirstWhereIncludesDate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:findLongest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:findShortest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Method App\\Repository\\WanderRepository\:\:findWhereIncludesDate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Repository/WanderRepository.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Service/DummyLocationTaggingService.php
+
+		-
+			message: '#^Iterating over an object of an unknown class Google\\Protobuf\\Internal\\RepeatedField\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Service/GoogleImageTaggingService.php
+
+		-
+			message: '#^Property App\\Service\\GoogleImageTaggingService\:\:\$imagine has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Service/GoogleImageTaggingService.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Service/GoogleLocationTaggingService.php
+
+		-
+			message: '#^PHPDoc tag @var with type App\\Utils\\ExifHelperInterface is not subtype of native type App\\Utils\\ExifHelper\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: src/Service/ImageService.php
+
+		-
+			message: '#^Method App\\Service\\MarkdownService\:\:findLinks\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/MarkdownService.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$format \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/Twig/GeneralRuntime.php
+
+		-
+			message: '#^Method App\\Twig\\SrcsetRuntime\:\:srcset\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Twig/SrcsetRuntime.php
+
+		-
+			message: '#^Property App\\Twig\\SrcsetRuntime\:\:\$filters has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Twig/SrcsetRuntime.php
+
+		-
+			message: '#^Call to function is_string\(\) with array\|bool will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 2
+			path: src/Utils/ExifHelper.php
+
+		-
+			message: '#^Method App\\Utils\\ExifHelper\:\:getGPS\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Utils/ExifHelper.php
+
+		-
+			message: '#^Method App\\Utils\\ExifHelper\:\:getKeywords\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Utils/ExifHelper.php
+
+		-
+			message: '#^Method App\\Utils\\ExifHelperInterface\:\:getGPS\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Utils/ExifHelperInterface.php
+
+		-
+			message: '#^Method App\\Utils\\ExifHelperInterface\:\:getKeywords\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Utils/ExifHelperInterface.php
+
+		-
+			message: '#^PHPDoc tag @var does not specify variable name\.$#'
+			identifier: varTag.noVariable
+			count: 1
+			path: tests/Controller/WanderControllerTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with App\\Entity\\Image and ''Featured Image…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with App\\Entity\\Wander and ''Featuring Wander…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testChangeFeaturedImageFromWanderSide\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testDeleteFeaturedImage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testDeleteFeaturingWander\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testHasFeaturedImage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testSetAsFeaturedImage\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testSetAsFeaturedImageWhenNoWanderAssociated\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testSetFeaturedImageFromImageSide\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Method App\\Tests\\FeaturedImageTest\:\:testSetFeaturedImageFromWanderSide\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/FeaturedImageTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsIterable\(\) with Doctrine\\Common\\Collections\\Collection\<int, Beelab\\TagBundle\\Tag\\TagInterface\> will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsIterable\(\) with array\<string\> and ''Reading an image…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsIterable\(\) with array\<string\> and ''Reading image with…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testCapturedAt\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testMinimalMetadata\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testNonJPEG\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testNumericDescription\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testNumericTitle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadCoords\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadCopyright\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadDescription\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadLocationText\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadRating\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testReadTitle\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testSetNeighbourhoodFromLatLng\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testStandaloneNeighbourhoodSetter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testTags\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\ImageServiceTest\:\:testToolPath\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Property App\\Tests\\ImageServiceTest\:\:\$neighbourhoodService \(App\\Service\\NeighbourhoodService&PHPUnit\\Framework\\MockObject\\MockObject\) does not accept App\\Service\\NeighbourhoodService&PHPUnit\\Framework\\MockObject\\Stub\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Return type of call to method PHPUnit\\Framework\\TestCase\:\:createStub\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 2
+			path: tests/ImageServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string\> and ''Expected an array…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string\> and ''Expected array back…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsIterable\(\) with Doctrine\\Common\\Collections\\Collection\<int, Beelab\\TagBundle\\Tag\\TagInterface\> and ''GetTags\(\) should…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsIterable\(\) with iterable\<Beelab\\TagBundle\\Tag\\TagInterface\> and ''GetTags\(\) should…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with Beelab\\TagBundle\\Tag\\TagInterface and ''Retrieved tag…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\<string\> is not subtype of native type array\{''foo'', ''bar'', ''baz''\}\.$#'
+			identifier: varTag.nativeType
+			count: 2
+			path: tests/ImageTagTest.php
+
+		-
+			message: '#^Method App\\Tests\\LocationServiceTest\:\:testGetLocationName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/LocationServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\MarkdownServiceTest\:\:testMarkdownToText\(\) has parameter \$expected with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/MarkdownServiceTest.php
+
+		-
+			message: '#^Method App\\Tests\\MarkdownServiceTest\:\:testMarkdownToText\(\) has parameter \$in with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/MarkdownServiceTest.php
+
+		-
+			message: '#^Call to function method_exists\(\) with ''Symfony\\\\Component\\\\Dotenv\\\\Dotenv'' and ''bootEnv'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/bootstrap.php
