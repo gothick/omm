@@ -68,6 +68,12 @@ jobs:
       # Ubuntu's apt package puts it here, not the /usr/local/bin the
       # phpunit.dist.xml default assumes (that's a Docker-image path).
       TEST_EXIFTOOL_PATH: /usr/bin/exiftool
+      # Controller tests read getenv('SECURE_SCHEME') to decide whether to
+      # simulate an HTTPS request (see security.yaml's access_control). That
+      # only sees real process env vars, not values from .env, so it must be
+      # set here explicitly — docker-compose.app.yml does the same for local
+      # dev/test.
+      SECURE_SCHEME: http
 
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
