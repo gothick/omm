@@ -33,11 +33,9 @@ final class MarkdownServiceTest extends KernelTestCase
 
         $container = self::getContainer();
         $cache = $container->get(TagAwareCacheInterface::class);
-        $logger = $this->createStub(LoggerInterface::class);
 
         $this->markdownService = new MarkdownService(
-            $cache,
-            $logger
+            $cache
         );
     }
 
