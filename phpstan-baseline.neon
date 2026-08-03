@@ -55,6 +55,12 @@ parameters:
 			path: src/Entity/Neighbourhood.php
 
 		-
+			message: '#^Property App\\Entity\\Problem\:\:\$createdAt \(DateTimeInterface\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Entity/Problem.php
+
+		-
 			message: '#^Property App\\Entity\\Problem\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
 			identifier: property.unusedType
 			count: 1
@@ -469,12 +475,6 @@ parameters:
 			path: src/Repository/WanderRepository.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Service/DummyLocationTaggingService.php
-
-		-
 			message: '#^Iterating over an object of an unknown class Google\\Protobuf\\Internal\\RepeatedField\.$#'
 			identifier: class.notFound
 			count: 2
@@ -485,12 +485,6 @@ parameters:
 			identifier: missingType.property
 			count: 1
 			path: src/Service/GoogleImageTaggingService.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/Service/GoogleLocationTaggingService.php
 
 		-
 			message: '#^PHPDoc tag @var with type App\\Utils\\ExifHelperInterface is not subtype of native type App\\Utils\\ExifHelper\.$#'

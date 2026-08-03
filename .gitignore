@@ -104,3 +104,7 @@ yarn-error.log
 ###< phpunit/phpunit ###
 
 /.claude/settings.local.json
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

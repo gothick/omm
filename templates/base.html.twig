@@ -21,6 +21,17 @@
         {% endblock %}
         {% block twittercard %}{% endblock %}
         {% block canonical %}{% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+
+        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+        {% if frankenphp_hot_reload %}
+        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+        {% endif %}
     </head>
     <body>
         {% block container %}<div class="{% block containerclass %}default-container{% endblock %} container-xl d-flex h-100 flex-column px-0">{% endblock %}
@@ -31,8 +42,5 @@
             </div>
             {% block body %}{% endblock %}
         </div>
-        {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </body>
 </html>

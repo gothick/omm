@@ -87,22 +87,11 @@ class Image implements TaggableInterface, \Stringable
     private ?\DateTimeInterface $updatedAt = null;
 
     /**
-     * @Assert\AtLeastOneOf({
-     *   @Assert\Count(
-     *      min = 2,
-     *      max = 2,
-     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair (or nothing.)"
-     *   ),
-     *   @Assert\Count(
-     *      min = 0,
-     *      max = 0,
-     *      exactMessage = "Co-ordinates must consist of a latitude, longitude pair (or nothing.)"
-     *   )
-     * })
      * @var ?array<float>
      */
     #[Groups(['wander:item', 'image:list'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY, nullable: true)]
+    #[Assert\AtLeastOneOf([new Assert\Count(min: 2, max: 2, exactMessage: 'Co-ordinates must consist of a latitude, longitude pair (or nothing.)'), new Assert\Count(min: 0, max: 0, exactMessage: 'Co-ordinates must consist of a latitude, longitude pair (or nothing.)')])]
     private $latlng = [];
 
     /**

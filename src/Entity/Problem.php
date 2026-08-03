@@ -20,7 +20,7 @@ class Problem
     private ?int $id = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT)]
     private ?string $description = null;

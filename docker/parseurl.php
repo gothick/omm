@@ -14,7 +14,7 @@ for ($i = 1; $i < $counter; $i++) {
     }
 }
 
-if (!(array_key_exists("component", $my_args) && array_key_exists("url", $my_args))) {
+if (!array_key_exists("component", $my_args) || !array_key_exists("url", $my_args)) {
    usage_and_exit();
 }
 
