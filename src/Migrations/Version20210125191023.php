@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210125191023 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -20,9 +21,10 @@ final class Version20210125191023 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE wander ADD centroid LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\', ADD angle_from_home DOUBLE PRECISION DEFAULT NULL');
+        $this->addSql("ALTER TABLE wander ADD centroid LONGTEXT DEFAULT NULL COMMENT '(DC2Type:array)', ADD angle_from_home DOUBLE PRECISION DEFAULT NULL");
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

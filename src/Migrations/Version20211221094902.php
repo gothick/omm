@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20211221094902 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -24,6 +25,7 @@ final class Version20211221094902 extends AbstractMigration
         $this->addSql('ALTER TABLE wander DROP geo_json');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

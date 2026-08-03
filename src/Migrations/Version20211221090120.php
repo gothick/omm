@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20211221090120 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20211221090120 extends AbstractMigration
         $this->addSql('CREATE INDEX ix_featuring_wander ON image (featuring_wander_id)');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

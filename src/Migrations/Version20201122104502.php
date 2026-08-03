@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201122104502 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -28,6 +29,7 @@ final class Version20201122104502 extends AbstractMigration
             ) COLLATE utf8mb4_bin, ENGINE = InnoDB;');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

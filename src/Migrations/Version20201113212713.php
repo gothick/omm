@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201113212713 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20201113212713 extends AbstractMigration
         $this->addSql('ALTER TABLE wander CHANGE description description LONGTEXT DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

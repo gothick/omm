@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20211208211945 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20211208211945 extends AbstractMigration
         $this->addSql('ALTER TABLE settings ADD gravatar_email VARCHAR(1024) DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

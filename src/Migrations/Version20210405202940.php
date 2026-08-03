@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210405202940 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20210405202940 extends AbstractMigration
         $this->addSql('ALTER TABLE wander ADD modified_at DATETIME DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

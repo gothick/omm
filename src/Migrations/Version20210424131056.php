@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210424131056 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -25,11 +26,13 @@ final class Version20210424131056 extends AbstractMigration
         $this->addSql('ALTER TABLE image_tag ADD CONSTRAINT FK_5B6367D0BAD26311 FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE image_tag');
     }
+
     public function postUp(Schema $schema): void
     {
         $images = $this->connection->fetchAllAssociative('SELECT id, keywords FROM image');
@@ -39,6 +42,7 @@ final class Version20210424131056 extends AbstractMigration
             $keywords = unserialize($image['keywords']);
             $allKeywords = array_merge($allKeywords, $keywords);
         }
+
         $unique_keywords = array_unique($allKeywords);
         $insertTagStmt = $this->connection->prepare('INSERT INTO tag (name) VALUES (:name)');
 

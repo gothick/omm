@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210401194805 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -27,10 +28,11 @@ final class Version20210401194805 extends AbstractMigration
         $this->addSql('DROP TABLE wander_image');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE wander_image (wander_id INT NOT NULL, image_id INT NOT NULL, INDEX IDX_69C7253A2F82EC6B (wander_id), INDEX IDX_69C7253A3DA5256D (image_id), PRIMARY KEY(wander_id, image_id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql("CREATE TABLE wander_image (wander_id INT NOT NULL, image_id INT NOT NULL, INDEX IDX_69C7253A2F82EC6B (wander_id), INDEX IDX_69C7253A3DA5256D (image_id), PRIMARY KEY(wander_id, image_id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = '' ");
         $this->addSQL('INSERT INTO wander_image (wander_id, image_id) SELECT wander_id, id FROM image');
         $this->addSql('ALTER TABLE wander_image ADD CONSTRAINT FK_69C7253A2F82EC6B FOREIGN KEY (wander_id) REFERENCES wander (id) ON UPDATE NO ACTION ON DELETE CASCADE');
         $this->addSql('ALTER TABLE wander_image ADD CONSTRAINT FK_69C7253A3DA5256D FOREIGN KEY (image_id) REFERENCES image (id) ON UPDATE NO ACTION ON DELETE CASCADE');

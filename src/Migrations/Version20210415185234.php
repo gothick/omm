@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210415185234 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -20,14 +21,16 @@ final class Version20210415185234 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE neighbourhood (id INT AUTO_INCREMENT NOT NULL, bounding_polygon GEOMETRY NOT NULL COMMENT \'(DC2Type:geometry)\', object_id INT NOT NULL, mi_prinx INT NOT NULL, wardcd VARCHAR(2000) NOT NULL, perimeter_m DOUBLE PRECISION NOT NULL, msoa11cd VARCHAR(100) NOT NULL, geo_point2d VARCHAR(200) NOT NULL, area_m2 DOUBLE PRECISION NOT NULL, lsoa11nm VARCHAR(100) NOT NULL, lsoa11cd VARCHAR(100) NOT NULL, lsoa11ln VARCHAR(100) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql("CREATE TABLE neighbourhood (id INT AUTO_INCREMENT NOT NULL, bounding_polygon GEOMETRY NOT NULL COMMENT '(DC2Type:geometry)', object_id INT NOT NULL, mi_prinx INT NOT NULL, wardcd VARCHAR(2000) NOT NULL, perimeter_m DOUBLE PRECISION NOT NULL, msoa11cd VARCHAR(100) NOT NULL, geo_point2d VARCHAR(200) NOT NULL, area_m2 DOUBLE PRECISION NOT NULL, lsoa11nm VARCHAR(100) NOT NULL, lsoa11cd VARCHAR(100) NOT NULL, lsoa11ln VARCHAR(100) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB");
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE neighbourhood');
     }
+
     public function postUp(Schema $schema): void
     {
         // Bristol Open Data: https://opendata.bristol.gov.uk/explore/dataset/lsoa01/export/?location=15,51.44699,-2.62136&basemap=jawg.streets

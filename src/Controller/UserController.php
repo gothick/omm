@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/user', name: 'user_')]
 class UserController extends AbstractController
 {
-    public function __construct(private readonly \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder)
+    public function __construct(private readonly \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder, private readonly \Doctrine\ORM\EntityManagerInterface $entityManager)
     {
     }
 
@@ -30,8 +30,7 @@ class UserController extends AbstractController
 
     #[Route(path: '/changepassword', name: 'changepassword', methods: ['GET', 'POST'])]
     public function changePassword(
-        Request $request,
-        EntityManagerInterface $entityManager
+        Request $request
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /** @var \App\Entity\User | null */
@@ -51,7 +50,7 @@ class UserController extends AbstractController
             // TODO: Password strength validation?
             $password = $this->encoder->hashPassword($user, $plainPassword);
             $user->setPassword($password);
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             $this->addFlash(
                 'notice',

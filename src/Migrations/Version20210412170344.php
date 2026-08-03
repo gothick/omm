@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210412170344 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20210412170344 extends AbstractMigration
         $this->addSql('CREATE TABLE problem (id INT AUTO_INCREMENT NOT NULL, created_at DATETIME NOT NULL, description LONGTEXT NOT NULL, uri VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

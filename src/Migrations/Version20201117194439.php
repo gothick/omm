@@ -12,6 +12,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201117194439 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription() : string
     {
         return '';
@@ -23,6 +24,7 @@ final class Version20201117194439 extends AbstractMigration
         $this->addSql('ALTER TABLE image CHANGE size_in_bytes size_in_bytes INT DEFAULT NULL, CHANGE mime_type mime_type VARCHAR(255) DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

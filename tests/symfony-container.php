@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 // tests/symfony-container.php
 // Included by ../rector.php to provide the Symfony container to Rector for use in Rector rules that need it.
 

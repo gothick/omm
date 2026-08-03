@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProblemService
 {
-    public function __construct(private readonly problemRepository $problemRepository, private readonly WanderRepository $wanderRepository, private readonly ImageRepository $imageRepository, private readonly RouterInterface $router, private readonly MarkdownService $markdownService, private readonly EntityManagerInterface $entityManager, private readonly SpellingService $spellingService)
+    public function __construct(private readonly ProblemRepository $problemRepository, private readonly WanderRepository $wanderRepository, private readonly ImageRepository $imageRepository, private readonly RouterInterface $router, private readonly MarkdownService $markdownService, private readonly EntityManagerInterface $entityManager, private readonly SpellingService $spellingService)
     {
     }
 

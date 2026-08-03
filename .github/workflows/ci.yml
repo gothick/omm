@@ -1,0 +1,192 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PHP_VERSION: '8.3'
+
+jobs:
+  tests:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+
+    # These mirror docker-compose.yml. Beanstalkd isn't started because
+    # nothing in tests/ currently dispatches through Messenger; add a
+    # service for it here if that changes.
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: omm_test
+          MYSQL_USER: omm_test
+          MYSQL_PASSWORD: omm_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: "false"
+          cluster.routing.allocation.disk.threshold_enabled: "false"
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd="curl -sf http://127.0.0.1:9200/_cluster/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+      redis:
+        image: redis:8.4-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      APP_ENV: test
+      DATABASE_URL: mysql://omm_test:omm_test@127.0.0.1:3306/omm_test
+      ELASTICSEARCH_URL: http://127.0.0.1:9200/
+      REDIS_URL: redis://127.0.0.1:6379
+      # Ubuntu's apt package puts it here, not the /usr/local/bin the
+      # phpunit.dist.xml default assumes (that's a Docker-image path).
+      TEST_EXIFTOOL_PATH: /usr/bin/exiftool
+      # Controller tests read getenv('SECURE_SCHEME') to decide whether to
+      # simulate an HTTPS request (see security.yaml's access_control). That
+      # only sees real process env vars, not values from .env, so it must be
+      # set here explicitly — docker-compose.app.yml does the same for local
+      # dev/test.
+      SECURE_SCHEME: http
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Install exiftool
+        run: sudo apt-get update && sudo apt-get install -y exiftool
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ctype, iconv, pdo, pdo_mysql, mysqli, zip, apcu, bcmath, intl, gd
+          coverage: none
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache composer packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      # base.html.twig calls encore_entry_link_tags()/encore_entry_script_tags(),
+      # which need public/build/entrypoints.json (git-ignored, Webpack Encore
+      # output) to exist, or any test that renders it 500s.
+      - name: Build front-end assets
+        run: yarn build
+
+      # Actions blocks these steps until the health checks above report
+      # healthy, so unlike docker/testentrypoint.sh's wait-for-it.sh dance,
+      # there's nothing to poll for manually here.
+
+      - name: Create test database schema
+        run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+      - name: Create Elasticsearch test index
+        run: php bin/console fos:elastica:reset --env=test --no-interaction
+
+      - name: Run test suite
+        run: vendor/bin/phpunit --testdox
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache composer packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --no-progress
+
+  rector:
+    name: Rector (dry run)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache composer packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Check for outstanding Rector refactors
+        run: vendor/bin/rector process --dry-run

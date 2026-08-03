@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
  */
 final class Version20210509222909 extends AbstractMigration
 {
+    #[\Override]
     public function getDescription(): string
     {
         return '';
@@ -26,11 +27,13 @@ final class Version20210509222909 extends AbstractMigration
         $this->addSql('ALTER TABLE wander ADD geo_json LONGTEXT DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE wander DROP geo_json');
     }
+
     // This is handled by Version20211213220450, which adds the google_polyline column and fills it
     // with data from the GPX files. That's why we don't have the gpxToGeoJson function available
     // any more; we'll use the polyline from the later migration instead.

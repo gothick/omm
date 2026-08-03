@@ -25,6 +25,7 @@ class WanderUpdateFromGpxCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion('Are you sure you want to update all wanders based on their GPX track? ', false);
         if (!$helper->ask($input, $output, $question)) {
