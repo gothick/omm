@@ -23,7 +23,7 @@
         {% block canonical %}{% endblock %}
 
         {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
 
         {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
