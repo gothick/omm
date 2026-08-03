@@ -166,9 +166,6 @@ class Wander implements \Stringable
         return $this->images;
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoTitle(): Collection
     {
         $criteria = Criteria::create()
@@ -176,9 +173,6 @@ class Wander implements \Stringable
         return $this->getImages()->matching($criteria);
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoLatLng(): Collection
     {
         $criteria = Criteria::create()
@@ -186,9 +180,6 @@ class Wander implements \Stringable
         return $this->getImages()->matching($criteria);
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoNeighbourhood(): Collection
     {
         $criteria = Criteria::create()
@@ -196,9 +187,6 @@ class Wander implements \Stringable
         return $this->getImages()->matching($criteria);
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoRating(): Collection
     {
         $criteria = Criteria::create()
@@ -206,17 +194,11 @@ class Wander implements \Stringable
         return $this->getImages()->matching($criteria);
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoTags(): Collection
     {
         return $this->getImages()->filter(fn($image) => $image->getTags()->isEmpty());
     }
 
-    /**
-     * @return Collection|Image[]
-     */
     public function getImagesWithNoAutoTags(): Collection
     {
         return $this->getImages()->filter(fn($image) => $image->getAutoTagsCount() === 0);
