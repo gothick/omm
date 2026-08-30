@@ -9,13 +9,10 @@ use Rector\Symfony\Set\SymfonySetList;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\ValueObject\PhpVersion;
-use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
-use Rector\Symfony\CodeQuality\Rector\Class_\InlineClassRoutePrefixRector;
 
 use Rector\CodingStyle\Rector\ClassLike\NewlineBetweenClassLikeStmtsRector;
 use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
-use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 
 // https://github.com/rectorphp/rector-symfony?tab=readme-ov-file
 
@@ -53,12 +50,6 @@ return RectorConfig::configure()
     ->withPreparedSets(carbon: true)
     ->withPreparedSets(phpunitCodeQuality: true)
     ->withSkip([
-        // I *like* bare variables in strings, and I've
-        // always preferred interpolation over concatenation.
-        EncapsedStringsToSprintfRector::class,
-        WrapEncapsedVariableInCurlyBracesRector::class,
-        // This one actually breaks things.
-        InlineClassRoutePrefixRector::class
         // NewlineBetweenClassLikeStmtsRector::class,
         // NewlineBeforeNewAssignSetRector::class,
         // NewlineAfterStatementRector::class,
